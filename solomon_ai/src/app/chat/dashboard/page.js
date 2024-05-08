@@ -13,36 +13,39 @@ export default function ChatDashboard() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+
+
   useEffect(() => {
     async function checkSession() {
       if (status === "loading") {
-        // Log that the session is loading, wait for session check to complete
         console.log("Session is loading...");
         return;
       }
 
       if (status === "unauthenticated") {
-        // Handle unauthenticated status by redirecting to the home page
         console.log("No session found, redirecting...");
         router.push("/");
       } else if (status === "authenticated") {
-        // If authenticated, fetch the session to ensure it's up to date
-        console.log(
-          "Session is authenticated, confirming session data...",
-          status
-        );
+        console.log("Session is authenticated, confirming session data...", status);
         const currentSession = await getSession();
         console.log("Current session data:", currentSession);
         setUserName(currentSession.user.username);
         console.log("Logging session user name", currentSession.user.username);
-        // Optionally, handle the session data here, e.g., setting user state
       }
     }
 
     checkSession();
   }, [status, router]);
 
-  if (!localStorage.getItem("username") || !session) {
+  useEffect(() => {
+    // This effect runs only on the client side
+    const storedUsername = typeof window !== "undefined" ? localStorage.getItem("username") : null;
+    if (storedUsername) {
+      setUserName(storedUsername);
+    }
+  }, []);
+
+  if (!userName || !session) {
     return <ErrorPage />;
   }
 
