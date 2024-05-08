@@ -1,0 +1,177 @@
+.grid_wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.grid_item {
+  width: 100%;
+  background: #fff;
+}
+
+.photo_wrapper {
+  width: 650px;
+  min-width: 300px;
+  height: 100%;
+  /* background: url("../../public/assets/studio-image.png"); */
+  background-position: 50% 50%;
+  background-size: cover;
+}
+.photo_wrapper img {
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wrapper {
+  padding: 0px 65px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.photo_holder {
+  width: 55px;
+  height: 55px;
+  background: rgb(189, 189, 189);
+  border-radius: 50%;
+  margin-right: auto;
+  margin-bottom: 15px;
+}
+
+.flex_col {
+  text-align: left;
+}
+.flex_col p {
+  color: #b7b7b7;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.sign_up_form {
+  display: flex;
+  flex-direction: column;
+  padding-right: 3rem;
+}
+
+.sign_up_form .input {
+  margin: 20px 0px;
+  width: 100%;
+  min-width: 282px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  background: #fafafa;
+  padding-left: 15px;
+}
+.sign_up_form .input::placeholder {
+  text-transform: capitalize;
+}
+.flex_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.checkbox {
+  margin-left: 11px;
+  color: #b7b7b7;
+  font-weight: 300;
+}
+#purple {
+  color: #5c1ee0;
+  font-weight: 300;
+}
+.flex_row_reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 11px;
+}
+
+.login {
+  background: #5c1ee0 !important;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  color: #fff;
+  margin-top: 60px;
+  border: none;
+}
+.login:hover {
+  background: rgba(92, 30, 224, 0.92);
+}
+.google {
+  margin-top: 60px;
+  border: 1px solid #d9d9d9;
+  height: 40px;
+  color: #787878;
+  font-weight: 200;
+  border-radius: 8px;
+  width: 80%;
+  margin: 40px auto;
+}
+
+/* Meida Query Change */
+@media screen and (max-width: 1155px) {
+  .grid_wrapper {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: none;
+  }
+  .flex_col {
+    width: 700px;
+    margin: 0 auto;
+    padding: 50px;
+  }
+  .signup_wrapper {
+    padding: 0px !important;
+  }
+  .grid_item:first-of-type {
+    /* height: 350px; */
+  }
+  .photo_wrapper {
+    width: 100%;
+  }
+  /* .grid_item{
+        padding: 6rem 0rem;
+    } */
+}
+
+@media screen and (max-width: 800px) {
+  .photo_holder {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .flex_col {
+    width: 100%;
+    text-align: center;
+  }
+  .sign_up_form {
+    padding-right: 0;
+    width: 100%;
+  }
+  .signup_wrapper {
+    width: auto;
+  }
+}
+/* Meida Query Change */
+
+.logo_text,
+.icon_container {
+  color: #bdbdbd;
+}
+
+.profile_logo {
+  width: 45px;
+  height: 45px;
+  border: 0.5px solid #d9d9d9;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bdbdbd;
+
+}

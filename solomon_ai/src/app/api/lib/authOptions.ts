@@ -84,7 +84,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.uid = user.id; // Make sure to assign user.id which is usually a string or number
         token.email = user.email;
-        // token.username = user.username; // Add username to the token
+        token.username = user.username; // Ensure username is also added to the JWT
       }
       return token;
     },

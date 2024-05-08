@@ -32,3 +32,212 @@ body {
     text-wrap: balance;
   }
 }
+
+
+
+/* DashBoard code  */
+
+.chatDashboard {
+  background: linear-gradient(156deg, #3c3c3c 20.43%, #181818 143.07%);
+  height: 100vh;
+}
+
+.navDashboard {
+  border-bottom: 0.5px solid #858585;
+  background: linear-gradient(119deg, #2b2b2b -10.43%, #dfdfdf 1328.55%);
+  width: 100%;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatDashboardWrapper {
+  padding-top: 114px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatDashboardWrapper h1 {
+  color: #bdbdbd;
+  font-size: 50px;
+  font-weight: 300;
+}
+.chatDashboardForm {
+  margin-top: 57px;
+  position: relative;
+  border-radius: 5px;
+  width: 675px;
+  height: 58px;
+  flex-shrink: 0;
+  box-shadow: 0px 4px 31px 0px #3e3e3e inset;
+  border: 0.5px solid #545454;
+  background: linear-gradient(168deg, #3c3c3c 22.31%, #262626 117.849%);
+}
+.chatDashboardForm input {
+  width: 675px;
+  height: 58px;
+  padding: 8px;
+  background: transparent;
+  color: #fff;
+}
+.dashboardBtn {
+  width: 117px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #2f6698;
+  background: linear-gradient(
+    93deg,
+    rgba(33, 38, 62, 0.52) -27.44%,
+    rgba(82, 94, 110, 0.28) 109.78%
+  );
+  color: #bdbdbd;
+  font-weight: 300;
+}
+.posAbs {
+  right: 0;
+  margin-right: 15px;
+  top: 20%;
+  position: absolute;
+}
+.dashboardNews {
+  margin-top: 96px;
+  color: #bdbdbd;
+  border-radius: 5px;
+  border: 1px solid rgba(47, 102, 152, 0.66);
+  background: #2f2f2f;
+  box-shadow: 0px 4px 21.9px 0px rgba(66, 66, 66, 0.59);
+  width: 675px;
+  height: 330px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  text-align: center;
+  position: relative;
+}
+.dashboardNews h2 {
+  font-size: 28px;
+  font-weight: 300;
+}
+.dashboardNews h3 {
+  color: #bdbdbd;
+  font-size: 24px;
+  text-align: center;
+  font-family: "Helvetica Neue";
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+.dashboardTag {
+  position: absolute;
+  top: 0;
+  transform: translateY(-20px);
+  width: 117px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #2f6698;
+  background: linear-gradient(
+    93deg,
+    rgba(33, 38, 62, 0.52) -27.44%,
+    rgba(82, 94, 110, 0.28) 109.78%
+  );
+}
+
+.profileNav {
+  position: relative;
+}
+
+.userNavPoup {
+  position: absolute;
+  width: 217px;
+  height: 277px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #2f6698;
+  background: linear-gradient(
+    198deg,
+    rgba(85, 92, 101, 0.16) 12.23%,
+    rgba(28, 30, 56, 0.74) 116.61%
+  );
+  top: 44px;
+  right: 8px;
+  z-index: 0;
+  cursor: pointer;
+  opacity: 0;;
+  z-index: 100;
+  transition: opacity 250ms ease-in-out;
+  color: #BDBDBD;
+}
+.userNavPoup .visible{
+  opacity: 1;
+}
+
+.userNavPoup > div:first-child {
+  padding: 10px; /* Example padding */
+}
+.usersNavLink {
+  padding: 15px;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  gap: 3px;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  position: relative;
+}
+.usersNavLink:hover {
+  background: linear-gradient(
+    161deg,
+    rgba(47, 58, 73, 0) 50.07%,
+    #23aae4 2810.01%
+  );
+  box-shadow: 0px -8px 14.8px -7px rgba(49, 108, 200, 0.98) inset;
+
+  cursor: pointer;
+}
+.underLine {
+  height: 1px;
+  width: 100%;
+  background:#b0d8e9
+}
+
+@media screen and (max-width: 800px) {
+  .chatDashboard {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .chatDashboardForm {
+    width: 100%;
+  }
+  .dashboardNews {
+    width: 100%;
+  }
+}
+
+/* DashBoard code  */
+
+
+/* Navigation CSS and Chat  */
+
+.openChatMobile
+{ 
+cursor: pointer;
+display: none;
+}
+@media screen and (max-width: 1195px){
+  .openChatMobile{
+    display: inline;
+    position: relative;
+  }
+}
+/* Navigation CSS and Chat  */

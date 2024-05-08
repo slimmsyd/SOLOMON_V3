@@ -31,7 +31,8 @@ const Login = () => {
     const signInData = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false
+      callbackUrl: "/chat/dashboard",
+      redirect: true
     });
 
     if (signInData?.error) {

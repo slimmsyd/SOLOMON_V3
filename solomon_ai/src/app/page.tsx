@@ -7,11 +7,9 @@ export default function Home() {
   <>
 
 
-    <Signup />
+    <Login />
 
-  
-  
-  
-  </>
+
+    </>
   )
 }
