@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql" // Changed from sqlite to postgresql
+  url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id            Int                 @id @default(autoincrement())
+  email         String              @unique
+  username      String              @unique
+  password      String
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  messages      Messages[]
+  conversations UserConversations[]
+}
+
+model Conversation {
+  id           Int                 @id @default(autoincrement())
+  title        String?              @db.VarChar(255)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  messages     Messages[]
+  participants UserConversations[]
+}
+
+model Messages {
+  id             Int          @id @default(autoincrement())
+  title          String       @db.VarChar(255)
+  userContent    String? // Content from the user
+  botResponse    String? // Response from the bot
+  published      Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  author         User         @relation(fields: [authorId], references: [id])
+  authorId       Int
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+
+  @@index([authorId], name: "idx_messages_author_id")
+  @@index([conversationId], name: "idx_messages_conversation_id")
+}
+
+model UserConversations {
+  user           User         @relation(fields: [userId], references: [id])
+  userId         Int
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+
+  @@id([userId, conversationId])
+  @@index([userId], name: "idx_user_conversations_user_id")
+  @@index([conversationId], name: "idx_user_conversations_conversation_id")
+}
