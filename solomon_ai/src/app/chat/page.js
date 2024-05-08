@@ -152,7 +152,7 @@ export default function ChatPage() {
     let cachedConversations = localStorage.getItem("conversations");
     if (cachedConversations) {
       cachedConversations = JSON.parse(cachedConversations);
-      const updatedCache = cachedConversations.map((convo) =>
+      const updatedCache = cachedConversations?.map((convo) =>
         convo.conversationId === conversationId
           ? { ...convo, title: updatedConversation.title }
           : convo
@@ -173,7 +173,7 @@ export default function ChatPage() {
       console.log("Logging the converations before errorw");
       // Update local state
       setConversations((prevConversations) => {
-        return prevConversations.map((convo) =>
+        return prevConversations?.map((convo) =>
           convo.conversationId === conversationId
             ? { ...convo, title: updatedConversation.title }
             : convo
@@ -192,7 +192,7 @@ export default function ChatPage() {
   async function deleteConversation(conversationId) {
     const currentConversations = conversations;
     // Optimistically remove the conversation from UI
-    const updatedConversations = currentConversations.filter(
+    const updatedConversations = currentConversations?.filter(
       (convo) => convo.conversationId !== conversationId.conversationId
     );
 
@@ -256,7 +256,7 @@ export default function ChatPage() {
       console.log("New title to be set:", newTitle);
 
       // Optimistically update the UI before the API call
-      const updatedConversations = conversations.map((convo) =>
+      const updatedConversations = conversations?.map((convo) =>
         convo.id === editTitleId ? { ...convo, title: newTitle } : convo
       );
 
@@ -293,7 +293,7 @@ export default function ChatPage() {
         console.error("Error updating title:", error);
 
         // If the update fails, revert the change in the UI and alert the user
-        const originalConversations = conversations.map((convo) =>
+        const originalConversations = conversations?.map((convo) =>
           convo.id === editTitleId ? { ...convo, title: convo.title } : convo
         );
         console.log(
@@ -484,7 +484,7 @@ export default function ChatPage() {
       const messages = await response.json();
 
       // Map API response to expected format in state
-      const formattedMessages = messages.map((msg) => ({
+      const formattedMessages = messages?.map((msg) => ({
         question: msg.userContent,
         response: msg.botResponse,
       }));
@@ -559,7 +559,7 @@ export default function ChatPage() {
             </div>
 
             {conversations.length > 0 ? (
-              conversations.map((convo) => (
+              conversations?.map((convo) => (
                 <div
                   key={convo.id}
                   className={`${styles.flex_row} ${styles.new_chat_div} ${

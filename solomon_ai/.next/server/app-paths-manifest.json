@@ -4,6 +4,6 @@
   "/chat/dashboard/page": "app/chat/dashboard/page.js",
   "/login/page": "app/login/page.js",
   "/chat/page": "app/chat/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }
