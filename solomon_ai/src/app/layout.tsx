@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "./ProvidersWrapper";
-
+import { ConversationProvider } from "./hooks/ConversationContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,8 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionWrapper>
+      <ConversationProvider> {/* Wrap children with ConversationProvider */}
+
         <body className={inter.className}>{children}</body>
+        </ConversationProvider>
+
       </SessionWrapper>
+      
     </html>
   );
 }
