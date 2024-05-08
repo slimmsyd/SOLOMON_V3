@@ -54,9 +54,14 @@ export default function ChatPage() {
 
   //Get the message from the stroate
   const saveMessageToStorage = (message) => {
-    sessionStorage.setItem("initialMessage", JSON.stringify(message));
+    // Check if running in a browser environment
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem("initialMessage", JSON.stringify(message));
+    } else {
+      console.log("Session storage is not available on the server");
+    }
   };
-
+  
   //Creating a new Conversation.
   const {
     createConversation,
