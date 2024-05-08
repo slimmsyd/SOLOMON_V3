@@ -4,9 +4,12 @@ const ConversationContext = createContext();
 
 export const ConversationProvider = ({ children }) => {
   const [responses, setResponses] = useState(() => {
+    if (typeof window !== "undefined") {
+
     // Attempt to recover state from sessionStorage on initial load
     const savedResponses = sessionStorage.getItem("chatResponses");
     return savedResponses ? JSON.parse(savedResponses) : [];
+    }
   });
   const [message, setMessage] = useState(""); // Current message being typed
   const [isFetchLoading, setIsFetchLoading] = useState(false); // New state to track loading status
