@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "prisma": "prisma",
     "start": "next start",
     "lint": "next lint"
   },
@@ -18,6 +19,7 @@
     "dotenv": "^16.4.5",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
+    "prisma": "^5.13.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.4",
