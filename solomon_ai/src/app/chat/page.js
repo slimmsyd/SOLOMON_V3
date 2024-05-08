@@ -372,15 +372,7 @@ export default function ChatPage() {
         router.replace(targetPath);
       }
 
-      // Update the responses array with the bot's reply
-      // setResponses((prevResponses) =>
-      //   prevResponses.map((resp) => {
-      //     if (resp.question === message) {
-      //       return { ...resp, response: botReply.message };
-      //     }
-      //     return resp;
-      //   })
-      // );
+     
 
       // Send the user question and bot response to the database
       // If a new conversation was created, navigate to that page
@@ -633,7 +625,7 @@ export default function ChatPage() {
                   <div className={styles.chat_box}>
                     <div className={styles.chat_flex}>
                       <div className={styles.chat_Messages}>
-                        {responses.map((response, index) => (
+                        {responses?.map((response, index) => (
                           <div className={styles.response_Flex} key={index}>
                             <p
                               className={`${styles.bot_Messages} ${styles.new_bot_message}`}
@@ -715,7 +707,7 @@ export default function ChatPage() {
                   <div className={styles.chat_box}>
                     <div className={styles.chat_flex}>
                       <div className={styles.chat_Messages}>
-                        {responses.map((r, i) => (
+                        {responses?.map((r, i) => (
                           <div className={styles.response_Flex} key={i}>
                             <p
                               className={`${styles.bot_Messages} ${styles.new_bot_message}`}
@@ -818,7 +810,7 @@ export default function ChatPage() {
             </div>
 
             {conversations.length > 0 ? (
-              conversations.map((convo) => (
+              conversation?.map((convo) => (
                 <div
                   key={convo.id}
                   className={`${styles.flex_row} ${styles.new_chat_div} ${
