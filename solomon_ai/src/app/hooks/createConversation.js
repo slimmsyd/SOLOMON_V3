@@ -51,6 +51,10 @@ export default function useCreateConversation(
           );
           return updatedConversations;
         });
+
+        if(!response.ok) { 
+          console.log("Logging the body Resposne", response)
+        }
         setCurrentConversationId(data.id);
         setNewTitle(""); // Reset title input
         console.log(`Conversation created successfully with ID: ${data.id}`);
@@ -64,7 +68,7 @@ export default function useCreateConversation(
         throw new Error(data.message || "Failed to create conversation");
       }
     } catch (error) {
-      console.error("Failed to create conversation:", error);
+      console.error("Failed to create conversation:", error, "user session", session);
       setError(error.message);
       return null; // Return null in case of error
       return null;

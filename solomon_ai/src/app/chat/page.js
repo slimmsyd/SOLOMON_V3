@@ -810,7 +810,7 @@ export default function ChatPage() {
             </div>
 
             {conversations.length > 0 ? (
-              conversation?.map((convo) => (
+              conversations?.map((convo) => (
                 <div
                   key={convo.id}
                   className={`${styles.flex_row} ${styles.new_chat_div} ${
