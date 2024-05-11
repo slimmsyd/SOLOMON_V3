@@ -1,8 +1,4 @@
 {
-  "/page": "app/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/login/page": "app/login/page.js",
-  "/chat/page": "app/chat/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/chat/[userId]/[conversationId]/page": "app/chat/[userId]/[conversationId]/page.js"
+  "/chat/[userId]/[conversationId]/page": "app/chat/[userId]/[conversationId]/page.js",
+  "/chat/page": "app/chat/page.js"
 }
