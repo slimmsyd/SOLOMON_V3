@@ -1,4 +1,4 @@
-// File: /Users/sydneysanders/Desktop/CodeProjects/SOLOMON_V3/solomon_ai/src/app/layout.tsx
+// File: /Users/jonas/Desktop/CODING/Front-End/2024/SOLOMON_V3/solomon_ai/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

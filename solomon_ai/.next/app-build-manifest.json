@@ -1,33 +1,15 @@
 {
   "pages": {
-    "/chat/[userId]/[conversationId]/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/chat/[userId]/[conversationId]/page.css",
-      "static/chunks/app/chat/[userId]/[conversationId]/page.js"
+      "static/chunks/app/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
-    ],
-    "/chat/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/chat/page.css",
-      "static/chunks/app/chat/page.js"
-    ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
-    "/chat/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/chat/dashboard/page.css",
-      "static/chunks/app/chat/dashboard/page.js"
     ]
   }
 }
