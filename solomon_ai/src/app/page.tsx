@@ -41,7 +41,7 @@ export default function Home() {
     <>
       <main className="page-wrapper w-full h-full">
         <NavComponent />
-        <section className="hero-section p-8 w-full h-screen flex items-center justify-center flex-col">
+        <section className="hero-section p-8 w-full h-auto flex items-center justify-center flex-col">
           <div className="w-full pt-[8rem] flex items-center justify-center flex-col gap-[2.5rem] text-center lg:w-3/4 xl:w-2/3 xl:pt-[2rem]">
             <h1 className="text-white uppercase text-[6rem] leading-[6rem] abc-diatype-bold xl:text-[8rem] xl:leading-[8rem] xl:w-3/4">
               To question God in all the ways
