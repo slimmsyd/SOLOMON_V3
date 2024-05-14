@@ -35,8 +35,8 @@ export default function NavComponent() {
       <nav
         className={
           animate
-            ? "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-black z-[9] slide-in"
-            : "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-black z-[9] slide-out"
+            ? "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-transparent z-[9] slide-in"
+            : "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-transparent z-[9] slide-out"
         }
       >
         <Link

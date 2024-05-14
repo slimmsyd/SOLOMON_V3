@@ -147,7 +147,7 @@ const Login = () => {
                     <div className="w-full flex items-start flex-col gap-2">
                       <button
                         type="submit"
-                        className="p-4 w-full secondary-font font-light text-[1rem] text-white bg-[rgba(0,0,0,.85)] border border-[rgba(0,0,0,.5)] rounded-lg"
+                        className="p-4 w-full secondary-font  text-[1rem] text-black bg-white border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium "
                       >
                         Login
                       </button>
