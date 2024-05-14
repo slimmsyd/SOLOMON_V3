@@ -255,7 +255,7 @@ const Signup = () => {
                     Password*
                   </label> */}
 
-<p
+                  <p
                     className={
                       signupData.passwordsMatch
                         ? "secondary-font font-light text-[16px] text-red-500"
@@ -266,7 +266,6 @@ const Signup = () => {
                       ? "Passwords do not match"
                       : " Must be at least 8 characters."}
                   </p>
-
 
                   <div className="w-full relative">
                     <svg
@@ -302,7 +301,6 @@ const Signup = () => {
                     Confirm password*
                   </label> */}
 
-         
                   <div className="w-full relative">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -334,7 +332,7 @@ const Signup = () => {
                 </div>
                 <button
                   type="submit"
-                  className="p-4 w-full secondary-font font-light text-[1rem] text-white bg-[rgba(0,0,0,.85)] border border-[rgba(0,0,0,.5)] rounded-lg"
+                  className="p-4 w-full secondary-font  text-[1rem] text-black bg-white border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium formBtn "
                 >
                   Create an account
                 </button>
