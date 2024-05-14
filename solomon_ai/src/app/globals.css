@@ -119,6 +119,19 @@ img {
   }
 }
 
+
+
+/* Nav Bar Code */
+
+nav a, nav button { 
+  font-size: 14px !important;
+}
+
+nav button { 
+  height: 35px;
+}
+/* Nav Bar Code */
+
 /* DashBoard code  */
 
 .chatDashboard {

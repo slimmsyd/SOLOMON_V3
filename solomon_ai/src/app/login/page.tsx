@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import NavComponent from "../navigation/navComponent";
 
 const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
@@ -32,13 +33,13 @@ const Login = () => {
       email: values.email,
       password: values.password,
       callbackUrl: "/chat/dashboard",
-      redirect: true
+      redirect: true,
     });
 
     if (signInData?.error) {
       console.log("Logging sign in data errror", signInData.error);
-    }else { 
-      console.log("Sign in was successful!")
+    } else {
+      console.log("Sign in was successful!");
     }
 
     console.log(values);
@@ -58,6 +59,7 @@ const Login = () => {
 
   return (
     <>
+      <NavComponent />
       <div className="site-container w-full h-full flex items-center justify-center">
         <div className="w-full h-full flex items-center justify-center">
           <div className="w-full flex items-center justify-center flex-col gap-4">
@@ -84,7 +86,6 @@ const Login = () => {
                   {...register("email")}
                   type="text"
                   className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-              
                   placeholder="Enter your username"
                   required
                 />
@@ -98,7 +99,6 @@ const Login = () => {
                     {...register("password")}
                     type="password"
                     className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-                 
                     placeholder="Enter your password"
                     required
                   />

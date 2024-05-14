@@ -40,49 +40,51 @@ export default function NavComponent() {
       >
         <Link
           href="/"
-          className="p-2 text-white abc-diatype-bold text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem]"
+          className="p-2 text-white abc-diatype-bold text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem  w-[280px]"
         >
           Solomon<span className="abc-diatype-thin text-2xl">AI</span>
         </Link>
         <ul className="hidden items-center gap-[3rem] xl:flex">
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
             Home
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
             Use Cases
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
             Prices
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
             About
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
             Blog
           </Link>
         </ul>
-        <div className="hidden items-center gap-8 xl:flex">
-          <button className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
-            Sign In
-          </button>
-          <button className="px-8 py-1 abc-diatype-thin bg-gray border border-white/20 text-white text-[1.75rem] rounded">
-            Get Started
-          </button>
+        <div className="hidden items-center justify-between gap-8 xl:flex w-[280px]">
+          <div className="flex items-center justify-between  gap-4">
+            <button className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
+              Sign In
+            </button>
+            <button className="px-2 py-1 abc-diatype-Regular bg-gray border border-white/20 text-white text-[1.75rem] rounded">
+              Get Started
+            </button>
+          </div>
         </div>
         <div
           ref={navIcon}

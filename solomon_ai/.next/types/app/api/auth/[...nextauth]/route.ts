@@ -1,4 +1,4 @@
-// File: /Users/jonas/Desktop/CODING/Front-End/2024/SOLOMON_V3/solomon_ai/src/app/api/auth/[...nextauth]/route.ts
+// File: /Users/sydneysanders/Desktop/CodeProjects/SOLOMON_V3/solomon_ai/src/app/api/auth/[...nextauth]/route.ts
 import * as entry from '../../../../../../src/app/api/auth/[...nextauth]/route.js'
 import type { NextRequest } from 'next/server.js'
 
