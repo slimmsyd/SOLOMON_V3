@@ -150,50 +150,112 @@ const Signup = () => {
                   {/* <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
                     Username*
                   </label> */}
-                  <input
-                    {...register("username")}
-                    type="text"
-                    className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-                    value={signupData.username}
-                    onChange={(e) =>
-                      setSignupData({ ...signupData, username: e.target.value })
-                    }
-                    placeholder="Enter a username"
-                    required
-                  />
+
+                  <div className="w-full relative">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="#505050"
+                      className="icon-md inputIcon"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12 4C10.3431 4 9 5.34315 9 7C9 8.65685 10.3431 10 12 10C13.6569 10 15 8.65685 15 7C15 5.34315 13.6569 4 12 4ZM7 7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7C17 9.76142 14.7614 12 12 12C9.23858 12 7 9.76142 7 7Z"
+                        fill="#505050"
+                      ></path>
+                      <path
+                        d="M4.5 21C4.5 17.7804 6.82883 15.0685 10 14.2516"
+                        stroke="#505050"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      ></path>
+                      <circle
+                        cx="15.625"
+                        cy="15.625"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                      <circle
+                        cx="20.125"
+                        cy="15.625"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                      <circle
+                        cx="20.125"
+                        cy="20.125"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                      <circle
+                        cx="15.625"
+                        cy="20.125"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                    </svg>
+
+                    <input
+                      {...register("username")}
+                      type="text"
+                      className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none formInput"
+                      value={signupData.username}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          username: e.target.value,
+                        })
+                      }
+                      placeholder="Enter a username"
+                      required
+                    />
+                  </div>
                 </div>
                 <div className="email-input w-full flex items-start flex-col gap-2">
                   {/* <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
                     Email*
                   </label> */}
-                  <input
-                    {...register("email")}
-                    type="email"
-                    className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-                    value={signupData.email}
-                    onChange={(e) =>
-                      setSignupData({ ...signupData, email: e.target.value })
-                    }
-                    placeholder="Enter a email address"
-                    required
-                  />
+
+                  <div className="w-full relative">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      stroke="#505050"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      className=" text-gray-500 inputIcon "
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="m3 8 7.8906 5.2604c.6718.4479 1.547.4479 2.2188 0L21 8M5 19h14c1.1046 0 2-.8954 2-2V7c0-1.10457-.8954-2-2-2H5c-1.10457 0-2 .89543-2 2v10c0 1.1046.89543 2 2 2Z"
+                      ></path>
+                    </svg>
+
+                    <input
+                      {...register("email")}
+                      type="email"
+                      className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none formInput"
+                      value={signupData.email}
+                      onChange={(e) =>
+                        setSignupData({ ...signupData, email: e.target.value })
+                      }
+                      placeholder="Enter a email address"
+                      required
+                    />
+                  </div>
                 </div>
                 <div className="password-input w-full flex items-start flex-col gap-2">
                   {/* <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
                     Password*
                   </label> */}
-                  <input
-                    {...register("password")}
-                    type="password"
-                    className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-                    value={signupData.password}
-                    onChange={(e) =>
-                      setSignupData({ ...signupData, password: e.target.value })
-                    }
-                    placeholder="Enter a password"
-                    required
-                  />
-                  <p
+
+<p
                     className={
                       signupData.passwordsMatch
                         ? "secondary-font font-light text-[16px] text-red-500"
@@ -204,25 +266,71 @@ const Signup = () => {
                       ? "Passwords do not match"
                       : " Must be at least 8 characters."}
                   </p>
+
+
+                  <div className="w-full relative">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="#505050"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      className="inputIcon"
+                      aria-hidden="true"
+                    >
+                      <path d="M16 11v.75h.75V11H16Zm-8 0h-.75v.75H8V11Zm4.75 4c0-.4142-.3358-.75-.75-.75s-.75.3358-.75.75h1.5Zm-1.5 2c0 .4142.3358.75.75.75s.75-.3358.75-.75h-1.5ZM6 11.75h12v-1.5H6v1.5ZM19.25 13v6h1.5v-6h-1.5ZM18 20.25H6v1.5h12v-1.5ZM4.75 19v-6h-1.5v6h1.5ZM6 20.25c-.69036 0-1.25-.5596-1.25-1.25h-1.5c0 1.5188 1.23122 2.75 2.75 2.75v-1.5ZM19.25 19c0 .6904-.5596 1.25-1.25 1.25v1.5c1.5188 0 2.75-1.2312 2.75-2.75h-1.5ZM18 11.75c.6904 0 1.25.5596 1.25 1.25h1.5c0-1.5188-1.2312-2.75-2.75-2.75v1.5Zm-12-1.5c-1.51878 0-2.75 1.2312-2.75 2.75h1.5c0-.6904.55964-1.25 1.25-1.25v-1.5ZM15.25 7v4h1.5V7h-1.5Zm.75 3.25H8v1.5h8v-1.5ZM8.75 11V7h-1.5v4h1.5ZM12 3.75c1.7949 0 3.25 1.45507 3.25 3.25h1.5c0-2.62335-2.1266-4.75-4.75-4.75v1.5Zm0-1.5C9.37665 2.25 7.25 4.37665 7.25 7h1.5c0-1.79493 1.4551-3.25 3.25-3.25v-1.5ZM11.25 15v2h1.5v-2h-1.5Z"></path>
+                    </svg>
+
+                    <input
+                      {...register("password")}
+                      type="password"
+                      className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none formInput"
+                      value={signupData.password}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          password: e.target.value,
+                        })
+                      }
+                      placeholder="Enter a password"
+                      required
+                    />
+                  </div>
                 </div>
                 <div className="confirm-password-input w-full flex items-start flex-col gap-2">
                   {/* <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
                     Confirm password*
                   </label> */}
-                  <input
-                    {...register("confirmPassword")}
-                    type="password"
-                    className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-                    value={signupData.confirmPassword}
-                    onChange={(e) =>
-                      setSignupData({
-                        ...signupData,
-                        confirmPassword: e.target.value,
-                      })
-                    }
-                    placeholder="Confirm your password"
-                    required
-                  />
+
+         
+                  <div className="w-full relative">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="#505050"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      className="inputIcon"
+                      aria-hidden="true"
+                    >
+                      <path d="M16 11v.75h.75V11H16Zm-8 0h-.75v.75H8V11Zm4.75 4c0-.4142-.3358-.75-.75-.75s-.75.3358-.75.75h1.5Zm-1.5 2c0 .4142.3358.75.75.75s.75-.3358.75-.75h-1.5ZM6 11.75h12v-1.5H6v1.5ZM19.25 13v6h1.5v-6h-1.5ZM18 20.25H6v1.5h12v-1.5ZM4.75 19v-6h-1.5v6h1.5ZM6 20.25c-.69036 0-1.25-.5596-1.25-1.25h-1.5c0 1.5188 1.23122 2.75 2.75 2.75v-1.5ZM19.25 19c0 .6904-.5596 1.25-1.25 1.25v1.5c1.5188 0 2.75-1.2312 2.75-2.75h-1.5ZM18 11.75c.6904 0 1.25.5596 1.25 1.25h1.5c0-1.5188-1.2312-2.75-2.75-2.75v1.5Zm-12-1.5c-1.51878 0-2.75 1.2312-2.75 2.75h1.5c0-.6904.55964-1.25 1.25-1.25v-1.5ZM15.25 7v4h1.5V7h-1.5Zm.75 3.25H8v1.5h8v-1.5ZM8.75 11V7h-1.5v4h1.5ZM12 3.75c1.7949 0 3.25 1.45507 3.25 3.25h1.5c0-2.62335-2.1266-4.75-4.75-4.75v1.5Zm0-1.5C9.37665 2.25 7.25 4.37665 7.25 7h1.5c0-1.79493 1.4551-3.25 3.25-3.25v-1.5ZM11.25 15v2h1.5v-2h-1.5Z"></path>
+                    </svg>
+
+                    <input
+                      {...register("confirmPassword")}
+                      type="password"
+                      className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none formInput"
+                      value={signupData.confirmPassword}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          confirmPassword: e.target.value,
+                        })
+                      }
+                      placeholder="Confirm your password"
+                      required
+                    />
+                  </div>
                 </div>
                 <button
                   type="submit"
