@@ -78,7 +78,7 @@ const Login = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 style={{ color: "black" }}
                 //   onSubmit={handleForm}
-                className="w-3/4 flex items-center justify-start flex-col gap-4 loginForm "
+                className="w-3/4 flex items-center justify-start flex-col gap-4 my- loginForm "
               >
                 <div className="logoCircle"></div>
 
@@ -124,30 +124,101 @@ const Login = () => {
                   <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
                     Username
                   </label>
-                  <input
-                    {...register("email")}
-                    type="text"
-                    className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-                    placeholder="Enter your username"
-                    required
-                  />
+
+                  <div className="w-full relative">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="#505050"
+                      className="icon-md inputIcon"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12 4C10.3431 4 9 5.34315 9 7C9 8.65685 10.3431 10 12 10C13.6569 10 15 8.65685 15 7C15 5.34315 13.6569 4 12 4ZM7 7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7C17 9.76142 14.7614 12 12 12C9.23858 12 7 9.76142 7 7Z"
+                        fill="#505050"
+                      ></path>
+                      <path
+                        d="M4.5 21C4.5 17.7804 6.82883 15.0685 10 14.2516"
+                        stroke="#505050"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      ></path>
+                      <circle
+                        cx="15.625"
+                        cy="15.625"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                      <circle
+                        cx="20.125"
+                        cy="15.625"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                      <circle
+                        cx="20.125"
+                        cy="20.125"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                      <circle
+                        cx="15.625"
+                        cy="20.125"
+                        r="1.625"
+                        fill="#505050"
+                      ></circle>
+                    </svg>
+
+                    <div className="w-full relative">
+                      <input
+                        {...register("email")}
+                        type="text"
+                        className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none formInput"
+                        placeholder="Enter your email/username"
+                        required
+                      ></input>
+                    </div>
+                  </div>
                 </div>
                 <div className="password-input w-full flex items-start flex-col gap-2">
                   <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
                     Password
                   </label>
                   <div className="w-full flex items-start flex-col gap-4">
-                    <input
-                      {...register("password")}
-                      type="password"
-                      className="w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
-                      placeholder="Enter your password"
-                      required
-                    />
+                    <div className="w-full relative">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="transparent"
+                        stroke="#505050"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
+                        aria-hidden="true"
+                        className="inputIcon"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.5"
+                          d="m3 8 7.8906 5.2604c.6718.4479 1.547.4479 2.2188 0L21 8M5 19h14c1.1046 0 2-.8954 2-2V7c0-1.10457-.8954-2-2-2H5c-1.10457 0-2 .89543-2 2v10c0 1.1046.89543 2 2 2Z"
+                        ></path>
+                      </svg>
+
+                      <input
+                        {...register("password")}
+                        type="password"
+                        className=" formInput w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none"
+                        placeholder="Enter your password"
+                        required
+                      />
+                    </div>
+
                     <div className="w-full flex items-start flex-col gap-2">
                       <button
                         type="submit"
-                        className="p-4 w-full secondary-font  text-[1rem] text-black bg-white border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium "
+                        className="p-4 w-full secondary-font  text-[1rem] text-black bg-white border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium formBtn "
                       >
                         Login
                       </button>

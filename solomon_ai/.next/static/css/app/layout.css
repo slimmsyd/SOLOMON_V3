@@ -605,6 +605,9 @@ video {
 .absolute {
   position: absolute;
 }
+.relative {
+  position: relative;
+}
 .inset-0 {
   inset: 0px;
 }
@@ -632,9 +635,6 @@ video {
 }
 .h-\[1\.25px\] {
   height: 1.25px;
-}
-.h-\[1px\] {
-  height: 1px;
 }
 .h-\[26px\] {
   height: 26px;
@@ -746,9 +746,6 @@ video {
 .border-white\/20 {
   border-color: rgb(255 255 255 / 0.2);
 }
-.bg-\[rgba\(0\2c 0\2c 0\2c \.1\)\] {
-  background-color: rgba(0,0,0,.1);
-}
 .bg-\[rgba\(0\2c 0\2c 0\2c \.85\)\] {
   background-color: rgba(0,0,0,.85);
 }
@@ -808,6 +805,9 @@ video {
 .text-\[1\.75rem\] {
   font-size: 1.75rem;
 }
+.text-\[16px\] {
+  font-size: 16px;
+}
 .text-\[1rem\] {
   font-size: 1rem;
 }
@@ -852,9 +852,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-.underline {
-  text-decoration-line: underline;
 }
 .outline-none {
   outline: 2px solid transparent;
@@ -1222,6 +1219,28 @@ nav button {
 .googleForm { 
   height: 41px;
   border: 0.5px solid #505050;
+}
+.formBtn:hover { 
+  background: #d8d8d8;
+}
+
+.loginDivider { 
+  background: #807F7F80;
+  width: 88px;
+  height: 1px;
+  border: 1px;
+}
+
+.inputIcon {
+  position: absolute;
+  top:25%;
+  left: 3%
+}
+
+
+.formInput { 
+  padding-left: 40px;
+  position: relative;
 }
 /* LOGIN FORM */
 .hover\:text-white:hover {

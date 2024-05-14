@@ -79,9 +79,9 @@ export default function NavComponent() {
         </ul>
         <div className="hidden items-center justify-between gap-8 xl:flex w-[280px]">
           <div className="flex items-center justify-end	  gap-4">
-            <button className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
+            <Link href = "/signup" className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
               Sign In
-            </button>
+            </Link>
             <button className="px-2 py-1 abc-diatype-Regular bg-gray border border-white/20 text-white text-[1.75rem] rounded">
               Get Started
             </button>

@@ -404,4 +404,26 @@ nav button {
   height: 41px;
   border: 0.5px solid #505050;
 }
+.formBtn:hover { 
+  background: #d8d8d8;
+}
+
+.loginDivider { 
+  background: #807F7F80;
+  width: 88px;
+  height: 1px;
+  border: 1px;
+}
+
+.inputIcon {
+  position: absolute;
+  top:25%;
+  left: 3%
+}
+
+
+.formInput { 
+  padding-left: 40px;
+  position: relative;
+}
 /* LOGIN FORM */
