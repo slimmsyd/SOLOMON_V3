@@ -979,6 +979,13 @@ nav button {
   height: 100vh;
 
 }
+
+@media screen and (max-width: 1000px) 
+{ 
+  .bodyWrapper { 
+    background-size: contain;
+  }
+}
 /* BODY WRAPPER CODE  */
 
 /* DashBoard code  */
