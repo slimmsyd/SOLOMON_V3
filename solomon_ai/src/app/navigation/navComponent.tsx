@@ -31,11 +31,12 @@ export default function NavComponent() {
 
   return (
     <>
+    
       <nav
         className={
           animate
-            ? "fixed left-0 top-0 w-full px-6 py-4 flex items-center justify-between bg-main-black z-[9] slide-in"
-            : "fixed left-0 top-0 w-full px-6 py-4 flex items-center justify-between bg-main-black z-[9] slide-out"
+            ? "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-black z-[9] slide-in"
+            : "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-black z-[9] slide-out"
         }
       >
         <Link
@@ -77,7 +78,7 @@ export default function NavComponent() {
           </Link>
         </ul>
         <div className="hidden items-center justify-between gap-8 xl:flex w-[280px]">
-          <div className="flex items-center justify-between  gap-4">
+          <div className="flex items-center justify-end	  gap-4">
             <button className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
               Sign In
             </button>

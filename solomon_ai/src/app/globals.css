@@ -42,6 +42,16 @@
   }
 }
 
+
+/* ID TEXTS */
+#whiteText{ 
+  color: #fff;
+}
+/* ID TEXTS */
+
+
+
+
 * {
   margin: 0;
   padding: 0;
@@ -67,6 +77,11 @@ body {
     ) */
 
   background: var(--main-black);
+}
+
+
+h3{
+  font-size: 24px;
 }
 
 img {
@@ -119,18 +134,31 @@ img {
   }
 }
 
-
-
 /* Nav Bar Code */
 
-nav a, nav button { 
+nav a,
+nav button {
   font-size: 14px !important;
 }
 
-nav button { 
+nav button {
   height: 35px;
 }
 /* Nav Bar Code */
+
+
+
+
+/* BODY WRAPPER CODE  */
+.bodyWrapper
+{ 
+  background: url("../../public/assets//BG.png");
+  background-position: center center;
+  background-size: cover;
+  height: 100vh;
+
+}
+/* BODY WRAPPER CODE  */
 
 /* DashBoard code  */
 
@@ -336,3 +364,37 @@ nav button {
   }
 }
 /* Navigation CSS and Chat  */
+
+
+
+
+/* LOGIN FORM */
+.loginForm
+{ 
+  padding: 54px 48px;
+  border: 0.5px solid #807F7F;
+  /* height: 589px; */
+  width: 417px;
+  border-radius: 8px;
+  background: #12121284; 
+  color: #fff !important;
+}
+.loginForm input { 
+  border: 0.5px solid #505050;
+
+}
+
+.logoCircle
+{ 
+  height: 30px;
+  min-height: 30px;
+  max-height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: white;
+}
+.googleForm { 
+  height: 41px;
+  border: 0.5px solid #505050;
+}
+/* LOGIN FORM */

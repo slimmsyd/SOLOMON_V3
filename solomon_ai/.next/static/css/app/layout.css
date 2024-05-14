@@ -620,6 +620,10 @@ video {
 .z-\[9\] {
   z-index: 9;
 }
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 .flex {
   display: flex;
 }
@@ -691,6 +695,9 @@ video {
 .justify-start {
   justify-content: flex-start;
 }
+.justify-end {
+  justify-content: flex-end;
+}
 .\!justify-center {
   justify-content: center !important;
 }
@@ -720,6 +727,9 @@ video {
 }
 .gap-\[3rem\] {
   gap: 3rem;
+}
+.self-end {
+  align-self: flex-end;
 }
 .rounded {
   border-radius: 0.25rem;
@@ -761,6 +771,10 @@ video {
 .p-6 {
   padding: 1.5rem;
 }
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -768,10 +782,6 @@ video {
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-}
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 .py-1 {
   padding-top: 0.25rem;
@@ -781,9 +791,8 @@ video {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+.text-left {
+  text-align: left;
 }
 .text-center {
   text-align: center;
@@ -807,6 +816,10 @@ video {
 }
 .text-\[3rem\] {
   font-size: 3rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 .font-light {
   font-weight: 300;
@@ -895,6 +908,16 @@ video {
   }
 }
 
+
+/* ID TEXTS */
+#whiteText{ 
+  color: #fff;
+}
+/* ID TEXTS */
+
+
+
+
 * {
   margin: 0;
   padding: 0;
@@ -922,23 +945,41 @@ body {
   background: var(--main-black);
 }
 
+
+h3{
+  font-size: 24px;
+}
+
 img {
   max-width: 100%;
   object-fit: contain;
 }
 
-
-
 /* Nav Bar Code */
 
-nav a, nav button { 
+nav a,
+nav button {
   font-size: 14px !important;
 }
 
-nav button { 
+nav button {
   height: 35px;
 }
 /* Nav Bar Code */
+
+
+
+
+/* BODY WRAPPER CODE  */
+.bodyWrapper
+{ 
+  background: url(/_next/static/media/BG.65584b7c.png);
+  background-position: center center;
+  background-size: cover;
+  height: 100vh;
+
+}
+/* BODY WRAPPER CODE  */
 
 /* DashBoard code  */
 
@@ -1142,6 +1183,40 @@ nav button {
   }
 }
 /* Navigation CSS and Chat  */
+
+
+
+
+/* LOGIN FORM */
+.loginForm
+{ 
+  padding: 54px 48px;
+  border: 0.5px solid #807F7F;
+  /* height: 589px; */
+  width: 417px;
+  border-radius: 8px;
+  background: #12121284; 
+  color: #fff !important;
+}
+.loginForm input { 
+  border: 0.5px solid #505050;
+
+}
+
+.logoCircle
+{ 
+  height: 30px;
+  min-height: 30px;
+  max-height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: white;
+}
+.googleForm { 
+  height: 41px;
+  border: 0.5px solid #505050;
+}
+/* LOGIN FORM */
 .hover\:text-white:hover {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1180,4 +1255,3 @@ nav button {
     display: none;
   }
 }
-
