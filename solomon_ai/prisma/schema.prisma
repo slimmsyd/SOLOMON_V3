@@ -13,19 +13,45 @@ datasource db {
 }
 
 model User {
-  id            Int                 @id @default(autoincrement())
-  email         String              @unique
-  username      String              @unique
-  password      String
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  name          String?   @unique
+  image         String? 
+  username      String?   @unique
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  emailVerified Boolean?  
   messages      Messages[]
   conversations UserConversations[]
+  accounts      Account[]
+}
+
+model Account {
+  id                 Int     @id @default(autoincrement())
+  type               String?  
+  userId             Int
+  provider           String
+  providerAccountId  String
+  refresh_token      String? // OAuth refresh token
+  access_token       String? // OAuth access token
+  expires_at         Int? // Expiry timestamp
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String? // OAuth1 token secret
+  oauth_token        String? // OAuth1 token
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+  @@index([userId], name: "idx_account_user_id")
 }
 
 model Conversation {
   id           Int                 @id @default(autoincrement())
-  title        String?              @db.VarChar(255)
+  title        String?             @db.VarChar(255)
   createdAt    DateTime            @default(now())
   updatedAt    DateTime            @updatedAt
   messages     Messages[]

@@ -17,53 +17,53 @@ const userSchema = z
  
 
 
-export  async function POST(req: Request) 
+// export  async function POST(req: Request) 
 
- { 
-    try{
+//  { 
+//     try{
 
-      const body = await req.json()
-      const {email, username, password } =  userSchema.parse(body)
-      console.log("Parsed JSON body:", body);
+//       const body = await req.json()
+//       const {email, username, password } =  userSchema.parse(body)
+//       console.log("Parsed JSON body:", body);
 
 
-      //check if email already exist 
-      const existingUserByEmail = await db.user.findUnique({
-         where: {email: email}
-      })
-      if(existingUserByEmail) { 
-         return NextResponse.json({user: null, message: "User with this email already exisit"}, {status: 409})
-      }
+//       //check if email already exist 
+//       const existingUserByEmail = await db.user.findUnique({
+//          where: {email: email}
+//       })
+//       if(existingUserByEmail) { 
+//          return NextResponse.json({user: null, message: "User with this email already exisit"}, {status: 409})
+//       }
 
-      //Check if user name
+//       //Check if user name
       
-      const existingUserByUserName = await db.user.findUnique({
-         where: {username: username}
-      })
-      if(existingUserByUserName) { 
-         return NextResponse.json({user: null, message: "User with this username already exisit"}, {status: 409})
-      }
+//       const existingUserByUserName = await db.user.findUnique({
+//          where: {username: username}
+//       })
+//       if(existingUserByUserName) { 
+//          return NextResponse.json({user: null, message: "User with this username already exisit"}, {status: 409})
+//       }
 
-      const hashedPassword = await hash(password, 10)
-      const newUser = await db.user.create(
-          {
-            data: { 
-               username,
-               email,
-               password: hashedPassword
+//       const hashedPassword = await hash(password, 10)
+//       const newUser = await db.user.create(
+//           {
+//             data: { 
+//                username,
+//                email,
+//                password: hashedPassword
 
-            }
-          }
-      );
+//             }
+//           }
+//       );
 
-      const {password: newUserPassword, ...rest} = newUser;
+//       const {password: newUserPassword, ...rest} = newUser;
 
       
       
-      return NextResponse.json({user: newUser, message: "User created successfully"}, {status: 201})
+//       return NextResponse.json({user: newUser, message: "User created successfully"}, {status: 201})
 
-    }catch(e) { 
-      console.error(e)
-      return NextResponse.json({message: `Something went wrong ${e}`} ,  {status: 500})
-    }
- }
+//     }catch(e) { 
+//       console.error(e)
+//       return NextResponse.json({message: `Something went wrong ${e}`} ,  {status: 500})
+//     }
+//  }

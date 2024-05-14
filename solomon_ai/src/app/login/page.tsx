@@ -73,22 +73,18 @@ const Login = () => {
                   Choose one of the options to login
                 </p>
               </div>
-
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                style={{ color: "black" }}
-                //   onSubmit={handleForm}
-                className="w-3/4 flex items-center justify-start flex-col gap-4 my- loginForm "
-              >
+              <div className="loginForm text-white flex items-center justify-center flex-col">
                 <div className="logoCircle"></div>
 
                 <h3>Create Your Free Account</h3>
 
-                {/* Sign in with Google form */}
-                <button className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6">
+                <button
+                  onClick={() => signIn("google", { callbackUrl: "/chat" })}
+                  className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
+                >
                   <svg
                     width="18"
-                    height="18"
+                    height="18"  
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +115,13 @@ const Login = () => {
                   </svg>
                   Sign in with google
                 </button>
-
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  style={{ color: "black" }}
+                  //   onSubmit={handleForm}
+                  className="w-full flex items-center justify-start flex-col gap-4 my-6 text-white  "
+                >
+            
                 <div className="username-input w-full flex items-start flex-col gap-2">
                   <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
                     Username
@@ -238,6 +240,9 @@ const Login = () => {
                   </Link>
                 </p>
               </form>
+              </div>
+
+          
             </div>
             {/* <figure className="hidden w-full h-full items-center justify-center lg:flex">
             <Image

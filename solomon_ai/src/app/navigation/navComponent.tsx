@@ -133,7 +133,9 @@ export default function NavComponent() {
             Blog
           </Link>
           <div className="absolute p-6 top-0 right-0 flex items-center gap-6">
-            <button className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
+            <button 
+              
+            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
               Sign In
             </button>
             <button className="px-4 abc-diatype-thin text-gray text-[1.75rem] bg-gray border border-white/20 duration-300 ease-in-out rounded">
