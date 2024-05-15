@@ -99,7 +99,7 @@ const Signup = () => {
                 <h3>Create Your Free Account</h3>
 
                 <button
-                  onClick={() => signIn("google", { callbackUrl: "http://localhost:3000/api/auth/callback/google" })}
+                  onClick={() => signIn("google")}
                   className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                 >
                   <svg
@@ -142,16 +142,14 @@ const Signup = () => {
                   //   onSubmit={handleForm}
                   className="w-full flex items-center justify-start flex-col gap-4 my-6  "
                 >
-                  <div className="flex flex-row gap-3 align-center items-center justify-center">
+                  <div className="flex text-white flex-row gap-3 align-center items-center justify-center">
                     <hr className="loginDivider"></hr>
                     <p>Or</p>
                     <hr className="loginDivider"></hr>
                   </div>
 
                   <div className="username-input w-full flex items-start flex-col gap-2">
-                    {/* <label className="secondary-font font-light text-[1rem] lg:text-[1.25rem]">
-                    Username*
-                  </label> */}
+               
 
                     <div className="w-full relative">
                       <svg

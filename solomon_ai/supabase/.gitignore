@@ -2,6 +2,7 @@
 .branches
 .temp
 .env
+.next
 node_modules
 # Ignore specific binary
 node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node

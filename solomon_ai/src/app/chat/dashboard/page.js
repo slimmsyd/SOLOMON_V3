@@ -17,6 +17,9 @@ export default function ChatDashboard() {
 
   useEffect(() => {
     async function checkSession() {
+
+
+      console.log("Logging ession", session)
       if (status === "loading") {
         console.log("Session is loading...");
         return;
@@ -30,6 +33,9 @@ export default function ChatDashboard() {
         const currentSession = await getSession();
         console.log("Current session data:", currentSession);
         setUserName(currentSession.user.username);
+        if(!currentSession.user.user) { 
+          setUserName(currentSession.user.email.split("@")[0])
+        }
         console.log("Logging session user name", currentSession.user.username);
       }
     }
@@ -49,7 +55,6 @@ export default function ChatDashboard() {
     return <ErrorPage />;
   }
 
-  {
     return (
       <>
         <DashboardNav />
@@ -90,4 +95,4 @@ export default function ChatDashboard() {
       </>
     );
   }
-}
+

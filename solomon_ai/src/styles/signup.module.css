@@ -127,9 +127,7 @@
   .signup_wrapper {
     padding: 0px !important;
   }
-  .grid_item:first-of-type {
-    /* height: 350px; */
-  }
+
   .photo_wrapper {
     width: 100%;
   }

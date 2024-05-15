@@ -21,7 +21,7 @@ app.post("/", async function (req, res) {
     console.log(message);
     console.time("openai call");
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
       max_tokens: 512,
       messages: [
         {

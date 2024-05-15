@@ -83,6 +83,9 @@ body {
 h3{
   font-size: 24px;
 }
+h4{
+  font-size: 20px;
+}
 
 img {
   max-width: 100%;
@@ -386,6 +389,9 @@ nav button {
   background: #12121284; 
   color: #fff !important;
 }
+.noPadding{
+  padding: 0px !important;
+}
 .loginForm input { 
   border: 0.5px solid #505050;
 
@@ -399,6 +405,7 @@ nav button {
   width: 30px;
   border-radius: 50%;
   background: white;
+  margin-bottom: 2rem
 }
 .googleForm { 
   height: 41px;
@@ -425,5 +432,55 @@ nav button {
 .formInput { 
   padding-left: 40px;
   position: relative;
+  color: #fff;
 }
 /* LOGIN FORM */
+
+
+/* QUESTION FORM */
+.questionHeader
+{ 
+background: url('../../public//assets//Pattern_BG.png');
+width: 100%;
+height: 114px;
+background-position: center center;
+background-size: cover;
+}
+.questionHeader .logoCircle { 
+  z-index: 1;
+}
+.purpleOverlay{
+  background: #715BAE;
+  height: 100%;
+  width: 100%;
+  opacity: 30%;
+  position: absolute;
+
+}
+.dropDownSelection
+{ 
+height: 51px;
+min-height: 41px;
+border: 0.5px solid #505050;
+cursor: pointer;
+
+}
+
+.dropDownSelectionDiv
+{ 
+  position: absolute;
+  background: #0F0F0F;
+  width: calc(100% - 4rem) ;
+  padding-left: 2rem;;
+  border: 0.5px solid #505050;
+  border-radius: 8px;
+  padding: 30px 16.25px;
+  top: 70%;
+  display: none;
+
+}
+.dropDownSelectionDiv ul li { 
+  cursor: pointer;
+  margin: 20px 0px;
+}
+/* QUESTION FORM */
