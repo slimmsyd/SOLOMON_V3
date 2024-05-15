@@ -32,6 +32,7 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --main-black: #020202;
+  --purple: #4C35DE;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -135,6 +136,15 @@ img {
   .abc-diatype-bold {
     font-family: "ABCDiatype-Bold", "oswald", sans-serif;
   }
+
+
+  .purpleBg { 
+    background : var(--purple) 
+  }
+  .purpleBg:hover{
+    background: #341fbb !important;
+  }
+
 }
 
 /* Nav Bar Code */
@@ -427,6 +437,11 @@ nav button {
   top:25%;
   left: 3%
 }
+.iconEnd { 
+  right: 2% !important;
+  left: inherit !important;
+  cursor: pointer;
+}
 
 
 .formInput { 
@@ -480,6 +495,8 @@ cursor: pointer;
   opacity: 0;
   transition: opacity 250ms ease-in-out;
   transition: top 250ms ease-in-out;
+  pointer-events: none;
+  z-index: 0;
 
 }
 .dropDownSelectionDiv ul li { 

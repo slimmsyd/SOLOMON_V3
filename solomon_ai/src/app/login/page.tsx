@@ -54,11 +54,11 @@ const Login = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
- if(session?.user.email || session?.user.name) { 
+//  if(session?.user.email || session?.user.name) { 
 
-  router.push("/")
+//   router.push("/")
 
- }
+//  }
 
   useEffect(() => { 
     console.log("Logging the session", session)

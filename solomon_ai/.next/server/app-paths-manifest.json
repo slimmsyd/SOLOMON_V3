@@ -3,5 +3,7 @@
   "/page": "app/page.js",
   "/chat/dashboard/page": "app/chat/dashboard/page.js",
   "/signup/page": "app/signup/page.js",
-  "/chat/page": "app/chat/page.js"
+  "/chat/page": "app/chat/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
 }
