@@ -8,7 +8,6 @@ import { ChoiceIslam } from "./components/religionChoice/ChoiceIslam";
 import { ChoiceOneSpiritual } from "./components/spirutalChoice/ChoiceOneSpiritual";
 import { ChoiceNone } from "./components/noChoice/noChoice";
 
-
 const Questionaire: FC = () => {
   const dropDownDiv = useRef<HTMLDivElement>(null);
 
@@ -85,12 +84,13 @@ const Questionaire: FC = () => {
       dropDownDiv.current!.style.opacity = "0";
       dropDownDiv.current!.style.zIndex = "1";
     }
-  };
+  }
 
   function handleBackClick() {
     setUserPreferences((prevPreferences) => {
       const updatedPreferences = prevPreferences.slice(0, -1); // Remove the last element
-      const lastOption = updatedPreferences[updatedPreferences.length - 1] || ""; // Get the new last element
+      const lastOption =
+        updatedPreferences[updatedPreferences.length - 1] || ""; // Get the new last element
       setSelectedOption(lastOption); // Set the last element as the selected option
       return updatedPreferences;
     });
@@ -99,9 +99,14 @@ const Questionaire: FC = () => {
     setCurrentIndex((prevIndex) => {
       if (prevIndex === 1 && selectedOption === "Islam") {
         return (prevIndex - 2) % components.length;
-      } else if (prevIndex === 4 && selectedOption === "I'm Spiritualist") {
+      } else if (prevIndex === 4) {
+        console.log("Loggign the previndex in back function", prevIndex)
         return (prevIndex - 4) % components.length;
-      }else if (prevIndex === 5 && userPreferences.includes("I'm Atheist")||prevIndex === 5 && userPreferences.includes("I'm Atheist") ||prevIndex === 5 && userPreferences.includes("I don't know man")) { 
+      } else if (
+        (prevIndex === 5 && userPreferences.includes("I'm Atheist")) ||
+        (prevIndex === 5 && userPreferences.includes("I'm Agnostic")) ||
+        (prevIndex === 5 && userPreferences.includes("I don't know man"))
+      ) {
         return (prevIndex - 5) % components.length;
       } else {
         return (prevIndex - 1 + components.length) % components.length; // Ensure the index stays positive
@@ -109,15 +114,13 @@ const Questionaire: FC = () => {
     });
   }
 
-
-
   //Get access to the laset option
   useEffect(() => {
     console.log("Logging selectedOption", selectedOption);
   }, [selectedOption]);
-  useEffect(() => { 
-    console.log("Logging the user Prefernecs", userPreferences)
-  },[userPreferences])
+  useEffect(() => {
+    console.log("Logging the user Prefernecs", userPreferences);
+  }, [userPreferences]);
 
   useEffect(() => {
     console.log("Logging the current Index", currentIndex);
@@ -125,8 +128,8 @@ const Questionaire: FC = () => {
 
   function handleNextClick() {
     setSelectedOption("");
-    console.log("Logging the user Prefernecs", userPreferences)
-    
+    console.log("Logging the user Prefernecs", userPreferences);
+
     if (selectedOption === options1[0]) {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % components.length);
       setSelectedOption("");
@@ -135,12 +138,16 @@ const Questionaire: FC = () => {
         (c) => c.key === "choiceOneSpiritual"
       );
       setCurrentIndex(choiceOneSpiritualIndex); // Move to ChoiceOneSpiritual
-    }else if (selectedOption === options1[2] || selectedOption === options1[3] ||selectedOption === options1[4]) { 
+    } else if (
+      selectedOption === options1[2] ||
+      selectedOption === options1[3] ||
+      selectedOption === options1[4]
+    ) {
+      const choiceNone = components.findIndex((c) => c.key === "choiceNone");
 
-      console.log("This none was clciked tho")
-      const choiceNone = components.findIndex(
-        (c) => c.key === "choiceNone"
-      );
+      setCurrentIndex(choiceNone); // Move to ChoiceOneSpiritual
+    } else if (currentIndex === 2 || currentIndex === 3 || currentIndex === 4) {
+      const choiceNone = components.findIndex((c) => c.key === "choiceNone");
 
       setCurrentIndex(choiceNone); // Move to ChoiceOneSpiritual
     }
@@ -154,12 +161,20 @@ const Questionaire: FC = () => {
       setCurrentIndex((prevIndex) => (prevIndex + 2) % components.length);
     }
   }
-
- 
   function removeOptionClick(option: string) {
+
+    setUserPreferences((prevPreferences) => { 
+      return prevPreferences.slice(0, -1);
+
+    });
+
     setSelectedOption(option);
   }
 
+  const addUserPreference = () => {
+    setUserPreferences((prevPreferences) => [...prevPreferences, selectedOption]);
+    setSelectedOption(""); // Clear the input after adding to preferences
+  };
   const components = [
     {
       key: "choiceOne",
@@ -241,7 +256,11 @@ const Questionaire: FC = () => {
           handleOptionClick={handleOptionClick}
           removeOptionClick={removeOptionClick}
           handleBackClick={handleBackClick}
-          setSelectedOption = {setSelectedOption}
+          setSelectedOption={setSelectedOption}
+          userPreferences={userPreferences} // Pass the userPreferences state
+          setUserPreferences={setUserPreferences} // Pass the setter function
+          addUserPreference={addUserPreference} // Pass the new function as a prop
+
         />
       ),
     },
@@ -273,7 +292,7 @@ const Questionaire: FC = () => {
                     type="submit"
                     className=" z-10 p-4 w-full secondary-font relative  text-[1rem] text-white purpleBg border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium formBtn "
                   >
-                    Next
+                   {currentIndex === 5 ? "Submit" : "Next"}
                   </button>
 
                   <div className="flex flex-row gap-2 items-center justify-center mt-5">

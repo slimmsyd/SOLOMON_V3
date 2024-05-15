@@ -8,6 +8,10 @@ interface ChoiceTwoProps {
   removeOptionClick: (option: string) => void;
   handleBackClick: () => void;
   setSelectedOption: (option: string) => void;
+  userPreferences: string[]; // Type for user preferences
+  setUserPreferences: (preferences: string[]) => void; // Type the setter function
+  addUserPreference: () => void; // Add the new function to the props interface
+
 }
 
 export const ChoiceNone: FC<ChoiceTwoProps> = ({
@@ -17,7 +21,13 @@ export const ChoiceNone: FC<ChoiceTwoProps> = ({
   removeOptionClick,
   handleBackClick,
   setSelectedOption,
+  userPreferences,
+  setUserPreferences,
+  addUserPreference
 }) => {
+
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   useEffect(() => {
     console.log(
       "logging the selected funciton while is chaning",
@@ -25,6 +35,30 @@ export const ChoiceNone: FC<ChoiceTwoProps> = ({
     );
 
   }, [selectedOption]);
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setSelectedOption(e.target.value);
+  };
+
+
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (textareaRef.current && !textareaRef.current.contains(event.target as Node)) {
+        addUserPreference();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [addUserPreference]);
+
+
+
+  
 
   return (
     <div className="p-8 pb-0 w-full relative">
@@ -54,10 +88,11 @@ export const ChoiceNone: FC<ChoiceTwoProps> = ({
       <h4>What do you seek out this app?</h4>
 
       <textarea
+      ref = {textareaRef}
         onClick={toggleDropDownDiv}
         className=" dropDownSelection my-8  w-full !h-[150px] p-2  secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none text-white  relative z-10 resize-none"
         value={selectedOption}
-        onChange={(e) => setSelectedOption(e.target.value)} // Use the setter function
+        onChange={handleTextChange} // Use the handleTextChange function
       >
         {/* <svg
               xmlns="http://www.w3.org/2000/svg"
