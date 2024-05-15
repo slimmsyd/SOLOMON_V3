@@ -3,18 +3,25 @@ import { useState, useRef, useEffect } from "react";
 import NavComponent from "../navigation/navComponent";
 
 const Questionaire = () => {
-    const dropDownDiv = useRef<HTMLDivElement>(null);
 
-    function toggleDropDownDiv() { 
-        if (dropDownDiv.current) {
-          let dropdownDivCurrent = dropDownDiv.current;
-          if (dropdownDivCurrent.style.display === "block") {
-            dropdownDivCurrent.style.display = "none";
-          } else {
-            dropdownDivCurrent.style.display = "block";
-          }
-        }
+
+  const dropDownDiv = useRef<HTMLDivElement>(null);
+
+  function toggleDropDownDiv() {
+
+
+    if (dropDownDiv.current) {
+      let dropdownDivCurrent = dropDownDiv.current;
+      if (dropdownDivCurrent.style.opacity === "1") {
+        dropdownDivCurrent.style.top = "45%";
+        dropdownDivCurrent.style.opacity = "0";
+      } else {
+        dropdownDivCurrent.style.top = "55%";
+        dropdownDivCurrent.style.opacity = "1";
       }
+    }
+  }
+
   return (
     <>
       <main className="bodyWrapper">
@@ -32,9 +39,10 @@ const Questionaire = () => {
                 <div className="p-8 w-full relative">
                   <h4>Are you religious or spiritualist?</h4>
 
-                  <div 
-                  onClick={toggleDropDownDiv}
-                  className=" dropDownSelection my-8  w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none text-white formInput relative">
+                  <div
+                    onClick={toggleDropDownDiv}
+                    className=" dropDownSelection my-8  w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none text-white formInput relative z-10"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -64,6 +72,13 @@ const Questionaire = () => {
                       <li> I don't know man</li>
                     </ul>
                   </div>
+
+                  <button
+                    type="submit"
+                    className="p-4 w-full secondary-font  text-[1rem] text-black bg-white border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium formBtn "
+                  >
+                    Login
+                  </button>
                 </div>
               </div>
             </div>
