@@ -40,54 +40,54 @@ export default function NavComponent() {
       >
         <Link
           href="/"
-          className="p-2 text-white abc-diatype-bold text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem]"
+          className="p-2 text-white abc-diatype-bold text-lg uppercase lg:text-[1.75rem]"
         >
-          Solomon<span className="abc-diatype-thin text-2xl">AI</span>
+          Solomon<span className="abc-diatype-thin text-2xl xl:text-[2.5rem]">AI</span>
         </Link>
         <ul className="hidden items-center gap-[3rem] xl:flex">
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.35rem] duration-300 ease-in-out hover:text-white"
           >
             Home
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.35rem] duration-300 ease-in-out hover:text-white"
           >
             Use Cases
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.35rem] duration-300 ease-in-out hover:text-white"
           >
             Prices
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.35rem] duration-300 ease-in-out hover:text-white"
           >
             About
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.35rem] duration-300 ease-in-out hover:text-white"
           >
             Blog
           </Link>
         </ul>
         <div className="hidden items-center gap-8 xl:flex">
-          <button className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
+          <button className="abc-diatype-thin text-gray text-[1.35rem] duration-300 ease-in-out hover:text-white">
             Sign In
           </button>
-          <button className="px-8 py-1 abc-diatype-thin bg-gray border border-white/20 text-white text-[1.75rem] rounded">
+          <button className="px-8 py-1 abc-diatype-thin bg-gray border border-white/20 text-white text-[1.35rem] rounded">
             Get Started
           </button>
         </div>
         <div
           ref={navIcon}
           onClick={toggleNav}
-          className="w-[40px] h-[26px] flex items-center justify-between flex-col cursor-pointer xl:hidden"
+          className="w-[30px] h-[15px] flex items-center justify-between flex-col cursor-pointer xl:hidden"
         >
           <div className="w-[33%] h-[1.25px] rounded bg-white"></div>
           <div className="w-full h-[1.25px] rounded bg-white"></div>
@@ -101,39 +101,39 @@ export default function NavComponent() {
         >
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[3rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.875rem] duration-300 ease-in-out hover:text-white"
           >
             Home
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[3rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.875rem] duration-300 ease-in-out hover:text-white"
           >
             Use Cases
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[3rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.875rem] duration-300 ease-in-out hover:text-white"
           >
             Prices
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[3rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.875rem] duration-300 ease-in-out hover:text-white"
           >
             About
           </Link>
           <Link
             href="/"
-            className="abc-diatype-thin text-gray text-[3rem] duration-300 ease-in-out hover:text-white"
+            className="abc-diatype-thin text-gray text-[1.875rem] duration-300 ease-in-out hover:text-white"
           >
             Blog
           </Link>
           <div className="absolute p-6 top-0 right-0 flex items-center gap-6">
-            <button className="abc-diatype-thin text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white">
+            <button className="abc-diatype-thin text-gray text-[1.25rem] duration-300 ease-in-out hover:text-white">
               Sign In
             </button>
-            <button className="px-4 abc-diatype-thin text-gray text-[1.75rem] bg-gray border border-white/20 duration-300 ease-in-out rounded">
+            <button className="px-4 abc-diatype-thin text-gray text-[1.25rem] bg-gray border border-white/20 duration-300 ease-in-out rounded">
               Get Started
             </button>
           </div>
@@ -143,8 +143,8 @@ export default function NavComponent() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="50"
-              height="50"
+              width="30"
+              height="30"
               viewBox="0 0 24 24"
             >
               <path fill="none" d="M0 0h24v24H0z" />
