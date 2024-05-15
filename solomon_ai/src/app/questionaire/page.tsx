@@ -1,15 +1,22 @@
 "use client";
 import { useState, useRef, useEffect, FC } from "react";
+import {useRouter} from "next/navigation";
 import NavComponent from "../navigation/navComponent";
+import { LoadingRender } from "../components/helper/LoadingRender";
 import { ChoiceOne } from "./components/ChoiceOne";
 import { ChoiceTwoReligion } from "./components/religionChoice/ChoiceTwoReligion";
 import { ChoiceThreeReligion } from "./components/religionChoice/ChoiceThreeReligion";
 import { ChoiceIslam } from "./components/religionChoice/ChoiceIslam";
 import { ChoiceOneSpiritual } from "./components/spirutalChoice/ChoiceOneSpiritual";
 import { ChoiceNone } from "./components/noChoice/noChoice";
+import Frame from "../../../public/assets/First Question/Frame.png";
+
+import Image from "next/image";
 
 const Questionaire: FC = () => {
   const dropDownDiv = useRef<HTMLDivElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Add a state for submission
+  const router = useRouter()
 
   //Dynamically update the text based on what the user clicks on
   const [selectedOption, setSelectedOption] = useState("");
@@ -100,7 +107,7 @@ const Questionaire: FC = () => {
       if (prevIndex === 1 && selectedOption === "Islam") {
         return (prevIndex - 2) % components.length;
       } else if (prevIndex === 4) {
-        console.log("Loggign the previndex in back function", prevIndex)
+        console.log("Loggign the previndex in back function", prevIndex);
         return (prevIndex - 4) % components.length;
       } else if (
         (prevIndex === 5 && userPreferences.includes("I'm Atheist")) ||
@@ -162,17 +169,18 @@ const Questionaire: FC = () => {
     }
   }
   function removeOptionClick(option: string) {
-
-    setUserPreferences((prevPreferences) => { 
+    setUserPreferences((prevPreferences) => {
       return prevPreferences.slice(0, -1);
-
     });
 
     setSelectedOption(option);
   }
 
   const addUserPreference = () => {
-    setUserPreferences((prevPreferences) => [...prevPreferences, selectedOption]);
+    setUserPreferences((prevPreferences) => [
+      ...prevPreferences,
+      selectedOption,
+    ]);
     setSelectedOption(""); // Clear the input after adding to preferences
   };
   const components = [
@@ -260,7 +268,6 @@ const Questionaire: FC = () => {
           userPreferences={userPreferences} // Pass the userPreferences state
           setUserPreferences={setUserPreferences} // Pass the setter function
           addUserPreference={addUserPreference} // Pass the new function as a prop
-
         />
       ),
     },
@@ -268,6 +275,18 @@ const Questionaire: FC = () => {
     // Add more components as needed
   ];
 
+  const handleSubmitClick = () => {
+    console.log("this is working and rendering?");
+    setIsSubmitting(true);
+    // Add your submit logic here, e.g., send data to the server
+  };
+
+
+
+  if(isSubmitting) { 
+    return <LoadingRender />;
+
+  }
   //List of Questions Rendered within the Div
 
   return (
@@ -281,19 +300,31 @@ const Questionaire: FC = () => {
                 <div className="questionHeader flex flex-row items-center justify-center relative">
                   <div className="purpleOverlay"></div>
 
-                  <div className="logoCircle"></div>
+                  <div className="logoCircle">
+                    <Image alt="logo" src={Frame} width={100} height={100} />
+                  </div>
                 </div>
 
                 {components[currentIndex].component}
 
                 <div className="p-8 relative w-full">
-                  <button
-                    onClick={handleNextClick}
-                    type="submit"
-                    className=" z-10 p-4 w-full secondary-font relative  text-[1rem] text-white purpleBg border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium formBtn "
-                  >
-                   {currentIndex === 5 ? "Submit" : "Next"}
-                  </button>
+                  {currentIndex === 5 ? (
+                    <button
+                      onClick={handleSubmitClick}
+                      type="submit"
+                      className=" z-10 p-4 w-full secondary-font relative  text-[1rem] text-white purpleBg border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium formBtn "
+                    >
+                      Submit
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleNextClick}
+                      type="button"
+                      className=" z-10 p-4 w-full secondary-font relative  text-[1rem] text-white purpleBg border border-[rgba(0,0,0,.5)] rounded-lg abc-diatype-Medium formBtn "
+                    >
+                      Next
+                    </button>
+                  )}
 
                   <div className="flex flex-row gap-2 items-center justify-center mt-5">
                     <p className="secondary-font font-light text-[1rem] text-gray-500 text-center">

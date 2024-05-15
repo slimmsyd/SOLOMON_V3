@@ -87,6 +87,12 @@ h3{
 h4{
   font-size: 20px;
 }
+h5{
+  font-size: 18px;
+}
+h6{
+  font-size: 16px;
+}
 
 img {
   max-width: 100%;
@@ -398,6 +404,7 @@ nav button {
   border-radius: 8px;
   background: #12121284; 
   color: #fff !important;
+  transition: all 250ms ease-in-out;
 }
 .noPadding{
   padding: 0px !important;
@@ -411,10 +418,10 @@ nav button {
 { 
   height: 30px;
   min-height: 30px;
-  max-height: 30px;
-  width: 30px;
+  max-height: 85px;
+  width: 85px;
   border-radius: 50%;
-  background: white;
+  /* background: white; */
   margin-bottom: 2rem
 }
 .googleForm { 
