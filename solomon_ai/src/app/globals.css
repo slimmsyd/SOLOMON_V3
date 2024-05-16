@@ -32,7 +32,7 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --main-black: #020202;
-  --purple: #4C35DE;
+  --purple: #4c35de;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,15 +43,15 @@
   }
 }
 
-
 /* ID TEXTS */
-#whiteText{ 
+#whiteText {
   color: #fff;
 }
+#greyText
+{ 
+  color: #807F7F;
+}
 /* ID TEXTS */
-
-
-
 
 * {
   margin: 0;
@@ -61,10 +61,12 @@
   text-decoration: none;
 }
 
+body {
+  background: #0a0a0a;
+}
 html,
 body,
 .page-wrapper {
-  padding: 1rem;
   width: 100%;
   height: 100vh;
 }
@@ -76,21 +78,25 @@ body {
       transparent,
       rgb(var(--background-end-rgb))
     ) */
+  background: #0a0a0a;
 
-  background: var(--main-black);
+  /* background: var(--main-black); */
 }
 
+h2 {
+  font-size: 56px;
+}
 
-h3{
+h3 {
   font-size: 24px;
 }
-h4{
+h4 {
   font-size: 20px;
 }
-h5{
+h5 {
   font-size: 18px;
 }
-h6{
+h6 {
   font-size: 16px;
 }
 
@@ -143,14 +149,12 @@ img {
     font-family: "ABCDiatype-Bold", "oswald", sans-serif;
   }
 
-
-  .purpleBg { 
-    background : var(--purple) 
+  .purpleBg {
+    background: var(--purple);
   }
-  .purpleBg:hover{
+  .purpleBg:hover {
     background: #341fbb !important;
   }
-
 }
 
 /* Nav Bar Code */
@@ -165,22 +169,16 @@ nav button {
 }
 /* Nav Bar Code */
 
-
-
-
 /* BODY WRAPPER CODE  */
-.bodyWrapper
-{ 
+.bodyWrapper {
   background: url("../../public/assets//BG.png");
   background-position: center center;
   background-size: cover;
   height: 100vh;
-
 }
 
-@media screen and (max-width: 1000px) 
-{ 
-  .bodyWrapper { 
+@media screen and (max-width: 1000px) {
+  .bodyWrapper {
     background-size: contain;
   }
 }
@@ -188,9 +186,62 @@ nav button {
 
 /* DashBoard code  */
 
+.mainIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.newChat {
+  width: 135px;
+  height: 40px;
+  background: linear-gradient(180deg, #2f0ffd30, #291d7850);
+  border-radius: 5px;
+}
+
+.chatSearchIcon {
+  background: #4c35de27;
+  border-radius: 5px;
+  width: 220px;
+  height: 40px;
+  padding-left: 17px;
+  color: #4c35de;
+}
+
+.chatContainer {
+  /* width: 350px; */
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.chatContainer > button { 
+  font-size: 14px  ;
+}
+
 .chatDashboard {
-  background: linear-gradient(156deg, #3c3c3c 20.43%, #181818 143.07%);
   height: 100vh;
+  display: flex;
+  flex-direction: row;
+  padding: 14px;
+}
+
+.chatRenderWrapper
+{ 
+  border-left: 0.5px solid #807F7F;
+  margin-left: 25px;
+  font-size: 14px;
+  color:#807F7F;
+
+}
+
+.settingsContainer
+{ 
+  margin-top: 24px;
+  padding: 15px 0px;
+  padding-right: 5px;
+  border-top: 0.5px solid #807F7F;
+  border-bottom: 0.5px solid #807F7F;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navDashboard {
@@ -205,11 +256,14 @@ nav button {
 }
 
 .chatDashboardWrapper {
-  padding-top: 114px;
+  padding: 114px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: start;
+  background: #121212;
+  border-radius: 8px;
+  border: 0.5px solid #807f7f57;
 }
 
 .chatDashboardWrapper h1 {
@@ -391,49 +445,43 @@ nav button {
 }
 /* Navigation CSS and Chat  */
 
-
-
-
 /* LOGIN FORM */
-.loginForm
-{ 
+.loginForm {
   padding: 54px 48px;
-  border: 0.5px solid #807F7F;
+  border: 0.5px solid #807f7f;
   /* height: 589px; */
   width: 417px;
   border-radius: 8px;
-  background: #12121284; 
+  background: #12121284;
   color: #fff !important;
   transition: all 250ms ease-in-out;
 }
-.noPadding{
+.noPadding {
   padding: 0px !important;
 }
-.loginForm input { 
+.loginForm input {
   border: 0.5px solid #505050;
-
 }
 
-.logoCircle
-{ 
+.logoCircle {
   height: 30px;
   min-height: 30px;
   max-height: 85px;
   width: 85px;
   border-radius: 50%;
   /* background: white; */
-  margin-bottom: 2rem
+  margin-bottom: 2rem;
 }
-.googleForm { 
+.googleForm {
   height: 41px;
   border: 0.5px solid #505050;
 }
-.formBtn:hover { 
+.formBtn:hover {
   background: #d8d8d8;
 }
 
-.loginDivider { 
-  background: #807F7F80;
+.loginDivider {
+  background: #807f7f80;
   width: 88px;
   height: 1px;
   border: 1px;
@@ -441,59 +489,52 @@ nav button {
 
 .inputIcon {
   position: absolute;
-  top:25%;
-  left: 3%
+  top: 25%;
+  left: 3%;
 }
-.iconEnd { 
+.iconEnd {
   right: 2% !important;
   left: inherit !important;
   cursor: pointer;
 }
 
-
-.formInput { 
+.formInput {
   padding-left: 40px;
   position: relative;
   color: #fff;
 }
 /* LOGIN FORM */
 
-
 /* QUESTION FORM */
-.questionHeader
-{ 
-background: url('../../public//assets//Pattern_BG.png');
-width: 100%;
-height: 114px;
-background-position: center center;
-background-size: cover;
+.questionHeader {
+  background: url("../../public//assets//Pattern_BG.png");
+  width: 100%;
+  height: 114px;
+  background-position: center center;
+  background-size: cover;
 }
-.questionHeader .logoCircle { 
+.questionHeader .logoCircle {
   z-index: 1;
 }
-.purpleOverlay{
-  background: #715BAE;
+.purpleOverlay {
+  background: #715bae;
   height: 100%;
   width: 100%;
   opacity: 30%;
   position: absolute;
-
 }
-.dropDownSelection
-{ 
-height: 51px;
-min-height: 41px;
-border: 0.5px solid #505050;
-cursor: pointer;
-
+.dropDownSelection {
+  height: 51px;
+  min-height: 41px;
+  border: 0.5px solid #505050;
+  cursor: pointer;
 }
 
-.dropDownSelectionDiv
-{ 
+.dropDownSelectionDiv {
   position: absolute;
-  background: #0F0F0F;
-  width: calc(100% - 4rem) ;
-  padding-left: 2rem;;
+  background: #0f0f0f;
+  width: calc(100% - 4rem);
+  padding-left: 2rem;
   border: 0.5px solid #505050;
   border-radius: 8px;
   padding: 30px 16.25px;
@@ -504,19 +545,15 @@ cursor: pointer;
   transition: top 250ms ease-in-out;
   pointer-events: none;
   z-index: 0;
-
 }
-.dropDownSelectionDiv ul li { 
+.dropDownSelectionDiv ul li {
   cursor: pointer;
   margin: 10px 0px;
-  padding:8px 10px ;
+  padding: 8px 10px;
   border-radius: 8px;
-  
 }
 
-
-.dropDownSelectionDiv ul li:hover { 
-
-    background-color: #50505025;
+.dropDownSelectionDiv ul li:hover {
+  background-color: #50505025;
 }
 /* QUESTION FORM */

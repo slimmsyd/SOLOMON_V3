@@ -3,6 +3,7 @@
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
+      "static/css/app/page.css",
       "static/chunks/app/page.js"
     ],
     "/layout": [
@@ -27,12 +28,6 @@
       "static/chunks/main-app.js",
       "static/css/app/chat/[userId]/[conversationId]/page.css",
       "static/chunks/app/chat/[userId]/[conversationId]/page.js"
-    ],
-    "/chat/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/chat/dashboard/page.css",
-      "static/chunks/app/chat/dashboard/page.js"
     ],
     "/login/page": [
       "static/chunks/webpack.js",
