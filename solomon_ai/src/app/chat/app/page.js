@@ -11,9 +11,7 @@ import Image from "next/image";
 import arrowLeft from "../../../../public/assets/Chat/arrowLeft.png";
 import searchIcon from "../../../../public/assets/Chat/searchIcon.png";
 import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
-
 import iconChat from "../../../../public/assets/Chat/iconChat.png";
-
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 
 export default function ChatDashboard() {
@@ -102,7 +100,7 @@ export default function ChatDashboard() {
               <p>Chats</p>
             </button>
             {/* Chat ICON layered right here  */}
-            <div className=" chatRenderWrapper  flex flex-col items-start justify-start gap-[13px] w-full  ">
+            <div className=" chatRenderWrapper relative  flex flex-col items-start justify-start gap-[13px] w-full  ">
               <button className="flex flex-row pl-[19px] gap-[13px] ">
                 <div className="mainIcon !w-[18px] !h-[18]">
                   <Image src={iconChat} width={100} height={100} />
@@ -187,7 +185,7 @@ export default function ChatDashboard() {
             </div>
           </div>
           <div className="flex flex-row gap-[4px] justify-end self-end   settingsContainer !border-none !mt-0 ">
-            <Link  href = "/" className="mainIcon !w-[20px] !h-[20px]">
+            <Link href="/" className="mainIcon !w-[20px] !h-[20px]">
               <svg
                 width="16"
                 height="16"
@@ -218,39 +216,151 @@ export default function ChatDashboard() {
             </Link>
           </div>
         </div>
-
         <div className="chatDashboardWrapper w-full text-left">
           <h2>Grand Rising, {userName}</h2>
           <h2>How may I guide?</h2>
+          <p id="greyText">
+            Wisdom is a forever process, let us aid in the ways{" "}
+          </p>
 
-          <div className="chatDashboardForm">
-            <input
-              className="chatDashboardInput"
-              placeholder="How may I aid.."
-            ></input>
+          {/* Render Cards/ Text will pouplate based on Quesitonaire  */}
 
-            <Link
-              href="/chat"
-              className="dashboardBtn posAbs flex items-start justify-center"
-            >
-              Stat chat
-            </Link>
+          <div className="renderCardsWrapper flex flex-row gap-[23px] justify-start relative">
+            <div className="renderCards relative">
+              <p>Get your astrological predictions</p>
 
-            <div className="dashboardNews">
-              <h3>
-                Begin an exploration into collective spirtual understanding
-              </h3>
+              <button className="renderAutoTextBtn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="none"
+                  viewBox="0 0 32 32"
+                  className="rotate-90"
+                >
+                  <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <div className="renderCards relative">
+              <p>Calculate my life path number, and personal months meaning</p>
 
-              <h2>
-                This model is beta test and is currently trained to give
-                synthesized answers regarding spirtuality.
-              </h2>
+              <button className="renderAutoTextBtn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="none"
+                  viewBox="0 0 32 32"
+                  className="rotate-90"
+                >
+                  <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <div className="renderCards relative">
+              <p>Calculate my life path number, and personal months meaning</p>
 
-              <div className="dashboardTag">
-                <span>Oracle AI</span>
-              </div>
+              <button className="renderAutoTextBtn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="none"
+                  viewBox="0 0 32 32"
+                  className="rotate-90"
+                >
+                  <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+
+            <div className="renderCards relative">
+              <p>
+                Breakdown “In the beginning was the world” from a Quantum
+                perspective
+              </p>
+
+              <button className="renderAutoTextBtn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="none"
+                  viewBox="0 0 32 32"
+                  className="rotate-90"
+                >
+                  <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
             </div>
           </div>
+
+          <form className="chatFormSubmit">
+            <div className="relative textAreaContainer">
+              <textarea placeholder="Ask Thou Question..."></textarea>
+
+              <div className="textAreaIconWrapper flex flex-row gap-[11px]">
+              <button className="textAreaIcon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+
+              <button className="textAreaIcon">
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  viewBox="0 0 32 32"
+                  className=""
+                >
+                  <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+
+
+              </div>
+           
+            </div>
+          </form>
         </div>
       </div>
     </>
