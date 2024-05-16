@@ -17,9 +17,6 @@ export const ChatContainer: FC<DashboardProps> = ({ splitUserName, userName }) =
   return (
 
 
-    
-
-
     <div className="chatContainer flex flex-col">
     <div className="flex flex-col gap-[22px]  h-full">
       {" "}
