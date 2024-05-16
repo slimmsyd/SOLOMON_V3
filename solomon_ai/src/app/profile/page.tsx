@@ -8,8 +8,8 @@ import arrowLeft from "../../../public/assets/Chat/arrowLeft.png";
 import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
 import ErrorPage from "../error/page";
-export const Profile = () => {
-  const [userName, setUserName] = useState<string | null>(null);
+const Profile: React.FC = () => {
+    const [userName, setUserName] = useState<string | null>(null);
   const [splitUserName, setSplitUserName] = useState<string>("");
   const [email, setEmail] = useState<string | null>(null);
   const router = useRouter();
@@ -102,7 +102,7 @@ export const Profile = () => {
 
   return (
     <div className="chatDashboard">
-      <ChatContainer splitUserName={splitUserName} userName={userName} />
+      <ChatContainer splitUserName={splitUserName} userName={userName || ""} />
 
       {/* Chat Container Componet  */}
 

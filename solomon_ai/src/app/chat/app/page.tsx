@@ -115,7 +115,7 @@ export default function ChatDashboard() {
       <div className="chatDashboard">
         {/* Chat Container Componet  */}
 
-        <ChatContainer splitUserName={splitUserName} userName={userName} />
+        <ChatContainer splitUserName={splitUserName} userName={userName || ""} />
 
         {/* Chat Container Componet  */}
 
@@ -150,7 +150,7 @@ export default function ChatDashboard() {
 
           <div className="chatDashBoardContainer">
             {/* Dashboard Component  */}
-            <Dashboard userName={userName} />
+            <Dashboard userName={userName || ""} />
             {/* Dashboard Component  */}
 
             <form className="chatFormSubmit">
