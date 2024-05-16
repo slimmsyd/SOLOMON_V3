@@ -138,7 +138,10 @@ export default function ChatDashboard() {
                     </svg>
                   </button>
 
-                  <button className="textAreaIcon">
+                  <button 
+                  
+                  type ="submit"
+                  className="textAreaIcon">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="18"

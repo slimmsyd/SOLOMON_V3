@@ -6,7 +6,47 @@ interface DashboardProps {
 }
 
 export const Dashboard: FC<DashboardProps> = ({ userName }) => {
-  userName;
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      setIsDragging(true);
+      console.log("Dragging")
+      setStartX(e.pageX - wrapper.offsetLeft);
+      setScrollLeft(wrapper.scrollLeft);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - wrapper.offsetLeft;
+      const walk = (x - startX) * 2; // Adjust the scroll speed
+      wrapper.scrollLeft = scrollLeft - walk;
+
+      console.log("loggin walk", walk)
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    wrapper.addEventListener("mousedown", handleMouseDown);
+    wrapper.addEventListener("mousemove", handleMouseMove);
+    wrapper.addEventListener("mouseup", handleMouseUp);
+    wrapper.addEventListener("mouseleave", handleMouseUp);
+
+    return () => {
+      wrapper.removeEventListener("mousedown", handleMouseDown);
+      wrapper.removeEventListener("mousemove", handleMouseMove);
+      wrapper.removeEventListener("mouseup", handleMouseUp);
+      wrapper.removeEventListener("mouseleave", handleMouseUp);
+    };
+  }, [isDragging, startX, scrollLeft]);
 
   return (
     <>
@@ -17,7 +57,11 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
 
       {/* Render Cards/ Text will pouplate based on Quesitonaire  */}
 
-      <div className="renderCardsWrapper flex flex-row gap-[23px] justify-start relative">
+      <div
+        ref={wrapperRef}
+        style={{ cursor: isDragging ? "grabbing" : "grab" }}
+        className="renderCardsWrapper flex flex-row gap-[23px] justify-start relative"
+      >
         <div className="renderCards relative">
           <p>Get your astrological predictions</p>
 
