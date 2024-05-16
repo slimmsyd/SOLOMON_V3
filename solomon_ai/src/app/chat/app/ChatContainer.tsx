@@ -17,6 +17,9 @@ export const ChatContainer: FC<DashboardProps> = ({ splitUserName, userName }) =
   return (
 
 
+    
+
+
     <div className="chatContainer flex flex-col">
     <div className="flex flex-col gap-[22px]  h-full">
       {" "}
@@ -45,7 +48,7 @@ export const ChatContainer: FC<DashboardProps> = ({ splitUserName, userName }) =
           />
         </div>
 
-        <p>Dashboard</p>
+        <Link href = "/chat/app"><p>Dashboard</p></Link>
       </button>
       <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-[135px] pl-[17px] ">
         <div className="mainIcon !w-[20px] !h-[20px]">
@@ -148,14 +151,14 @@ export const ChatContainer: FC<DashboardProps> = ({ splitUserName, userName }) =
 
     {/* Profile  Container */}
     <div className="flex flex-row gap-[4px]  settingsContainer ">
-      <button className="  hoverBgBtn   text-[14px]   flex flex-row items-center justify-center gap-[13px] w-[135px]    ">
+      <Link  href = "/profile" className="  hoverBgBtn   text-[14px]   flex flex-row items-center justify-center gap-[13px] w-[135px]    ">
         <div className="mainIcon flex items-center justify-center">
           {splitUserName}
         </div>
         <p>{userName}</p>
-      </button>
+      </Link>
 
-      <Link href="/" className="mainIcon !w-[20px] !h-[20px]">
+      <Link href="/profile" className="mainIcon !w-[20px] !h-[20px]">
         <Image
           alt="chatIcon"
           src={settingsIcon}

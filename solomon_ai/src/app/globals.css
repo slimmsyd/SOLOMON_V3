@@ -189,6 +189,12 @@ nav button {
   width: 12px;
   height: 12px;
 }
+.iconBorder{
+  border: 1px solid #807F7F;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
 
 .newChat {
   width: 135px;
@@ -251,6 +257,7 @@ nav button {
 
 .chatDashboard {
   height: 100vh;
+  overflow-x: hidden;
   display: flex;
   flex-direction: row;
   padding: 14px;
@@ -297,8 +304,8 @@ nav button {
 }
 
 .chatDashBoardContainer {
-  padding: 114px;
-  padding-right: 0px;
+  padding: 70px;
+  /* padding-right: 0px; */
   padding-top: 0px;
   padding-bottom: 70px;
   display: flex;
@@ -309,6 +316,8 @@ nav button {
 
 .guideLinesContainer {
   border-bottom: 0.5px solid #807f7f57;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .guideLinesBtn {
@@ -744,3 +753,26 @@ nav button {
   background-color: #50505025;
 }
 /* QUESTION FORM */
+
+
+
+
+
+/* PROFILE CSS */
+.greyDivider{
+  height: 2px;
+  width: 100%;
+  border-color:  #60606081;;
+  /* background: #60606081; */
+}
+
+
+.accountContainer{
+ border: 0.5px solid #505050;
+  height: 100%;
+  border-radius: 10px;
+}
+.accountDiv{
+  padding: 20px;
+}
+/* PROFILE CSS */

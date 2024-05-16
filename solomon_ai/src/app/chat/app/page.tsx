@@ -22,9 +22,46 @@ export default function ChatDashboard() {
   //getting the user name
 
   const [userName, setUserName] = useState<string | null>(null);
-  const [splitUserName, seSplitUserName] = useState("");
+  const [splitUserName, setSplitUserName] = useState<string>("");
+  const [email, setEmail] = useState<string | null>(null);
   const router = useRouter();
   const { data: session, status } = useSession();
+
+
+
+  useEffect(() => {
+    const storedUserName = sessionStorage.getItem('userName');
+    const storedSplitUserName = sessionStorage.getItem('splitUserName');
+    const storedEmail = sessionStorage.getItem("email")
+
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+
+    if(email){
+      setEmail(storedEmail)
+  }
+
+
+    if (storedSplitUserName) {
+      setSplitUserName(storedSplitUserName);
+    }
+  }, []);
+
+    // Update session storage whenever userName or splitUserName changes
+    useEffect(() => {
+      if (userName !== null) {
+        sessionStorage.setItem('userName', userName);
+      }
+
+
+  
+      if (splitUserName !== "") {
+        sessionStorage.setItem('splitUserName', splitUserName);
+      }
+    }, [userName, splitUserName]);
+  
+  
 
   useEffect(() => {
     async function checkSession() {
@@ -49,7 +86,7 @@ export default function ChatDashboard() {
           setUserName(currentSession?.user.email.split("@")[0]);
 
           //We want to get Just to logo of the userName
-          seSplitUserName(currentSession?.user.email[0].toUpperCase());
+          setSplitUserName(currentSession?.user.email[0].toUpperCase());
         }
         console.log("Logging session user name", currentSession?.user.username);
       }
@@ -67,9 +104,9 @@ export default function ChatDashboard() {
     }
   }, []);
 
-  if (!userName || !session) {
-    return <ErrorPage />;
-  }
+  // if (!userName || !session) {
+  //   return <ErrorPage />;
+  // }
 
   return (
     <>
