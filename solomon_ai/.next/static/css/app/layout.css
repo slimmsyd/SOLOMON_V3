@@ -646,6 +646,9 @@ video {
 .mt-\[12px\] {
   margin-top: 12px;
 }
+.\!mt-0 {
+  margin-top: 0px !important;
+}
 .flex {
   display: flex;
 }
@@ -788,6 +791,15 @@ video {
 }
 .border {
   border-width: 1px;
+}
+.border-0 {
+  border-width: 0px;
+}
+.\!border-0 {
+  border-width: 0px !important;
+}
+.\!border-none {
+  border-style: none !important;
 }
 .border-\[rgba\(0\2c 0\2c 0\2c \.5\)\] {
   border-color: rgba(0,0,0,.5);
