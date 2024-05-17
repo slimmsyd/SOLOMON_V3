@@ -16,7 +16,7 @@ import LoadingComponent from "../../../components/helper/Loading";
 
 import useConversations from '../../../hooks/useConversations'
 import useCreateConversation from "../../../hooks/createConversation";
-import { useChatConversation } from "../../../hooks/ConversationContext";
+import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useTogglePosition } from "../../../hooks/useTogglePosition";
 import Link from "next/link";
 export default function ConversationPage() {

@@ -18,13 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionWrapper>
-      <ConversationProvider> {/* Wrap children with ConversationProvider */}
-
-        <body className={inter.className}>{children}</body>
+        <ConversationProvider>
+          <body className={inter.className}>{children}</body>
         </ConversationProvider>
-
       </SessionWrapper>
-      
     </html>
   );
 }

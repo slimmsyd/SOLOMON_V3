@@ -42,7 +42,6 @@
   align-items: center;
   justify-self: center;
   background: #22242a;
-  background: url("../../public/assets/profile-icon.png");
   border: 1px solid rgba(255, 255, 255, 0.22);
   background-position: top;
   cursor: pointer;
@@ -428,7 +427,8 @@
 }
 
 .chat_Messages {
-  height: 600px;
+  /* height: 600px; */
+  height: auto;
   overflow-y: visible;
 }
 
@@ -520,7 +520,8 @@
 }
 
 .bot_Messages {
-  margin: 20px 0px;
+  font-size: 14px;
+  margin: 70px 0px;
   position: relative;
   min-height: 32px;
   border-style: solid;
@@ -532,16 +533,37 @@
   max-width: 75%;
   transition: opacity 0.5s, transform 0.5s;
   border-radius: 5px;
-  border: 1px solid #2f6698;
-  background: linear-gradient(119deg, #2b2b2b -10.43%, #dfdfdf 1328.55%);
+  border: 1px solid #4c35de48;
+  background: #121212;
 }
+.bot_Messages::before, .user_Messages::before  {
+  content: attr(data-split-username); /* Use the attribute content */
+  position: absolute;
+  top: -40px; /* Adjust as needed */
+  left: -20px; /* Adjust as needed */
+  background: transparent; /* Background color to make it visible */
+  border: 1px solid #807F7F;
+  font-size: 14px; /* Adjust font size */
+  font-weight: bold; /* Make it bold */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user_Messages::before{
+  content: "B"
+}
+
 .bot_Messages.new_bot_message {
   animation: fadeIn 0.5s forwards;
 }
 
 .user_Messages {
+  font-size: 14px;
   border-radius: 8px;
-  margin: 20px 0px;
+  margin: 70px 0px;
   align-self: flex-start;
   position: relative;
   min-height: 32px;
@@ -549,16 +571,15 @@
   border-width: 0px;
   border-radius: 10px;
   border: 1px solid #2f6698;
-  background: linear-gradient(
-    93deg,
-    rgba(33, 38, 62, 0.52) -27.44%,
-    rgba(82, 94, 110, 0.28) 109.78%
-  );
-  color: #fff;
+  background: #4C35DE;
   padding: 8px 16px;
   border-radius: 0px 8px 8px;
   max-width: 75%;
+  border: 1px solid #807f7f;
+
 }
+
+
 .user_Messages.new_bot_messsage {
   animation: fadeIn 0.5s forwards;
 }
