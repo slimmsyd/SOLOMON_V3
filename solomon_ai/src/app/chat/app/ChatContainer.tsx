@@ -8,15 +8,37 @@ import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
 import iconChat from "../../../../public/assets/Chat/iconChat.png";
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 
-interface DashboardProps {
-  splitUserName: string;
-  userName: string;
+interface Conversation {
+  conversationId: number;
+  title: string;
 }
 
-export const ChatContainer: FC<DashboardProps> = ({
+interface ChatContainerProps {
+  splitUserName: string;
+  userName: string;
+  onConversationClick: (convoId: number) => void;
+}
+
+export const ChatContainer: FC<ChatContainerProps> = ({
   splitUserName,
   userName,
+  onConversationClick,
 }) => {
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+
+  //Want to get access to the conversatiosn and display in local chat
+  useEffect(() => {
+    // Retrieve the conversations from local storage
+    const localStorageConversations = localStorage.getItem("conversations");
+
+    if (localStorageConversations) {
+      const conversationArray: Conversation[] = JSON.parse(
+        localStorageConversations
+      );
+      setConversations(conversationArray); // Set the conversations state as an array
+    }
+  }, []);
+
   return (
     <div className="chatContainer flex flex-col">
       <div className="flex flex-col gap-[22px]  h-full">
@@ -48,29 +70,19 @@ export const ChatContainer: FC<DashboardProps> = ({
           <p>Chats</p>
         </button>
         {/* Chat ICON layered right here  */}
-        <div className=" chatRenderWrapper relative  flex flex-col items-start justify-start gap-[13px] w-full  ">
-          <button className="flex flex-row pl-[19px] gap-[13px] ">
-            <div className="mainIcon !w-[18px] !h-[18]">
-              <Image alt="iconChat" src={iconChat} width={100} height={100} />
-            </div>
-
-            <p className="hover:text-white">Life path Guide</p>
-          </button>
-          <button className="flex flex-row gap-[13px] pl-[19px] ">
-            <div className="mainIcon !w-[18px] !h-[18]">
-              <Image alt="iconChat" src={iconChat} width={100} height={100} />
-            </div>
-
-            <p className="hover:text-white">Life path Guide</p>
-          </button>
-
-          <button className="flex flex-row gap-[13px] pl-[19px] ">
-            <div className="mainIcon !w-[18px] !h-[18]">
-              <Image alt="iconChat" src={iconChat} width={100} height={100} />
-            </div>
-
-            <p className="hover:text-white">Life path Guide</p>
-          </button>
+        <div className="chatRenderWrapper relative flex flex-col items-start justify-start gap-[13px] w-full">
+          {conversations.map((conversation: any) => (
+            <button
+              onClick={() => onConversationClick(conversation.conversationId)}
+              key={conversation.conversationId}
+              className="flex flex-row pl-[19px] gap-[13px]"
+            >
+              <div className="mainIcon !w-[18px] !h-[18px]">
+                <Image alt="iconChat" src={iconChat} width={18} height={18} />
+              </div>
+              <p className="hover:text-white">{conversation.title}</p>
+            </button>
+          ))}
         </div>
       </div>
 

@@ -14,6 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const { userIds, title } = conversationSchema.parse(req.body);
 
+
+
+        console.log("Logging the req", req)
         const newConversation = await db.conversation.create({
           data: {
             title: title || "New Chat",

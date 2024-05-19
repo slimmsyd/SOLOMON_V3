@@ -35,48 +35,55 @@ export const authOptions: NextAuthOptions = {
     }),
 
 
-    // CredentialsProvider({
-    //   name: "Credentials",
-    //   credentials: {
-    //     email: { label: "Email", type: "email", placeholder: "Enter Email..." },
-    //     password: { label: "Password", type: "password" },
-    //   },
-    //   async authorize(credentials) {
-    //     console.log("Authorize function called with credentials:", credentials);
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email", placeholder: "Enter Email..." },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: async(credentials, req) => {
+        console.log("Authorize function called with credentials:", credentials);
 
-    //     if (!credentials?.email || !credentials?.password) {
-    //       console.log("Missing credentials");
+        try  {
 
-    //       return null;
-    //     }
-    //     // If no error and we have user data, return it
-    //     const existingUser = await db.user.findUnique({
-    //       where: { email: credentials?.email },
-    //     });
-    //     if (!existingUser) {
-    //       console.log("Incorrect password");
+          if (!credentials?.email || !credentials?.password) {
+            console.log("Missing credentials");
+  
+            return null;
+          }
+          // If no error and we have user data, return it
+          const existingUser = await db.user.findUnique({
+            where: { email: credentials?.email },
+          });
+          if (!existingUser) {
+            console.log("Incorrect password");
+  
+            return null;
+          }
+  
+          const passwordMatch = await bcrypt.compare(
+            credentials.password,
+            existingUser.password
+          );
+  
+          if (!passwordMatch) {
+            console.log("Incorrect password");
+  
+            return null;
+          }
+          // Return null if user data could not be retrieved
+          return {
+            id: `${existingUser.id}`,
+            username: existingUser.username,
+            email: existingUser.email,
+          };
+        }catch(e: any) { 
+          return null;
 
-    //       return null;
-    //     }
-
-    //     const passwordMatch = await bcrypt.compare(
-    //       credentials.password,
-    //       existingUser.password
-    //     );
-
-    //     if (!passwordMatch) {
-    //       console.log("Incorrect password");
-
-    //       return null;
-    //     }
-    //     // Return null if user data could not be retrieved
-    //     return {
-    //       id: `${existingUser.id}`,
-    //       username: existingUser.username,
-    //       email: existingUser.email,
-    //     };
-    //   },
-    // }),
+        }
+    
+      },
+    }),
 
   ],
   callbacks: {

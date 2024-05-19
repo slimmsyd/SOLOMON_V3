@@ -23,6 +23,10 @@ export const ChatMessagesContainer: FC<ChatMessageProps> = ({ responses }) => {
       
     },[])
 
+    //We want to get the latest storage when we swith the platform 
+
+    
+
 
   return (
     <div className={styles.chat_container}>

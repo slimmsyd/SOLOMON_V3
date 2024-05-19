@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSession, getSession } from "next-auth/react";
+import { Session } from "next-auth";
+
 import ErrorPage from "../../error/page";
 
 import Image from "next/image";
@@ -18,6 +20,7 @@ import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 
 import { useChatConversation } from "@/app/hooks/ConversationContext";
 import useCreateConversation from "@/app/hooks/createConversation";
+import useConversations from "@/app/hooks/useConversations";
 import { Dashboard } from "./Dashboard";
 //Chat Container
 import { ChatContainer } from "./ChatContainer";
@@ -35,6 +38,10 @@ export default function ChatDashboard() {
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
 
+  const [currentConversationId, setCurrentConversationId] = useState<
+    number | null
+  >(null);
+
   //Stores the Chat
   const {
     responses,
@@ -44,6 +51,33 @@ export default function ChatDashboard() {
     isFetchLoading,
     setIsFetchLoading,
   } = useChatConversation();
+
+  const { conversations, isLoading, setConversations } =
+    useConversations(session);
+
+  //Get access to the current conversation Name and Id
+
+  useEffect(() => {
+    console.log("Loggin the conversations in the app useEffect", conversations);
+  }, [conversations]);
+
+  const {
+    createConversation,
+    newTitle,
+    setNewTitle,
+    isCreateLoading,
+    error,
+    dataId,
+  } = useCreateConversation(
+    session as Session,
+    setConversations,
+    setCurrentConversationId
+  );
+
+  //Getting  access to the currnet conversation ID
+  useEffect(() => {
+    console.log("Logging current conversation Id", currentConversationId);
+  }, []);
 
   useEffect(() => {
     const storedUserName = sessionStorage.getItem("userName");
@@ -134,36 +168,40 @@ export default function ChatDashboard() {
     setResponses((prevResponses) => [...prevResponses, newResponse]);
     setMessage("");
 
-    // let conversationId = currentConversationId;
+    let conversationId = currentConversationId;
 
     // If there is no current conversation, create one
-    // if (!currentConversationId) {
-    //   console.log("No conversation selected.");
-    //   const newConversationId = await createConversation(); // Make sure to await the result
+    if (!currentConversationId) {
+      console.log("Creating a Converation Before no convo");
+      console.log("No conversation selected.");
+      const newConversationId = await createConversation(); // Make sure to await the result
 
-    //   console.log(
-    //     "Logging the conversation Id in the await",
-    //     newConversationId
-    //   );
-    // conversationId = newConversationId;
+      console.log(
+        "Logging the conversation Id in the await",
+        newConversationId
+      );
 
-    //   if (newConversationId) {
-    //     console.log("Returning the Data Id", newConversationId);
-    //     // setCurrentConversationId(newConversationId);
-    //     localStorage.setItem("currentConversationId", newConversationId);
+      conversationId = newConversationId;
 
-    //     // Navigate to the new conversation UR
-    //   } else {
-    //     console.log("Failed to create new conversation.");
-    //     setIsFetchLoading(false); // Reset loading state if conversation creation fails
-    //     return; // Exit if creation failed
-    //   }
-    // }
+      if (newConversationId) {
+        console.log("Returning the Data Id", newConversationId);
+        // setCurrentConversationId(newConversationId);
+        localStorage.setItem("currentConversationId", newConversationId);
 
-    // console.log(
-    //   "Logging the current conversatoin Id after we send the request",
-    //   conversationId
-    // );
+        // Navigate to the new conversation UR
+      } else {
+        console.log("Failed to create new conversation.");
+        setIsFetchLoading(false); // Reset loading state if conversation creation fails
+        return; // Exit if creation failed
+      }
+    } else {
+      console.log("LOgging an errow when creating an conversation ID");
+    }
+
+    console.log(
+      "Logging the current conversatoin Id after we send the request",
+      conversationId
+    );
 
     try {
       // Fetch bot reply from the API
@@ -175,16 +213,11 @@ export default function ChatDashboard() {
         body: JSON.stringify({ message }),
       }).then((res) => res.json());
 
-      // if (!currentConversationId && conversationId) {
-      //   console.log("LOgging the responses in the change UI if statement");
-      //   console.log("This is where the conversation will be redirceted");
-      //   console.log("Logging to see if new convo was created", conversationId);
-      //   const targetPath = `/chat/${session.user.id}/${conversationId}`;
-
-      //   console.log("Logging to verify the target path", targetPath);
-
-      //   router.replace(targetPath);
-      // }
+      if (!currentConversationId && conversationId) {
+        console.log("LOgging the responses in the change UI if statement");
+        console.log("This is where the conversation will be redirceted");
+        console.log("Logging to see if new convo was created", conversationId);
+      }
 
       // Update the responses array with the bot's reply
       setResponses((prevResponses) =>
@@ -226,11 +259,32 @@ export default function ChatDashboard() {
 
   // sessionStorage.clear();
 
+  const handleConversationClick = (convoId: number) => {
+    console.log("Activating conversation with ID:", convoId);
+    const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
+
+    router.push(targetPath, undefined)
+
+    // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
+    // if (router.asPath !== targetPath) {
+    //   router.push(targetPath, undefined);
+    // }
+
+    setCurrentConversationId(convoId);
+
+    console.log("Logging hte current conversation ID", currentConversationId);
+    console.log("Logging hte current The ConvoID", convoId);
+  };
+
   return (
     <div className="chatDashboard">
       {/* Chat Container Componet  */}
 
-      <ChatContainer splitUserName={splitUserName} userName={userName || ""} />
+      <ChatContainer
+        splitUserName={splitUserName}
+        userName={userName || ""}
+        onConversationClick={handleConversationClick}
+      />
 
       {/* Chat Container Componet  */}
 
@@ -265,14 +319,11 @@ export default function ChatDashboard() {
 
         <div className="chatDashBoardContainer">
           {/* Dashboard Component  */}
-
-          {responses.length > 0 ? (
+          {currentConversationId ? (
             <ChatMessagesContainer responses={responses || "null"} />
           ) : (
             <Dashboard userName={userName || ""} />
           )}
-
-          {/* Dashboard Component  */}
         </div>
         <form ref={formRef} onSubmit={handleSubmit} className="chatFormSubmit">
           <div className="relative textAreaContainer">

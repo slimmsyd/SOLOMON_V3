@@ -557,6 +557,9 @@ nav button {
   .dashboardNews {
     width: 100%;
   }
+  .chatFormSubmit {
+     width: 99% !important;
+  }
 }
 
 .chatFormSubmit {
@@ -570,6 +573,7 @@ nav button {
   font-size: 14px;
   position: fixed;
 }
+
 .chatFormSubmit textarea {
   height: 55px;
   outline: none;

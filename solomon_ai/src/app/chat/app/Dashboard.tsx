@@ -1,3 +1,4 @@
+import { Session } from "inspector";
 import { useEffect, useRef, useState } from "react";
 import React, { FC, RefObject } from "react";
 
@@ -10,6 +11,8 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
+
   useEffect(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
@@ -47,6 +50,9 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
       wrapper.removeEventListener("mouseleave", handleMouseUp);
     };
   }, [isDragging, startX, scrollLeft]);
+
+
+
 
   return (
     <>

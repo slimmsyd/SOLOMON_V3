@@ -685,6 +685,9 @@ video {
 .h-screen {
   height: 100vh;
 }
+.\!h-\[18px\] {
+  height: 18px !important;
+}
 .\!w-\[18px\] {
   width: 18px !important;
 }
@@ -1499,6 +1502,9 @@ nav button {
   .dashboardNews {
     width: 100%;
   }
+  .chatFormSubmit {
+     width: 99% !important;
+  }
 }
 
 .chatFormSubmit {
@@ -1512,6 +1518,7 @@ nav button {
   font-size: 14px;
   position: fixed;
 }
+
 .chatFormSubmit textarea {
   height: 55px;
   outline: none;
