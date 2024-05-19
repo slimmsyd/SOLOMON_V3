@@ -9,6 +9,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from 'next-auth/providers/google';
 import { db } from "./db";
 import bcrypt from "bcrypt";
+import { User as CustomUser } from "../../../../types";
 require('dotenv').config()
 
 
@@ -41,48 +42,47 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email", placeholder: "Enter Email..." },
         password: { label: "Password", type: "password" },
       },
-      authorize: async(credentials, req) => {
+      authorize: async (credentials, req) => {
         console.log("Authorize function called with credentials:", credentials);
 
-        try  {
-
+        try {
           if (!credentials?.email || !credentials?.password) {
             console.log("Missing credentials");
-  
             return null;
           }
-          // If no error and we have user data, return it
+
+          // Fetch user from your database
           const existingUser = await db.user.findUnique({
             where: { email: credentials?.email },
           });
+
           if (!existingUser) {
-            console.log("Incorrect password");
-  
+            console.log("User not found");
             return null;
           }
-  
+
           const passwordMatch = await bcrypt.compare(
             credentials.password,
-            existingUser.password
+            existingUser.password || ""
           );
-  
+
           if (!passwordMatch) {
             console.log("Incorrect password");
-  
             return null;
           }
-          // Return null if user data could not be retrieved
+
+          // Ensure the returned user object matches the User type
           return {
             id: `${existingUser.id}`,
-            username: existingUser.username,
+            username: existingUser.username || '', // Ensure username is a string
             email: existingUser.email,
-          };
-        }catch(e: any) { 
-          return null;
+          } as CustomUser;
 
+        } catch (e: any) {
+          console.error("Error in authorization:", e);
+          return null;
         }
-    
-      },
+      }
     }),
 
   ],

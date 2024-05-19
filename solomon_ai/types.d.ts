@@ -9,3 +9,11 @@ declare module 'next-auth' {
   }
 }
 
+// types.ts
+// types.ts
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  // Add other properties as needed
+}
