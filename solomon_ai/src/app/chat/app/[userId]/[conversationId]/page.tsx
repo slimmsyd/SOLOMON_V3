@@ -8,25 +8,21 @@ import ChatIcon from "../../../../../public/assets/chat-icon.png";
 import Dots from "../../../../../public/assets/dots.png";
 import { useEffect, useState, useRef } from "react";
 import { useSession, getSession } from "next-auth/react";
-import { Session } from 'next-auth';
+import { Session } from "next-auth";
 import styles from "../../../../styles/chat.module.css";
-import ChatMessage from '../../../../components/Chatmessage'
+import ChatMessage from "../../../../components/Chatmessage";
 import DashboardNav from "../../../../components/DashboardNav";
-import DeleteComponent from '../../../../components/helper/DeleteComponent'
+import DeleteComponent from "../../../../components/helper/DeleteComponent";
 
 import { ChatContainer } from "../../ChatContainer";
 import { ChatMessagesContainer } from "../../ChatMessage";
 import { Dashboard } from "../../Dashboard";
 import LoadingComponent from "../../../../components/helper/Loading";
 
-import useConversations from '../../../../hooks/useConversations'
+import useConversations from "../../../../hooks/useConversations";
 import useCreateConversation from "../../../../hooks/createConversation";
 import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useTogglePosition } from "../../../../hooks/useTogglePosition";
-
-
-
-
 
 import Link from "next/link";
 export default function ConversationPage() {
@@ -38,12 +34,15 @@ export default function ConversationPage() {
     useChatConversation();
   const localStorageConvoId = localStorage.getItem("currentConversationId");
 
-  
   const form = useRef();
   const { data: session, status } = useSession();
-  const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(null);
+  const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(
+    null
+  );
   //Set the conversation
-  const [currentConversationId, setCurrentConversationId] = useState<number | null>(null);
+  const [currentConversationId, setCurrentConversationId] = useState<
+    number | null
+  >(null);
 
   // const [newTitle, setNewTitle] = useState("");
 
@@ -52,8 +51,11 @@ export default function ConversationPage() {
 
   //Creating a new Conversation.
   const { createConversation, newTitle, setNewTitle, isCreateLoading, error } =
-    useCreateConversation(session as Session, setConversations as any, setCurrentConversationId);
-
+    useCreateConversation(
+      session as Session,
+      setConversations as any,
+      setCurrentConversationId
+    );
 
   // const [isLoading, setLoading] = useState(false);
 
@@ -69,7 +71,7 @@ export default function ConversationPage() {
     return null; // Return null if no match is found
   }
   const [userName, setUserName] = useState<string | null>(null);
-  const [splitUserName, setSplitUserName] = useState<string>("")
+  const [splitUserName, setSplitUserName] = useState<string>("");
   useEffect(() => {
     if (userName !== null) {
       sessionStorage.setItem("userName", userName);
@@ -79,9 +81,6 @@ export default function ConversationPage() {
       sessionStorage.setItem("splitUserName", splitUserName);
     }
   }, [userName, splitUserName]);
-
-
- 
 
   const [showTitleInput, setShowTitleInput] = useState(false);
   const [editTitleId, setEditTitleId] = useState(null);
@@ -130,7 +129,6 @@ export default function ConversationPage() {
     setEditTitleId(convo.conversationId);
 
     setEditedTitle(convo.title);
-    
   };
 
   useEffect(() => {}, [editTitleId, editedTitle]);
@@ -208,14 +206,17 @@ export default function ConversationPage() {
     }
   }
 
-  function updateLocalStorage(updatedConversation: any, conversationId: number) {
+  function updateLocalStorage(
+    updatedConversation: any,
+    conversationId: number
+  ) {
     let cachedConversations = localStorage.getItem("conversations");
-    
+
     if (cachedConversations) {
       try {
         // Parse the cached conversations
         const parsedConversations = JSON.parse(cachedConversations);
-        
+
         // Ensure that parsedConversations is an array
         if (Array.isArray(parsedConversations)) {
           const updatedCache = parsedConversations.map((convo) =>
@@ -223,7 +224,7 @@ export default function ConversationPage() {
               ? { ...convo, title: updatedConversation.title }
               : convo
           );
-  
+
           localStorage.setItem("conversations", JSON.stringify(updatedCache));
         } else {
           console.error("Parsed cached conversations is not an array");
@@ -233,7 +234,6 @@ export default function ConversationPage() {
       }
     }
   }
-  
 
   // const handleSubmitTitle = async (event) => {
   //   if (event.key === "Enter") {
@@ -346,8 +346,6 @@ export default function ConversationPage() {
           botResponse: botReply.message, // Bot's response, obtained separately
         }),
       });
-
- 
     } catch (error) {
       console.error("Error handling submission:", error);
     }
@@ -359,29 +357,22 @@ export default function ConversationPage() {
     // possibly set an initial conversation ID here if needed
     if (conversations.length > 0 && !currentConversationId) {
       setCurrentConversationId(conversations[0].id);
-      console.log("Logging the conversations in useEffect", conversations)
+      console.log("Logging the conversations in useEffect", conversations);
     }
   }, [conversations]);
-
-
-
 
   const handleConversationClick = (convoId: number) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
-    router.push(targetPath, undefined)
+    router.push(targetPath, undefined);
 
+    //Store the Current converatoinID in local to persit on chaning the navigation
+    let localStorageConvoId: any;
+    localStorage.setItem("currentConversationId", convoId.toString());
 
-        //Store the Current converatoinID in local to persit on chaning the navigation
-        let localStorageConvoId: any;
-        localStorage.setItem(
-          "currentConversationId",
-          convoId.toString()
-        );
-    
-        localStorageConvoId = localStorage.getItem("currentConversationId");
-        setCurrentConversationId(convoId);
+    localStorageConvoId = localStorage.getItem("currentConversationId");
+    setCurrentConversationId(convoId);
     // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
     // if (router.asPath !== targetPath) {
     //   router.push(targetPath, undefined);
@@ -402,7 +393,6 @@ export default function ConversationPage() {
   }, []);
 
   //Get the full Message Conversation.
-
 
   const getMessageFromStorage = () => {
     const savedMessage = sessionStorage.getItem("initialMessage");
@@ -440,35 +430,26 @@ export default function ConversationPage() {
       setResponses([initialMessage]);
     }
 
-    console.log("Logging to see if the responses change", responses)
-
+    console.log("Logging to see if the responses change", responses);
   }, [responses.length, setResponses]);
 
-  useEffect(() => {
-  }, [responses]);
+  useEffect(() => {}, [responses]);
 
-  useEffect(() => {
-  }, [isLoading]);
+  useEffect(() => {}, [isLoading]);
 
   //Checking if Chat conversations is loading
-  useEffect(() => {
-   
-  }, [messagesIsLoading]);
+  useEffect(() => {}, [messagesIsLoading]);
 
-
-  //Fetch Message for this converations 
+  //Fetch Message for this converations
   const fetchMessagesForConversation = async (conversationId: number) => {
     if (!session || !session.user || !session.user.id) {
       console.error("No user session available");
       return;
     }
-    setMessagesIsLoading(true)
+    setMessagesIsLoading(true);
 
     console.log("Logging the ConversationID", conversationId);
-    console.log(
-      "Logging the Conversation Id Conversation Id",
-      conversationId
-    );
+    console.log("Logging the Conversation Id Conversation Id", conversationId);
 
     try {
       const response = await fetch(
@@ -486,17 +467,16 @@ export default function ConversationPage() {
         question: msg.userContent,
         response: msg.botResponse,
       }));
-      
-      console.log("Logging the formatted message", formattedMessages)
+
+      console.log("Logging the formatted message", formattedMessages);
 
       setResponses(formattedMessages);
-      setMessagesIsLoading(false)
+      setMessagesIsLoading(false);
     } catch (error) {
-      setMessagesIsLoading(true)
+      setMessagesIsLoading(true);
       console.error("Error fetching messages:", error);
     }
   };
-
 
   if (!conversations) {
     return <p>No conversation found.</p>;
@@ -511,7 +491,7 @@ export default function ConversationPage() {
         userName={userName || ""}
         onConversationClick={handleConversationClick}
       />
-      {/* Chat Container Componet  */} 
+      {/* Chat Container Componet  */}
 
       <div className="chatDashboardWrapper w-full text-left">
         {/* Guidelines Hader */}
@@ -542,13 +522,15 @@ export default function ConversationPage() {
           </div>
         </header>
 
-        <div className={`chatDashBoardContainer ${messagesIsLoading ? "flex justify-center items-center" : ""}`}>
+        <div className={`chatDashBoardContainer `}>
           {/* Dashboard Component  */}
 
           {responses.length > 0 ? (
             <ChatMessagesContainer responses={responses || "null"} />
           ) : (
-            <LoadingComponent />
+            <div className = "w-full flex items-center justify-center">
+              <LoadingComponent />
+            </div>
             // <Dashboard userName={userName || ""} />
           )}
 
