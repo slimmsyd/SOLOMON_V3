@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
 
+
+
 import ErrorPage from "../../error/page";
 
 import Image from "next/image";
@@ -70,7 +72,7 @@ export default function ChatDashboard() {
     dataId,
   } = useCreateConversation(
     session as Session,
-    setConversations,
+    setConversations as any,
     setCurrentConversationId
   );
 

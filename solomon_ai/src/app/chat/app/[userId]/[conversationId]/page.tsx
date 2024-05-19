@@ -52,7 +52,7 @@ export default function ConversationPage() {
 
   //Creating a new Conversation.
   const { createConversation, newTitle, setNewTitle, isCreateLoading, error } =
-    useCreateConversation(session as Session, setConversations, setCurrentConversationId);
+    useCreateConversation(session as Session, setConversations as any, setCurrentConversationId);
 
 
   // const [isLoading, setLoading] = useState(false);
@@ -208,81 +208,95 @@ export default function ConversationPage() {
     }
   }
 
-  function updateLocalStorage(updatedConversation, conversationId) {
+  function updateLocalStorage(updatedConversation: any, conversationId: number) {
     let cachedConversations = localStorage.getItem("conversations");
+    
     if (cachedConversations) {
-      cachedConversations = JSON.parse(cachedConversations);
-      const updatedCache = cachedConversations?.map((convo) =>
-        convo.conversationId === conversationId
-          ? { ...convo, title: updatedConversation.title }
-          : convo
-      );
-      localStorage.setItem("conversations", JSON.stringify(updatedCache));
-    }
-  }
-
-  const handleSubmitTitle = async (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Prevent form submission
-      const newTitle = editedTitle; // Capture the title at the time of submission
-      // console.log("New title to be set:", newTitle);
-      // console.log("New title Id being logged", editTitleId);
-
-      // Optimistically update the UI before the API call
-      const updatedConversations = conversations.map((convo) =>
-        convo.id === editTitleId ? { ...convo, title: newTitle } : convo
-      );
-
-      // console.log("Updated conversations:", updatedConversations);
-      setConversations(updatedConversations);
-
-      // Update local storage immediately after updating state
-      localStorage.setItem(
-        "conversations",
-        JSON.stringify(updatedConversations)
-      );
-
-      setEditTitleId(null); // Exit edit mode
-      setEditedTitle(""); // Clear the edited title state
-
-      // Attempt to update the backend
       try {
-        const response = await fetch(`/api/conversations/${editTitleId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: newTitle }),
-        });
-
-        if (response.ok) {
-          await getConversation(editTitleId);
+        // Parse the cached conversations
+        const parsedConversations = JSON.parse(cachedConversations);
+        
+        // Ensure that parsedConversations is an array
+        if (Array.isArray(parsedConversations)) {
+          const updatedCache = parsedConversations.map((convo) =>
+            convo.conversationId === conversationId
+              ? { ...convo, title: updatedConversation.title }
+              : convo
+          );
+  
+          localStorage.setItem("conversations", JSON.stringify(updatedCache));
+        } else {
+          console.error("Parsed cached conversations is not an array");
         }
-
-        if (!response.ok) {
-          throw new Error("Failed to update title");
-        }
-      } catch (error) {
-        console.error("Error updating title:", error);
-
-        // If the update fails, revert the change in the UI and alert the user
-        const originalConversations = conversations.map((convo) =>
-          convo.id === editTitleId ? { ...convo, title: convo.title } : convo
-        );
-        // console.log(
-        //   "Reverting to original conversations:",
-        //   originalConversations
-        // );
-        setConversations(originalConversations);
-        localStorage.setItem(
-          "conversations",
-          JSON.stringify(originalConversations)
-        );
-
-        alert("Failed to update title, please try again."); // Inform the user
+      } catch (e) {
+        console.error("Error parsing cached conversations:", e);
       }
     }
-  };
+  }
+  
+
+  // const handleSubmitTitle = async (event) => {
+  //   if (event.key === "Enter") {
+  //     event.preventDefault(); // Prevent form submission
+  //     const newTitle = editedTitle; // Capture the title at the time of submission
+  //     // console.log("New title to be set:", newTitle);
+  //     // console.log("New title Id being logged", editTitleId);
+
+  //     // Optimistically update the UI before the API call
+  //     const updatedConversations = conversations.map((convo) =>
+  //       convo.id === editTitleId ? { ...convo, title: newTitle } : convo
+  //     );
+
+  //     // console.log("Updated conversations:", updatedConversations);
+  //     setConversations(updatedConversations);
+
+  //     // Update local storage immediately after updating state
+  //     localStorage.setItem(
+  //       "conversations",
+  //       JSON.stringify(updatedConversations)
+  //     );
+
+  //     setEditTitleId(null); // Exit edit mode
+  //     setEditedTitle(""); // Clear the edited title state
+
+  //     // Attempt to update the backend
+  //     try {
+  //       const response = await fetch(`/api/conversations/${editTitleId}`, {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ title: newTitle }),
+  //       });
+
+  //       if (response.ok) {
+  //         await getConversation(editTitleId);
+  //       }
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to update title");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error updating title:", error);
+
+  //       // If the update fails, revert the change in the UI and alert the user
+  //       const originalConversations = conversations.map((convo) =>
+  //         convo.id === editTitleId ? { ...convo, title: convo.title } : convo
+  //       );
+  //       // console.log(
+  //       //   "Reverting to original conversations:",
+  //       //   originalConversations
+  //       // );
+  //       setConversations(originalConversations);
+  //       localStorage.setItem(
+  //         "conversations",
+  //         JSON.stringify(originalConversations)
+  //       );
+
+  //       alert("Failed to update title, please try again."); // Inform the user
+  //     }
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -383,7 +397,7 @@ export default function ConversationPage() {
     const savedConvoId = localStorage.getItem("currentConversationId");
     console.log("Logging the SavedConvoID", savedConvoId);
     if (savedConvoId) {
-      setCurrentConversationId(savedConvoId);
+      setCurrentConversationId(Number(savedConvoId));
     }
   }, []);
 

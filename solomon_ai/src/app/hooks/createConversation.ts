@@ -1,31 +1,32 @@
 import { useId, useState } from "react";
 import { useRouter } from "next/navigation";
+import { SetConversations, SetCurrentConversationId, Conversation } from "../../../types";
 
+import { Session } from "next-auth";
+// interface User {
+//   id: number; 
+//   name?: string | null;
+//   email?: string | null;
+//   image?: string | null;
+//   // Add other user properties if needed
+// }
 
-interface User {
-  id: number; 
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
-  // Add other user properties if needed
-}
+// interface Session {
+//   user: User;
+//   expires: string;
+//   id: number;
+//   name: string;
+//   image: string;
+// }
+// interface Conversation { 
+//   id: string;
+//   participants: User[];
+//   messages: string[]
+// }
 
-interface Session {
-  user: User;
-  expires: string;
-  id: number;
-  name: string;
-  image: string;
-}
-interface Conversation { 
-  id: string;
-  participants: User[];
-  messages: string[]
-}
+// type SetConversations = (conversations: Conversation[]) => void;
 
-type SetConversations = (conversations: Conversation[]) => void;
-
-type SetCurrentConversationId = (id: number) => void;
+// type SetCurrentConversationId = (id: number) => void;
 
 
 
