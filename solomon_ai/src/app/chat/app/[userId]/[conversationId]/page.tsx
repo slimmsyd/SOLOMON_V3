@@ -152,7 +152,7 @@ export default function ConversationPage() {
       // Update local state
       setConversations((prevConversations) => {
         return prevConversations.map((convo) =>
-          convo.conversationId === conversationId
+          convo === conversationId
             ? { ...convo, title: updatedConversation.title }
             : convo
         );
@@ -169,7 +169,7 @@ export default function ConversationPage() {
     const currentConversations = conversations;
     // Optimistically remove the conversation from UI
     const updatedConversations = currentConversations.filter(
-      (convo) => convo.conversationId !== conversationId.conversationId
+      (convo) => convo !== conversationId.conversationId
     );
 
     setConversations(updatedConversations);
@@ -186,7 +186,7 @@ export default function ConversationPage() {
 
       // Filter out the deleted conversation
       const updatedConversations = conversations.filter(
-        (convo) => convo.conversationId !== conversationId.conversationId
+        (convo) => convo !== conversationId.conversationId
       );
       console.log("Logging out the Conversation Filter", conversations);
 
