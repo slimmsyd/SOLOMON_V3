@@ -102,8 +102,10 @@ const Profile: React.FC = () => {
 
   return (
     <div className="chatDashboard">
-      <ChatContainer splitUserName={splitUserName} userName={userName || ""} />
-
+  <ChatContainer
+        splitUserName={splitUserName}
+        userName={userName || ""}
+      />
       {/* Chat Container Componet  */}
 
       <div className="chatDashboardWrapper !h-full w-full text-left">

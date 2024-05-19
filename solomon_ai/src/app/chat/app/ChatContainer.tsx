@@ -16,7 +16,7 @@ interface Conversation {
 interface ChatContainerProps {
   splitUserName: string;
   userName: string;
-  onConversationClick: (convoId: number) => void;
+  onConversationClick?: (convoId: number) => void;
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
@@ -73,8 +73,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         <div className="chatRenderWrapper relative flex flex-col items-start justify-start gap-[13px] w-full">
           {conversations.map((conversation: any) => (
             <button
-              onClick={() => onConversationClick(conversation.conversationId)}
-              key={conversation.conversationId}
+            onClick={() => onConversationClick && onConversationClick(conversation.conversationId)} // Check if onConversationClick is provided
+            key={conversation.conversationId}
               className="flex flex-row pl-[19px] gap-[13px]"
             >
               <div className="mainIcon !w-[18px] !h-[18px]">
