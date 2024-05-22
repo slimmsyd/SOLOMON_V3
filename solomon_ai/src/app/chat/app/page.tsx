@@ -19,6 +19,8 @@ import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
 import iconChat from "../../../../public/assets/Chat/iconChat.png";
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 
+import { isClient } from "@/utilis/isClient";
+
 // Dashboard
 
 import { useChatConversation } from "@/app/hooks/ConversationContext";
@@ -96,7 +98,7 @@ export default function ChatDashboard() {
 
   useEffect(() => {
 
-    if (typeof window !== 'undefined') {
+    if (isClient()) {
 
     const storedUserName = sessionStorage.getItem("userName");
     const storedSplitUserName = sessionStorage.getItem("splitUserName");
@@ -119,7 +121,7 @@ export default function ChatDashboard() {
 
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (isClient()) {
 
     if (userName !== null) {
       sessionStorage.setItem("userName", userName);
@@ -164,7 +166,7 @@ export default function ChatDashboard() {
 
           //Just a back up just in case
 
-          if (typeof window !== 'undefined') {
+          if (isClient()) {
 
           if (email !== null) {
             sessionStorage.setItem("email", email);
@@ -177,8 +179,8 @@ export default function ChatDashboard() {
             sessionStorage.setItem("splitUserName", splitUserName);
           }
 
-        }
 
+        }
           //We want to get Just to logo of the userName
           setSplitUserName(currentSession?.user.email[0].toUpperCase());
         }
@@ -192,17 +194,25 @@ export default function ChatDashboard() {
   }, [status, router]);
 
   useEffect(() => {
+
+    if (isClient()) {
+
     // This effect runs only on the client side
     const storedUsername =
       typeof window !== "undefined" ? localStorage.getItem("username") : null;
     if (storedUsername) {
       setUserName(storedUsername);
     }
+
+  }
   }, []);
 
   //Submit the Inquiry
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isClient()) {
+
 
     if (!currentConversationId) {
       console.log("No conversation selected.");
@@ -265,18 +275,19 @@ export default function ChatDashboard() {
     } catch (error) {
       console.error("Error handling submission:", error);
     }
+
+  }
   };
 
   // Where we are going to send the Chat Data Request
-  // const saveMessageToStorage = (message: string) => {
-  //   sessionStorage.setItem("initialMessage", JSON.stringify(message));
-  // };
+
 
   function updateLocalStorage(
     updatedConversation: any,
     conversationId: number
   ) {
-    if (typeof window !== 'undefined') {
+
+    if (isClient()) {
 
     let cachedConversations = sessionStorage.getItem("conversations");
 
@@ -303,6 +314,7 @@ export default function ChatDashboard() {
         console.error("Error parsing cached conversations:", e);
       }
     }
+
   }
   }
 
@@ -342,9 +354,12 @@ export default function ChatDashboard() {
 
     let titleChange: string = "";
 
+
+
     if (event.key === "Enter") {
+      if (isClient()) {
+
       console.log("seeing if the function worked!!! ");
-      if (typeof window !== 'undefined') {
 
       event.preventDefault(); // Prevent form submission
       const newTitle = editedTitle; // Capture the title at the time of submission
@@ -376,7 +391,6 @@ export default function ChatDashboard() {
         );
       }
     }
-  }
     console.log(
       "logging the title change within the after before ",
       titleChange
@@ -415,27 +429,21 @@ export default function ChatDashboard() {
       //   "Reverting to original conversations:",
       //   originalConversations
       // );
-
       setConversations(originalConversations);
-      if (typeof window !== 'undefined') {
-
       sessionStorage.setItem(
         "conversations",
         JSON.stringify(originalConversations)
       );
 
-      }
-
       alert("Failed to update title, please try again."); // Inform the user
     }
+  }
+
   };
 
   //Editing the ability to change the existing title.
   const handleTitleClick = (convoId: number) => {
-    console.log("Title is clicking!!!", convoId);
-    console.log("Logging the title Id in the click function", editTitleId);
-    console.log("Logging the conversations", conversations);
-
+  
     const conversation = conversations.find(
       (convo) => (convo as any).conversationId === convoId
     );
@@ -473,7 +481,7 @@ export default function ChatDashboard() {
   // Function to remove the first index of chatResponses
   const removeFirstChatResponse = () => {
 
-    if (typeof window !== 'undefined') {
+    if (isClient()) {
 
     const chatResponses = JSON.parse(
       sessionStorage.getItem("chatResponses") || "[]"
@@ -499,7 +507,7 @@ export default function ChatDashboard() {
   //This function Deletes the cvonersation
   async function deleteConversation(conversationId: number) {
 
-    if (typeof window !== 'undefined') {
+    if (isClient()) {
 
     const currentConversations = conversations;
 
@@ -694,6 +702,8 @@ export default function ChatDashboard() {
     const userId = session?.user.id;
 
     console.log("Log status", status, "logg sessin", session);
+    if (isClient()) {
+
     if (status === "authenticated" && session) {
       const sendGreetings = async () => {
         const greetingSent = sessionStorage.getItem("greetingSent");
@@ -770,6 +780,8 @@ export default function ChatDashboard() {
         fetchMessagesForConversation(storedConvoId);
       }
     }
+
+  }
     // Effect to send a greetings message when the component mounts
 
     console.log(
