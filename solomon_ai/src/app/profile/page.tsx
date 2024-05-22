@@ -20,6 +20,9 @@ const Profile: React.FC = () => {
 
 
   useEffect(() => {
+
+    if (typeof window !== 'undefined') {
+
     const storedUserName = sessionStorage.getItem('userName');
     const storedSplitUserName = sessionStorage.getItem('splitUserName');
     const storedEmail = sessionStorage.getItem("email")
@@ -36,10 +39,15 @@ const Profile: React.FC = () => {
     if (storedSplitUserName) {
       setSplitUserName(storedSplitUserName);
     }
+
+  }
   }, []);
 
     // Update session storage whenever userName or splitUserName changes
     useEffect(() => {
+
+      if (typeof window !== 'undefined') {
+
       if (userName !== null) {
         sessionStorage.setItem('userName', userName);
       }
@@ -48,10 +56,11 @@ const Profile: React.FC = () => {
         sessionStorage.setItem('email', email);
       }
   
-      console.log("logging the email on profile", email)
       if (splitUserName !== "") {
         sessionStorage.setItem('splitUserName', splitUserName);
       }
+
+    }
     }, [userName, splitUserName, email]);
   
   
@@ -65,7 +74,7 @@ number | null
   useEffect(() => {
     // This effect runs only on the client side
     const storedUsername =
-      typeof window !== "undefined" ? localStorage.getItem("username") : null;
+      typeof window !== "undefined" ? sessionStorage.getItem("username") : null;
     if (storedUsername) {
       setUserName(storedUsername);
     }
@@ -96,7 +105,12 @@ const handleConversationClick = (convoId: number) => {
 
 const handleSignOut = async () => {
   // Clear any client-side session data if necessary
+
+  if (typeof window !== 'undefined') {
+
   sessionStorage.clear();
+
+  }
 
   // Sign out and redirect
   await signOut({ redirect: true });
