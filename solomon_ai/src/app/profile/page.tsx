@@ -237,7 +237,7 @@ const handleSignOut = async () => {
                     />
                   </div>
                   <p
-                  // onClick={handleSignOut}
+                  onClick={handleSignOut}
                   >Sign out</p>
                 </button>{" "}
               </div>
