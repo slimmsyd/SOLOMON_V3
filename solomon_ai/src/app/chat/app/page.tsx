@@ -10,6 +10,8 @@ import { useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { Message } from "../../../../types";
 
+import dynamic from "next/dynamic";
+
 import ErrorPage from "../../error/page";
 
 import Image from "next/image";
@@ -33,7 +35,7 @@ import ChatMessage from "@/app/components/Chatmessage";
 import { ChatMessagesContainer } from "./ChatMessage";
 import { SignupForm } from "./Signupform";
 
-export default function ChatDashboard() {
+const ChatDashboard: React.FC = () => {
   //getting the user name
 
   //First introduction From
@@ -1010,3 +1012,4 @@ function Header() {
     </header>
   );
 }
+export default dynamic(() => Promise.resolve(ChatDashboard), { ssr: false });
