@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import arrowLeft from "../../../public/assets/Chat/arrowLeft.png";
+import dynamic from "next/dynamic";
 
 import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
@@ -365,4 +366,4 @@ const handleSignOut = async () => {
 };
 
 
-export default Profile;
+export default dynamic(() => Promise.resolve(Profile), { ssr: false });
