@@ -17,7 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       // Prepare data to send back, including titles
-      const conversations = userConversations.map(uc => ({
+      const conversations = userConversations
+      .filter(uc => uc.conversation !== null)  // Filter out null conversations
+      .map(uc => ({
         conversationId: uc.conversationId,
         title: uc.conversation.title
       }));

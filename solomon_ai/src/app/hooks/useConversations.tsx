@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-
+import { Session } from "next-auth";
 interface User {
   id: number; 
   name?: string | null;
@@ -15,7 +14,7 @@ interface Conversation {
   messages: string[]
 }
 
-export default function useConversations(session) {
+export default function useConversations(session: any) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
     const [isLoading, setLoading] = useState(false);
 
@@ -24,23 +23,14 @@ export default function useConversations(session) {
             if (!session?.user?.id) return;
             setLoading(true);
 
-            const cache = localStorage.getItem("conversations");
+            const cache = sessionStorage.getItem("conversations");
             const timestamp = localStorage.getItem("conversations_timestamp");
             const now = Date.now();
             const cacheDuration = 5 * 60 * 1000; // Cache duration in milliseconds
       
-            if (cache && timestamp && now - parseInt(timestamp) < cacheDuration) {
-                try {
-                  const cachedData = JSON.parse(cache);
-                  setConversations(cachedData);
-                  setLoading(false);
-                } catch (error) {
-                  setLoading(true);
-                  console.error("Failed to parse cached conversations:", error);
-                  localStorage.removeItem("conversations");
-                  localStorage.removeItem("conversations_timestamp");
-                }
-              } else {
+
+
+   
                 try {
                   setLoading(true);
                   const response = await fetch(
@@ -49,8 +39,10 @@ export default function useConversations(session) {
                   if (!response.ok) throw new Error("Failed to fetch conversations");
         
                   const fetchedConversations = await response.json();
+
+
                   setConversations(fetchedConversations);
-                  localStorage.setItem(
+                  sessionStorage.setItem(
                     "conversations",
                     JSON.stringify(fetchedConversations)
                   );
@@ -60,7 +52,6 @@ export default function useConversations(session) {
                 } finally {
                   setLoading(false);
                 }
-              }
             }
         
             fetchConversations();

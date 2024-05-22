@@ -2,6 +2,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/app/api/lib/db';
+import { getSession } from 'next-auth/react';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query; // Extract the id from the query parameters
   const conversationId = parseInt(id as string, 10);
@@ -11,9 +12,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  // const session = await getSession({ req });
+  // if (!session) {
+  //   res.status(401).json({ message: "Unauthorized" });
+  //   return;
+  // }
+
+  // const userId = session.user.id;
+  
+  // const isUserAuthorized = async (conversationId: number, userId: string) => {
+  //   const conversation = await db.conversation.findUnique({
+  //     where: { id: conversationId },
+  //     include: {
+  //       participants: true
+  //     }
+  //   });
+  //   if (!conversation) {
+  //     return false;
+  //   }
+  //   return conversation.participants.some(participant => (participant as any).userId === userId);
+  // };
+
+
+
   switch (req.method) {
     case 'GET':
       try {
+
+        // if (!await isUserAuthorized(conversationId, userId)) {
+        //   res.status(403).json({ message: "Forbidden" });
+        //   return;
+        // }
+
         const conversation = await db.conversation.findUnique({
           where: { id: conversationId },
           include: {
@@ -35,7 +65,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       break;
     case 'PUT':
+      
       try {
+
+        // if (!await isUserAuthorized(conversationId, userId)) {
+        //   res.status(403).json({ message: "Forbidden" });
+        //   return;
+        // }
         const { title } = req.body;
         const updatedConversation = await db.conversation.update({
           where: { id: conversationId },
@@ -49,15 +85,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       case 'DELETE':
         try {
+
+          const conversationId = parseInt(id as string, 10);
+
+          if (!id || Array.isArray(id)) {
+            res.status(400).json({ message: "Invalid conversation ID" });
+            return;
+          }
+
+          
+  
+
+          // if (!await isUserAuthorized(conversationId, userId)) {
+          //   res.status(403).json({ message: "Forbidden" });
+          //   return;
+          // }
+
           // First, delete all messages associated with the conversation
           await db.messages.deleteMany({
-            where: { conversationId: parseInt(id as string) }
+            where: { conversationId }
           });
+
+          await db.userConversations.deleteMany({
+            where: { conversationId }
+          });
+      
   
           // Then, delete the conversation itself
-          const deleteConversation = await db.conversation.delete({
-            where: { id: parseInt(id as string) },
+          await db.conversation.delete({
+            where: { id: conversationId }
           });
+  
   
           res.status(200).json({ message: "Conversation and related messages deleted successfully" });
         } catch (error) {
@@ -67,7 +125,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         break;
 
     default:
-      res.setHeader('Allow', ['GET', 'PUT']);
+      res.setHeader('Allow', ['GET', 'PUT', "DELETE"]);
       res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

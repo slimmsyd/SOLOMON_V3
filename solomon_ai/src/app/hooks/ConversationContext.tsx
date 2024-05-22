@@ -30,7 +30,7 @@ export const ConversationProvider = ({ children }: { children: ReactNode }) => {
     if (typeof window !== "undefined") {
       // Attempt to recover state from sessionStorage on initial load
       const savedResponses = sessionStorage.getItem("chatResponses");
-      return savedResponses ? JSON.parse(savedResponses) : [];
+      // return savedResponses ? JSON.parse(savedResponses) : [];
     }
     return [];
   });

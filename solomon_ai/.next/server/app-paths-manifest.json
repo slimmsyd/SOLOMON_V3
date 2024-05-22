@@ -1,7 +1,4 @@
 {
-  "/page": "app/page.js",
   "/chat/app/page": "app/chat/app/page.js",
-  "/chat/app/[userId]/[conversationId]/page": "app/chat/app/[userId]/[conversationId]/page.js",
-  "/profile/page": "app/profile/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
 }

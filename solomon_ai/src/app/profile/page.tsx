@@ -2,11 +2,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import arrowLeft from "../../../public/assets/Chat/arrowLeft.png";
 
 import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
+
 import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
     const [userName, setUserName] = useState<string | null>(null);
@@ -46,6 +48,7 @@ const Profile: React.FC = () => {
         sessionStorage.setItem('email', email);
       }
   
+      console.log("logging the email on profile", email)
       if (splitUserName !== "") {
         sessionStorage.setItem('splitUserName', splitUserName);
       }
@@ -54,38 +57,10 @@ const Profile: React.FC = () => {
   
 
 
-//   useEffect(() => {
-//     async function checkSession() {
-//       console.log("Logging ession", session);
-//       if (status === "loading") {
-//         console.log("Session is loading...");
-//         return;
-//       }
 
-//       if (status === "unauthenticated") {
-//         console.log("No session found, redirecting...");
-//         router.push("/");
-//       } else if (status === "authenticated") {
-//         console.log(
-//           "Session is authenticated, confirming session data...",
-//           status
-//         );
-//         const currentSession = await getSession();
-//         console.log("Current session data:", currentSession);
-//         setUserName(currentSession?.user.username);
-//         setEmail(currentSession?.user.email);
-//         if (!currentSession?.user.user) {
-//           setUserName(currentSession?.user.email.split("@")[0]);
-
-//           //We want to get Just to logo of the userName
-//           setSplitUserName(currentSession?.user.email[0].toUpperCase());
-//         }
-//         console.log("Logging session user name", currentSession?.user.username);
-//       }
-//     }
-
-//     checkSession();
-//   }, [status, router]);
+const [currentConversationId, setCurrentConversationId] = useState<
+number | null
+>(null);
 
   useEffect(() => {
     // This effect runs only on the client side
@@ -100,11 +75,42 @@ const Profile: React.FC = () => {
 //     return <ErrorPage />;
 //   }
 
+const handleConversationClick = (convoId: number) => {
+  console.log("Activating conversation with ID:", convoId);
+  const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
+
+  router.push(targetPath, undefined);
+
+  // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
+  // if (router.asPath !== targetPath) {
+  //   router.push(targetPath, undefined);
+  // }
+
+  setCurrentConversationId(convoId);
+
+  console.log("Logging hte current conversation ID", currentConversationId);
+  console.log("Logging hte current The ConvoID", convoId);
+
+};
+
+
+const handleSignOut = async () => {
+  // Clear any client-side session data if necessary
+  sessionStorage.clear();
+
+  // Sign out and redirect
+  await signOut({ redirect: true });
+  window.location.href = '/login'; // Or any other page you want to redirect to
+};
+
   return (
     <div className="chatDashboard">
   <ChatContainer
         splitUserName={splitUserName}
         userName={userName || ""}
+        email = {email || ""}
+        onConversationClick={handleConversationClick}
+
       />
       {/* Chat Container Componet  */}
 
@@ -211,7 +217,9 @@ const Profile: React.FC = () => {
                       height={100}
                     />
                   </div>
-                  <p>Sign out</p>
+                  <p
+                  onClick={handleSignOut}
+                  >Sign out</p>
                 </button>{" "}
               </div>
               <hr className="greyDivider"></hr>

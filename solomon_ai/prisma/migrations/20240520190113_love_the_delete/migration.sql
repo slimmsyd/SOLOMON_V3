@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Conversation" ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "Messages" ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP;

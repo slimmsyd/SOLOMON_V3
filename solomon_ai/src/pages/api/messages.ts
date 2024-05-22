@@ -9,13 +9,14 @@ const messageSchema = z.object({
   conversationId: z.number(),
   userContent: z.string().min(1, 'User message content is required'),
   botResponse: z.string().optional(), // Bot response might be asynchronous
+  firstConvo: z.boolean().optional()
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     console.log("Received POST request to /api/messages");
     try {
-      const { userId, conversationId, userContent, botResponse } = messageSchema.parse(req.body);
+      const { userId, conversationId, userContent, botResponse, firstConvo } = messageSchema.parse(req.body);
       console.log(`Processing message from user ${userId} in conversation ${conversationId}`);
 
       // Create a new message and link it to a user and a conversation
@@ -27,6 +28,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           botResponse: botResponse, // Handle optional bot response
           title: "Chat Interaction",
           published: true,
+          firstConvo: firstConvo
+
         }
       });
 

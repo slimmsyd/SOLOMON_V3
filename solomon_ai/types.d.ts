@@ -27,11 +27,16 @@ export interface User {
 }
 
 export interface Conversation {
-  id: number;
+  conversationId: number;
   title: string;
-  participants: User[];
-  messages: string[];
 }
+
+export interface Message {
+  userContent: string;
+  botResponse: string;
+  firstConvo: boolean;
+}
+
 
 export type SetConversations = (conversations: Conversation[] | ((prev: Conversation[]) => Conversation[])) => void;
 export type SetCurrentConversationId = (id: number) => void;

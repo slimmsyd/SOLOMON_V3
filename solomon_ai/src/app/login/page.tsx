@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import NavComponent from "../navigation/navComponent";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ChatDashboard from "../chat/app/page";
+
 const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
   password: z
@@ -54,16 +56,17 @@ const Login = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-//  if(session?.user.email || session?.user.name) { 
-
-//   router.push("/")
-
-//  }
 
   useEffect(() => { 
     console.log("Logging the session", session)
 
-  },[session])
+},[session])
+
+  if(status === "authenticated" || "") { 
+    return <ChatDashboard 
+    
+    />
+  }
 
   return (
     <>
@@ -87,7 +90,7 @@ const Login = () => {
                 <h3>Create Your Free Account</h3>
 
                 <button
-                  onClick={() => signIn("google", { callbackUrl: "/chat" })}
+                  onClick={() => signIn("google", { callbackUrl: "/chat/app" })}
                   className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                 >
                   <svg

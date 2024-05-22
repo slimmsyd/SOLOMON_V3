@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import React, { FC, RefObject } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,29 +7,88 @@ import searchIcon from "../../../../public/assets/Chat/searchIcon.png";
 import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
 import iconChat from "../../../../public/assets/Chat/iconChat.png";
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
-
-interface Conversation {
-  conversationId: number;
-  title: string;
-}
+import { Conversation } from "../../../../types";
 
 interface ChatContainerProps {
+  conversations?: Conversation[];
   splitUserName: string;
   userName: string;
+  email?: string;
   onConversationClick?: (convoId: number) => void;
+  onDeleteConvo?: (convoId: number) => void;
+  onChangeConvoTitle?: (event: any) => void;
+  handleTitleClick?: (event: any) => void;
+  handleTitleChange?: (event: any) => void;
+  editTitleId?: null;
+  editedTitle?: string;
+  editingTitle?: boolean;
+  titleUpdated?: boolean
+
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
   splitUserName,
   userName,
+  email,
   onConversationClick,
+  onDeleteConvo,
+  onChangeConvoTitle,
+  handleTitleClick,
+  editTitleId,
+  editedTitle,
+  handleTitleChange,
+  editingTitle,
+  titleUpdated
 }) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
+
+
+
+  //Controlling hte hover state of the Delete SVG
+  const [hoveredConversationId, setHoveredConversationId] = useState<
+    null | number
+  >(null);
+
+  const [showDeleteContainer, setShowDeleteContainer] =
+    useState<boolean>(false);
+  useState<boolean>(false);
+  const deleteContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (
+      deleteContainerRef.current &&
+      !deleteContainerRef.current.contains(event.target as Node)
+    ) {
+      setShowDeleteContainer(false);
+    }
+  };
+
+
+  useEffect(() => {}, [editTitleId, editedTitle, editingTitle]);
+
+
+
+
+  useEffect(() => {
+    if (showDeleteContainer) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [showDeleteContainer]);
+
+  //Checking hte hover VOneration ID
+  useEffect(() => {
+  }, [hoveredConversationId]);
 
   //Want to get access to the conversatiosn and display in local chat
   useEffect(() => {
     // Retrieve the conversations from local storage
-    const localStorageConversations = localStorage.getItem("conversations");
+    const localStorageConversations = sessionStorage.getItem("conversations");
 
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
@@ -37,7 +96,17 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       );
       setConversations(conversationArray); // Set the conversations state as an array
     }
-  }, []);
+
+  }, [titleUpdated]);
+
+
+
+  useEffect(() => { 
+
+
+  })
+
+
 
   return (
     <div className="chatContainer flex flex-col">
@@ -71,18 +140,144 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         </button>
         {/* Chat ICON layered right here  */}
         <div className="chatRenderWrapper relative flex flex-col items-start justify-start gap-[13px] w-full">
-          {conversations.map((conversation: any) => (
-            <button
-            onClick={() => onConversationClick && onConversationClick(conversation.conversationId)} // Check if onConversationClick is provided
-            key={conversation.conversationId}
-              className="flex flex-row pl-[19px] gap-[13px]"
+          {/* Clear all Chats Div */}
+          <div className="absolute w-[10px] h-[10px] left-[-20px] cursor-pointer	 ">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="far"
+              data-icon="xmark"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
             >
-              <div className="mainIcon !w-[18px] !h-[18px]">
-                <Image alt="iconChat" src={iconChat} width={18} height={18} />
+              <path
+                fill="currentColor"
+                d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
+              ></path>
+            </svg>
+          </div>
+
+          <div className="flex flex-col gap-[13px] overflow-scroll w-[95%] ">
+            {conversations.map((conversation) => (
+              <div key={conversation.conversationId} className="relative">
+                <button
+                onClick={() => {
+                  if (!editingTitle) {
+                    onConversationClick && onConversationClick(conversation.conversationId);
+                  }
+                }}
+                  onMouseEnter={() =>
+                    setHoveredConversationId(conversation.conversationId)
+                  }
+                  // onMouseLeave={() => setHoveredConversationId()}
+                  className="flex flex-row pl-[19px] gap-[13px] items-center w-full"
+                >
+                  <div className="mainIcon !w-[18px] !h-[18px]">
+                    <Image
+                      alt="iconChat"
+                      src={iconChat}
+                      width={18}
+                      height={18}
+                    />
+                  </div>
+
+                {editTitleId === (conversation as any).conversationId && editingTitle === true  ? (
+                    <form 
+                      onSubmit={onChangeConvoTitle}
+                    className="flex flex-row justify-center items-center gap-3">
+
+                      <input
+                      type = "text"
+                        value={editedTitle}
+                        onChange={handleTitleChange}
+                        disabled={editTitleId === null}
+                        // onBlur={handleBlur}
+                      />
+                    </form>
+                        
+                  ) : (
+
+                    <div className="flex flex-row justify-between items-center w-full pr-[5px]">
+                    <p className="hover:text-white">{conversation.title}</p>
+                    {hoveredConversationId === conversation.conversationId && (
+                      <svg
+                        width={10}
+                        height={10}
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="far"
+                        data-icon="layer-group"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 576 512"
+                        className="ml-2"
+                        onMouseDown={() => setShowDeleteContainer(true)}
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M288 0c-8.5 0-17 1.7-24.8 5.1L53.9 94.8C40.6 100.5 32 113.5 32 128s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2L312.8 5.1C305 1.7 296.5 0 288 0zm-5.9 49.2C284 48.4 286 48 288 48s4 .4 5.9 1.2L477.7 128 293.9 206.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 128 282.1 49.2zM53.9 222.8C40.6 228.5 32 241.5 32 256s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 235.5 477.7 256 293.9 334.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 256 146 235.5 85.1 209.4 53.9 222.8zm0 128C40.6 356.5 32 369.5 32 384s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 363.5 477.7 384 293.9 462.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 384 146 363.5 85.1 337.4 53.9 350.8z"
+                        ></path>
+                      </svg>
+                    )}
+                  </div>                  )}
+
+                 
+                </button>
               </div>
-              <p className="hover:text-white">{conversation.title}</p>
-            </button>
-          ))}
+            ))}
+
+            {showDeleteContainer && (
+              <div
+                className="deleteChatContainer flex flex-col gap-[13px] absolute right-[-90px] justify-center"
+                ref={deleteContainerRef}
+              >
+                <button className="flex flex-row gap-[5px] items-center hover:bg-[#39393973] rounded p-[4px]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      fillRule="evenodd"
+                      d="M13.293 4.293a4.536 4.536 0 1 1 6.414 6.414l-1 1-7.094 7.094A5 5 0 0 1 8.9 20.197l-4.736.79a1 1 0 0 1-1.15-1.151l.789-4.736a5 5 0 0 1 1.396-2.713zM13 7.414l-6.386 6.387a3 3 0 0 0-.838 1.628l-.56 3.355 3.355-.56a3 3 0 0 0 1.628-.837L16.586 11zm5 2.172L14.414 6l.293-.293a2.536 2.536 0 0 1 3.586 3.586z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <p 
+                  onClick={() => handleTitleClick && hoveredConversationId !== null && handleTitleClick(hoveredConversationId)}
+                  className="text-white">Rename</p>
+                </button>
+                <button
+                  onClick={() =>
+                    onDeleteConvo &&
+                    hoveredConversationId !== null &&
+                    onDeleteConvo(hoveredConversationId)
+                  }
+                  className="flex flex-row gap-[5px] items-center hover:bg-[#39393973] rounded p-[4px]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="#4c35de"
+                      fillRule="evenodd"
+                      d="M10.556 4a1 1 0 0 0-.97.751l-.292 1.14h5.421l-.293-1.14A1 1 0 0 0 13.453 4zm6.224 1.892-.421-1.639A3 3 0 0 0 13.453 2h-2.897A3 3 0 0 0 7.65 4.253l-.421 1.639H4a1 1 0 1 0 0 2h.1l1.215 11.425A3 3 0 0 0 8.3 22H15.7a3 3 0 0 0 2.984-2.683l1.214-11.425H20a1 1 0 1 0 0-2zm1.108 2H6.112l1.192 11.214A1 1 0 0 0 8.3 20H15.7a1 1 0 0 0 .995-.894zM10 10a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  <p className="text-[#4c35de]">Delete</p>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -138,9 +333,9 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           className="  hoverBgBtn   text-[14px]   flex flex-row items-center justify-center gap-[13px] w-[135px]    "
         >
           <div className="mainIcon flex items-center justify-center">
-            {splitUserName}
+            {sessionStorage.getItem("splitUserName") || splitUserName}
           </div>
-          <p>{userName}</p>
+          <p>{sessionStorage.getItem("email") || email}</p>
         </Link>
 
         <Link href="/profile" className="mainIcon !w-[20px] !h-[20px]">
