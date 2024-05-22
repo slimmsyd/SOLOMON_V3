@@ -107,6 +107,7 @@ const handleConversationClick = (convoId: number) => {
 };
 
 
+
 const handleSignOut = async () => {
   // Clear any client-side session data if necessary
   if (isClient()) {
@@ -235,7 +236,7 @@ const handleSignOut = async () => {
                     />
                   </div>
                   <p
-                  onClick={handleSignOut}
+                  // onClick={handleSignOut}
                   >Sign out</p>
                 </button>{" "}
               </div>
