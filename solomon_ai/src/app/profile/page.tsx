@@ -73,11 +73,16 @@ number | null
 
   useEffect(() => {
     // This effect runs only on the client side
+
+    if (typeof window !== 'undefined') {
+
     const storedUsername =
       typeof window !== "undefined" ? sessionStorage.getItem("username") : null;
     if (storedUsername) {
       setUserName(storedUsername);
     }
+
+  }
   }, []);
 
 //   if (!userName || !session) {

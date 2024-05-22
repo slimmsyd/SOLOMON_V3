@@ -95,6 +95,9 @@ export default function ChatDashboard() {
   // }, []);
 
   useEffect(() => {
+
+    if (typeof window !== 'undefined') {
+
     const storedUserName = sessionStorage.getItem("userName");
     const storedSplitUserName = sessionStorage.getItem("splitUserName");
     const storedEmail = sessionStorage.getItem("email");
@@ -110,10 +113,14 @@ export default function ChatDashboard() {
     if (storedSplitUserName) {
       setSplitUserName(storedSplitUserName);
     }
+
+  }
   }, []);
 
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+
     if (userName !== null) {
       sessionStorage.setItem("userName", userName);
     }
@@ -125,6 +132,8 @@ export default function ChatDashboard() {
     if (email !== null) {
       sessionStorage.setItem("email", email);
     }
+
+  }
   }, [userName, splitUserName]);
 
   useEffect(() => {
@@ -154,6 +163,9 @@ export default function ChatDashboard() {
           setEmail(currentSession?.user.email.split("@")[0]);
 
           //Just a back up just in case
+
+          if (typeof window !== 'undefined') {
+
           if (email !== null) {
             sessionStorage.setItem("email", email);
             console.log("Is the email beign set here", email);
@@ -164,6 +176,8 @@ export default function ChatDashboard() {
           if (splitUserName !== "") {
             sessionStorage.setItem("splitUserName", splitUserName);
           }
+
+        }
 
           //We want to get Just to logo of the userName
           setSplitUserName(currentSession?.user.email[0].toUpperCase());
@@ -254,14 +268,16 @@ export default function ChatDashboard() {
   };
 
   // Where we are going to send the Chat Data Request
-  const saveMessageToStorage = (message: string) => {
-    sessionStorage.setItem("initialMessage", JSON.stringify(message));
-  };
+  // const saveMessageToStorage = (message: string) => {
+  //   sessionStorage.setItem("initialMessage", JSON.stringify(message));
+  // };
 
   function updateLocalStorage(
     updatedConversation: any,
     conversationId: number
   ) {
+    if (typeof window !== 'undefined') {
+
     let cachedConversations = sessionStorage.getItem("conversations");
 
     if (cachedConversations) {
@@ -287,6 +303,7 @@ export default function ChatDashboard() {
         console.error("Error parsing cached conversations:", e);
       }
     }
+  }
   }
 
   async function getConversation(conversationId: any) {
@@ -327,6 +344,7 @@ export default function ChatDashboard() {
 
     if (event.key === "Enter") {
       console.log("seeing if the function worked!!! ");
+      if (typeof window !== 'undefined') {
 
       event.preventDefault(); // Prevent form submission
       const newTitle = editedTitle; // Capture the title at the time of submission
@@ -358,6 +376,7 @@ export default function ChatDashboard() {
         );
       }
     }
+  }
     console.log(
       "logging the title change within the after before ",
       titleChange
@@ -396,11 +415,16 @@ export default function ChatDashboard() {
       //   "Reverting to original conversations:",
       //   originalConversations
       // );
+
       setConversations(originalConversations);
+      if (typeof window !== 'undefined') {
+
       sessionStorage.setItem(
         "conversations",
         JSON.stringify(originalConversations)
       );
+
+      }
 
       alert("Failed to update title, please try again."); // Inform the user
     }
@@ -448,6 +472,9 @@ export default function ChatDashboard() {
   //Lets clear the chat Responses when we first load in
   // Function to remove the first index of chatResponses
   const removeFirstChatResponse = () => {
+
+    if (typeof window !== 'undefined') {
+
     const chatResponses = JSON.parse(
       sessionStorage.getItem("chatResponses") || "[]"
     );
@@ -458,6 +485,8 @@ export default function ChatDashboard() {
     } else {
       console.log("No chat responses to remove");
     }
+
+  }
   };
   useEffect(() => {
     removeFirstChatResponse();
@@ -469,6 +498,9 @@ export default function ChatDashboard() {
 
   //This function Deletes the cvonersation
   async function deleteConversation(conversationId: number) {
+
+    if (typeof window !== 'undefined') {
+
     const currentConversations = conversations;
 
     // Optimistically remove the conversation from UI
@@ -527,6 +559,8 @@ export default function ChatDashboard() {
       console.error("Error deleting conversation:", error.message);
       alert("Could not delete the conversation. Please try again.");
     }
+
+  }
   }
 
   const borderClasses = {
