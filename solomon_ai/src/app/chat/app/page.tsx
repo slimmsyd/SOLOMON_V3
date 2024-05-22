@@ -390,7 +390,6 @@ export default function ChatDashboard() {
           titleChange
         );
       }
-    }
     console.log(
       "logging the title change within the after before ",
       titleChange
@@ -437,6 +436,9 @@ export default function ChatDashboard() {
 
       alert("Failed to update title, please try again."); // Inform the user
     }
+
+  }
+
   }
 
   };
@@ -498,10 +500,7 @@ export default function ChatDashboard() {
   };
   useEffect(() => {
     removeFirstChatResponse();
-    // console.log(
-    //   "Logging the session storage? Should be removed",
-    //   sessionStorage.getItem("chatResponses")
-    // );
+    
   }, [pathname]);
 
   //This function Deletes the cvonersation
