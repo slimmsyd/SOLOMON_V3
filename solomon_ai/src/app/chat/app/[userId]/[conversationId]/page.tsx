@@ -399,13 +399,13 @@ export default function ConversationPage() {
 
   //Get the associated ids with the current user on inital load.
 
-  useEffect(() => {
-    // possibly set an initial conversation ID here if needed
-    if (conversations.length > 0 && !currentConversationId) {
-      setCurrentConversationId(conversations[0].id);
-      console.log("Logging the conversations in useEffect", conversations);
-    }
-  }, [conversations]);
+  // useEffect(() => {
+  //   // possibly set an initial conversation ID here if needed
+  //   if (conversations.length > 0 && !currentConversationId) {
+  //     setCurrentConversationId(conversations[0].id);
+  //     console.log("Logging the conversations in useEffect", conversations);
+  //   }
+  // }, [conversations]);
 
   const handleConversationClick = (convoId: number) => {
     console.log("Activating conversation with ID:", convoId);
@@ -428,13 +428,7 @@ export default function ConversationPage() {
     console.log("Logging hte current The ConvoID", convoId);
   };
 
-  useEffect(() => {
-    const savedConvoId = localStorage.getItem("currentConversationId");
-    console.log("Logging the SavedConvoID", savedConvoId);
-    if (savedConvoId) {
-      setCurrentConversationId(Number(savedConvoId));
-    }
-  }, []);
+
 
   //Get the full Message Conversation.
 
@@ -470,7 +464,7 @@ export default function ConversationPage() {
   //   console.log("Logging to see if the responses change", responses);
   // }, [responses.length, setResponses]);
 
-  useEffect(() => {}, [responses]);
+  // useEffect(() => {}, [responses]);
 
   useEffect(() => {}, [isLoading]);
 
@@ -561,11 +555,23 @@ export default function ConversationPage() {
   useEffect(() => {
     setResponses([]); // Clear previous messages
 
+
+    console.log("Logging the CUrrent in the Fetch Resposnes", currentConversationId)
+    console.log("Loggin the local stroage iddd", localStorageConvoId)
     if (status === "authenticated" && session) {
       // Fetch messages for the current conversation if needed
-      fetchMessagesForConversation(currentConversationId as number);
+      if(currentConversationId === null) {
+        console.log("Fetch is Null fetch is nul", currentConversationId)
+        fetchMessagesForConversation(currentConversationId as any || Number(localStorageConvoId));
+
+
+      }else { 
+        console.log("Fech is doing good", currentConversationId)
+
+        // fetchMessagesForConversation(Number(localStorageConvoId))
+      }
     }
-  }, [session, currentConversationId]);
+  }, [currentConversationId]);
 
   if (!conversations) {
     return <p>No conversation found.</p>;

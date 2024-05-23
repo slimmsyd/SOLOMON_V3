@@ -11,7 +11,7 @@ import { Session } from "next-auth";
 import { Message } from "../../../../../types";
 
 import dynamic from "next/dynamic";
-import axios from 'axios';
+import axios from "axios";
 
 import ErrorPage from "../../../error/page";
 
@@ -49,7 +49,7 @@ const ChatDashboard: React.FC = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [sessionStatus, setSessionStatus] = useState<string>("");
-  const [userId, setUserId] = useState<null>(null)
+  const [userId, setUserId] = useState<null>(null);
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -158,7 +158,7 @@ const ChatDashboard: React.FC = () => {
 
         //For the first converation, we get the first ConvoId
 
-        setUserId(session.user.id)
+        setUserId(session.user.id);
         setSessionStatus(status);
         const currentSession = await getSession();
         console.log("Current session data:", currentSession);
@@ -204,17 +204,14 @@ const ChatDashboard: React.FC = () => {
     }
   }, []);
 
-
-  useEffect(() => { 
-
-    console.log("logging the completed form chnage ", completedForm)
- 
-  },[completedForm])
+  useEffect(() => {
+    console.log("logging the completed form chnage ", completedForm);
+  }, [completedForm]);
 
   //Submit the Inquiry
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging jfljsflkf",currentConversationId)
+    console.log("Logging jfljsflkf", currentConversationId);
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
@@ -280,14 +277,12 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
-  
-
   const [currentQuestion, setCurrentQuestion] = useState<number>(1);
   const [borderClasses, setBorderClasses] = useState<string[]>([
-    "selectedBorder", 
-    "noneBorder", 
-    "noneBorder", 
-    "noneBorder"
+    "selectedBorder",
+    "noneBorder",
+    "noneBorder",
+    "noneBorder",
   ]); // Example border classes
   useEffect(() => {
     console.log("Logging the current question", currentQuestion);
@@ -295,36 +290,38 @@ const ChatDashboard: React.FC = () => {
 
   const handleNextQuestion = async () => {
     if (currentQuestion < borderClasses.length) {
-      const updatedResponses = [...responses, `Response to question ${currentQuestion}`]; // Example response
+      const updatedResponses = [
+        ...responses,
+        `Response to question ${currentQuestion}`,
+      ]; // Example response
 
       const newBorderClasses = [...borderClasses];
       newBorderClasses[currentQuestion] = "selectedBorder"; // Update the border class for the current question
       setBorderClasses(newBorderClasses);
 
       const newCurrentQuestion = currentQuestion + 1;
-      const isComplete = newCurrentQuestion >= 4; 
+      const isComplete = newCurrentQuestion >= 4;
       setCurrentQuestion(newCurrentQuestion);
 
-      console.log("Logging the updating Response", newCurrentQuestion)
+      console.log("Logging the updating Response", newCurrentQuestion);
 
-      console.log("Logging the updating Response", updatedResponses)
-      console.log("Logging the isComplete", isComplete)
+      console.log("Logging the updating Response", updatedResponses);
+      console.log("Logging the isComplete", isComplete);
 
       try {
-        const response = await axios.post('/api/saveProgress', {
+        const response = await axios.post("/api/saveProgress", {
           userId,
           currentQuestion: newCurrentQuestion,
           responses: updatedResponses,
-          onComplete: isComplete // Include the onComplete status in the request
-
+          onComplete: isComplete, // Include the onComplete status in the request
         });
 
-
-
-
-        console.log("Logging The response in the handle Next question", response)
+        console.log(
+          "Logging The response in the handle Next question",
+          response
+        );
         if (response.data.data.currentQuestion === 4) {
-          console.log("The form has been complted", response.data.data)
+          console.log("The form has been complted", response.data.data);
           setCompleteForm(true);
         }
         if (response.data.data.onComplete) {
@@ -335,37 +332,34 @@ const ChatDashboard: React.FC = () => {
           setCompleteForm(true);
         }
 
-        if(isComplete) { 
-            setTimeout(() => { 
-              router.push("/chat/app/")
-      
-      
-            },5000)
+        if (isComplete) {
+          setTimeout(() => {
+            router.push("/chat/app/");
+          }, 5000);
         }
-
       } catch (error) {
         console.error("Error saving progress:", error);
       }
     }
   };
 
-
   //Fetch the Progress
   useEffect(() => {
     const fetchProgress = async () => {
       try {
         const response = await axios.get(`/api/getProgress`, {
-          params: { userId }
+          params: { userId },
         });
-
 
         if (response.data) {
           setCurrentQuestion(response.data.currentQuestion);
-          setCompleteForm(response.data.onComplete)
-          console.log("Logging hte response of setComplte", response.data)
+          setCompleteForm(response.data.onComplete);
+          console.log("Logging hte response of setComplte", response.data);
           // Update borderClasses based on the responses length
           const newBorderClasses = borderClasses.map((cls, index) =>
-            index < response.data.currentQuestion ? "selectedBorder" : "noneBorder"
+            index < response.data.currentQuestion
+              ? "selectedBorder"
+              : "noneBorder"
           );
           setBorderClasses(newBorderClasses);
         }
@@ -377,7 +371,6 @@ const ChatDashboard: React.FC = () => {
     fetchProgress();
   }, [userId]);
 
-
   const handleQuestionaireResponse = async (e: any) => {
     e.preventDefault();
 
@@ -385,7 +378,7 @@ const ChatDashboard: React.FC = () => {
 
     //Ensure that we don't submit anymore
     if (currentQuestion >= 4) {
-      setCompleteForm(true)
+      setCompleteForm(true);
       setFirstConvoState(false);
       return;
     }
@@ -398,9 +391,8 @@ const ChatDashboard: React.FC = () => {
       currentConversationId
     );
 
-
-    console.log("Loggingsession user Id", session?.user.id)
-    console.log("converoID user Id", currentConversationId)
+    console.log("Loggingsession user Id", session?.user.id);
+    console.log("converoID user Id", currentConversationId);
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
@@ -442,16 +434,11 @@ const ChatDashboard: React.FC = () => {
           session?.user.id
         );
 
-      
-
         await fetch("/api/messages", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
           },
-
-          
-          
 
           body: JSON.stringify({
             userId: session?.user.id, // Ensure you have the current user's ID
@@ -938,15 +925,11 @@ const ChatDashboard: React.FC = () => {
     );
   }, [status]);
 
-  useEffect(() => { 
-
-
+  useEffect(() => {
     const storedConvoId = Number(sessionStorage.getItem("currentConvoId"));
-    
 
     fetchMessagesForConversation(storedConvoId);
-
-  },[])
+  }, []);
 
   const fetchMessagesForConversation = async (conversationId: number) => {
     console.log("logging the Session in fetch convo", session);
@@ -1021,64 +1004,52 @@ const ChatDashboard: React.FC = () => {
     <div className="chatDashboard">
       {/* Chat Container Componet  */}
 
-        <div className="tempOverlay h-full flex flex-col pointer-events-none">
-          <ChatContainer
-            splitUserName={splitUserName}
-            userName={userName || ""}
-            email={email || ""}
-            onConversationClick={handleConversationClick}
-            onDeleteConvo={deleteConversation}
-            onChangeConvoTitle={handleSubmitTitle}
-            handleTitleClick={handleTitleClick}
-            editTitleId={editTitleId}
-            editedTitle={editedTitle}
-            handleTitleChange={handleTitleChange}
-            editingTitle={editingTitle}
-            titleUpdated={titleUpdated}
-          />
-        </div>
-     
+      <div className="tempOverlay h-full flex flex-col pointer-events-none">
+        <ChatContainer
+          splitUserName={splitUserName}
+          userName={userName || ""}
+          email={email || ""}
+          onConversationClick={handleConversationClick}
+          onDeleteConvo={deleteConversation}
+          onChangeConvoTitle={handleSubmitTitle}
+          handleTitleClick={handleTitleClick}
+          editTitleId={editTitleId}
+          editedTitle={editedTitle}
+          handleTitleChange={handleTitleChange}
+          editingTitle={editingTitle}
+          titleUpdated={titleUpdated}
+        />
+      </div>
 
       {/* Chat Container Componet  */}
 
       <div className="chatDashboardWrapper w-full text-left">
         {/* Guidelines Hader */}
-        {completedForm ? (
-          <Header />
-        ) : (
-          <header className=" text-[14px] guideLinesContainer gap-[12px] h-[70px] flex !flex-col items-start justify-end w-full px-[22px] mb-[50px] !border-none">
-            <div className="flex flex-row w-full justify-between">
-              <p className="text-[14px]">seek truth</p>
 
-              <p className="text-[14px]"> {currentQuestion}/4 Completed</p>
-            </div>
+        <header className=" text-[14px] guideLinesContainer gap-[12px] h-[70px] flex !flex-col items-start justify-end w-full px-[22px] mb-[50px] !border-none">
+          <div className="flex flex-row w-full justify-between">
+            <p className="text-[14px]">seek truth</p>
 
-            <div className="flex-row flex gap-[30px] w-full">
-              {borderClasses.map((borderClass, index) => (
-                <div key={index} className={`box ${borderClass}`}></div>
-              ))}
-            </div>
-          </header>
-        )}
+            <p className="text-[14px]"> {currentQuestion}/4 Completed</p>
+          </div>
+
+          <div className="flex-row flex gap-[30px] w-full">
+            {borderClasses.map((borderClass, index) => (
+              <div key={index} className={`box ${borderClass}`}></div>
+            ))}
+          </div>
+        </header>
 
         <div className="chatDashBoardContainer">
           {/* Dashboard Component  */}
 
-          {completedForm ? (
-            currentConversationId ? (
-              <ChatMessagesContainer responses={responses || "null"} />
-            ) : (
-              <Dashboard userName={userName || ""} />
-            )
-          ) : (
-            <SignupForm
-              userName={userName || ""}
-              completedForm={completedForm}
-              sessionStatus={sessionStatus}
-              sendAutomatedMessage={sendAutomatedMessage}
-              fetchFirstConversation={fetchFirstConversation}
-            />
-          )}
+          <SignupForm
+            userName={userName || ""}
+            completedForm={completedForm}
+            sessionStatus={sessionStatus}
+            sendAutomatedMessage={sendAutomatedMessage}
+            fetchFirstConversation={fetchFirstConversation}
+          />
         </div>
 
         <form
