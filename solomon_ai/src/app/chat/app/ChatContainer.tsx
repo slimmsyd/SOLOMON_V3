@@ -22,7 +22,8 @@ interface ChatContainerProps {
   editTitleId?: null;
   editedTitle?: string;
   editingTitle?: boolean;
-  titleUpdated?: boolean
+  titleUpdated?: boolean,
+  handleKeyDown?: (event: any) => void;
 
 }
 
@@ -38,7 +39,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   editedTitle,
   handleTitleChange,
   editingTitle,
-  titleUpdated
+  titleUpdated,
+  handleKeyDown
 }) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
@@ -192,6 +194,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                         value={editedTitle}
                         onChange={handleTitleChange}
                         disabled={editTitleId === null}
+                        onKeyDown={handleKeyDown}
                         // onBlur={handleBlur}
                       />
                     </form>
@@ -199,7 +202,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                   ) : (
 
                     <div className="flex flex-row justify-between items-center w-full pr-[5px]">
-                    <p className="hover:text-white">{conversation.title}</p>
+                    <p className="hover:text-white whitespace-nowrap">{conversation.title}</p>
                     {hoveredConversationId === conversation.conversationId && (
                       <svg
                         width={10}

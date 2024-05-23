@@ -28,7 +28,9 @@ import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useTogglePosition } from "../../../../hooks/useTogglePosition";
 
 import Link from "next/link";
-import { title } from "process";
+
+import { isClient } from "@/utilis/isClient";
+
 
 export default function ConversationPage() {
   const router = useRouter();
@@ -67,7 +69,64 @@ export default function ConversationPage() {
       setCurrentConversationId
     );
 
-  // const [isLoading, setLoading] = useState(false);
+
+
+//We check session on hte loading of the page 
+useEffect(() => {
+  console.log("useEffect: Checking session status:", status);
+  
+
+  async function checkSession() {
+
+    if (status === "loading") {
+      console.log("Session is loading...");
+      // return;
+    }
+
+    if (status === "unauthenticated") {
+      console.log("No session found, redirecting...");
+      router.push("/");
+    } else if (status === "authenticated") {
+
+      console.log(
+        "Session is authenticated, confirming session data...",
+        status
+      );
+
+      //For the first converation, we get the first ConvoId
+
+      const currentSession = await getSession();
+      console.log("Current session data:", currentSession);
+      setUserName(currentSession?.user.name);
+      if (!currentSession?.user.user) {
+        // setEmail(currentSession?.user.email.split("@")[0]);
+        setEmail(currentSession?.user.email.split("@")[0]);
+
+        //Just a back up just in case
+
+        if (isClient()) {
+          if (email !== null) {
+            sessionStorage.setItem("email", email);
+            console.log("Is the email beign set here", email);
+          }
+          if (userName !== null) {
+            sessionStorage.setItem("userName", userName);
+          }
+          if (splitUserName !== "") {
+            sessionStorage.setItem("splitUserName", splitUserName);
+          }
+        }
+        //We want to get Just to logo of the userName
+        setSplitUserName(currentSession?.user.email[0].toUpperCase());
+      }
+      console.log("Logging session user name", currentSession?.user.name);
+    }
+  }
+
+  if (status === "authenticated") {
+    checkSession();
+  }
+}, [status]);
 
   //Extract the variable name
   function extractNumber(url) {
@@ -321,10 +380,7 @@ export default function ConversationPage() {
         const originalConversations = conversations.map((convo) =>
           convo.id === editTitleId ? { ...convo, title: (convo as any).title } : convo
         );
-        // console.log(
-        //   "Reverting to original conversations:",
-        //   originalConversations
-        // );
+
         setConversations(originalConversations);
         sessionStorage.setItem(
           "conversations",
@@ -353,7 +409,7 @@ export default function ConversationPage() {
 
     try {
       // 2. Fetch bot reply from the API
-      const botReply = await fetch("http://localhost:3001/", {
+      const botReply = await fetch("http://localhost:3002/", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -442,13 +498,10 @@ export default function ConversationPage() {
     sessionStorage.removeItem("initialMessage");
   };
 
-  useEffect(() => {
-    // Code that should run when currentConversationId changes
-    console.log("Current Conversation ID has updated:", currentConversationId);
-  }, [currentConversationId]); // Make sure this is in the dependency list
 
   //Another Hook Check for the local storage
   useEffect(() => {
+    console.log("Current Conversation ID has updated:", currentConversationId);
     console.log("Logging the localstorage id", localStorageConvoId);
     clearStorage();
   }, [currentConversationId]); // Dependency array includes state that triggers this effect
@@ -472,7 +525,18 @@ export default function ConversationPage() {
   useEffect(() => {}, [messagesIsLoading]);
 
   //Fetch Message for this converations
+  const messagesRefCounter = useRef(0)
+  useEffect(() => 
+  { 
+    console.log("Logging to see how much the messages ref counter is loading", messagesRefCounter)
+  },[messagesRefCounter])
   const fetchMessagesForConversation = async (conversationId: number) => {
+    
+    messagesRefCounter.current += 1; 
+    if(messagesRefCounter.current > 1) { 
+      return;
+    }
+
     if (!session || !session.user || !session.user.id) {
       console.error("No user session available");
       return;
@@ -518,44 +582,10 @@ export default function ConversationPage() {
     }
   };
 
-  useEffect(() => {
-    async function checkSession() {
-      if (status === "loading") {
-        console.log("Session is loading...");
-        return;
-      }
 
-      if (status === "unauthenticated") {
-        console.log("No session found, redirecting...");
-        router.push("/");
-      } else if (status === "authenticated") {
-        const currentSession = await getSession();
-        setUserName(currentSession?.user.name);
-        if (!currentSession?.user.user) {
-          // setEmail(currentSession?.user.email.split("@")[0]);
-          setEmail(currentSession?.user.email.split("@")[0]);
-
-          //We want to get Just to logo of the userName
-          setSplitUserName(currentSession?.user.email[0].toUpperCase());
-        }
-        console.log("Logging session user name", currentSession?.user.name);
-      }
-    }
-
-    checkSession();
-  }, [status, router, session]);
-
-  // useEffect(() => {
-  //   setResponses([]); // Clear previous messages
-  //   if (currentConversationId) {
-  //     fetchMessagesForConversation(currentConversationId as number);
-  //   }
-  // }, [currentConversationId]); // Depend on currentConversationId
 
   useEffect(() => {
     setResponses([]); // Clear previous messages
-
-
     console.log("Logging the CUrrent in the Fetch Resposnes", currentConversationId)
     console.log("Loggin the local stroage iddd", localStorageConvoId)
     if (status === "authenticated" && session) {
@@ -572,6 +602,22 @@ export default function ConversationPage() {
       }
     }
   }, [currentConversationId]);
+
+  //Fetch conversations on page reload 
+  useEffect(() => {
+    setResponses([]); // Clear previous messages
+    if (status === "authenticated" && session) {
+    if(currentConversationId === null) {
+        console.log("Fetch is Null fetch is nul", currentConversationId)
+        fetchMessagesForConversation(currentConversationId as any || Number(localStorageConvoId));
+
+
+      }else { 
+        console.log("Status in fetch was not authenticated", status)
+      }
+    }
+  }, [session]);
+  
 
   if (!conversations) {
     return <p>No conversation found.</p>;

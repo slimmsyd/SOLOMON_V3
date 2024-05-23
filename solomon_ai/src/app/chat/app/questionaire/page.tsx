@@ -283,13 +283,19 @@ const ChatDashboard: React.FC = () => {
     "noneBorder",
     "noneBorder",
     "noneBorder",
+    "noneBorder",
   ]); // Example border classes
   useEffect(() => {
     console.log("Logging the current question", currentQuestion);
   }, [currentQuestion]);
 
+  const [readyToRedirect, setReadyToRedirect] = useState(false);
+  useEffect(() => {
+    console.log("Logging to see if ready to redirect", readyToRedirect);
+  }, [readyToRedirect]);
+
   const handleNextQuestion = async () => {
-    if (currentQuestion < borderClasses.length) {
+    if (currentQuestion < 5) {
       const updatedResponses = [
         ...responses,
         `Response to question ${currentQuestion}`,
@@ -300,11 +306,10 @@ const ChatDashboard: React.FC = () => {
       setBorderClasses(newBorderClasses);
 
       const newCurrentQuestion = currentQuestion + 1;
-      const isComplete = newCurrentQuestion >= 4;
+      const isComplete = newCurrentQuestion >= 5;
       setCurrentQuestion(newCurrentQuestion);
 
       console.log("Logging the updating Response", newCurrentQuestion);
-
       console.log("Logging the updating Response", updatedResponses);
       console.log("Logging the isComplete", isComplete);
 
@@ -320,10 +325,12 @@ const ChatDashboard: React.FC = () => {
           "Logging The response in the handle Next question",
           response
         );
-        if (response.data.data.currentQuestion === 4) {
-          console.log("The form has been complted", response.data.data);
+
+        if (response.data.data.currentQuestion === 5) {
+          console.log("The form has been completed", response.data.data);
           setCompleteForm(true);
         }
+
         if (response.data.data.onComplete) {
           setCompleteForm(true);
         }
@@ -333,13 +340,13 @@ const ChatDashboard: React.FC = () => {
         }
 
         if (isComplete) {
-          setTimeout(() => {
-            router.push("/chat/app/");
-          }, 5000);
+          setReadyToRedirect(true);
         }
       } catch (error) {
         console.error("Error saving progress:", error);
       }
+    } else if (readyToRedirect) {
+      router.push("/chat/app/");
     }
   };
 
@@ -377,10 +384,15 @@ const ChatDashboard: React.FC = () => {
     console.log("SUbmitting hte quesitonnair form!!!", currentConversationId);
 
     //Ensure that we don't submit anymore
-    if (currentQuestion >= 4) {
+    if (currentQuestion >= 5) {
       setCompleteForm(true);
       setFirstConvoState(false);
-      return;
+
+      if (readyToRedirect) {
+        router.push("/chat/app/");
+      } else {
+        return;
+      }
     }
 
     let currentConvoId = sessionStorage.getItem("currentConvoId");
@@ -756,13 +768,18 @@ const ChatDashboard: React.FC = () => {
       return;
     }
 
+    // Inline ternary operation to set the message content
+    const userMessage = session?.user?.name
+      ? `Hello, ${session.user.name}, My Name is ${messageContent}`
+      : `Hello, My Name is ${messageContent}`;
+
     try {
       const botReply = await fetch("http://localhost:3001/", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ message: messageContent }),
+        body: JSON.stringify({ message: userMessage }),
       }).then((res) => res.json());
 
       setResponses((prevResponses) => [
@@ -789,7 +806,7 @@ const ChatDashboard: React.FC = () => {
         body: JSON.stringify({
           userId: session?.user.id,
           conversationId: Number(convoId),
-          userContent: messageContent,
+          userContent: userMessage,
           botResponse: botReply.message,
           firstConvo: true, // Set the firstConvo flag
         }),
@@ -872,10 +889,10 @@ const ChatDashboard: React.FC = () => {
                 "Calling hte current before we sent the automated message",
                 automatedMessageCounter.current
               );
-              await sendAutomatedMessage("Hello, Solomon I am here", convoId);
+              await sendAutomatedMessage("Hello, Solomon, My Name is", convoId);
               sessionStorage.setItem("greetingSent", "true");
             } else if (
-              automatedMessageCounter.current >= 2 ||
+              automatedMessageCounter.current >= 1 ||
               sessionStorage.getItem("isFirstConvo")
             ) {
               console.log(
@@ -1030,7 +1047,7 @@ const ChatDashboard: React.FC = () => {
           <div className="flex flex-row w-full justify-between">
             <p className="text-[14px]">seek truth</p>
 
-            <p className="text-[14px]"> {currentQuestion}/4 Completed</p>
+            <p className="text-[14px]"> {currentQuestion}/5 Completed</p>
           </div>
 
           <div className="flex-row flex gap-[30px] w-full">
@@ -1054,7 +1071,7 @@ const ChatDashboard: React.FC = () => {
 
         <form
           ref={formRef}
-          onSubmit={!completedForm ? handleQuestionaireResponse : handleSubmit}
+          onSubmit={handleQuestionaireResponse}
           className="chatFormSubmit"
         >
           <div className="relative textAreaContainer">

@@ -40,7 +40,6 @@ const ChatDashboard: React.FC = () => {
   //getting the user name
 
   //First introduction From
-  const [completedForm, setCompleteForm] = useState<boolean>(false);
 
   const [userName, setUserName] = useState<string | null>(null);
   const [splitUserName, setSplitUserName] = useState<string>("");
@@ -96,41 +95,19 @@ const ChatDashboard: React.FC = () => {
 
   // Clear the conversation ID on component mount
   useEffect(() => {
+
+    //Removed the border Classes From LocalStorage 
+    localStorage.removeItem("borderClasses")
+    localStorage.removeItem("currentQuestion")
     console.log("clearing the current conversation ID");
     setResponses([])
     setCurrentConversationId(null);
   }, []);
 
 
-  useEffect(() => {
-    console.log("clearing the current conversation ID", currentConversationId);
 
+ 
 
-  }, [currentConversationId]);
-
-
-
-  // useEffect(() => {
-  //   const storedConversationId = sessionStorage.getItem("currentConversationId");
-  //   if (storedConversationId) {
-  //     setCurrentConversationId(storedConversationId as any);
-  //   }
-  // }, []);
-
-
-  useEffect(() => {
-    console.log("Logging to see if DataId was captured", dataId);
-  }, [dataId]);
-
-  //Getting  access to the currnet conversation ID
-  // useEffect(() => {
-  //   const currentConvoId = sessionStorage.getItem("currentConvoId");
-  //   if (currentConvoId) {
-  //     setCurrentConversationId(currentConvoId as any);
-  //   }
-
-  //   console.log("Logging the current Convo in the useEffect", currentConvoId);
-  // }, []);
   useEffect(() => {
     if (isClient()) {
       const storedUserName = sessionStorage.getItem("userName");
@@ -168,17 +145,32 @@ const ChatDashboard: React.FC = () => {
     }
   }, [userName, splitUserName]);
 
+
+  let sessionRef = useRef(0);
+  useEffect(() => { 
+    console.log("useEffect: Checking to see if the session ref changed", sessionRef.current);
+  },[sessionRef])
+
   useEffect(() => {
+    console.log("useEffect: Checking session status:", status);
+    sessionRef.current += 1;
+
+    if(sessionRef.current === 1 ) { 
+          return
+    }
+
     async function checkSession() {
+
       if (status === "loading") {
         console.log("Session is loading...");
-        return;
+        // return;
       }
 
       if (status === "unauthenticated") {
         console.log("No session found, redirecting...");
         router.push("/");
       } else if (status === "authenticated") {
+
         console.log(
           "Session is authenticated, confirming session data...",
           status
@@ -219,7 +211,7 @@ const ChatDashboard: React.FC = () => {
     if (status === "authenticated") {
       checkSession();
     }
-  }, [status, router]);
+  }, [status]);
 
   useEffect(() => {
     if (isClient()) {
@@ -232,9 +224,6 @@ const ChatDashboard: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("logging the completed form chnage ", completedForm);
-  }, [completedForm]);
 
   //Submit the Inquiry
   const handleSubmit = async (e) => {
@@ -277,7 +266,7 @@ const ChatDashboard: React.FC = () => {
 
       try {
         // 2. Fetch bot reply from the API
-        const botReply = await fetch("http://localhost:3001/", {
+        const botReply = await fetch("http://localhost:3002/", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -329,16 +318,6 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
-  const [currentQuestion, setCurrentQuestion] = useState<number>(1);
-  const [borderClasses, setBorderClasses] = useState<string[]>([
-    "selectedBorder",
-    "noneBorder",
-    "noneBorder",
-    "noneBorder",
-  ]); // Example border classes
-  useEffect(() => {
-    console.log("Logging the current question", currentQuestion);
-  }, [currentQuestion]);
 
 
   // Where we are going to send the Chat Data Request
@@ -410,12 +389,11 @@ const ChatDashboard: React.FC = () => {
       throw error; // Re-throw to handle it in the UI layer
     }
   }
-  const handleSubmitTitle = async (event: any) => {
+  const handleSubmitTitle = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevent form submission
 
     let titleChange: string = "";
 
-    if (event.key === "Enter") {
       if (isClient()) {
         console.log("seeing if the function worked!!! ");
 
@@ -495,8 +473,14 @@ const ChatDashboard: React.FC = () => {
           alert("Failed to update title, please try again."); // Inform the user
         }
       }
-    }
+    
   };
+  //Gets the key down change 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSubmitTitle(event as any); // Cast to any to satisfy FormEvent type
+    }
+  }
 
   //Editing the ability to change the existing title.
   const handleTitleClick = (convoId: number) => {
@@ -527,6 +511,8 @@ const ChatDashboard: React.FC = () => {
   const handleConversationClick = (convoId: number) => {
     console.log("Activating conversation with ID:", convoId);
     localStorage.setItem("currentConversationId", convoId.toString());
+    sessionStorage.setItem("currentConversationId", convoId.toString());
+
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
     router.push(targetPath, undefined);
@@ -619,67 +605,7 @@ const ChatDashboard: React.FC = () => {
   }
 
   //Send an automated Message on load
-  let automatedMessageCounter = useRef(0);
-  const [firstMessage, setFirstMessage] = useState<number>(1);
-  const [hasRunSendGreetings, setHasRunSendGreetings] = useState(false);
-  const [firstConvoState, setFirstConvoState] = useState<null | boolean>(null);
 
-  const sendAutomatedMessage = async (
-    messageContent: string,
-    convoId: number
-  ) => {
-    automatedMessageCounter.current += 1;
-
-    console.log(
-      `sendAutomatedMessage has been called ${automatedMessageCounter.current} times`
-    );
-
-    if (automatedMessageCounter.current >= 2) {
-      return;
-    }
-
-    try {
-      const botReply = await fetch("http://localhost:3001/", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ message: messageContent }),
-      }).then((res) => res.json());
-
-      setResponses((prevResponses) => [
-        ...prevResponses,
-        { question: "", response: botReply.message },
-      ]);
-
-      setResponses((prevResponses) =>
-        prevResponses.map((resp) => {
-          if (resp.question === message) {
-            return { ...resp, response: botReply.message };
-          }
-          return resp;
-        })
-      );
-
-      console.log("Logging the responses in automated message", responses);
-
-      await fetch("/api/messages", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: session?.user.id,
-          conversationId: Number(convoId),
-          userContent: messageContent,
-          botResponse: botReply.message,
-          firstConvo: true, // Set the firstConvo flag
-        }),
-      });
-    } catch (error) {
-      console.error("Error sending automated message:", error);
-    }
-  };
 
   //Interface for this
   interface ConversationData {
@@ -688,75 +614,7 @@ const ChatDashboard: React.FC = () => {
   }
 
 
-  // useEffect(() => {
-  //   const storedConvoId = Number(sessionStorage.getItem("currentConvoId"));
-
-  //   fetchMessagesForConversation(storedConvoId);
-  // }, []);
-
-  // const fetchMessagesForConversation = async (conversationId: number) => {
-  //   console.log("logging the Session in fetch convo", session);
-  //   if (!session || !session.user || !session.user.id) {
-  //     console.error("No user session available");
-  //     return;
-  //   }
-
-  //   setMessagesIsLoading(true);
-
-  //   if (!conversationId) {
-  //     console.error("no conversatoin ID");
-  //     return;
-  //   } else {
-  //     try {
-  //       const response = await fetch(
-  //         `/api/storedMessages?userId=${session?.user.id}&conversationId=${conversationId}`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch messages");
-  //       }
-
-  //       const messages = await response.json();
-
-  //       console.log(
-  //         "logging the MEssages in the joint",
-  //         messages,
-  //         session.user.id,
-  //         conversationId
-  //       );
-
-  //       // Map API response to expected format in state
-  //       let formattedMessages = messages.map((msg: Message) => ({
-  //         question: msg.userContent,
-  //         response: msg.botResponse,
-  //         firstConvo: msg.firstConvo, // Include firstConvo flag in the response
-  //       }));
-
-  //       // Check if any message has firstConvo set to true and remove the first message if found
-  //       if (formattedMessages.some((msg) => msg.firstConvo)) {
-  //         formattedMessages = formattedMessages.map((msg, index) => {
-  //           if (index === 0) {
-  //             return { ...msg, question: null };
-  //           }
-  //           return msg;
-  //         });
-  //       }
-
-  //       setResponses([]);
-
-  //       if (response.ok) {
-  //         console.log(
-  //           "Logging FetchMessageConversation Okay",
-  //           formattedMessages
-  //         );
-  //         setResponses(formattedMessages);
-  //       }
-  //       setMessagesIsLoading(false);
-  //     } catch (error) {
-  //       console.error("Error fetching messages:", error);
-  //     }
-  //   }
-  // };
-
+ 
   //Get access to the current conversation Name and Id
 
   useEffect(() => {
@@ -780,6 +638,7 @@ const ChatDashboard: React.FC = () => {
         handleTitleChange={handleTitleChange}
         editingTitle={editingTitle}
         titleUpdated={titleUpdated}
+        handleKeyDown = {handleKeyDown}
       />
 
       {/* Chat Container Componet  */}

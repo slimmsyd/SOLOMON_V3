@@ -28,12 +28,6 @@
       "static/chunks/main-app.js",
       "static/css/app/chat/app/page.css",
       "static/chunks/app/chat/app/page.js"
-    ],
-    "/chat/app/[userId]/[conversationId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/chat/app/[userId]/[conversationId]/page.css",
-      "static/chunks/app/chat/app/[userId]/[conversationId]/page.js"
     ]
   }
 }
