@@ -419,10 +419,7 @@ export default function ConversationPage() {
 
     localStorageConvoId = localStorage.getItem("currentConversationId");
     setCurrentConversationId(convoId);
-    // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
-    // if (router.asPath !== targetPath) {
-    //   router.push(targetPath, undefined);
-    // }
+
 
     console.log("Logging hte current conversation ID", currentConversationId);
     console.log("Logging hte current The ConvoID", convoId);

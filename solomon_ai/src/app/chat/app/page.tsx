@@ -40,7 +40,6 @@ const ChatDashboard: React.FC = () => {
   //getting the user name
 
   //First introduction From
-  const [completedForm, setCompleteForm] = useState<boolean>(false);
 
   const [userName, setUserName] = useState<string | null>(null);
   const [splitUserName, setSplitUserName] = useState<string>("");
@@ -102,35 +101,9 @@ const ChatDashboard: React.FC = () => {
   }, []);
 
 
-  useEffect(() => {
-    console.log("clearing the current conversation ID", currentConversationId);
 
+ 
 
-  }, [currentConversationId]);
-
-
-
-  // useEffect(() => {
-  //   const storedConversationId = sessionStorage.getItem("currentConversationId");
-  //   if (storedConversationId) {
-  //     setCurrentConversationId(storedConversationId as any);
-  //   }
-  // }, []);
-
-
-  useEffect(() => {
-    console.log("Logging to see if DataId was captured", dataId);
-  }, [dataId]);
-
-  //Getting  access to the currnet conversation ID
-  // useEffect(() => {
-  //   const currentConvoId = sessionStorage.getItem("currentConvoId");
-  //   if (currentConvoId) {
-  //     setCurrentConversationId(currentConvoId as any);
-  //   }
-
-  //   console.log("Logging the current Convo in the useEffect", currentConvoId);
-  // }, []);
   useEffect(() => {
     if (isClient()) {
       const storedUserName = sessionStorage.getItem("userName");
@@ -168,8 +141,22 @@ const ChatDashboard: React.FC = () => {
     }
   }, [userName, splitUserName]);
 
+
+  let sessionRef = useRef(0);
+  useEffect(() => { 
+    console.log("useEffect: Checking to see if the session ref changed", sessionRef.current);
+  },[sessionRef])
+
   useEffect(() => {
+    console.log("useEffect: Checking session status:", status);
+    sessionRef.current += 1;
+
+    if(sessionRef.current === 1 ) { 
+          return
+    }
+
     async function checkSession() {
+
       if (status === "loading") {
         console.log("Session is loading...");
         return;
@@ -179,6 +166,7 @@ const ChatDashboard: React.FC = () => {
         console.log("No session found, redirecting...");
         router.push("/");
       } else if (status === "authenticated") {
+
         console.log(
           "Session is authenticated, confirming session data...",
           status
@@ -219,7 +207,7 @@ const ChatDashboard: React.FC = () => {
     if (status === "authenticated") {
       checkSession();
     }
-  }, [status, router]);
+  }, [status]);
 
   useEffect(() => {
     if (isClient()) {
@@ -232,9 +220,6 @@ const ChatDashboard: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("logging the completed form chnage ", completedForm);
-  }, [completedForm]);
 
   //Submit the Inquiry
   const handleSubmit = async (e) => {

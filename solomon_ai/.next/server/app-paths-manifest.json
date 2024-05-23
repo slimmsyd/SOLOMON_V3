@@ -1,8 +1,8 @@
 {
-  "/profile/page": "app/profile/page.js",
-  "/login/page": "app/login/page.js",
-  "/chat/app/questionaire/page": "app/chat/app/questionaire/page.js",
+  "/page": "app/page.js",
   "/chat/app/page": "app/chat/app/page.js",
   "/chat/app/[userId]/[conversationId]/page": "app/chat/app/[userId]/[conversationId]/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
+  "/profile/page": "app/profile/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }
