@@ -56,7 +56,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
 
   return (
     <>
-
+{/* 
 <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
           <div className="flex flex-row gap-[18px] items-center justify-center">
             <button className="hover:text-[#807f7f]">Tour</button>
@@ -81,7 +81,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
               Guidlines
             </button>
           </div>
-        </header>
+        </header> */}
 
       {/* Place within a Componnet */}
       <h2>Grand Rising, {userName}</h2>

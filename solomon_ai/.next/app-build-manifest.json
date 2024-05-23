@@ -17,11 +17,23 @@
       "static/css/app/login/page.css",
       "static/chunks/app/login/page.js"
     ],
+    "/chat/app/questionaire/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/chat/app/questionaire/page.css",
+      "static/chunks/app/chat/app/questionaire/page.js"
+    ],
     "/chat/app/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/chat/app/page.css",
       "static/chunks/app/chat/app/page.js"
+    ],
+    "/chat/app/[userId]/[conversationId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/chat/app/[userId]/[conversationId]/page.css",
+      "static/chunks/app/chat/app/[userId]/[conversationId]/page.js"
     ]
   }
 }

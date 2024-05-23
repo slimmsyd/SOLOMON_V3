@@ -25,6 +25,7 @@ model User {
   messages      Messages[]
   conversations UserConversations[]
   accounts      Account[]
+  progress      UserProgress?
 }
 
 model Account {
@@ -86,4 +87,16 @@ model UserConversations {
   @@id([userId, conversationId])
   @@index([userId], name: "idx_user_conversations_user_id")
   @@index([conversationId], name: "idx_user_conversations_conversation_id")
+}
+
+model UserProgress {
+  id              Int     @id @default(autoincrement())
+  currentQuestion Int
+  responses       Json    @default("[]")
+  userId          Int     @unique
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  onComplete      Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

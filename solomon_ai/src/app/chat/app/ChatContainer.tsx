@@ -109,7 +109,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
 
   return (
-    <div className="chatContainer flex flex-col">
+    <div className="chatContainer flex flex-col flex-1">
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <div className="flex flex-row">

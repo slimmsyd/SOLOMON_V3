@@ -35,7 +35,7 @@ const Login = () => {
     const signInData = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      callbackUrl: "/chat/dashboard",
+      callbackUrl: "/chat/questionaire",
       redirect: true,
     });
 
@@ -90,7 +90,7 @@ const Login = () => {
                 <h3>Create Your Free Account</h3>
 
                 <button
-                  onClick={() => signIn("google", { callbackUrl: "/chat/app" })}
+                  onClick={() => signIn("google", { callbackUrl: "/chat/app/questionaire" })}
                   className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                 >
                   <svg
