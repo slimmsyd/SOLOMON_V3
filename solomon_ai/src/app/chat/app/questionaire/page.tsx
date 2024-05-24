@@ -752,7 +752,7 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
       : `Hello, My Name is ${messageContent}`;
 
     try {
-      const botReply = await fetch("http://localhost:3001/", {
+      const botReply = await fetch("/api/questionBot", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
