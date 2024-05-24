@@ -1,1 +1,0 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/sydneysanders/Desktop/CodeProjects/SOLOMON_V3/solomon_ai/src/app/layout\":[\"static/media/c9a5bc6a7c948fb0-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"

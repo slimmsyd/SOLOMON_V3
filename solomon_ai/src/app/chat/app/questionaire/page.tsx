@@ -347,7 +347,7 @@ const ChatDashboard: React.FC = () => {
 
       try {
         // 2. Fetch bot reply from the API
-        const botReply = await fetch("http://localhost:3001/", {
+        const botReply = await fetch("/api/questionBot", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -942,7 +942,7 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
     } else {
       try {
         const response = await fetch(
-          `/api/storedMessages?userId=${session?.user.id}&conversationId=${conversationId}`
+          `/api/storedMessages?authorId=${session?.user.id}&conversationId=${conversationId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch messages");

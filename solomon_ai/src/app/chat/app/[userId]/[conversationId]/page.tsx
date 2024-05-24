@@ -43,7 +43,13 @@ export default function ConversationPage() {
 
   const { responses, setResponses, message, setMessage } =
     useChatConversation();
-  const localStorageConvoId = localStorage.getItem("currentConversationId");
+    
+    let localStorageConvoId;
+    if(localStorage.getItem("currentConversationId")) { 
+
+       localStorageConvoId = localStorage.getItem("currentConversationId");
+
+    }
 
   const form = useRef();
   const { data: session, status } = useSession();
