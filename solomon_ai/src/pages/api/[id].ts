@@ -5,33 +5,14 @@ import { db } from '@/app/api/lib/db';
 import { getSession } from 'next-auth/react';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query; // Extract the id from the query parameters
-  const conversationId = parseInt(id as string, 10);
+  const conversationId = id as string;
 
   if (!conversationId) {
     res.status(400).json({ message: "Invalid conversation ID" });
     return;
   }
 
-  // const session = await getSession({ req });
-  // if (!session) {
-  //   res.status(401).json({ message: "Unauthorized" });
-  //   return;
-  // }
-
-  // const userId = session.user.id;
-  
-  // const isUserAuthorized = async (conversationId: number, userId: string) => {
-  //   const conversation = await db.conversation.findUnique({
-  //     where: { id: conversationId },
-  //     include: {
-  //       participants: true
-  //     }
-  //   });
-  //   if (!conversation) {
-  //     return false;
-  //   }
-  //   return conversation.participants.some(participant => (participant as any).userId === userId);
-  // };
+ 
 
 
 
@@ -86,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case 'DELETE':
         try {
 
-          const conversationId = parseInt(id as string, 10);
+          const conversationId = id as string;
 
           if (!id || Array.isArray(id)) {
             res.status(400).json({ message: "Invalid conversation ID" });
