@@ -405,7 +405,7 @@ const ChatDashboard: React.FC = () => {
 
   function updateLocalStorage(
     updatedConversation: any,
-    conversationId: number
+    conversationId: string
   ) {
     if (isClient()) {
       let cachedConversations = sessionStorage.getItem("conversations");
@@ -559,7 +559,7 @@ const ChatDashboard: React.FC = () => {
   };
 
   //Editing the ability to change the existing title.
-  const handleTitleClick = (convoId: number) => {
+  const handleTitleClick = (convoId: string) => {
     const conversation = conversations.find(
       (convo) => (convo as any).conversationId === convoId
     );
@@ -597,7 +597,7 @@ const extractZodiacSign = (responseText: string) => {
 };
 
 // Update user progress with the extracted values
-const updateUserProgress = async (userId: number, lifePathNumber: string, zodiacSign: string) => {
+const updateUserProgress = async (userId: string, lifePathNumber: string, zodiacSign: string) => {
   try {
     const response = await axios.post("/api/updateUser", {
       userId,
@@ -629,7 +629,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
 
 
   
-  const handleConversationClick = (convoId: number) => {
+  const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
@@ -659,7 +659,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
   }, [pathname]);
 
   //This function Deletes the cvonersation
-  async function deleteConversation(conversationId: number) {
+  async function deleteConversation(conversationId: string) {
     if (isClient()) {
       const currentConversations = conversations;
 
@@ -885,7 +885,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
           }
         };
 
-        const storedConvoId = Number(sessionStorage.getItem("currentConvoId"));
+        const storedConvoId = sessionStorage.getItem("currentConvoId")
         const fistConvoState = sessionStorage.getItem("isFirstConvo");
 
         if (
@@ -903,7 +903,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
 
           console.log(
             "Logging the messages for conversation",
-            Number(sessionStorage.getItem("currentConvoId"))
+            sessionStorage.getItem("currentConvoId")
           );
           console.log(
             "Loggin the completed form before we fetch",
@@ -922,12 +922,12 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
   }, [status]);
 
   useEffect(() => {
-    const storedConvoId = Number(sessionStorage.getItem("currentConvoId"));
+    const storedConvoId = sessionStorage.getItem("currentConvoId")
 
     fetchMessagesForConversation(storedConvoId);
   }, []);
 
-  const fetchMessagesForConversation = async (conversationId: number) => {
+  const fetchMessagesForConversation = async (conversationId: string | null) => {
     console.log("logging the Session in fetch convo", session);
     if (!session || !session.user || !session.user.id) {
       console.error("No user session available");
