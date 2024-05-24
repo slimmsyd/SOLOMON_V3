@@ -13,8 +13,8 @@ interface SignupFormProps {
   userName: string;
   completedForm: boolean;
   sessionStatus: string;
-  sendAutomatedMessage: (message: string, convoId: number) => void;
-  fetchFirstConversation: (userId: number) => void;
+  sendAutomatedMessage: (message: string, convoId: string) => void;
+  fetchFirstConversation: (userId: string) => void;
 }
 
 export const SignupForm: FC<SignupFormProps> = ({
@@ -31,7 +31,7 @@ export const SignupForm: FC<SignupFormProps> = ({
 
   const formRef = useRef<HTMLFormElement>(null);
   const [currentConversationId, setCurrentConversationId] = useState<
-    number | null
+    number | string| null
   >(null);
 
   const [firstConversation, setFirstConversation] = useState<boolean | null>(
@@ -68,134 +68,6 @@ export const SignupForm: FC<SignupFormProps> = ({
 //   let automatedMessageCounter = useRef(0);
   const [firstMessage, setFirstMessage] = useState<number>(0);
 
-//   const sendAutomatedMessage = async (messageContent, convoId: number) => {
-//     automatedMessageCounter.current += 1;
-
-//     console.log(
-//       `sendAutomatedMessage has been called ${automatedMessageCounter.current} times`
-//     );
-
-//     if(automatedMessageCounter.current >=2) { 
-//         return
-//     }
-
-//     try {
-//       const botReply = await fetch("http://localhost:3001/", {
-//         method: "POST",
-//         headers: {
-//           "Content-type": "application/json",
-//         },
-//         body: JSON.stringify({ message: messageContent }),
-//       }).then((res) => res.json());
-
-//       setResponses((prevResponses) => [
-//         ...prevResponses,
-//         { question: "", response: botReply.message },
-//       ]);
-
-//       setResponses((prevResponses) =>
-//         prevResponses.map((resp) => {
-//           if (resp.question === message) {
-//             return { ...resp, response: botReply.message };
-//           }
-//           return resp;
-//         })
-//       );
-
-//       console.log("Logging the responses in automated message", responses);
-
-//       await fetch("/api/messages", {
-//         method: "POST",
-//         headers: {
-//           "Content-type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           userId: session?.user.id,
-//           conversationId: convoId,
-//           userContent: messageContent,
-//           botResponse: botReply.message,
-//         }),
-//       });
-//     } catch (error) {
-//       console.error("Error sending automated message:", error);
-//     }
-//   };
-
-//   const fetchFirstConversation = async (userId: number): Promise<number> => {
-//     console.log("Logging FetchFirstConvo USER ID", userId);
-
-//     try {
-//       const response = await fetch("/api/firstConversations", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ userId }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch the first conversation");
-//       }
-
-//       const data = await response.json();
-
-//       console.log("Logging the data on the first conversation on load", data);
-//       setCurrentConversationId(data.id);
-//       return data.id; // Return the conversation ID
-//     } catch (error) {
-//       console.error("Error fetching the first conversation:", error);
-//       throw error;
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (session?.user?.id) {
-//       const userId = session.user.id;
-//       console.log("logging the userID to be noew ", userId);
-//       fetchFirstConversation(userId).catch(console.error);
-//     }
-//   }, [session]);
-
-//   // Effect to send a greetings message when the component mounts
-//   useEffect(() => {
-//     const userId = session?.user.id;
-
-//     // Effect to send a greetings message when the component mounts
-//     const sendGreetings = async () => {
-//       console.log("Logging the Conversation ID", currentConversationId);
-//       if (!currentConversationId && session?.user?.id) {
-//         const convoId = await fetchFirstConversation(userId);
-//         console.log("loggign the convo Id in the send Greets", convoId);
-//         setCurrentConversationId(convoId);
-//         console.log("Did we create a new convo?", currentConversationId);
-//       }
-
-//       if (automatedMessageCounter.current < 1 && session?.user?.id) {
-//         const convoId = await fetchFirstConversation(userId);
-//         console.log(
-//           "Calling hte current before we sent the automated message",
-//           automatedMessageCounter.current
-//         );
-//         await sendAutomatedMessage("Hello, Solomon I am here", convoId);
-//       } else if (automatedMessageCounter.current >= 2) {
-//         return;
-//       }
-//     };
-
-//     if (!completedForm && currentConversationId === null) {
-//       sendGreetings();
-//     }
-
-//     console.log(
-//       "Logging the current AutomatedMessage",
-//       automatedMessageCounter.current
-//     );
-//   }, [session]);
-
-
-
-  //We have ot check if this is the first conversation
-  // Example function to get or create the first conversation for a user
 
   useEffect(() => {
   }, [firstMessage]);

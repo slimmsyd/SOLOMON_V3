@@ -1,6 +1,5 @@
 "use client";
 
-import DashboardNav from "../../../components/DashboardNav";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
@@ -12,15 +11,6 @@ import { Message } from "../../../../../types";
 
 import dynamic from "next/dynamic";
 import axios from "axios";
-
-import ErrorPage from "../../../error/page";
-
-import Image from "next/image";
-import arrowLeft from "../../../../public/assets/Chat/arrowLeft.png";
-import searchIcon from "../../../../public/assets/Chat/searchIcon.png";
-import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
-import iconChat from "../../../../public/assets/Chat/iconChat.png";
-import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 
 import { isClient } from "@/utilis/isClient";
 
@@ -64,7 +54,7 @@ const ChatDashboard: React.FC = () => {
   const [titleUpdated, setTitleUpdated] = useState<boolean>(false); // New state for title updates
 
   const [currentConversationId, setCurrentConversationId] = useState<
-    number | null
+    number | string | null
   >(null);
 
   const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(
@@ -212,74 +202,7 @@ const ChatDashboard: React.FC = () => {
     console.log("logging the completed form chnage ", completedForm);
   }, [completedForm]);
 
-  //Submit the Inquiry
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Logging jfljsflkf", currentConversationId);
-    if (isClient()) {
-      if (!currentConversationId) {
-        console.log("No conversation selected.");
 
-        await createConversation(); // Make sure there is a conversation ID
-      }
-
-      // 1. Set up the new response without any bot response yet.
-      const newResponse = { question: message, response: "" };
-
-      setResponses((responses) => [...responses, newResponse]); // Use functional update for state
-      setMessage("");
-
-      try {
-        // 2. Fetch bot reply from the API
-        const botReply = await fetch("http://localhost:3001/", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({ message }),
-        }).then((res) => res.json());
-
-        // 3. Update the responses array with the bot's reply
-        setResponses((prevResponses) =>
-          prevResponses.map((resp) => {
-            if (resp.question === message) {
-              return { ...resp, response: botReply.message };
-            }
-            return resp;
-          })
-        );
-
-        // 4. Send the user question and bot response to the database
-
-        console.log(
-          "logging the creation of a new chat in here",
-          session?.user.id
-        );
-
-        await fetch("/api/messages", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: session?.user.id, // Ensure you have the current user's ID
-            conversationId: Number(currentConversationId),
-            userContent: message, // User's message
-            botResponse: botReply.message, // Bot's response, obtained separately
-          }),
-        });
-
-        console.log(
-          "Loggign the current Conversation on a new click ",
-          currentConversationId
-        );
-
-        //Add the conversations arrawy or update
-      } catch (error) {
-        console.error("Error handling submission:", error);
-      }
-    }
-  };
 
   const [currentQuestion, setCurrentQuestion] = useState<number>(1);
   const [borderClasses, setBorderClasses] = useState<string[]>([
@@ -456,9 +379,11 @@ const ChatDashboard: React.FC = () => {
             "Content-type": "application/json",
           },
 
+
+
           body: JSON.stringify({
             userId: session?.user.id, // Ensure you have the current user's ID
-            conversationId: Number(currentConversationId),
+            conversationId: currentConversationId,
             userContent: message, // User's message
             botResponse: botReply.message, // Bot's response, obtained separately
           }),
@@ -805,7 +730,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
 
   const sendAutomatedMessage = async (
     messageContent: string,
-    convoId: number
+    convoId: string
   ) => {
     automatedMessageCounter.current += 1;
 
@@ -858,7 +783,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
         },
         body: JSON.stringify({
           userId: session?.user.id,
-          conversationId: Number(convoId),
+          conversationId: convoId,
           userContent: userMessage,
           botResponse: botReply.message,
           firstConvo: true, // Set the firstConvo flag
@@ -871,15 +796,14 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
 
   //Interface for this
   interface ConversationData {
-    id: number;
+    id: string;
     firstConvo: boolean;
   }
-
+7
   const fetchFirstConversation = async (
-    userId: number
+    userId: string
   ): Promise<ConversationData> => {
     console.log("Logging FetchFirstConvo USER ID", userId);
-
     console.log("Logging the current conversation Id", currentConversationId);
 
     if (currentConversationId === 1) {
@@ -921,6 +845,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
   // Effect to send a greetings message when the component mounts
   useEffect(() => {
     const userId = session?.user.id;
+    console.log("Logging the UserID before we fetch the first conversatino", userId)
 
     console.log("Log status", status, "logg sessin", session);
     if (isClient()) {
@@ -942,6 +867,7 @@ const updateUserProgress = async (userId: number, lifePathNumber: string, zodiac
                 "Calling hte current before we sent the automated message",
                 automatedMessageCounter.current
               );
+              console.log("Loggin the COnvoID before send My name", convoId)
               await sendAutomatedMessage("Hello, Solomon, My Name is", convoId);
               sessionStorage.setItem("greetingSent", "true");
             } else if (

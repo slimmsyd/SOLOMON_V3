@@ -13,29 +13,29 @@ datasource db {
 }
 
 model User {
-  id            Int                 @id @default(autoincrement())
-  email         String              @unique
-  name          String?             @unique
-  image         String?
-  username      String?             @unique
-  password      String?
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
-  emailVerified Boolean?
-    birthday       DateTime?
+  id             String              @id @default(uuid()) @db.Uuid
+  email          String              @unique
+  name           String?             
+  image          String?
+  username       String?             @unique
+  password       String?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  emailVerified  Boolean?
+  birthday       DateTime?
   zodiacSign     String?
   lifePathNumber Int?
   religion       String?
-  messages      Messages[]
-  conversations UserConversations[]
-  accounts      Account[]
-  progress      UserProgress?
+  messages       Messages[]
+  conversations  UserConversations[]
+  accounts       Account[]
+  progress       UserProgress?
 }
 
 model Account {
-  id                 Int     @id @default(autoincrement())
+  id                 String  @id @default(uuid()) @db.Uuid
   type               String?
-  userId             Int
+  userId             String
   provider           String
   providerAccountId  String
   refresh_token      String? // OAuth refresh token
@@ -54,18 +54,19 @@ model Account {
   @@index([userId], name: "idx_account_user_id")
 }
 
+
 model Conversation {
-  id             Int                 @id @default(autoincrement())
-  title          String?             @db.VarChar(255)
-  firstConvo     Boolean             @default(false)
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
-  messages       Messages[]
-  participants   UserConversations[]
+  id            String       @id @default(uuid()) @db.Uuid
+  title        String?             @db.VarChar(255)
+  firstConvo   Boolean             @default(false)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  messages     Messages[]
+  participants UserConversations[]
 }
 
 model Messages {
-  id             Int          @id @default(autoincrement())
+  id             String       @id @default(uuid()) @db.Uuid
   title          String       @db.VarChar(255)
   userContent    String? // Content from the user
   botResponse    String? // Response from the bot
@@ -74,9 +75,9 @@ model Messages {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
   author         User         @relation(fields: [authorId], references: [id])
-  authorId       Int
+  authorId       String        @db.Uuid
   conversation   Conversation @relation(fields: [conversationId], references: [id])
-  conversationId Int
+  conversationId String
 
   @@index([authorId], name: "idx_messages_author_id")
   @@index([conversationId], name: "idx_messages_conversation_id")
@@ -84,9 +85,9 @@ model Messages {
 
 model UserConversations {
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         Int
+  userId         String       @db.Uuid
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  conversationId Int
+  conversationId String       @db.Uuid
 
   @@id([userId, conversationId])
   @@index([userId], name: "idx_user_conversations_user_id")
@@ -97,7 +98,7 @@ model UserProgress {
   id              Int     @id @default(autoincrement())
   currentQuestion Int
   responses       Json    @default("[]")
-  userId          Int     @unique
+  userId          String   @unique @db.Uuid
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   onComplete      Boolean @default(false)
 

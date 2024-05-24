@@ -30,7 +30,7 @@ export interface User extends NextAuthUser {
 
 
 export interface Conversation {
-  conversationId: number;
+  conversationId: number | string;
   title: string;
 }
 
@@ -42,4 +42,4 @@ export interface Message {
 
 
 export type SetConversations = (conversations: Conversation[] | ((prev: Conversation[]) => Conversation[])) => void;
-export type SetCurrentConversationId = (id: number) => void;
+export type SetCurrentConversationId = (id: number | string) => void;

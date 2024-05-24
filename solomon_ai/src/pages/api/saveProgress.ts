@@ -4,7 +4,7 @@ import * as z from "zod";
 import { db } from "@/app/api/lib/db";
 // Define the schema for input validation
 const progressSchema = z.object({
-  userId: z.number(),
+  userId: z.string().uuid(), // Ensure the userId is a valid UUID
   currentQuestion: z.number(),
   responses: z.array(
     z.union([

@@ -2,13 +2,20 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/app/api/lib/db";
+import * as z from 'zod';
+
+const userIdSchema = z.object({
+  userId: z.string().uuid(), // Ensure the userId is a valid UUID
+});
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'GET') {
-    const userId = parseInt(req.query.userId as string);
+    if (req.method === 'GET') {
+      try {
+        // Validate the userId
+        const { userId } = userIdSchema.parse(req.query);
+  
 
-    try {
-      // Fetch all conversations associated with the user
+        // Fetch all conversations associated with the user
       const userConversations = await db.userConversations.findMany({
         where: { userId },
         include: {

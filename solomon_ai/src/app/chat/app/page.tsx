@@ -23,6 +23,7 @@ import iconChat from "../../../../public/assets/Chat/iconChat.png";
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 
 import { isClient } from "@/utilis/isClient";
+import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
 // Dashboard
 
@@ -40,10 +41,8 @@ const ChatDashboard: React.FC = () => {
   //getting the user name
 
   //First introduction From
+  const { userName, splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
 
-  const [userName, setUserName] = useState<string | null>(null);
-  const [splitUserName, setSplitUserName] = useState<string>("");
-  const [email, setEmail] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, status } = useSession();
@@ -59,7 +58,7 @@ const ChatDashboard: React.FC = () => {
   const [titleUpdated, setTitleUpdated] = useState<boolean>(false); // New state for title updates
 
   const [currentConversationId, setCurrentConversationId] = useState<
-    number | null
+    number| string | null
   >(null);
 
   const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(
@@ -108,25 +107,6 @@ const ChatDashboard: React.FC = () => {
 
  
 
-  useEffect(() => {
-    if (isClient()) {
-      const storedUserName = sessionStorage.getItem("userName");
-      const storedSplitUserName = sessionStorage.getItem("splitUserName");
-      const storedEmail = sessionStorage.getItem("email");
-
-      if (storedUserName) {
-        setUserName(storedUserName);
-      }
-
-      if (email) {
-        setEmail(storedEmail);
-      }
-
-      if (storedSplitUserName) {
-        setSplitUserName(storedSplitUserName);
-      }
-    }
-  }, []);
 
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
@@ -183,8 +163,7 @@ const ChatDashboard: React.FC = () => {
         const currentSession = await getSession();
         console.log("Loggin session", session)
         console.log("Current session data:", currentSession);
-        setUserName(currentSession?.user.name);
-        
+
         if (!currentSession?.user.user) {
           // setEmail(currentSession?.user.email.split("@")[0]);
           setEmail(currentSession?.user.email.split("@")[0]);
@@ -215,16 +194,6 @@ const ChatDashboard: React.FC = () => {
     }
   }, [status]);
 
-  useEffect(() => {
-    if (isClient()) {
-      // This effect runs only on the client side
-      const storedUsername =
-        typeof window !== "undefined" ? localStorage.getItem("username") : null;
-      if (storedUsername) {
-        setUserName(storedUsername);
-      }
-    }
-  }, []);
 
 
   //Submit the Inquiry
@@ -242,7 +211,7 @@ const ChatDashboard: React.FC = () => {
           setCurrentConversationId(convoID); // Store the convo ID if needed
             sessionStorage.setItem("currentConversationId", convoID);
             let localStorageConvoId: any;
-            localStorage.setItem("currentConversationId", convoID.toString());
+            localStorage.setItem("currentConversationId", convoID);
             localStorageConvoId = localStorage.getItem("currentConversationId");
 
         

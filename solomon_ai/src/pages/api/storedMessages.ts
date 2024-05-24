@@ -1,20 +1,31 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/app/api/lib/db";
+import * as z from 'zod';
+
+const userIdSchema = z.object({
+  authorId: z.string().uuid(), // Ensure the userId is a valid UUID
+  conversationId: z.string().uuid(), // Ensure the userId is a valid UUID
+});
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    const { userId, conversationId } = req.query;
-
-    if (!userId || !conversationId) {
-      return res.status(400).json({ message: "Both userId and conversationId are required" });
-    }
 
     try {
+
+      const { authorId, conversationId } = userIdSchema.parse(req.query);
+
+      console.log("Logging the author Id in stored Message", authorId)
+      console.log("Logging the convo Id in stored Message", conversationId)
+
+      if (!authorId || !conversationId) {
+        return res.status(400).json({ message: "Both userId and conversationId are required" });
+      }
       const messages = await db.messages.findMany({
         where: {
-          authorId: Number(userId),
-          conversationId: Number(conversationId)
+          authorId: authorId,
+          conversationId: conversationId
         },
         orderBy: {
           createdAt: 'asc' // Assuming you want the oldest messages first

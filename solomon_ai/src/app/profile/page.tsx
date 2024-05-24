@@ -10,44 +10,35 @@ import dynamic from "next/dynamic";
 import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
+import { useSessionStorage } from "../hooks/useSessionStorage";
 
 import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
-  const [userName, setUserName] = useState<string | null>(null);
-  const [splitUserName, setSplitUserName] = useState<string>("");
-  const [email, setEmail] = useState<string | null>(null);
+  const { userName, splitUserName, email, } = useSessionStorage();
+
   const router = useRouter();
   const { data: session, status } = useSession();
+
+  const [currentConversationId, setCurrentConversationId] = useState<
+    number | null
+  >(null);
 
   const [zodiac, setZodiac] = useState<null>(null);
   const [lifePath, setLifePathNumber] = useState<null>(null);
 
+
+
+  //Run the fetchUserInfo on Remout only
   useEffect(() => {
-    if (isClient()) {
-      const storedUserName = sessionStorage.getItem("userName");
-      const storedSplitUserName = sessionStorage.getItem("splitUserName");
-      const storedEmail = sessionStorage.getItem("email");
-
-      console.log("logging the email");
-
-      if (storedUserName) {
-        setUserName(storedUserName);
-      }
-      if (storedEmail) {
-        setEmail(storedEmail);
-      }
-
-      if (storedSplitUserName) {
-        setSplitUserName(storedSplitUserName);
-      }
-    }
+    fetchUserInfo(session?.user.id);
   }, []);
 
-  async function fetchUserInfo(userId) {
+  async function fetchUserInfo(userId: number) {
     console.log("Loggin the user Id", typeof userId);
     try {
       const response = await fetch(`/api/getUserInfo?userId=${Number(userId)}`);
       const data = await response.json();
+
       if (response.ok) {
         const { lifePathNumber, zodiacSign } = data.data;
 
@@ -60,11 +51,7 @@ const Profile: React.FC = () => {
           setLifePathNumber(lifePathNumber);
           setZodiac(zodiacSign);
         }
-
         return data.data;
-
-        console.log("User information retrieved:", data);
-        return data;
       } else {
         console.error("Failed to retrieve user information:", data.message);
         return null;
@@ -75,47 +62,21 @@ const Profile: React.FC = () => {
     }
   }
 
-  // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
     if (isClient()) {
-      if (userName !== null) {
-        sessionStorage.setItem("userName", userName);
-      }
-
       if (email !== null) {
-        sessionStorage.setItem("email", email);
+        sessionStorage.setItem("email", email as string);
+        console.log("logging the email on profile", email);
       }
 
-      console.log("logging the email on profile", email);
       if (splitUserName !== "") {
         sessionStorage.setItem("splitUserName", splitUserName);
       }
     }
 
-    console.log("Logging hte session ", session);
-
-    // Fetch user information
-
     // Usage
-    fetchUserInfo(session?.user.id);
-  }, [userName, splitUserName, email]);
+  }, [email, splitUserName]);
 
-  const [currentConversationId, setCurrentConversationId] = useState<
-    number | null
-  >(null);
-
-  useEffect(() => {
-    // This effect runs only on the client side
-    if (isClient()) {
-      const storedUsername =
-        typeof window !== "undefined"
-          ? sessionStorage.getItem("username")
-          : null;
-      if (storedUsername) {
-        setUserName(storedUsername);
-      }
-    }
-  }, []);
 
   //   if (!userName || !session) {
   //     return <ErrorPage />;
@@ -126,12 +87,6 @@ const Profile: React.FC = () => {
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
     router.push(targetPath, undefined);
-
-    // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
-    // if (router.asPath !== targetPath) {
-    //   router.push(targetPath, undefined);
-    // }
-
     setCurrentConversationId(convoId);
 
     console.log("Logging hte current conversation ID", currentConversationId);
@@ -208,15 +163,12 @@ const Profile: React.FC = () => {
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Zodiac Sign</p>
-                <p>
-                  {sessionStorage.getItem("zodiacSign")}
-                </p>
+                <p>{sessionStorage.getItem("zodiacSign") || "Unselected"}</p>
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Life path number</p>
                 <p>
-                  
-                {sessionStorage.getItem("lifePathNumber")}                
+                  {sessionStorage.getItem("lifePathNumber") || "Unselected"}
                 </p>
               </div>
               <div className="flex flex-row w-full justify-between">

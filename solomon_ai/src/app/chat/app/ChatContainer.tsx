@@ -202,7 +202,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                   ) : (
 
                     <div className="flex flex-row justify-between items-center w-full pr-[5px]">
-                    <p className="hover:text-white whitespace-nowrap">{conversation.title}</p>
+                    <p className="hover:text-white  text-left">{conversation.title}</p>
                     {hoveredConversationId === conversation.conversationId && (
                       <svg
                         width={10}

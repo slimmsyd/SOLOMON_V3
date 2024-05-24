@@ -26,6 +26,7 @@ import useConversations from "../../../../hooks/useConversations";
 import useCreateConversation from "../../../../hooks/createConversation";
 import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useTogglePosition } from "../../../../hooks/useTogglePosition";
+import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
 import Link from "next/link";
 
@@ -37,9 +38,8 @@ export default function ConversationPage() {
   const pathName = usePathname();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [userName, setUserName] = useState<string | null>(null);
-  const [splitUserName, setSplitUserName] = useState<string>("");
-  const [email, setEmail] = useState<string | null>(null);
+  const { userName, splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
+
 
   const { responses, setResponses, message, setMessage } =
     useChatConversation();
@@ -52,7 +52,7 @@ export default function ConversationPage() {
   );
   //Set the conversation
   const [currentConversationId, setCurrentConversationId] = useState<
-    number | null
+    number | string | null
   >(null);
 
   // const [newTitle, setNewTitle] = useState("");
@@ -97,7 +97,6 @@ useEffect(() => {
 
       const currentSession = await getSession();
       console.log("Current session data:", currentSession);
-      setUserName(currentSession?.user.name);
       if (!currentSession?.user.user) {
         // setEmail(currentSession?.user.email.split("@")[0]);
         setEmail(currentSession?.user.email.split("@")[0]);
@@ -530,7 +529,7 @@ useEffect(() => {
   { 
     console.log("Logging to see how much the messages ref counter is loading", messagesRefCounter)
   },[messagesRefCounter])
-  const fetchMessagesForConversation = async (conversationId: number) => {
+  const fetchMessagesForConversation = async (conversationId: string) => {
     
     messagesRefCounter.current += 1; 
     if(messagesRefCounter.current > 1) { 
@@ -552,8 +551,12 @@ useEffect(() => {
       return;
     } else {
       try {
+
+        console.log("Loggging in stored messages", session?.user.id)
+        console.log("Loggging in stored messages", conversationId)
+
         const response = await fetch(
-          `/api/storedMessages?userId=${session?.user.id}&conversationId=${conversationId}`
+          `/api/storedMessages?authorId=${session?.user.id}&conversationId=${conversationId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch messages");
@@ -592,7 +595,7 @@ useEffect(() => {
       // Fetch messages for the current conversation if needed
       if(currentConversationId === null) {
         console.log("Fetch is Null fetch is nul", currentConversationId)
-        fetchMessagesForConversation(currentConversationId as any || Number(localStorageConvoId));
+        fetchMessagesForConversation(currentConversationId as any || localStorageConvoId);
 
 
       }else { 
@@ -609,7 +612,7 @@ useEffect(() => {
     if (status === "authenticated" && session) {
     if(currentConversationId === null) {
         console.log("Fetch is Null fetch is nul", currentConversationId)
-        fetchMessagesForConversation(currentConversationId as any || Number(localStorageConvoId));
+        fetchMessagesForConversation(currentConversationId as any || localStorageConvoId);
 
 
       }else { 

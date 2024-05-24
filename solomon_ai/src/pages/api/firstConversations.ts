@@ -4,11 +4,16 @@ import * as z from 'zod';
 
 // Define a schema for input validation using Zod
 const firstConversationSchema = z.object({
-  userId: z.number(),
+  userId: z.string().uuid(), // Ensure the userId is a valid UUID
 });
 
-async function getFirstConvo(userId: number) {
+async function getFirstConvo(userId: string) {
   console.log("User Id is being called in getFirst Convo", userId);
+  console.log("Type of userId:", typeof userId);  // Log the type of userId
+  console.log("Value of userId:", userId);        // Log the value of userId
+
+
+  
   let conversation = await db.conversation.findFirst({
     where: {
       participants: {
@@ -48,6 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'POST':
       try {
         const { userId } = firstConversationSchema.parse(req.body);
+        console.log("Parsed userId from request:", userId); // Log the parsed userId
 
         const conversation = await getFirstConvo(userId);
 

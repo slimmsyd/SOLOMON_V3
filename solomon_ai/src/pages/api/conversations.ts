@@ -4,7 +4,7 @@ import { db } from "@/app/api/lib/db";
 
 // Schema for input validation using Zod
 const conversationSchema = z.object({
-  userIds: z.array(z.number()),  // Expecting an array of user IDs to add as participants
+  userIds: z.array(z.string().uuid()),  // Expecting an array of user IDs to add as participants
   title: z.string(),  // Assuming title is now required
 });
 
@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const { id } = req.query;  // Assuming `id` is passed as a query parameter
         const conversation = await db.conversation.findUnique({
-          where: { id: parseInt(id as string) },
+          where: { id: id as string },
           include: {
             participants: {
               include: {
@@ -82,7 +82,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const { id } = req.query;
           // Delete the conversation and related data (messages, participants)
           await db.conversation.delete({
-            where: { id: parseInt(id as string) }
+            where: { id: id as string }
           });
           res.status(204).json({ message: "Conversation deleted successfully" });
         } catch (error: unknown) {

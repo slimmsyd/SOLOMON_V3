@@ -1,20 +1,30 @@
 // Import necessary libraries and middleware
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/app/api/lib/db";
+
+import * as z from 'zod';
+
+const userIdSchema = z.object({
+  userId: z.string().uuid(), // Ensure the userId is a valid UUID
+});
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   
   if (req.method === 'GET') {
-    console.log("Received GET request to /api/getProgress");
-    const { userId } = req.query;
-
-    if (typeof userId !== 'string') {
-      res.status(400).json({ message: "Invalid userId" });
-      return;
-    }
-
     try {
+
+      const { userId } = userIdSchema.parse(req.query);
+
+      console.log("Received GET request to /api/getProgress");
+
+      if (typeof userId !== 'string') {
+        res.status(400).json({ message: "Invalid userId" });
+        return;
+      }
+  
+
       const userProgress = await db.userProgress.findUnique({
-        where: { userId: parseInt(userId, 10) },
+        where: { userId: userId },
       });
 
       if (!userProgress) {
