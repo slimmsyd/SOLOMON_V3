@@ -5,7 +5,7 @@ import { db } from "@/app/api/lib/db";
 
 // Define the schema for input validation
 const progressSchema = z.object({
-  userId: z.number(),
+  userId: z.string().uuid(), // Ensure the userId is a valid UUID
   birthday: z.string().optional(),
   zodiacSign: z.string().optional(),
   lifePathNumber: z.number().optional(),

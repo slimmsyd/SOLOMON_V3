@@ -6,7 +6,7 @@ import { db } from "@/app/api/lib/db";
 import * as z from "zod";
 
 const getUserSchema = z.object({
-  userId: z.number(),
+  userId: z.string().uuid(), // Ensure the userId is a valid UUID
 });
 
 export default async function handler(
@@ -16,14 +16,14 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       // Validate the request query
-      const userId = Number(req.query.userId);
+      const userId = req.query.userId;
       const parsed = getUserSchema.safeParse({ userId });
 
       if (!parsed.success) {
         return res.status(400).json({ message: "Invalid user ID" });
       }      // Fetch user information from the database
       const user = await db.user.findUnique({
-        where: { id: userId },
+        where: { id: userId as any },
       
       });
 
