@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "solomon_ai/index.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "solomon_ai/index.js" }
+    ]
+  }
+  
