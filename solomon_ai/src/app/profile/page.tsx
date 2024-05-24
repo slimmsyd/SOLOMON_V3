@@ -20,7 +20,7 @@ const Profile: React.FC = () => {
   const { data: session, status } = useSession();
 
   const [currentConversationId, setCurrentConversationId] = useState<
-    number | null
+    string | null
   >(null);
 
   const [zodiac, setZodiac] = useState<null>(null);
@@ -82,7 +82,7 @@ const Profile: React.FC = () => {
   //     return <ErrorPage />;
   //   }
 
-  const handleConversationClick = (convoId: number) => {
+  const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
