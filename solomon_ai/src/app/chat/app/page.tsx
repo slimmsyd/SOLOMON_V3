@@ -237,7 +237,7 @@ const ChatDashboard: React.FC = () => {
 
       try {
         // 2. Fetch bot reply from the API
-        const botReply = await fetch("http://localhost:3002/", {
+        const botReply = await fetch("/api/chatBot", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -271,7 +271,7 @@ const ChatDashboard: React.FC = () => {
           },
           body: JSON.stringify({
             userId: session?.user.id, // Ensure you have the current user's ID
-            conversationId: Number(updatedConversationId),
+            conversationId: updatedConversationId,
             userContent: message, // User's message
             botResponse: botReply.message, // Bot's response, obtained separately
           }),
