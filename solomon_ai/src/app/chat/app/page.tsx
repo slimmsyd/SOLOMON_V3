@@ -181,8 +181,10 @@ const ChatDashboard: React.FC = () => {
         setUserId(session.user.id);
         setSessionStatus(status);
         const currentSession = await getSession();
+        console.log("Loggin session", session)
         console.log("Current session data:", currentSession);
         setUserName(currentSession?.user.name);
+        
         if (!currentSession?.user.user) {
           // setEmail(currentSession?.user.email.split("@")[0]);
           setEmail(currentSession?.user.email.split("@")[0]);

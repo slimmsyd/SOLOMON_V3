@@ -2,6 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/app/api/lib/db";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  
   if (req.method === 'GET') {
     console.log("Received GET request to /api/getProgress");
     const { userId } = req.query;

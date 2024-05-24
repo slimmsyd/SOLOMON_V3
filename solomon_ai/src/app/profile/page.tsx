@@ -13,123 +13,149 @@ import { isClient } from "@/utilis/isClient";
 
 import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
-    const [userName, setUserName] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
   const [splitUserName, setSplitUserName] = useState<string>("");
   const [email, setEmail] = useState<string | null>(null);
   const router = useRouter();
   const { data: session, status } = useSession();
 
-
+  const [zodiac, setZodiac] = useState<null>(null);
+  const [lifePath, setLifePathNumber] = useState<null>(null);
 
   useEffect(() => {
-
     if (isClient()) {
+      const storedUserName = sessionStorage.getItem("userName");
+      const storedSplitUserName = sessionStorage.getItem("splitUserName");
+      const storedEmail = sessionStorage.getItem("email");
 
-    const storedUserName = sessionStorage.getItem('userName');
-    const storedSplitUserName = sessionStorage.getItem('splitUserName');
-    const storedEmail = sessionStorage.getItem("email")
+      console.log("logging the email");
 
-    console.log("logging the email")
+      if (storedUserName) {
+        setUserName(storedUserName);
+      }
+      if (storedEmail) {
+        setEmail(storedEmail);
+      }
 
-    if (storedUserName) {
-      setUserName(storedUserName);
+      if (storedSplitUserName) {
+        setSplitUserName(storedSplitUserName);
+      }
     }
-    if(storedEmail){
-        setEmail(storedEmail)
-    }
-
-    if (storedSplitUserName) {
-      setSplitUserName(storedSplitUserName);
-    }
-  }
   }, []);
 
-    // Update session storage whenever userName or splitUserName changes
-    useEffect(() => {
+  async function fetchUserInfo(userId) {
+    console.log("Loggin the user Id", typeof userId);
+    try {
+      const response = await fetch(`/api/getUserInfo?userId=${Number(userId)}`);
+      const data = await response.json();
+      if (response.ok) {
+        const { lifePathNumber, zodiacSign } = data.data;
 
-      if (isClient()) {
+        const session = await getSession();
+        console.log("Logigng sesssion", session);
+        if (session) {
+          sessionStorage.setItem("lifePathNumber", lifePathNumber);
+          sessionStorage.setItem("zodiacSign", zodiacSign);
 
+          setLifePathNumber(lifePathNumber);
+          setZodiac(zodiacSign);
+        }
+
+        return data.data;
+
+        console.log("User information retrieved:", data);
+        return data;
+      } else {
+        console.error("Failed to retrieve user information:", data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching user information:", error);
+      return null;
+    }
+  }
+
+  // Update session storage whenever userName or splitUserName changes
+  useEffect(() => {
+    if (isClient()) {
       if (userName !== null) {
-        sessionStorage.setItem('userName', userName);
+        sessionStorage.setItem("userName", userName);
       }
 
       if (email !== null) {
-        sessionStorage.setItem('email', email);
+        sessionStorage.setItem("email", email);
       }
-  
-      console.log("logging the email on profile", email)
+
+      console.log("logging the email on profile", email);
       if (splitUserName !== "") {
-        sessionStorage.setItem('splitUserName', splitUserName);
+        sessionStorage.setItem("splitUserName", splitUserName);
       }
     }
-    }, [userName, splitUserName, email]);
-  
-  
 
+    console.log("Logging hte session ", session);
 
+    // Fetch user information
 
-const [currentConversationId, setCurrentConversationId] = useState<
-number | null
->(null);
+    // Usage
+    fetchUserInfo(session?.user.id);
+  }, [userName, splitUserName, email]);
+
+  const [currentConversationId, setCurrentConversationId] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     // This effect runs only on the client side
     if (isClient()) {
-
-    const storedUsername =
-      typeof window !== "undefined" ? sessionStorage.getItem("username") : null;
-    if (storedUsername) {
-      setUserName(storedUsername);
+      const storedUsername =
+        typeof window !== "undefined"
+          ? sessionStorage.getItem("username")
+          : null;
+      if (storedUsername) {
+        setUserName(storedUsername);
+      }
     }
-
-  }
   }, []);
 
-//   if (!userName || !session) {
-//     return <ErrorPage />;
-//   }
+  //   if (!userName || !session) {
+  //     return <ErrorPage />;
+  //   }
 
-const handleConversationClick = (convoId: number) => {
-  console.log("Activating conversation with ID:", convoId);
-  const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
+  const handleConversationClick = (convoId: number) => {
+    console.log("Activating conversation with ID:", convoId);
+    const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
-  router.push(targetPath, undefined);
+    router.push(targetPath, undefined);
 
-  // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
-  // if (router.asPath !== targetPath) {
-  //   router.push(targetPath, undefined);
-  // }
+    // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
+    // if (router.asPath !== targetPath) {
+    //   router.push(targetPath, undefined);
+    // }
 
-  setCurrentConversationId(convoId);
+    setCurrentConversationId(convoId);
 
-  console.log("Logging hte current conversation ID", currentConversationId);
-  console.log("Logging hte current The ConvoID", convoId);
+    console.log("Logging hte current conversation ID", currentConversationId);
+    console.log("Logging hte current The ConvoID", convoId);
+  };
 
-};
+  const handleSignOut = async () => {
+    // Clear any client-side session data if necessary
+    if (isClient()) {
+      sessionStorage.clear();
 
-
-
-const handleSignOut = async () => {
-  // Clear any client-side session data if necessary
-  if (isClient()) {
-
-  sessionStorage.clear();
-
-  // Sign out and redirect
-  await signOut({ redirect: true });
-  window.location.href = '/login'; // Or any other page you want to redirect to
-
-  }
-};
+      // Sign out and redirect
+      await signOut({ redirect: true });
+      window.location.href = "/login"; // Or any other page you want to redirect to
+    }
+  };
 
   return (
     <div className="chatDashboard">
-  <ChatContainer
+      <ChatContainer
         splitUserName={splitUserName}
         userName={userName || ""}
-        email = {email || ""}
+        email={email || ""}
         onConversationClick={handleConversationClick}
-
       />
       {/* Chat Container Componet  */}
 
@@ -182,11 +208,16 @@ const handleSignOut = async () => {
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Zodiac Sign</p>
-                <p>Unselected</p>
+                <p>
+                  {sessionStorage.getItem("zodiacSign")}
+                </p>
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Life path number</p>
-                <p>Unselected</p>
+                <p>
+                  
+                {sessionStorage.getItem("lifePathNumber")}                
+                </p>
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Ennealogy Number</p>
@@ -236,9 +267,7 @@ const handleSignOut = async () => {
                       height={100}
                     />
                   </div>
-                  <p
-                  onClick={handleSignOut}
-                  >Sign out</p>
+                  <p onClick={handleSignOut}>Sign out</p>
                 </button>{" "}
               </div>
               <hr className="greyDivider"></hr>
@@ -292,8 +321,8 @@ const handleSignOut = async () => {
                 <button className="flex flex-row items-center gap-[8px]">
                   <div className="mainIcon">
                     <svg
-                        width= "14px"
-                        height= "14px"
+                      width="14px"
+                      height="14px"
                       aria-hidden="true"
                       focusable="false"
                       data-prefix="far"
@@ -308,7 +337,9 @@ const handleSignOut = async () => {
                       ></path>
                     </svg>
                   </div>
-                  <p className = "hover:text-[#807f7f] text-[12px]">Give us Feedback</p>
+                  <p className="hover:text-[#807f7f] text-[12px]">
+                    Give us Feedback
+                  </p>
                 </button>
               </div>
             </div>
@@ -364,6 +395,5 @@ const handleSignOut = async () => {
     </div>
   );
 };
-
 
 export default dynamic(() => Promise.resolve(Profile), { ssr: false });

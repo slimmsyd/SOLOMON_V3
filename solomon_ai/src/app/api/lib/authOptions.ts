@@ -10,6 +10,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { db } from "./db";
 import bcrypt from "bcrypt";
 import { User as CustomUser } from "../../../../types";
+
 require('dotenv').config()
 
 
@@ -118,6 +119,8 @@ export const authOptions: NextAuthOptions = {
         token.uid = user.id;
         token.email = user.email;
         token.username = user.username;
+        token.lifePathNumber = (user as CustomUser).lifePathNumber; // Use type assertion
+        token.zodiacSign = (user as CustomUser).zodiacSign; // Use type assertion
       }
 
       return token;
@@ -130,6 +133,8 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.uid;
         session.user.email = token.email;
         session.user.username = token.username;
+        session.user.lifePathNumber = token.lifePathNumber; // Correct property name
+        session.user.zodiacSign = token.zodiacSign; // Correct property name
       }
       return session;
     },

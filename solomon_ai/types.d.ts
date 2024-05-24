@@ -10,13 +10,6 @@ declare module 'next-auth' {
 }
 
 // types.ts
-// types.ts
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  // Add other properties as needed
-}
 
 
 // types.ts
@@ -24,7 +17,17 @@ export interface User {
   id: string;
   username: string;
   email: string;
+  lifePathNumber?: number;
+  zodiacSign?: string;
 }
+
+// Extend the existing User type
+export interface User extends NextAuthUser {
+  lifePathNumber?: number;
+  zodiacSign?: string;
+}
+
+
 
 export interface Conversation {
   conversationId: number;

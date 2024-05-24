@@ -36,6 +36,10 @@ import ChatMessage from "@/app/components/Chatmessage";
 import { ChatMessagesContainer } from "../ChatMessage";
 import { SignupForm } from "../Signupform";
 
+//Importing the Zodiac Signs 
+import { zodiacSigns } from "@/utilis/zodaicSigns";
+
+
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
@@ -651,10 +655,55 @@ const ChatDashboard: React.FC = () => {
   };
 
   // Logging the responses temp
-  useEffect(() => {}, [responses]);
+// Extract life path number from the response text
+const extractLifePathNumber = (responseText: string) => {
+  const match = responseText.match(/life path (?:number|of the number) (\d+)/);
+  return match ? parseInt(match[1], 10) : null;
+};
 
-  // sessionStorage.clear();
+// Extract zodiac sign from the response text
+const extractZodiacSign = (responseText: string) => {
+  for (const sign of zodiacSigns) {
+    if (responseText.includes(sign)) {
+      return sign;
+    }
+  }
+  return null;
+};
 
+// Update user progress with the extracted values
+const updateUserProgress = async (userId: number, lifePathNumber: string, zodiacSign: string) => {
+  try {
+    const response = await axios.post("/api/updateUser", {
+      userId,
+      lifePathNumber,
+      zodiacSign,
+    });
+    console.log("User progress updated successfully:", response.data);
+  } catch (error) {
+    console.error("Error updating user progress:", error);
+  }
+};
+
+  useEffect(() => {
+    console.log("Logging the responses on the Questionnaire on send", responses);
+
+    responses.forEach((response) => {
+      const lifePathNumber = extractLifePathNumber(response.response);
+      const zodiacSign = extractZodiacSign(response.response);
+      
+      if (lifePathNumber !== null || zodiacSign !== null) {
+
+        console.log("Logging hte Life Path Nuber", lifePathNumber)
+        console.log("Logging the Zodiac Sign", zodiacSign)
+        console.log("Logging the userID", userId)
+        updateUserProgress(userId as any, lifePathNumber as any, zodiacSign as any);
+      }
+    });
+  }, [responses, userId]);
+
+
+  
   const handleConversationClick = (convoId: number) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
@@ -765,6 +814,10 @@ const ChatDashboard: React.FC = () => {
     );
 
     if (automatedMessageCounter.current >= 2) {
+      console.log(
+        "IS autoamted message contianer 2, is it being logged 2",
+        automatedMessageCounter.current
+      );
       return;
     }
 
