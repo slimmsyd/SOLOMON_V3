@@ -462,7 +462,7 @@ useEffect(() => {
   //   }
   // }, [conversations]);
 
-  const handleConversationClick = (convoId: string | number) => {
+  const handleConversationClick = (convoId: string ) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
@@ -470,7 +470,7 @@ useEffect(() => {
 
     //Store the Current converatoinID in local to persit on chaning the navigation
     let localStorageConvoId: any;
-    localStorage.setItem("currentConversationId", convoId.toString());
+    localStorage.setItem("currentConversationId", convoId);
 
     localStorageConvoId = localStorage.getItem("currentConversationId");
     setCurrentConversationId(convoId);

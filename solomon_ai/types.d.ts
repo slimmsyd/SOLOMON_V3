@@ -30,7 +30,7 @@ export interface User extends NextAuthUser {
 
 
 export interface Conversation {
-  conversationId: number | string;
+  conversationId:  string;
   title: string;
 }
 

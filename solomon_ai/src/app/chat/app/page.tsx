@@ -454,7 +454,7 @@ const ChatDashboard: React.FC = () => {
   }
 
   //Editing the ability to change the existing title.
-  const handleTitleClick = (convoId: number) => {
+  const handleTitleClick = (convoId: string) => {
     const conversation = conversations.find(
       (convo) => (convo as any).conversationId === convoId
     );
@@ -481,8 +481,8 @@ const ChatDashboard: React.FC = () => {
 
   const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
-    localStorage.setItem("currentConversationId", convoId.toString());
-    sessionStorage.setItem("currentConversationId", convoId.toString());
+    localStorage.setItem("currentConversationId", convoId);
+    sessionStorage.setItem("currentConversationId", convoId);
 
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
@@ -512,7 +512,7 @@ const ChatDashboard: React.FC = () => {
   }, [pathname]);
 
   //This function Deletes the cvonersation
-  async function deleteConversation(conversationId: number) {
+  async function deleteConversation(conversationId: string) {
     if (isClient()) {
       const currentConversations = conversations;
 

@@ -1,7 +1,4 @@
 {
-  "/chat/app/questionaire/page": "app/chat/app/questionaire/page.js",
-  "/chat/app/page": "app/chat/app/page.js",
-  "/chat/app/[userId]/[conversationId]/page": "app/chat/app/[userId]/[conversationId]/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/page": "app/page.js",
+  "/chat/app/[userId]/[conversationId]/page": "app/chat/app/[userId]/[conversationId]/page.js"
 }
