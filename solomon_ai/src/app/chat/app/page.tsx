@@ -479,7 +479,7 @@ const ChatDashboard: React.FC = () => {
 
   // sessionStorage.clear();
 
-  const handleConversationClick = (convoId: number) => {
+  const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
     localStorage.setItem("currentConversationId", convoId.toString());
     sessionStorage.setItem("currentConversationId", convoId.toString());

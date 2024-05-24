@@ -14,8 +14,8 @@ interface ChatContainerProps {
   splitUserName: string;
   userName: string;
   email?: string;
-  onConversationClick?: (convoId: number) => void;
-  onDeleteConvo?: (convoId: number) => void;
+  onConversationClick?: (convoId: string | number) => void;
+  onDeleteConvo?: (convoId: number | string) => void;
   onChangeConvoTitle?: (event: any) => void;
   handleTitleClick?: (event: any) => void;
   handleTitleChange?: (event: any) => void;
@@ -48,7 +48,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
   //Controlling hte hover state of the Delete SVG
   const [hoveredConversationId, setHoveredConversationId] = useState<
-    null | number
+    null | number | string
   >(null);
 
   const [showDeleteContainer, setShowDeleteContainer] =

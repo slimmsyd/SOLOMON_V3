@@ -163,7 +163,7 @@ useEffect(() => {
     setEditTitleId(null); // Exit edit mode when input loses focus
   };
   //Editing the ability to change the existing title.
-  const handleTitleClick = (convoId: number) => {
+  const handleTitleClick = (convoId: string | number) => {
     console.log("Title is clicking!!!", convoId);
     console.log("Logging the title Id in the click function", editTitleId);
     console.log("Logging the conversations", conversations);
@@ -219,7 +219,7 @@ useEffect(() => {
     }
   }
 
-  async function deleteConversation(conversationId: number) {
+  async function deleteConversation(conversationId: string | number) {
     const currentConversations = conversations;
 
     console.log("logging The Convo Id On Delet", conversationId);
@@ -462,7 +462,7 @@ useEffect(() => {
   //   }
   // }, [conversations]);
 
-  const handleConversationClick = (convoId: number) => {
+  const handleConversationClick = (convoId: string | number) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
