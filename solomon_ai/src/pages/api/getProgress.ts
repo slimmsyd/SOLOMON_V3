@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const { userId } = userIdSchema.parse(req.query);
 
-      console.log("Received GET request to /api/getProgress");
+      console.log("Received GET request to /api/getProgress", userId);
 
       if (typeof userId !== 'string') {
         res.status(400).json({ message: "Invalid userId" });

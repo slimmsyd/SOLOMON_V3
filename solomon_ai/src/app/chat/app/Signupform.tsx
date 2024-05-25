@@ -13,7 +13,7 @@ interface SignupFormProps {
   userName: string;
   completedForm: boolean;
   sessionStatus: string;
-  sendAutomatedMessage: (message: string, convoId: string) => void;
+  sendAutomatedMessage: (message: string, convoId: string, userId: string) => void;
   fetchFirstConversation: (userId: string) => void;
 }
 

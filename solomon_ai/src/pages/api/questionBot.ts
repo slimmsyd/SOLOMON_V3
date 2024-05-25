@@ -1,14 +1,13 @@
-
-
-    import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 const { Configuration, OpenAI } = require("openai");
+import { db } from "@/app/api/lib/db";
 
 const APIKEY =
   process.env.OPENAI_API_KEY ||
   "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";
 const openai = new OpenAI({ apiKey: APIKEY });
 
-let conversationHistory: { role: string; content: string }[] = [];
+let conversationHistories = {};
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,12 +15,58 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { message } = req.body;
+      const { userId, message, conversationId } = req.body;
       console.log("User message:", message);
+      console.log("User conversationId :", conversationId);
+      console.log("User userId:", userId);
 
-      // Append the user message to the conversation history
-      conversationHistory.push({ role: "user", content: message });
+      // Check if conversationId is provided, if not, create a new conversation
+      let currentConversationId = conversationId;
 
+
+      // Check if there is already a message without a bot response
+        // Check for an existing message without bot response
+        let existingMessage = await db.messages.findFirst({
+          where: {
+            conversationId: currentConversationId,
+            botResponse: null,
+          }
+        });
+  
+        if (existingMessage) {
+          // Update the existing message with user content
+          await db.messages.update({
+            where: { id: existingMessage.id },
+            data: { userContent: message },
+          });
+        } else {
+          // Create a new message with user content
+          existingMessage = await db.messages.create({
+            data: {
+              conversationId: currentConversationId,
+              userContent: message,
+              authorId: userId,
+              title: "User Message",
+              published: true,
+              firstConvo: false,
+            }
+          });
+        }
+ 
+    
+      const conversationHistory = await db.messages.findMany({
+        where: { conversationId: conversationId },
+        orderBy: { createdAt: 'asc' },
+      });
+
+
+
+      console.log("Logging the conversation histroy", conversationHistory)
+
+           // Create a new message and link it to a user and a conversation
+
+
+      console.log("Logging the userID", userId)
  
       // Extract birthday
       const birthdayMatch = message.match(
@@ -51,41 +96,34 @@ export default async function handler(
         - Use archaic and mystical language and phrasing.
         - Speak and write in a philosophical and contemplative tone.
   
-        When the user greets you, your first question is to ask their name and where they are from.
-  
-  
-  
+        When the user greets you with There Name,where they are from.
+
         If the user provides their name:
         - Give them the mystical short and concise etymology of their name.
-        -Greet them with "Ah, I see we have a seeker, how the universe led you here" or somewhere along those lines
-  
+        - Greet them with "Ah, I see we have a seeker, glad the universe led you here" or something similar.
+        - Do not ask for the name again if it has already been provided.
+      
         If the user provides their location or origin:
         - Give them a mystical and witty response, complimenting it.
-  
+      
         If the user provides their birthdate:
         - Calculate their life path number by adding up the digits in their birth date until you're left with a single-digit number. For example, if the birthdate is April 14, 1998, add up 4+1+4+1+9+9+8, which equals 36. Then add 3+6=9 to get a Life Path Number of 9.
-        Break down the birthdate into its individual components: 09/01/2000.
-  Add each digit together: 0 + 9 + 0 + 1 + 2 + 0 + 0 + 0 = 12.
-  Reduce the sum to a single digit: 1 + 2 = 3.
-        - Provide a short and precise explanation of their life path number and their zodiac sign. Use varied and interesting responses. Syntesizes the similarities between the 2 concepts to give a intersting response on this being astrological character
-  
-  
-        If the user provides their birthdate, ask if they are religious or spiritual.
-  
+        - Provide a short and precise explanation of their life path number and their zodiac sign. Synthesize the similarities between the two concepts to give an interesting response on this astrological character.
+        - Ask if they are religious or spiritual.
+      
         If the user is religious:
         - Ask what denomination they follow.
-  
+      
         If the user is spiritual:
         - Ask what spiritual practices they attend.
-  
+      
         If the user is atheist or agnostic:
         - Ask why they intend to use this app.
-  
-  
-        If all questions have been answered;
-        -Provide a poetic response of "I see.. I gather knowlege of you, i will to be a guidling light in your journey; now lets us begin a awakening into the collective of new knowlege, i bless you on this path. You will be redirected shorlty Chosen one, into the realm of new minds...(Something witty/Mystical along those lines)
-        Now, let us begin, Wise Solomon. The first question for you is: "Greetings, Chosen One. May I know your name and where you are from?"
-        
+      
+        If all questions have been answered:
+        - Provide a poetic response of "I see... I gather knowledge of you, I will be a guiding light in your journey; now let us begin an awakening into the collective of new knowledge. I bless you on this path. You will be redirected shortly, Chosen One, into the realm of new minds..." or something along those lines.
+      
+      
         
         
         
@@ -175,8 +213,12 @@ export default async function handler(
            `,
       };
 
-      const messages = [systemPrompt, ...conversationHistory];
-
+      const messages = [
+        systemPrompt,
+        ...conversationHistory.map(({ userContent, botResponse }) => 
+          userContent ? { role: 'user', content: userContent } : { role: 'assistant', content: botResponse }
+        )
+      ];
       console.time("openai call");
       const completion = await openai.chat.completions.create({
         model: "gpt-4",
@@ -187,16 +229,25 @@ export default async function handler(
       const response = completion.choices[0].message.content;
       console.timeEnd("openai call");
 
-      // Append the AI response to the conversation history
-      conversationHistory.push({ role: "system", content: response });
+      // Store the bot's response in the database
+      await db.messages.update({
+        where: { id: existingMessage.id },
+        data: { botResponse: response }
+      });
 
+
+      // Append the AI response to the conversation history
+ 
       console.log("AI Response:", response);
       res.json({ message: response });
     } catch (error) {
       console.error("Error THIS IS NEW ERROR GOD ", error.message);
       res
         .status(500)
-        .json({ message: "Error occurred while processing the request" , error});
+        .json({
+          message: "Error occurred while processing the request",
+          error,
+        });
     }
   } else {
     res.setHeader("ALLOW", ["POST"]);

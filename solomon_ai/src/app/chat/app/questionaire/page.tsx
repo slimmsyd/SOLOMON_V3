@@ -26,9 +26,8 @@ import ChatMessage from "@/app/components/Chatmessage";
 import { ChatMessagesContainer } from "../ChatMessage";
 import { SignupForm } from "../Signupform";
 
-//Importing the Zodiac Signs 
+//Importing the Zodiac Signs
 import { zodiacSigns } from "@/utilis/zodaicSigns";
-
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
@@ -202,8 +201,6 @@ const ChatDashboard: React.FC = () => {
     console.log("logging the completed form chnage ", completedForm);
   }, [completedForm]);
 
-
-
   const [currentQuestion, setCurrentQuestion] = useState<number>(1);
   const [borderClasses, setBorderClasses] = useState<string[]>([
     "selectedBorder",
@@ -352,7 +349,7 @@ const ChatDashboard: React.FC = () => {
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify({ message }),
+          body: JSON.stringify({ userId, message: message, conversationId: currentConvoId || currentConversationId }),
         }).then((res) => res.json());
 
         // 3. Update the responses array with the bot's reply
@@ -369,25 +366,23 @@ const ChatDashboard: React.FC = () => {
         // 4. Send the user question and bot response to the database
 
         console.log(
-          "logging the creation of a new chat in here",
+          "logging the creation of a new chat in here and before we send to api/message",
           session?.user.id
         );
 
-        await fetch("/api/messages", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
+        // await fetch("/api/messages", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-type": "application/json",
+        //   },
 
-
-
-          body: JSON.stringify({
-            userId: session?.user.id, // Ensure you have the current user's ID
-            conversationId: currentConversationId,
-            userContent: message, // User's message
-            botResponse: botReply.message, // Bot's response, obtained separately
-          }),
-        });
+        //   body: JSON.stringify({
+        //     userId: session?.user.id, // Ensure you have the current user's ID
+        //     conversationId: currentConversationId,
+        //     userContent: message, // User's message
+        //     botResponse: botReply.message, // Bot's response, obtained separately
+        //   }),
+        // });
 
         console.log(
           "Loggign the current Conversation on a new click ",
@@ -580,55 +575,65 @@ const ChatDashboard: React.FC = () => {
   };
 
   // Logging the responses temp
-// Extract life path number from the response text
-const extractLifePathNumber = (responseText: string) => {
-  const match = responseText.match(/life path (?:number|of the number) (\d+)/);
-  return match ? parseInt(match[1], 10) : null;
-};
+  // Extract life path number from the response text
+  const extractLifePathNumber = (responseText: string) => {
+    const match = responseText.match(
+      /life path (?:number|of the number) (\d+)/
+    );
+    return match ? parseInt(match[1], 10) : null;
+  };
 
-// Extract zodiac sign from the response text
-const extractZodiacSign = (responseText: string) => {
-  for (const sign of zodiacSigns) {
-    if (responseText.includes(sign)) {
-      return sign;
+  // Extract zodiac sign from the response text
+  const extractZodiacSign = (responseText: string) => {
+    for (const sign of zodiacSigns) {
+      if (responseText.includes(sign)) {
+        return sign;
+      }
     }
-  }
-  return null;
-};
+    return null;
+  };
 
-// Update user progress with the extracted values
-const updateUserProgress = async (userId: string, lifePathNumber: string, zodiacSign: string) => {
-  try {
-    const response = await axios.post("/api/updateUser", {
-      userId,
-      lifePathNumber,
-      zodiacSign,
-    });
-    console.log("User progress updated successfully:", response.data);
-  } catch (error) {
-    console.error("Error updating user progress:", error);
-  }
-};
+  // Update user progress with the extracted values
+  const updateUserProgress = async (
+    userId: string,
+    lifePathNumber: string,
+    zodiacSign: string
+  ) => {
+    try {
+      const response = await axios.post("/api/updateUser", {
+        userId,
+        lifePathNumber,
+        zodiacSign,
+      });
+      console.log("User progress updated successfully:", response.data);
+    } catch (error) {
+      console.error("Error updating user progress:", error);
+    }
+  };
 
   useEffect(() => {
-    console.log("Logging the responses on the Questionnaire on send", responses);
+    console.log(
+      "Logging the responses on the Questionnaire on send",
+      responses
+    );
 
     responses.forEach((response) => {
       const lifePathNumber = extractLifePathNumber(response.response);
       const zodiacSign = extractZodiacSign(response.response);
-      
-      if (lifePathNumber !== null || zodiacSign !== null) {
 
-        console.log("Logging hte Life Path Nuber", lifePathNumber)
-        console.log("Logging the Zodiac Sign", zodiacSign)
-        console.log("Logging the userID", userId)
-        updateUserProgress(userId as any, lifePathNumber as any, zodiacSign as any);
+      if (lifePathNumber !== null || zodiacSign !== null) {
+        console.log("Logging hte Life Path Nuber", lifePathNumber);
+        console.log("Logging the Zodiac Sign", zodiacSign);
+        console.log("Logging the userID", userId);
+        updateUserProgress(
+          userId as any,
+          lifePathNumber as any,
+          zodiacSign as any
+        );
       }
     });
   }, [responses, userId]);
 
-
-  
   const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
@@ -730,7 +735,8 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
 
   const sendAutomatedMessage = async (
     messageContent: string,
-    convoId: string
+    convoId: string,
+    userId: string
   ) => {
     automatedMessageCounter.current += 1;
 
@@ -748,8 +754,12 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
 
     // Inline ternary operation to set the message content
     const userMessage = session?.user?.name
-      ? `Hello, ${session.user.name}, My Name is ${messageContent}`
+      ? `Hello, ${messageContent}, My Name is ${session.user.name}`
       : `Hello, My Name is ${messageContent}`;
+
+    console.log("Loggin the userId", userId);
+    console.log("Logging the message", userMessage);
+    console.log("Logging the conversatoinId", convoId);
 
     try {
       const botReply = await fetch("/api/questionBot", {
@@ -757,7 +767,7 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ userId, message: userMessage, conversationId: convoId }),
       }).then((res) => res.json());
 
       setResponses((prevResponses) => [
@@ -776,19 +786,19 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
 
       console.log("Logging the responses in automated message", responses);
 
-      await fetch("/api/messages", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: session?.user.id,
-          conversationId: convoId,
-          userContent: userMessage,
-          botResponse: botReply.message,
-          firstConvo: true, // Set the firstConvo flag
-        }),
-      });
+      // await fetch("/api/messages", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     userId: session?.user.id,
+      //     conversationId: convoId,
+      //     userContent: userMessage,
+      //     botResponse: botReply.message,
+      //     firstConvo: true, // Set the firstConvo flag
+      //   }),
+      // });
     } catch (error) {
       console.error("Error sending automated message:", error);
     }
@@ -799,7 +809,7 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
     id: string;
     firstConvo: boolean;
   }
-7
+  7;
   const fetchFirstConversation = async (
     userId: string
   ): Promise<ConversationData> => {
@@ -845,7 +855,10 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
   // Effect to send a greetings message when the component mounts
   useEffect(() => {
     const userId = session?.user.id;
-    console.log("Logging the UserID before we fetch the first conversatino", userId)
+    console.log(
+      "Logging the UserID before we fetch the first conversatino",
+      userId
+    );
 
     console.log("Log status", status, "logg sessin", session);
     if (isClient()) {
@@ -867,8 +880,8 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
                 "Calling hte current before we sent the automated message",
                 automatedMessageCounter.current
               );
-              console.log("Loggin the COnvoID before send My name", convoId)
-              await sendAutomatedMessage("Hello, Solomon, My Name is", convoId);
+              console.log("Loggin the COnvoID before send My name", convoId);
+              await sendAutomatedMessage("Hello, Solomon,", convoId, userId);
               sessionStorage.setItem("greetingSent", "true");
             } else if (
               automatedMessageCounter.current >= 1 ||
@@ -885,7 +898,7 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
           }
         };
 
-        const storedConvoId = sessionStorage.getItem("currentConvoId")
+        const storedConvoId = sessionStorage.getItem("currentConvoId");
         const fistConvoState = sessionStorage.getItem("isFirstConvo");
 
         if (
@@ -922,12 +935,14 @@ const updateUserProgress = async (userId: string, lifePathNumber: string, zodiac
   }, [status]);
 
   useEffect(() => {
-    const storedConvoId = sessionStorage.getItem("currentConvoId")
+    const storedConvoId = sessionStorage.getItem("currentConvoId");
 
     fetchMessagesForConversation(storedConvoId);
   }, []);
 
-  const fetchMessagesForConversation = async (conversationId: string | null) => {
+  const fetchMessagesForConversation = async (
+    conversationId: string | null
+  ) => {
     console.log("logging the Session in fetch convo", session);
     if (!session || !session.user || !session.user.id) {
       console.error("No user session available");
