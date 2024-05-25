@@ -370,20 +370,7 @@ const ChatDashboard: React.FC = () => {
           session?.user.id
         );
 
-        // await fetch("/api/messages", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-type": "application/json",
-        //   },
-
-        //   body: JSON.stringify({
-        //     userId: session?.user.id, // Ensure you have the current user's ID
-        //     conversationId: currentConversationId,
-        //     userContent: message, // User's message
-        //     botResponse: botReply.message, // Bot's response, obtained separately
-        //   }),
-        // });
-
+    
         console.log(
           "Loggign the current Conversation on a new click ",
           currentConversationId
