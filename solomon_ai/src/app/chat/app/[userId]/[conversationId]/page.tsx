@@ -45,11 +45,20 @@ export default function ConversationPage() {
     useChatConversation();
     
     let localStorageConvoId;
-    if(localStorage.getItem("currentConversationId")) { 
 
-       localStorageConvoId = localStorage.getItem("currentConversationId");
+    useEffect(() => { 
+      console.log("Is this loading???", currentConversationId)
+      if(localStorage.getItem("currentConversationId")) { 
+        localStorageConvoId = localStorage.getItem("currentConversationId");
+        setCurrentConversationId(localStorageConvoId)
+        console.log("Loggign in the local Storage get item", localStorageConvoId)
 
-    }
+
+ 
+     }
+
+
+    },[])
 
   const form = useRef();
   const { data: session, status } = useSession();
@@ -324,7 +333,6 @@ useEffect(() => {
 
   const handleSubmitTitle = async (event: any) => {
     event.preventDefault(); // Prevent form submission
-
     let titleChange: string = "";
 
     if (event.key === "Enter") {
@@ -397,66 +405,97 @@ useEffect(() => {
     }
 
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!currentConversationId) {
-      console.log("No conversation selected.");
-
-      await createConversation(); // Make sure there is a conversation ID
-    }
-
-    // 1. Set up the new response without any bot response yet.
-    const newResponse = { question: message, response: "" };
-
-    setResponses((responses) => [...responses, newResponse]); // Use functional update for state
-    setMessage("");
-
-    try {
-      // 2. Fetch bot reply from the API
-      const botReply = await fetch("http://localhost:3002/", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      }).then((res) => res.json());
-
-      // 3. Update the responses array with the bot's reply
-      setResponses((prevResponses) =>
-        prevResponses.map((resp) => {
-          if (resp.question === message) {
-            return { ...resp, response: botReply.message };
-          }
-          return resp;
-        })
-      );
-
-      // 4. Send the user question and bot response to the database
-
-      console.log(
-        "logging the creation of a new chat in here",
-        session?.user.id
-      );
-
-      await fetch("/api/messages", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: session?.user.id, // Ensure you have the current user's ID
-          conversationId: currentConversationId,
-          userContent: message, // User's message
-          botResponse: botReply.message, // Bot's response, obtained separately
-        }),
-      });
-
-      //Add the conversations arrawy or update
-    } catch (error) {
-      console.error("Error handling submission:", error);
-    }
-  };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      console.log("Logging Conversation Id in the Submit", currentConversationId);
+      if (isClient()) {
+        if (!currentConversationId) {
+          console.log("No conversation selected.");
+  
+          await createConversation()
+          .then(convoID => {
+            console.log("Logging the CONVO ID", convoID);
+  
+            setCurrentConversationId(convoID); // Store the convo ID if needed
+              sessionStorage.setItem("currentConversationId", convoID);
+              let localStorageConvoId: any;
+              localStorage.setItem("currentConversationId", convoID);
+              localStorageConvoId = localStorage.getItem("currentConversationId");
+  
+          
+          })
+  
+         
+        console.log("Logging the Current converattion id in the await convo created", currentConversationId)
+          
+        }
+  
+          // Ensure that currentConversationId is updated before proceeding
+      const updatedConversationId = sessionStorage.getItem("currentConversationId");
+      console.log("Logging the Current conversation id in the await convo created", updatedConversationId);
+  
+        // 1. Set up the new response without any bot response yet.
+        const newResponse = { question: message, response: "" };
+  
+        setResponses((responses) => [...responses, newResponse]); // Use functional update for state
+  
+  
+        
+        setMessage("");
+  
+        try {
+          // 2. Fetch bot reply from the API
+          const botReply = await fetch("/api/chatBot", {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({ message }),
+          }).then((res) => res.json());
+  
+          // 3. Update the responses array with the bot's reply
+          setResponses((prevResponses) =>
+            prevResponses.map((resp) => {
+              if (resp.question === message) {
+                return { ...resp, response: botReply.message };
+              }
+              return resp;
+            })
+          );
+  
+          // 4. Send the user question and bot response to the database
+  
+          console.log(
+            "logging the creation of a new chat in here",
+            session?.user.id
+          );
+  
+          console.log("Logging the conversation id when i sent out the message", currentConversationId)
+  
+          await fetch("/api/messages", {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: session?.user.id, // Ensure you have the current user's ID
+              conversationId: updatedConversationId,
+              userContent: message, // User's message
+              botResponse: botReply.message, // Bot's response, obtained separately
+            }),
+          });
+  
+          console.log(
+            "Loggign the current Conversation on a new click ",
+            currentConversationId
+          );
+  
+          //Add the conversations arrawy or update
+        } catch (error) {
+          console.error("Error handling submission:", error);
+        }
+      }
+    };
 
   //Get the associated ids with the current user on inital load.
 
@@ -493,11 +532,6 @@ useEffect(() => {
 
   //Get the full Message Conversation.
 
-  const getMessageFromStorage = () => {
-    const savedMessage = sessionStorage.getItem("initialMessage");
-
-    return savedMessage ? JSON.parse(savedMessage) : null;
-  };
 
   const clearStorage = () => {
     sessionStorage.removeItem("initialMessage");
@@ -508,21 +542,14 @@ useEffect(() => {
   useEffect(() => {
     console.log("Current Conversation ID has updated:", currentConversationId);
     console.log("Logging the localstorage id", localStorageConvoId);
+
+    if(currentConversationId) { 
+      handleConversationClick(currentConversationId as string)
+    }
     clearStorage();
   }, [currentConversationId]); // Dependency array includes state that triggers this effect
 
-  // Call this function when you know the message has been successfully handled
-
-  // useEffect(() => {
-  //   const initialMessage = getMessageFromStorage();
-  //   if (initialMessage && !responses.length) {
-  //     setResponses([initialMessage]);
-  //   }
-
-  //   console.log("Logging to see if the responses change", responses);
-  // }, [responses.length, setResponses]);
-
-  // useEffect(() => {}, [responses]);
+ 
 
   useEffect(() => {}, [isLoading]);
 

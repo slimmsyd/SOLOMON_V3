@@ -1,17 +1,42 @@
 import { Session } from "inspector";
 import { useEffect, useRef, useState } from "react";
 import React, { FC, RefObject } from "react";
+import { greetings } from "@/utilis/randomGreeting";
+import { useSessionStorage } from "@/app/hooks/useSessionStorage";
+import { isClient } from "@/utilis/isClient";
+import { useMessageContext } from "@/utilis/MessageContext";
 
 interface DashboardProps {
   userName: string;
+  handleButtonClick?: (event: any) => void;
 }
 
-export const Dashboard: FC<DashboardProps> = ({ userName }) => {
+export const Dashboard: FC<DashboardProps> = ({ handleButtonClick }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [greeting, setGreeting] = useState<string>("");
 
+  const { userName, splitUserName, email, setEmail, setSplitUserName } =
+    useSessionStorage();
+
+  const { setMessage, message } = useMessageContext();
+
+  useEffect(() => {}, [message]);
+
+  // const handleButtonClick = (event) => {
+  //   const buttonElement = event.target as HTMLElement;
+  //   const cardElement = buttonElement.closest('div');
+  //   const text = cardElement?.querySelector('p')?.innerHTML || '';
+  //   handleCardClick(text);
+
+  //   console.log("click on this joint", text)
+  // };
+
+  const getRandomGreeting = () => {
+    return greetings[Math.floor(Math.random() * greetings.length)];
+  };
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -19,7 +44,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
 
     const handleMouseDown = (e: MouseEvent) => {
       setIsDragging(true);
-      console.log("Dragging")
+      console.log("Dragging");
       setStartX(e.pageX - wrapper.offsetLeft);
       setScrollLeft(wrapper.scrollLeft);
     };
@@ -31,7 +56,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
       const walk = (x - startX) * 2; // Adjust the scroll speed
       wrapper.scrollLeft = scrollLeft - walk;
 
-      console.log("loggin walk", walk)
+      console.log("loggin walk", walk);
     };
 
     const handleMouseUp = () => {
@@ -51,40 +76,36 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
     };
   }, [isDragging, startX, scrollLeft]);
 
+  useEffect(() => {
+    setGreeting(getRandomGreeting());
+  }, [greeting]);
 
+  // Update session storage whenever userName or splitUserName changes
+  useEffect(() => {
+    if (isClient()) {
+      if (userName !== null) {
+        sessionStorage.setItem("userName", userName);
+      }
 
+      if (splitUserName !== "") {
+        sessionStorage.setItem("splitUserName", splitUserName);
+      }
+
+      if (email !== null) {
+        sessionStorage.setItem("email", email);
+      }
+    }
+  }, [userName, splitUserName]);
 
   return (
     <>
-{/* 
-<header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
-          <div className="flex flex-row gap-[18px] items-center justify-center">
-            <button className="hover:text-[#807f7f]">Tour</button>
+      {/* 
 
-            <button className="flex flex-row guideLinesBtn gap-[10px] hover:bg-[#4B4B4B]">
-              <svg
-                width="15"
-                height="15"
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="far"
-                data-icon="compass"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="#2F0FFD"
-                  d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm306.7 69.1L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
-                ></path>
-              </svg>
-              Guidlines
-            </button>
-          </div>
-        </header> */}
 
       {/* Place within a Componnet */}
-      <h2>Grand Rising, {userName}</h2>
+      <h2>
+        {greeting}, {userName}
+      </h2>
       <h2>How may I guide?</h2>
       <p id="greyText">Wisdom is a forever process, let us aid in the ways </p>
 
@@ -98,7 +119,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
         <div className="renderCards relative">
           <p>Get your astrological predictions</p>
 
-          <button className="renderAutoTextBtn">
+          <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -119,7 +140,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
         <div className="renderCards relative">
           <p>Calculate my life path number, and personal months meaning</p>
 
-          <button className="renderAutoTextBtn">
+          <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -140,7 +161,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
         <div className="renderCards relative">
           <p>Calculate my life path number, and personal months meaning</p>
 
-          <button className="renderAutoTextBtn">
+          <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -165,7 +186,7 @@ export const Dashboard: FC<DashboardProps> = ({ userName }) => {
             perspective
           </p>
 
-          <button className="renderAutoTextBtn">
+          <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"

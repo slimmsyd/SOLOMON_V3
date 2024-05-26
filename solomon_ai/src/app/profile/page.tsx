@@ -61,21 +61,24 @@ const Profile: React.FC = () => {
       return null;
     }
   }
-
-  useEffect(() => {
-    if (isClient()) {
-      if (email !== null) {
-        sessionStorage.setItem("email", email as string);
-        console.log("logging the email on profile", email);
+    // Update session storage whenever userName or splitUserName changes
+    useEffect(() => {
+      if (isClient()) {
+        if (userName !== null) {
+          sessionStorage.setItem("userName", userName);
+        }
+  
+        if (splitUserName !== "") {
+          sessionStorage.setItem("splitUserName", splitUserName);
+        }
+  
+        if (email !== null) {
+          sessionStorage.setItem("email", email);
+        }
       }
-
-      if (splitUserName !== "") {
-        sessionStorage.setItem("splitUserName", splitUserName);
-      }
-    }
-
-    // Usage
-  }, [email, splitUserName]);
+    }, [userName, splitUserName]);
+  
+   
 
 
   //   if (!userName || !session) {
@@ -151,7 +154,7 @@ const Profile: React.FC = () => {
               </div>
 
               <div className="flex flex-col">
-                <p>Sydney Sanders</p>
+                <p>{userName}</p>
                 <p>{email}</p>
               </div>
             </div>

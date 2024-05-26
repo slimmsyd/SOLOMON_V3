@@ -19,15 +19,16 @@ import { isClient } from "@/utilis/isClient";
 import { useChatConversation } from "@/app/hooks/ConversationContext";
 import useCreateConversation from "@/app/hooks/createConversation";
 import useConversations from "@/app/hooks/useConversations";
-import { Dashboard } from "../Dashboard";
 //Chat Container
 import { ChatContainer } from "../ChatContainer";
-import ChatMessage from "@/app/components/Chatmessage";
-import { ChatMessagesContainer } from "../ChatMessage";
 import { SignupForm } from "../Signupform";
+
+import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
 //Importing the Zodiac Signs
 import { zodiacSigns } from "@/utilis/zodaicSigns";
+import { greetings } from "@/utilis/randomGreeting";
+
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
@@ -35,9 +36,9 @@ const ChatDashboard: React.FC = () => {
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
 
-  const [userName, setUserName] = useState<string | null>(null);
-  const [splitUserName, setSplitUserName] = useState<string>("");
-  const [email, setEmail] = useState<string | null>(null);
+  const { userName, splitUserName, email, setEmail, setSplitUserName } =
+    useSessionStorage();
+
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, status } = useSession();
@@ -59,6 +60,15 @@ const ChatDashboard: React.FC = () => {
   const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(
     null
   );
+
+  const [currentQuestion, setCurrentQuestion] = useState<number>(1);
+  const [borderClasses, setBorderClasses] = useState<string[]>([
+    "selectedBorder",
+    "noneBorder",
+    "noneBorder",
+    "noneBorder",
+    "noneBorder",
+  ]);
 
   //Stores the Chat
   const {
@@ -96,42 +106,8 @@ const ChatDashboard: React.FC = () => {
 
     console.log("Logging the current Convo in the useEffect", currentConvoId);
   }, []);
-  useEffect(() => {
-    if (isClient()) {
-      const storedUserName = sessionStorage.getItem("userName");
-      const storedSplitUserName = sessionStorage.getItem("splitUserName");
-      const storedEmail = sessionStorage.getItem("email");
-
-      if (storedUserName) {
-        setUserName(storedUserName);
-      }
-
-      if (email) {
-        setEmail(storedEmail);
-      }
-
-      if (storedSplitUserName) {
-        setSplitUserName(storedSplitUserName);
-      }
-    }
-  }, []);
 
   // Update session storage whenever userName or splitUserName changes
-  useEffect(() => {
-    if (isClient()) {
-      if (userName !== null) {
-        sessionStorage.setItem("userName", userName);
-      }
-
-      if (splitUserName !== "") {
-        sessionStorage.setItem("splitUserName", splitUserName);
-      }
-
-      if (email !== null) {
-        sessionStorage.setItem("email", email);
-      }
-    }
-  }, [userName, splitUserName]);
 
   useEffect(() => {
     async function checkSession() {
@@ -155,7 +131,6 @@ const ChatDashboard: React.FC = () => {
         setSessionStatus(status);
         const currentSession = await getSession();
         console.log("Current session data:", currentSession);
-        setUserName(currentSession?.user.name);
         if (!currentSession?.user.user) {
           // setEmail(currentSession?.user.email.split("@")[0]);
           setEmail(currentSession?.user.email.split("@")[0]);
@@ -187,28 +162,10 @@ const ChatDashboard: React.FC = () => {
   }, [status, router]);
 
   useEffect(() => {
-    if (isClient()) {
-      // This effect runs only on the client side
-      const storedUsername =
-        typeof window !== "undefined" ? localStorage.getItem("username") : null;
-      if (storedUsername) {
-        setUserName(storedUsername);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
     console.log("logging the completed form chnage ", completedForm);
   }, [completedForm]);
 
-  const [currentQuestion, setCurrentQuestion] = useState<number>(1);
-  const [borderClasses, setBorderClasses] = useState<string[]>([
-    "selectedBorder",
-    "noneBorder",
-    "noneBorder",
-    "noneBorder",
-    "noneBorder",
-  ]); // Example border classes
+  // Example border classes
   useEffect(() => {
     console.log("Logging the current question", currentQuestion);
   }, [currentQuestion]);
@@ -349,7 +306,11 @@ const ChatDashboard: React.FC = () => {
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify({ userId, message: message, conversationId: currentConvoId || currentConversationId }),
+          body: JSON.stringify({
+            userId,
+            message: message,
+            conversationId: currentConvoId || currentConversationId,
+          }),
         }).then((res) => res.json());
 
         // 3. Update the responses array with the bot's reply
@@ -370,7 +331,6 @@ const ChatDashboard: React.FC = () => {
           session?.user.id
         );
 
-    
         console.log(
           "Loggign the current Conversation on a new click ",
           currentConversationId
@@ -598,28 +558,28 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(
-      "Logging the responses on the Questionnaire on send",
-      responses
-    );
+  // useEffect(() => {
+  //   console.log(
+  //     "Logging the responses on the Questionnaire on send",
+  //     responses
+  //   );
 
-    responses.forEach((response) => {
-      const lifePathNumber = extractLifePathNumber(response.response);
-      const zodiacSign = extractZodiacSign(response.response);
+  //   responses.forEach((response) => {
+  //     const lifePathNumber = extractLifePathNumber(response.response);
+  //     const zodiacSign = extractZodiacSign(response.response);
 
-      if (lifePathNumber !== null || zodiacSign !== null) {
-        console.log("Logging hte Life Path Nuber", lifePathNumber);
-        console.log("Logging the Zodiac Sign", zodiacSign);
-        console.log("Logging the userID", userId);
-        updateUserProgress(
-          userId as any,
-          lifePathNumber as any,
-          zodiacSign as any
-        );
-      }
-    });
-  }, [responses, userId]);
+  //     if (lifePathNumber !== null || zodiacSign !== null) {
+  //       console.log("Logging hte Life Path Nuber", lifePathNumber);
+  //       console.log("Logging the Zodiac Sign", zodiacSign);
+  //       console.log("Logging the userID", userId);
+  //       updateUserProgress(
+  //         userId as any,
+  //         lifePathNumber as any,
+  //         zodiacSign as any
+  //       );
+  //     }
+  //   });
+  // }, [responses, userId]);
 
   const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
@@ -650,6 +610,11 @@ const ChatDashboard: React.FC = () => {
     removeFirstChatResponse();
   }, [pathname]);
 
+
+  const getRandomGreeting = () => {
+    return greetings[Math.floor(Math.random() * greetings.length)];
+  };
+  
   //This function Deletes the cvonersation
   async function deleteConversation(conversationId: string) {
     if (isClient()) {
@@ -740,36 +705,62 @@ const ChatDashboard: React.FC = () => {
     }
 
     // Inline ternary operation to set the message content
+    const randomGreeting = getRandomGreeting();
+
     const userMessage = session?.user?.name
-      ? `Hello, ${messageContent}, My Name is ${session.user.name}`
-      : `Hello, My Name is ${messageContent}`;
+      ? `${randomGreeting}, my name is ${session.user.name}`
+      : `Hello, my name is ${randomGreeting}`;
 
     console.log("Loggin the userId", userId);
     console.log("Logging the message", userMessage);
     console.log("Logging the conversatoinId", convoId);
+    
+    setResponses((prevResponses: any) => [
+      ...prevResponses,
+      { question: userMessage, response: null },
+    ]);
 
     try {
+      // Add a new entry with a loading state before making the API call
+   
+
       const botReply = await fetch("/api/questionBot", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ userId, message: userMessage, conversationId: convoId }),
+        body: JSON.stringify({
+          userId,
+          message: userMessage,
+          conversationId: convoId,
+        }),
       }).then((res) => res.json());
 
-      setResponses((prevResponses) => [
-        ...prevResponses,
-        { question: "", response: botReply.message },
-      ]);
 
+      // Update the response state with the actual response
+      
       setResponses((prevResponses) =>
-        prevResponses.map((resp) => {
-          if (resp.question === message) {
-            return { ...resp, response: botReply.message };
-          }
-          return resp;
-        })
-      );
+      prevResponses.map((resp) => {
+        if (resp.question === userMessage && resp.response === null) {
+          return { ...resp, response: botReply.message };
+        }
+        return resp;
+      })
+    );
+
+      // setResponses((prevResponses) => [
+      //   ...prevResponses,
+      //   { question: "", response: botReply.message },
+      // ]);
+
+      // setResponses((prevResponses) =>
+      //   prevResponses.map((resp) => {
+      //     if (resp.question === message) {
+      //       return { ...resp, response: botReply.message };
+      //     }
+      //     return resp;
+      //   })
+      // );
 
       console.log("Logging the responses in automated message", responses);
 

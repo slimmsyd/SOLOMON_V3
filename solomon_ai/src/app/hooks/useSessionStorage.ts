@@ -27,6 +27,9 @@ export const useSessionStorage = () => {
       if (storedSplitUserName) {
         setSplitUserName(storedSplitUserName);
       }
+      if(userName){
+        setUserName(userName)
+      }
     }
   }, []);
 

@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/types/app/api/user/page.ts"
-  ],
+, "src/utilis/MessageContext.js"  ],
   "exclude": [
     "node_modules"
   ]

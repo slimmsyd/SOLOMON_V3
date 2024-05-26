@@ -119,7 +119,7 @@ export default async function handler(
           - Ask what denomination they follow.
           
           If the user is spiritual:
-          - Ask what spiritual practices they attend.
+          - Ask what spiritual practices they attend
           
           If the user is atheist or agnostic:
           - Ask why they intend to use this app.

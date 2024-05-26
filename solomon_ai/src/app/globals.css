@@ -81,6 +81,10 @@ body {
 
   /* background: var(--main-black); */
 }
+h1
+{
+  font-size: 60px !important;
+}
 
 h2 {
   font-size: 50px;
@@ -501,8 +505,25 @@ filter: blur(5px);
   min-width: 800px;
 }
 
+
+.figureHome { 
+  max-width: 800px;
+}
+.afterWrap::after{
+  bottom: -15%;
+  right: 0%;
+  transform: rotate(-90deg);
+}
+
+
+.afterWrap::before{
+  top: -5px;
+  left: 0%;
+  transform: rotate(90deg);
+}
+
 .renderCardsWrapper::before,
-.renderCardsWrapper::after {
+.renderCardsWrapper::after, .afterWrap::after, .afterWrap::before {
   content: "";
   position: absolute;
   width: 19px; /* Size of the square */

@@ -1,26 +1,17 @@
 "use client";
 
-import DashboardNav from "../../components/DashboardNav";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 import React, { useState, useEffect, useRef, use, useId } from "react";
-import Link from "next/link";
 import { useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
-import { Message } from "../../../../types";
 
 import dynamic from "next/dynamic";
-import axios from "axios";
+import {MessageProvider} from '../../../utilis/MessageContext'
 
-import ErrorPage from "../../error/page";
 
-import Image from "next/image";
-import arrowLeft from "../../../../public/assets/Chat/arrowLeft.png";
-import searchIcon from "../../../../public/assets/Chat/searchIcon.png";
-import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
-import iconChat from "../../../../public/assets/Chat/iconChat.png";
-import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
+
 
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
@@ -33,15 +24,13 @@ import useConversations from "@/app/hooks/useConversations";
 import { Dashboard } from "./Dashboard";
 //Chat Container
 import { ChatContainer } from "./ChatContainer";
-import ChatMessage from "@/app/components/Chatmessage";
 import { ChatMessagesContainer } from "./ChatMessage";
-import { SignupForm } from "./Signupform";
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
   //First introduction From
-  const { userName, splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
+  const { userName, setUserName , splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -105,9 +94,6 @@ const ChatDashboard: React.FC = () => {
 
 
 
- 
-
-
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
     if (isClient()) {
@@ -124,6 +110,11 @@ const ChatDashboard: React.FC = () => {
       }
     }
   }, [userName, splitUserName]);
+
+ 
+
+
+  // Update session storage whenever userName or splitUserName changes
 
 
   let sessionRef = useRef(0);
@@ -169,6 +160,7 @@ const ChatDashboard: React.FC = () => {
           setEmail(currentSession?.user.email.split("@")[0]);
 
           //Just a back up just in case
+          setUserName(currentSession?.user.name)
 
           if (isClient()) {
             if (email !== null) {
@@ -199,7 +191,7 @@ const ChatDashboard: React.FC = () => {
   //Submit the Inquiry
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging jfljsflkf", currentConversationId);
+    console.log("Logging Conversation Id in the Submit", currentConversationId);
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
@@ -585,6 +577,26 @@ const ChatDashboard: React.FC = () => {
   }
 
 
+
+
+
+  const handleCardClick = (text: string) => {
+    setMessage(text);
+  };
+
+  const handleButtonClick = (event: any) => {
+    const buttonElement = event.target as HTMLElement;
+    const cardElement = buttonElement.closest('div');
+    const text = cardElement?.querySelector('p')?.innerHTML || '';
+    handleCardClick(text);
+
+    console.log("click on this joint", text)
+  };
+
+  useEffect(() => {
+    console.log("Current message:", message);
+  }, [message]);
+
  
   //Get access to the current conversation Name and Id
 
@@ -593,6 +605,9 @@ const ChatDashboard: React.FC = () => {
   }, [conversations]);
 
   return (
+
+    <MessageProvider>
+
     <div className="chatDashboard">
       {/* Chat Container Componet  */}
 
@@ -622,7 +637,9 @@ const ChatDashboard: React.FC = () => {
           {currentConversationId ? (
             <ChatMessagesContainer responses={responses || "null"} />
           ) : (
-            <Dashboard userName={userName || ""} />
+            <Dashboard userName={userName || ""}
+            handleButtonClick = {handleButtonClick}
+            />
           )}
         </div>
 
@@ -682,6 +699,9 @@ const ChatDashboard: React.FC = () => {
         </form>
       </div>
     </div>
+
+        </MessageProvider>
+
   );
 };
 
