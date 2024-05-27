@@ -124,7 +124,7 @@ export default function HomePage() {
       <main className="page-wrapper w-full h-full">
         <NavComponent />
         <section className="hero-section my-[100px] p-8 w-full h-screen flex items-center justify-center flex-col">
-          <div className="w-full flex items-center justify-center flex-col gap-[2.275rem] text-center lg:w[80%] xl:w-[1050px]">
+          <div className="w-full flex md:items-center items-start justify-center flex-col gap-[2.275rem] md:text-center text-left lg:w[80%] xl:w-[1050px]">
             <h1 className="text-white    xl:w-3/4">
               To question God in all the ways
             </h1>
@@ -132,7 +132,7 @@ export default function HomePage() {
               SolomonAI is one of kind leading Metaphysical AI, who aim to help
               aid the moral consciousness of todays age.
             </p>
-            <div className="w-full flex items-center justify-center gap-[2.5rem]">
+            <div className="w-full flex md:items-center items-start md:justify-center justify-start gap-[2.5rem]">
               <button className="px-8 py-1 text-[14px]  main-black bg-white border border-white  rounded duration-300 ease-in-out hover:text-white/60 hover:bg-transparent hover:border-white/60">
                 Get Started
               </button>
@@ -154,14 +154,14 @@ export default function HomePage() {
             <form onSubmit={handleHomeSubmit} className="w-[90%] h-[39px'">
               <input
                 type="text"
-                className="w-[90%] p-3 h-[39px] text-[14px] text-gray bg-[#33333358] border border-[#747474] rounded-lg outline-none"
+                className="md:w-[90%] w-full p-3 h-[39px] text-[14px] text-gray bg-[#33333358] border border-[#747474] rounded-lg outline-none"
                 value={homePrompt}
                 onChange={(e) => setHomePrompt(e.target.value)}
                 placeholder="What do ye seek?"
               />
             </form>
-            <div className=" afterWrap relative py-4 px-8 w-[80%] flex text-center align-center justify-center">
-              <p className="text-white text-[14px] leading-[1.5rem]  text-center w-full xl:text-center xl:w-full">
+            <div className=" afterWrap relative py-4 md:px-8 p-[0px] md:w-[80%] w-full flex md:text-center align-center justify-center">
+              <p className="text-white text-[14px] leading-[1.5rem] text-left  md:text-center w-full  xl:w-full">
                 SolomonAI is one of kind leading Metaphysical AI, who aim to
                 help aid the moral consciousness of todays age....
               </p>
@@ -404,7 +404,7 @@ export default function HomePage() {
               )}
               {toggleFeature.astrology && (
                 <>
-                  <div className="p-6 w-full flex items-start justify-center flex-col gap-4 text-white text-left  ">
+           <div className="py-6 w-full flex items-start  justify-center flex-col gap-4 text-white text-left  ">
                     <h3 className="text-white uppercase  ">
                       Zodiac Astrologist
                     </h3>
@@ -421,7 +421,7 @@ export default function HomePage() {
               )}
               {toggleFeature.lifePath && (
                 <>
-                  <div className="p-6 w-full flex items-start justify-center flex-col gap-4 text-white text-left  ">
+                 <div className="py-6 w-full flex items-start  justify-center flex-col gap-4 text-white text-left  ">
                     <h3 className="text-white uppercase  ">
                       Life Path Consultation
                     </h3>

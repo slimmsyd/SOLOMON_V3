@@ -109,6 +109,22 @@ h6 {
   font-size: 16px;
   line-height: 125% !important;
 }
+@media screen and (max-width: 950px)
+{ 
+  h1
+{
+  font-size: 44px !important;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+}
 
 img {
   max-width: 100%;
