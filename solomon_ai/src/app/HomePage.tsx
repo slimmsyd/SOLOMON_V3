@@ -125,10 +125,10 @@ export default function HomePage() {
         <NavComponent />
         <section className="hero-section my-[100px] p-8 w-full h-screen flex items-center justify-center flex-col">
           <div className="w-full flex items-center justify-center flex-col gap-[2.275rem] text-center lg:w[80%] xl:w-[1050px]">
-            <h1 className="text-white  text-[5rem] leading-[5rem]  xl:text-[6.5rem] xl:leading-[4rem] xl:w-3/4">
+            <h1 className="text-white    xl:w-3/4">
               To question God in all the ways
             </h1>
-            <p className="w-3/4 text-gray capitalize text-[20px] leading-[1.5rem]  xl:w-1/2">
+            <p className="w-3/4 text-gray capitalize text-[20px]   xl:w-1/2">
               SolomonAI is one of kind leading Metaphysical AI, who aim to help
               aid the moral consciousness of todays age.
             </p>
@@ -136,7 +136,7 @@ export default function HomePage() {
               <button className="px-8 py-1 text-[14px]  main-black bg-white border border-white  rounded duration-300 ease-in-out hover:text-white/60 hover:bg-transparent hover:border-white/60">
                 Get Started
               </button>
-              <button className="py-1 text-[14px]   text-gray text-[1.5rem] border-b border-white/60 flex items-center gap-2">
+              <button className="py-1 text-[14px]   text-gray] border-b border-white/60 flex items-center gap-2">
                 Contact Sales{" "}
                 <span>
                   <svg
@@ -178,7 +178,7 @@ export default function HomePage() {
                   className="w-full flex justify-center text-center flex-col gap-[20vh] items-start"
                 >
                   <div className="md:py-[1rem] w-full md:w-[60%] py-[1rem]">
-                    <h2 className=" text-white !text-[60px]   leading-[2.75rem]   lg:leading-[3rem] xl:leading-[3.5rem] xl:w-2/3 text-left">
+                    <h2 className=" text-white !text-[60px]     xl:w-2/3 text-left">
                       {info.h2}
                     </h2>
                   </div>
@@ -330,7 +330,7 @@ export default function HomePage() {
 
         <section className="feature-section p-8   py-[8rem] xl:py-0 w-full h-auto  flex items-center justify-center flex-col gap-[3rem]">
           <div className="w-full block">
-            <h2 className=" text-white !text-[60px]   leading-[2.75rem]   lg:leading-[3rem] xl:leading-[3.5rem] xl:w-2/3 text-left">
+            <h2 className=" text-white !text-[60px]   ] xl:w-2/3 text-left">
               One of a kind features.
             </h2>
           </div>
