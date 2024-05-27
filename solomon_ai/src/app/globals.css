@@ -228,6 +228,17 @@ figure video {
   
 
 }
+.vidDivider{
+  align-self: center;
+  width: 269px;
+  height: 5px;
+  background: #807F7F80;
+  border-radius: 10px;
+  border: none;
+  border: 1px solid #807F7F80;
+
+
+}
 
 
 

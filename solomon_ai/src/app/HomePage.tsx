@@ -231,7 +231,7 @@ export default function HomePage() {
 
 
 
-          <div className = "mainVideoContainer">
+          <div className = "mainVideoContainer flex flex-col gap-[3rem]">
           <Video
                 src="http://localhost:3000/video.mp4"
                 type="video/mp4"
@@ -242,7 +242,12 @@ export default function HomePage() {
                 loop={true}
                 muted={true}
               />
+
+<hr className = "vidDivider" ></hr>
+
           </div>
+
+          
 
 
 
