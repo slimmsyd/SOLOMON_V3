@@ -165,7 +165,7 @@ export default function HomePage() {
               start: "top top",
               end: "+=200%", // Adjust the end point to ensure the animation covers the scroll distance
               scrub: true,
-              markers: true, // Add markers for debugging
+              // markers: true, // Add markers for debugging
               onEnter: () => console.log("ScrollTrigger onEnter"),
               onLeave: () => console.log("ScrollTrigger onLeave"),
               onEnterBack: () => console.log("ScrollTrigger onEnterBack"),
