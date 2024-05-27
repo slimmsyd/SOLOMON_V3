@@ -197,12 +197,28 @@ nav button {
 
 
 /* HOME CODE */
+
+.homeHeaderContainer{
+  transition: opacity 500ms ease-in-out;
+}
+
+
 .figureWrapper { 
   height: 100%;
+  padding-bottom: 30vh;
+}
+.videoFigureContainer{
+  max-width: 800px;
+  /* min-width: 800px; */
+
 }
 figure video {
   max-height: 800px;
   border-radius: 10px;
+  max-width: 800px;
+  /* min-width: 800px; */
+
+
   border: 0.5px solid #807f7f;
 }
 
@@ -245,6 +261,8 @@ figure video {
 @media screen and (max-width: 950px){
   .figureWrapper{
     flex-direction:  column !important;
+    padding-bottom: 10vh;
+
   }
   .info-section { 
     gap: 0vh;

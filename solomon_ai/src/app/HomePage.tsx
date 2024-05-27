@@ -1,10 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import NavComponent from "./navigation/navComponent";
 import Image from "next/image";
 import Video from "./components/Vidoe";
 import { features } from "process";
 import Link from "next/link";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
+import { gsap } from "gsap";
+
+import Lenis from "lenis";
 
 export default function HomePage() {
   const [homePrompt, setHomePrompt] = useState("");
@@ -119,12 +124,156 @@ export default function HomePage() {
     },
   ];
 
+  const heroSectionRef = useRef<HTMLDivElement>(null);
+  const refTextTrigger = useRef<HTMLDivElement>(null);
+  const refTextOne = useRef<HTMLDivElement>(null);
+  const refTextTwo = useRef<HTMLDivElement>(null);
+  const refTextThree = useRef<HTMLDivElement>(null);
+
+  //Controlling the Smooth Scrolling
+  useEffect(() => {
+    // Initialize Lenis for smooth scrolling
+    // const lenis = new Lenis({
+    //   duration: 1.2,
+    //   easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    //   direction: "vertical",
+    //   gestureDirection: "vertical",
+    //   smooth: true,
+    //   smoothTouch: false,
+    //   touchMultiplier: 2,
+    //   infinite: false,
+    // } as any);
+
+    // const raf = (time: number) => {
+    //   lenis.raf(time);
+    //   requestAnimationFrame(raf);
+    // };
+
+    // requestAnimationFrame(raf);
+
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 800px)", () => {
+
+        // Opacity change for hero section
+        if (heroSectionRef.current) {
+          gsap.to(heroSectionRef.current, {
+            opacity: 0,
+            scrollTrigger: {
+              trigger: heroSectionRef.current,
+              start: "top top",
+              end: "+=200%", // Adjust the end point to ensure the animation covers the scroll distance
+              scrub: true,
+              markers: true, // Add markers for debugging
+              onEnter: () => console.log("ScrollTrigger onEnter"),
+              onLeave: () => console.log("ScrollTrigger onLeave"),
+              onEnterBack: () => console.log("ScrollTrigger onEnterBack"),
+              onLeaveBack: () => console.log("ScrollTrigger onLeaveBack"),
+              onUpdate: (self) =>
+                console.log("ScrollTrigger onUpdate", self.progress),
+            },
+          });
+        }
+
+        // Pinning the text element
+        if (refTextOne.current) {
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: refTextOne.current,
+              start: "top center",
+              endTrigger: refTextTwo.current,
+              end: "+=180%", // Adjust the end point based on your requirements
+              pin: true,
+              // markers: true, // Add markers for debugging
+              scrub: true,
+              onEnter: () => console.log("Text pin onEnter"),
+              onLeave: () => console.log("Text pin onLeave"),
+              onEnterBack: () => console.log("Text pin onEnterBack"),
+              onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              onUpdate: (self) =>
+                console.log("Text pin onUpdate", self.progress),
+            },
+          });
+
+          tl.to(refTextOne.current, { opacity: 0, duration: 50 }).fromTo(
+            refTextTwo.current,
+            { opacity: 0, duration: 10 },
+            { opacity: 1, duration: 20 },
+            "-=1"
+          );
+        }
+
+        // Pinning the text element
+        if (refTextTwo.current) {
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: refTextTwo.current,
+              start: "top center",
+              endTrigger: refTextThree.current,
+              end: "+=180%", // Adjust the end point based on your requirements
+              pin: true,
+              // markers: true, // Add markers for debugging
+              scrub: true,
+              onEnter: () => console.log("Text pin onEnter"),
+              onLeave: () => console.log("Text pin onLeave"),
+              onEnterBack: () => console.log("Text pin onEnterBack"),
+              onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              onUpdate: (self) =>
+                console.log("Text pin onUpdate", self.progress),
+            },
+          });
+
+          tl.to(refTextTwo.current, { opacity: 0, duration: 50 }).fromTo(
+            refTextThree.current,
+            { opacity: 0, duration: 10 },
+            { opacity: 1, duration: 20 },
+            "-=1"
+          );
+        }
+
+        // Pinning the text element
+        if (refTextThree.current) {
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: refTextThree.current,
+              start: "top center",
+              end: "+=180%", // Adjust the end point based on your requirements
+              pin: true,
+              // markers: true, // Add markers for debugging
+              scrub: true,
+              onEnter: () => console.log("Text pin onEnter"),
+              onLeave: () => console.log("Text pin onLeave"),
+              onEnterBack: () => console.log("Text pin onEnterBack"),
+              onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              onUpdate: (self) =>
+                console.log("Text pin onUpdate", self.progress),
+            },
+          });
+
+          tl.to(refTextThree.current, { opacity: 0, duration: 50 });
+        }
+      },
+    )
+  
+
+    return () => {
+      // lenis.destroy();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
     <div>
       <main className="page-wrapper w-full h-full">
         <NavComponent />
-        <section className="hero-section my-[100px] p-8 w-full h-screen flex items-center justify-center flex-col">
-          <div className="w-full flex md:items-center items-start justify-center flex-col gap-[2.275rem] md:text-center text-left lg:w[80%] xl:w-[1050px]">
+        <section className="hero-section relative my-[100px] p-8 w-full h-screen flex items-center justify-center flex-col">
+          <div
+            ref={heroSectionRef}
+            className="
+                homeHeaderContainer
+            w-full flex md:items-center items-start justify-center flex-col gap-[2.275rem] md:text-center text-left lg:w[80%] relative xl:w-[1050px]"
+          >
             <h1 className="text-white    xl:w-3/4">
               To question God in all the ways
             </h1>
@@ -169,89 +318,162 @@ export default function HomePage() {
           </div>
         </section>
         <section className="info-section md:px-[4rem] !md:py-[8rem] w-full h-auto flex items-center  justify-start flex-col gap-[20vh] p-[2rem]">
-        <hr className="w-full h-[1px] bg-white opacity-[.10]" />
+          <hr className="w-full h-[1px] bg-white opacity-[.10]" />
 
-          {infoContent.map((info) => {
-            return (
-              <>
+          <div className="w-full flex justify-center text-center flex-col gap-[0vh] items-start">
+            <div ref={refTextTrigger} className="w-full md:w-[60%] py-[80px] ">
+              <h2 className=" text-white  xl:w-2/3 text-left">
+                Built to open the mind of human kind
+              </h2>
+            </div>
+
+            <div className=" w-full flex items-center justify-center  md:flex-row  figureWrapper flex-col">
+              <div className="w-full  h-[100%] flex gap-[10vw] md:flex-row figureWrapper items-start justify-between">
                 <div
-                  key={info.id}
-                  className="w-full flex justify-center text-center flex-col gap-[20vh] items-start"
+                  ref={refTextOne}
+                  className="w-full items-start justify-center flex-col gap-[10px] flex xl:items-start xl:w-[60%] text-left"
                 >
-                  <div className="md:py-[1rem] w-full md:w-[60%] py-[1rem]">
-                    <h2 className=" text-white      xl:w-2/3 text-left">
-                      {info.h2}
-                    </h2>
-                  </div>
+                  <span className="text-gray  text-left text-[14px]">
+                    Authentic Intelligence.
+                  </span>
+                  <h3 className="text-white leading-[1.5rem] mt-[1.5rem]   xl:leading-[2rem]">
+                    No denominated spiritualization. Decentralized
+                    spiritualization.
+                  </h3>
+                  <p className="text-gray text-[16px] mt-[1.5rem]">
+                    SolomonAI is one of kind leading Metaphysical AI, who aim to
+                    help aid the moral consciousness of todays age.
+                  </p>
+                </div>
+                <figure
+                  className="
+                videoFigureContainer
+                w-full  flex flex-col md:flex-row gap-[10vw] items-end justify-between "
+                >
+                  <Video
+                    src="http://localhost:3000/video.mp4"
+                    type="video/mp4"
+                    width="100%"
+                    height="auto"
+                    controls={false}
+                    autoPlay={true}
+                    loop={true}
+                    muted={true}
+                  />
 
-                  <div className=" w-full flex items-center justify-center  md:flex-row  figureWrapper flex-col">
-                    <div className="w-full  h-[100%] flex gap-[10vw] md:flex-row figureWrapper items-start justify-between">
-                      <div className="w-full items-start justify-center flex-col gap-[10px] flex xl:items-start xl:w-[60%] text-left">
-                        <span className="text-gray  text-left text-[14px]">
-                          {info.span}
-                        </span>
-                        <h3 className="text-white leading-[1.5rem] mt-[1.5rem]   xl:leading-[2rem]">
-                          {info.h3}
-                        </h3>
-                        <p className="text-gray text-[16px] mt-[1.5rem]">
-                          {info.p}
-                        </p>
-                      </div>
-                      <figure className="w-full  flex flex-col md:flex-row gap-[10vw] items-start justify-between ">
-                        <Video
-                          src={info.video as any}
-                          type="video/mp4"
-                          width="100%"
-                          height="auto"
-                          controls={false}
-                          autoPlay={true}
-                          loop={true}
-                          muted={true}
-                        />
-
-                        {/* <Image
+                  {/* <Image
                           src={info.image}
                           width={100}
                           height={100}
                           alt="Animated ying yang"
                           className="border border-white/50 w-full h-full rounded"
                         /> */}
-                      </figure>
-                    </div>
-                  </div>
+                </figure>
+              </div>
+            </div>
+
+            <div className=" w-full flex items-center justify-center  md:flex-row  figureWrapper flex-col">
+              <div className="w-full  h-[100%] flex gap-[10vw] md:flex-row figureWrapper items-start justify-between">
+                <div
+                  ref={refTextTwo}
+                  className="w-full items-start justify-center flex-col gap-[10px] flex xl:items-start xl:w-[60%] text-left"
+                >
+                  <span className="text-gray  text-left text-[14px]">
+                    Authentic Intelligence.
+                  </span>
+                  <h3 className="text-white leading-[1.5rem] mt-[1.5rem]   xl:leading-[2rem]">
+                    No denominated spiritualization. Decentralized
+                    spiritualization.
+                  </h3>
+                  <p className="text-gray text-[16px] mt-[1.5rem]">
+                    SolomonAI is one of kind leading Metaphysical AI, who aim to
+                    help aid the moral consciousness of todays age.
+                  </p>
                 </div>
-              </>
-            );
-          })}
+                <figure className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between ">
+                  <Video
+                    src="http://localhost:3000/video.mp4"
+                    type="video/mp4"
+                    width="100%"
+                    height="auto"
+                    controls={false}
+                    autoPlay={true}
+                    loop={true}
+                    muted={true}
+                  />
+
+                  {/* <Image
+                          src={info.image}
+                          width={100}
+                          height={100}
+                          alt="Animated ying yang"
+                          className="border border-white/50 w-full h-full rounded"
+                        /> */}
+                </figure>
+              </div>
+            </div>
+
+            <div className=" w-full flex items-center justify-center  md:flex-row  figureWrapper flex-col">
+              <div className="w-full  h-[100%] flex gap-[10vw] md:flex-row figureWrapper items-start justify-between">
+                <div
+                  ref={refTextThree}
+                  className="w-full items-start justify-center flex-col gap-[10px] flex xl:items-start xl:w-[60%] text-left"
+                >
+                  <span className="text-gray  text-left text-[14px]">
+                    Authentic Intelligence.
+                  </span>
+                  <h3 className="text-white leading-[1.5rem] mt-[1.5rem]   xl:leading-[2rem]">
+                    No denominated spiritualization. Decentralized
+                    spiritualization.
+                  </h3>
+                  <p className="text-gray text-[16px] mt-[1.5rem]">
+                    SolomonAI is one of kind leading Metaphysical AI, who aim to
+                    help aid the moral consciousness of todays age.
+                  </p>
+                </div>
+                <figure className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between ">
+                  <Video
+                    src="http://localhost:3000/video.mp4"
+                    type="video/mp4"
+                    width="100%"
+                    height="auto"
+                    controls={false}
+                    autoPlay={true}
+                    loop={true}
+                    muted={true}
+                  />
+
+                  {/* <Image
+                          src={info.image}
+                          width={100}
+                          height={100}
+                          alt="Animated ying yang"
+                          className="border border-white/50 w-full h-full rounded"
+                        /> */}
+                </figure>
+              </div>
+            </div>
+          </div>
         </section>
         <section className="info-section-2 py-[20vh] px-8  w-full  flex items-start justify-start flex-col  md:gap-[20vh] gap-[3rem]">
           <h2 className=" text-white      xl:w-2/3 text-left">
             No more mysteries or spook, join us in evolution.
           </h2>
 
+          <div className="mainVideoContainer flex flex-col gap-[3rem]">
+            <Video
+              src="http://localhost:3000/video.mp4"
+              type="video/mp4"
+              width="100%"
+              height="auto"
+              controls={false}
+              autoPlay={true}
+              loop={true}
+              muted={true}
+            />
 
-
-          <div className = "mainVideoContainer flex flex-col gap-[3rem]">
-          <Video
-                src="http://localhost:3000/video.mp4"
-                type="video/mp4"
-                width="100%"
-                height="auto"
-                controls={false}
-                autoPlay={true}
-                loop={true}
-                muted={true}
-              />
-
-<hr className = "vidDivider" ></hr>
-
+            <hr className="vidDivider"></hr>
           </div>
-
-          
-
-
-
-
         </section>
 
         {/* <hr className="w-full h-[1px] bg-white opacity-[.10]" /> */}
