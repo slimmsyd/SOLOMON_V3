@@ -168,8 +168,9 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <hr className="w-full h-[1px] bg-white opacity-[.10]" />
         <section className="info-section md:px-[4rem] !md:py-[8rem] w-full h-auto flex items-center  justify-start flex-col gap-[20vh] p-[2rem]">
+        <hr className="w-full h-[1px] bg-white opacity-[.10]" />
+
           {infoContent.map((info) => {
             return (
               <>
@@ -178,7 +179,7 @@ export default function HomePage() {
                   className="w-full flex justify-center text-center flex-col gap-[20vh] items-start"
                 >
                   <div className="md:py-[1rem] w-full md:w-[60%] py-[1rem]">
-                    <h2 className=" text-white !text-[60px]     xl:w-2/3 text-left">
+                    <h2 className=" text-white      xl:w-2/3 text-left">
                       {info.h2}
                     </h2>
                   </div>
@@ -223,7 +224,31 @@ export default function HomePage() {
             );
           })}
         </section>
-        <section className="info-section-2 p-8  w-full h-[100vh] flex items-center justify-start flex-col gap-[3rem]"></section>
+        <section className="info-section-2 py-[20vh] px-8  w-full  flex items-start justify-start flex-col  md:gap-[20vh] gap-[3rem]">
+          <h2 className=" text-white      xl:w-2/3 text-left">
+            No more mysteries or spook, join us in evolution.
+          </h2>
+
+
+
+          <div className = "mainVideoContainer">
+          <Video
+                src="http://localhost:3000/video.mp4"
+                type="video/mp4"
+                width="100%"
+                height="auto"
+                controls={false}
+                autoPlay={true}
+                loop={true}
+                muted={true}
+              />
+          </div>
+
+
+
+
+        </section>
+
         {/* <hr className="w-full h-[1px] bg-white opacity-[.10]" /> */}
         {/* <section className="plans-section p-8 xl:py-0 w-full h-auto xl:h-screen flex items-center justify-center flex-col gap-[3rem]">
           <div className="w-full flex items-center justify-center flex-col gap-2">
@@ -326,6 +351,7 @@ export default function HomePage() {
             )}
           </div>
         </section> */}
+
         {/* <hr className="w-full h-[1px] bg-white opacity-[.10]" /> */}
 
         <section className="feature-section p-8   py-[8rem] xl:py-0 w-full h-auto  flex items-center justify-center flex-col gap-[3rem]">
@@ -404,7 +430,7 @@ export default function HomePage() {
               )}
               {toggleFeature.astrology && (
                 <>
-           <div className="py-6 w-full flex items-start  justify-center flex-col gap-4 text-white text-left  ">
+                  <div className="py-6 w-full flex items-start  justify-center flex-col gap-4 text-white text-left  ">
                     <h3 className="text-white uppercase  ">
                       Zodiac Astrologist
                     </h3>
@@ -421,7 +447,7 @@ export default function HomePage() {
               )}
               {toggleFeature.lifePath && (
                 <>
-                 <div className="py-6 w-full flex items-start  justify-center flex-col gap-4 text-white text-left  ">
+                  <div className="py-6 w-full flex items-start  justify-center flex-col gap-4 text-white text-left  ">
                     <h3 className="text-white uppercase  ">
                       Life Path Consultation
                     </h3>
@@ -439,7 +465,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="blog-section p-8 !py-[20vh] w-full h-auto  flex items-left justify-center flex-col gap-[3rem]">
+        <section className="blog-section p-8 !md:py-[20vh] py-[10vh] w-full h-auto  flex items-left justify-center flex-col gap-[3rem]">
           <div className="w-full block">
             <h2 className=" text-white !text-[60px]   leading-[2.75rem]   lg:leading-[3rem] xl:leading-[3.5rem] xl:w-2/3 text-left">
               Blogs
@@ -448,7 +474,7 @@ export default function HomePage() {
 
           <hr className="w-full h-[1px] bg-white opacity-[.10]" />
 
-          <div className="w-full flex items-start justify-start flex-col gap-8 mt-[15vh] xl:flex-row">
+          <div className="w-full flex items-start justify-start flex-col gap-8 md:mt-[15vh] xl:flex-row mt-[8vh]">
             {blogData.map(({ id, img, blogTitle, releaseDate, author }) => (
               <div
                 key={id}
@@ -473,8 +499,7 @@ export default function HomePage() {
         </section>
 
         <footer className="w-full p-8 relative flex flex-col gap-[20vh]">
-
-        <hr className="w-full h-[1px] bg-white opacity-[.10]" />
+          <hr className="w-full h-[1px] bg-white opacity-[.10]" />
 
           <div className="flex md:flex-row gap-[6rem] flex-col justify-between w-full">
             <div className="flex-col flex items-start gap-[30px]">
@@ -515,10 +540,18 @@ export default function HomePage() {
             <div className="flex-col md:w-[30%] w-full gap-[15px]">
               <ul className="flex flex-col gap-[15px]">
                 <li className="text-[16px]">Social</li>
-                <Link href = "/" className="text-[14px] text-gray">Instagram</Link>
-                <Link href = "/" className="text-[14px] text-gray">Creators - Instagram</Link>
-                <Link href = "/" className="text-[14px] text-gray">Tiktok</Link>
-                <Link href = "/" className="text-[14px] text-gray">Blogs</Link>
+                <Link href="/" className="text-[14px] text-gray">
+                  Instagram
+                </Link>
+                <Link href="/" className="text-[14px] text-gray">
+                  Creators - Instagram
+                </Link>
+                <Link href="/" className="text-[14px] text-gray">
+                  Tiktok
+                </Link>
+                <Link href="/" className="text-[14px] text-gray">
+                  Blogs
+                </Link>
               </ul>
             </div>
           </div>
@@ -530,13 +563,21 @@ export default function HomePage() {
             </p>
 
             <div className="md:flex flex-row gap-[15px] w-[30%]  hidden">
-              <Link href = "/" className="text-gray text-[14px]"> Security</Link>
+              <Link href="/" className="text-gray text-[14px]">
+                {" "}
+                Security
+              </Link>
               <p className="text-gray text-[14px]"> |</p>
-              <Link  href = "/"  className="text-gray text-[14px]"> Privacy & Cookie Policy</Link>
+              <Link href="/" className="text-gray text-[14px]">
+                {" "}
+                Privacy & Cookie Policy
+              </Link>
               <p className="text-gray text-[14px]"> |</p>
 
-              <Link  href = "/"  className="text-gray text-[14px]"> Terms & Services</Link>
-
+              <Link href="/" className="text-gray text-[14px]">
+                {" "}
+                Terms & Services
+              </Link>
             </div>
           </div>
         </footer>

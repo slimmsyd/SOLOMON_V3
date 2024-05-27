@@ -205,6 +205,32 @@ figure video {
   border-radius: 10px;
   border: 0.5px solid #807f7f;
 }
+
+
+
+.mainVideoContainer{
+  max-height: 756px;
+  
+  align-self: center;
+  border-radius: 10px;
+
+}
+.mainVideoContainer video {
+  max-height: 100%;
+  width: 100vw;
+  /* max-width: 1462px; */
+  max-height: 756px;
+  height: 756px;
+  object-fit: none;
+  border-radius: 10px;
+  border: 1px solid #807F7F;
+
+  
+
+}
+
+
+
 @media screen and (max-width: 950px){
   .figureWrapper{
     flex-direction:  column !important;
@@ -227,6 +253,8 @@ figure video {
   border: 0.5px solid #333333;
   background-color: transparent;
 }
+
+
 
 
 
