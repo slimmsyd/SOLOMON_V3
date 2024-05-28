@@ -327,7 +327,7 @@ export default function HomePage() {
               loop={true}
               muted={true}
             >
-              <source src="http://localhost:3000/Home_Video.mp4" type="video/mp4" />
+              <source src="https://solomon-v3.vercel.app/Home_Video.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
