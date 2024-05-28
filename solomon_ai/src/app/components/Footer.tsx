@@ -22,7 +22,7 @@ export const Footer: any = () => {
         <div className="flex flex-row gap-[15px]">
           <p>Solomon AI</p>
           <span>-</span>
-          <p className="text-gray"> the ultimate helper to ascension</p>
+          <p className="text-gray"> joint beta waiting list</p>
         </div>
 
         <form className="w-full relative newsLetterForm ">
@@ -75,7 +75,7 @@ export const Footer: any = () => {
     <div className="flex md:flex-row flex-col justify-between relative md:pb-[28px pb-[0px]]">
       <p className="text-gray text-[14px]">
         {" "}
-        © 2024 BuddahBot All rights reserved
+        © 2024 SolomonAI All rights reserved
       </p>
 
       <div className="md:flex flex-row gap-[15px] w-[30%] hidden lg:hidden  ">

@@ -346,7 +346,7 @@ export default function HomePage() {
               To question God in all the ways
             </span>
             <p className="w-3/4  capitalize text-[20px]   xl:w-2/4">
-              SolomonAI is one of kind leading Metaphysical AI, who aim to help
+              SolomonAI is an leading Metaphysical AI, who aim to help
               aid the moral consciousness of todays age.
             </p>
             <div className="w-full flex md:items-center items-start md:justify-center justify-start gap-[2.5rem]">
@@ -379,8 +379,8 @@ export default function HomePage() {
             </form> */}
             <div className=" afterWrap relative py-4 md:px-8 p-[0px] md:w-[80%] w-full flex md:text-center align-center justify-center">
               <p className="text-white text-[14px] leading-[1.5rem] text-left  md:text-center w-full  xl:w-full">
-                SolomonAI is one of kind leading Metaphysical AI, who aim to
-                help aid the moral consciousness of todays age....
+              SolomonAI is an leading Metaphysical AI, who aim to help
+              aid the moral consciousness of todays age..
               </p>
             </div>
           </div>
