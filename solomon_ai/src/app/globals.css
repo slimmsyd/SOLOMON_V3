@@ -23,6 +23,21 @@
   src: url("/fonts/ABCDiatypeCompressed-Bold-Trial.otf") format("opentype");
 }
 
+
+@font-face {
+  font-family: 'Robert-Reg';
+  src: url('/fonts/RoobertRegular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Robert-Med';
+  src: url('/fonts/RoobertMedium.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -80,6 +95,9 @@ body {
 
   /* background: var(--main-black); */
 }
+
+
+
 h1 {
   font-size: 60px !important;
   line-height: 125% !important;
@@ -107,8 +125,10 @@ h6 {
   font-size: 16px;
   line-height: 125% !important;
 }
+
+
 @media screen and (max-width: 950px) {
-  h1 {
+  h1, .headerH1 {
     font-size: 44px !important;
   }
 
@@ -187,6 +207,9 @@ img {
   background: var(--main-black)
 }
 
+nav{
+  z-index: 60 !important;
+}
 nav a,
 nav button {
   font-size: 14px !important;
@@ -223,9 +246,46 @@ nav button {
 
 /* HOME CODE */
 
+.backgroundOverlay{
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 50;
+  position: absolute;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.493);
+}
+.homeVidContainer{
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+}
+.homeVidContainer video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
 .homeHeaderContainer {
   transition: opacity 500ms ease-in-out;
+  z-index: 60;
 }
+
+.headerH1{
+  font-family: "Robert-Med"  !important;
+  font-size: 112px ;
+
+}
+.homeHeaderContainer h1  {
+
+}
+
 
 .figureWrapper {
   height: 100%;

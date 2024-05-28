@@ -316,17 +316,32 @@ export default function HomePage() {
     <div>
       <main className="page-wrapper w-full h-full">
         <NavComponent />
-        <section className="hero-section relative my-[100px] p-8 w-full h-screen flex items-center justify-center flex-col">
+        <section className="hero-section relative mb-[100px] p-8  w-full h-screen flex items-center justify-center flex-col">
+          <div className = "backgroundOverlay"></div>
+          <div className="absolute homeVidContainer">
+            <video
+              width="100%"
+              height="auto"
+              controls={false}
+              autoPlay={true}
+              loop={true}
+              muted={true}
+            >
+              <source src="http://localhost:3000/Home_Video.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
           <div
             ref={heroSectionRef}
             className="
                 homeHeaderContainer
-            w-full flex md:items-center items-start justify-center flex-col gap-[2.275rem] md:text-center text-left lg:w[80%] relative xl:w-[1050px]"
+            w-full flex md:items-center items-start justify-center flex-col gap-[2.275rem] md:text-center text-left lg:w[80%] relative xl:w-[1550px]"
           >
-            <h1 className="text-white    xl:w-3/4">
+            <span className="text-white headerH1    xl:w-3/4">
               To question God in all the ways
-            </h1>
-            <p className="w-3/4 text-gray capitalize text-[20px]   xl:w-1/2">
+            </span>
+            <p className="w-3/4  capitalize text-[20px]   xl:w-2/4">
               SolomonAI is one of kind leading Metaphysical AI, who aim to help
               aid the moral consciousness of todays age.
             </p>
@@ -349,7 +364,7 @@ export default function HomePage() {
                 </span>
               </button>
             </div>
-            <form onSubmit={handleHomeSubmit} className="w-[90%] h-[39px'">
+            {/* <form onSubmit={handleHomeSubmit} className="w-[90%] h-[39px'">
               <input
                 type="text"
                 className="md:w-[90%] w-full p-3 h-[39px] text-[14px] text-gray bg-[#33333358] border border-[#747474] rounded-lg outline-none"
@@ -357,7 +372,7 @@ export default function HomePage() {
                 onChange={(e) => setHomePrompt(e.target.value)}
                 placeholder="What do ye seek?"
               />
-            </form>
+            </form> */}
             <div className=" afterWrap relative py-4 md:px-8 p-[0px] md:w-[80%] w-full flex md:text-center align-center justify-center">
               <p className="text-white text-[14px] leading-[1.5rem] text-left  md:text-center w-full  xl:w-full">
                 SolomonAI is one of kind leading Metaphysical AI, who aim to
@@ -880,7 +895,7 @@ export default function HomePage() {
               © 2024 BuddahBot All rights reserved
             </p>
 
-            <div className="md:flex flex-row gap-[15px] w-[30%] md:hidden  hidden">
+            <div className="md:flex flex-row gap-[15px] w-[30%] hidden lg:hidden  ">
               <Link href="/" className="text-gray text-[14px]">
                 {" "}
                 Security
