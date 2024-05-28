@@ -121,17 +121,17 @@ export default function NavComponent() {
         </ul>
         <div className="hidden items-center justify-end gap-8 xl:flex w-[280px]">
           <div className="flex items-center justify-end	  gap-4">
-            <Link
+            {/* <Link
               href="/login"
               className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
             >
               Sign In
-            </Link>
+            </Link> */}
             <Link
               href="/signup"
-              className="px-2 py-1 abc-diatype-Regular bg-gray border border-white/20 text-white text-[1.75rem] rounded"
+              className="px-2 py-1 abc-diatype-Regular bg-gray border border-white/20 text-white text-[1.75rem] rounded  hover:bg-transparent hover:border-white/60"
             >
-              Get Started
+              Join Beta
             </Link>
           </div>
         </div>
