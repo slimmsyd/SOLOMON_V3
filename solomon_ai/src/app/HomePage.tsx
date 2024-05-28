@@ -880,7 +880,7 @@ export default function HomePage() {
               © 2024 BuddahBot All rights reserved
             </p>
 
-            <div className="md:flex flex-row gap-[15px] w-[30%]  hidden">
+            <div className="md:flex flex-row gap-[15px] w-[30%] md:hidden  hidden">
               <Link href="/" className="text-gray text-[14px]">
                 {" "}
                 Security
