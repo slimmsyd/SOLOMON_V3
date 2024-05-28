@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from "react";
 
 interface VideoProps {
   src: string;
@@ -10,6 +9,7 @@ interface VideoProps {
   autoPlay?: boolean;
   loop?: boolean;
   muted?: boolean;
+  className?: string; // Add className prop
 }
 
 const Video: React.FC<VideoProps> = ({
@@ -20,11 +20,12 @@ const Video: React.FC<VideoProps> = ({
   controls = true,
   autoPlay = false,
   loop = false,
-  muted = false
+  muted = false,
+  className, // Include className in the destructured props
 }) => {
   return (
     <video
-      className = "object-cover"
+      className={`object-cover ${className}`} // Apply className prop
       width={width}
       height={height}
       controls={controls}

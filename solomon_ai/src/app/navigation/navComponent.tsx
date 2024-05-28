@@ -6,6 +6,7 @@ export default function NavComponent() {
   const [navState, setNavState] = useState(false);
   const navIcon = useRef<HTMLDivElement>(null);
   const mobileNav = useRef<HTMLUListElement>(null);
+  const navRef = useRef<HTMLDivElement>(null)
 
 
   const toggleNav = () => {
@@ -16,9 +17,9 @@ export default function NavComponent() {
 
   useEffect(() => {
     if (navState) {
-      document.body.classList.add('no-scroll');
+      navRef.current?.classList.add('black-bg');
     } else {
-      document.body.classList.remove('no-scroll');
+      navRef.current?.classList.remove('black-bg');
     }
   }, [navState]);
 
@@ -73,6 +74,7 @@ export default function NavComponent() {
   return (
     <>
       <nav
+      ref = {navRef}
         className={
           animate
             ? "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-transparent z-[9] slide-in"
@@ -156,7 +158,7 @@ export default function NavComponent() {
           className={`
           
           mobileNav
-          absolute mt-[5rem] inset-0 p-6 bg-main-black w-full h-screen flex items-start justify-start flex-col  uppercase transition-transform duration-[1s] ease-in-out ${
+          absolute mt-[3rem] inset-0 p-6 bg-main-black w-full h-screen flex items-start justify-start flex-col  uppercase transition-transform duration-[1s] ease-in-out ${
             navState ? " pointer-events-auto opacity-100 " : " pointer-events-none opacity-0"
           }`}
         >

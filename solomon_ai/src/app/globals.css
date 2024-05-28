@@ -181,7 +181,10 @@ img {
 /* Nav Bar Code */
 /* styles.css */
 .no-scroll {
-  overflow: hidden;
+  overflow: hidden !important;
+}
+.black-bg{
+  background: var(--main-black)
 }
 
 nav a,

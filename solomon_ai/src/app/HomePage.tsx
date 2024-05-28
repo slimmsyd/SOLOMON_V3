@@ -82,30 +82,42 @@ export default function HomePage() {
     },
   ];
 
+  //Changing the video SRC aswell.
+  const [videoSrc, setVideoSrc] = useState(
+    "https://solomon-v3.vercel.app/OracleVideo.mp4"
+  );
   const handleFeatureToggle = (feature: string) => {
+    let newVideoSrc = "";
+
     if (feature === "oracle") {
       setToggleFeature({
-        ...toggleFeature,
         oracle: true,
         astrology: false,
         lifePath: false,
       });
+      newVideoSrc = "https://solomon-v3.vercel.app/OracleVideo.mp4";
     } else if (feature === "astrology") {
       setToggleFeature({
-        ...toggleFeature,
         oracle: false,
         astrology: true,
         lifePath: false,
       });
+      newVideoSrc = "https://solomon-v3.vercel.app/AstroVideo.mp4";
     } else if (feature === "life-path") {
       setToggleFeature({
-        ...toggleFeature,
         oracle: false,
         astrology: false,
         lifePath: true,
       });
+      newVideoSrc = "https://solomon-v3.vercel.app/AstroVideo.mp4";
     }
+
+    setVideoSrc(newVideoSrc);
   };
+
+  useEffect(() => {
+    console.log("Logging a new video srouce", videoSrc);
+  }, [videoSrc]);
 
   const blogData = [
     {
@@ -130,7 +142,7 @@ export default function HomePage() {
   const refTextTwo = useRef<HTMLDivElement>(null);
   const refTextThree = useRef<HTMLDivElement>(null);
 
-  const refImageTwo = useRef<HTMLDivElement>(null)
+  const refImageTwo = useRef<HTMLDivElement>(null);
   const refImageThree = useRef<HTMLDivElement>(null);
 
   //Controlling the Smooth Scrolling
@@ -154,157 +166,145 @@ export default function HomePage() {
 
     requestAnimationFrame(raf);
 
-
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 1200px)", () => {
+      // Opacity change for hero section
+      if (heroSectionRef.current) {
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: heroSectionRef.current,
+            start: "-=150",
+            end: "+=80%", // Adjust the end point to ensure the animation covers the scroll distance
+            scrub: true,
+            // markers: true, // Add markers for debugging
+          },
+        });
 
-        // Opacity change for hero section
-        if (heroSectionRef.current) {
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: heroSectionRef.current,
-              start: "-=150",
-              end: "+=80%", // Adjust the end point to ensure the animation covers the scroll distance
-              scrub: true,
-              // markers: true, // Add markers for debugging
-            },
-          });
-    
-          tl.to(heroSectionRef.current, { opacity: 0, duration: 1 });
-    
-          // Adding a reverse to the opacity animation when scrolling back up
-          // tl.to(heroSectionRef.current, { opacity: 1, duration: 1 });
+        tl.to(heroSectionRef.current, { opacity: 0, duration: 1 });
 
-        }
+        // Adding a reverse to the opacity animation when scrolling back up
+        // tl.to(heroSectionRef.current, { opacity: 1, duration: 1 });
+      }
 
-        // Pinning the text element
-        if (refTextOne.current) {
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: refTextOne.current,
-              start: "top center",
-              endTrigger: refTextTwo.current,
-              end: "+=180%", // Adjust the end point based on your requirements
-              pin: true,
-              // markers: true, // Add markers for debugging
-              scrub: true,
-              // onEnter: () => console.log("Text pin onEnter"),
-              // onLeave: () => console.log("Text pin onLeave"),
-              // onEnterBack: () => console.log("Text pin onEnterBack"),
-              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              // onUpdate: (self) =>
-              //   console.log("Text pin onUpdate", self.progress),
-            },
-          });
+      // Pinning the text element
+      if (refTextOne.current) {
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: refTextOne.current,
+            start: "top center",
+            endTrigger: refTextTwo.current,
+            end: "+=180%", // Adjust the end point based on your requirements
+            pin: true,
+            // markers: true, // Add markers for debugging
+            scrub: true,
+            // onEnter: () => console.log("Text pin onEnter"),
+            // onLeave: () => console.log("Text pin onLeave"),
+            // onEnterBack: () => console.log("Text pin onEnterBack"),
+            // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+            // onUpdate: (self) =>
+            //   console.log("Text pin onUpdate", self.progress),
+          },
+        });
 
-          tl.to(refTextOne.current, { opacity: 0, duration: 70 }).fromTo(
-            refTextTwo.current,
-            { opacity: 0, duration: 10 },
-            { opacity: 1, duration: 20 },
-            "-=1"
-          );
-        }
+        tl.to(refTextOne.current, { opacity: 0, duration: 70 }).fromTo(
+          refTextTwo.current,
+          { opacity: 0, duration: 10 },
+          { opacity: 1, duration: 20 },
+          "-=1"
+        );
+      }
 
-        if(refImageTwo.current){
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: refImageTwo.current,
-              start: "-=80%",
-              end: "+=80%", // 
-              markers: true, // Add markers for debugging
-              scrub: true,
-              // onEnter: () => console.log("Text pin onEnter"),
-              // onLeave: () => console.log("Text pin onLeave"),
-              // onEnterBack: () => console.log("Text pin onEnterBack"),
-              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              // onUpdate: (self) =>
-              //   console.log("Text pin onUpdate", self.progress),
-            },
-          });
+      if (refImageTwo.current) {
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: refImageTwo.current,
+            start: "-=80%",
+            end: "+=80%", //
+            markers: true, // Add markers for debugging
+            scrub: true,
+            // onEnter: () => console.log("Text pin onEnter"),
+            // onLeave: () => console.log("Text pin onLeave"),
+            // onEnterBack: () => console.log("Text pin onEnterBack"),
+            // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+            // onUpdate: (self) =>
+            //   console.log("Text pin onUpdate", self.progress),
+          },
+        });
 
-          tl.to(refImageTwo.current, { opacity: 1, duration: 1 });
+        tl.to(refImageTwo.current, { opacity: 1, duration: 1 });
+      }
 
+      if (refImageThree.current) {
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: refImageThree.current,
+            start: "-=80%",
+            end: "+=80%", //
+            markers: true, // Add markers for debugging
+            scrub: true,
+            // onEnter: () => console.log("Text pin onEnter"),
+            // onLeave: () => console.log("Text pin onLeave"),
+            // onEnterBack: () => console.log("Text pin onEnterBack"),
+            // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+            // onUpdate: (self) =>
+            //   console.log("Text pin onUpdate", self.progress),
+          },
+        });
 
+        tl.to(refImageThree.current, { opacity: 1, duration: 1 });
+      }
 
-        }
+      // Pinning the text element
+      if (refTextTwo.current) {
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: refTextTwo.current,
+            start: "top center",
+            endTrigger: refTextThree.current,
+            end: "+=180%", // Adjust the end point based on your requirements
+            pin: true,
+            // markers: true, // Add markers for debugging
+            scrub: true,
+            // onEnter: () => console.log("Text pin onEnter"),
+            // onLeave: () => console.log("Text pin onLeave"),
+            // onEnterBack: () => console.log("Text pin onEnterBack"),
+            // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+            // onUpdate: (self) =>
+            //   console.log("Text pin onUpdate", self.progress),
+          },
+        });
 
+        tl.to(refTextTwo.current, { opacity: 0, duration: 70 }).fromTo(
+          refTextThree.current,
+          { opacity: 0, duration: 10 },
+          { opacity: 1, duration: 20 },
+          "-=1"
+        );
+      }
 
-        if(refImageThree.current){
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: refImageThree.current,
-              start: "-=80%",
-              end: "+=80%", // 
-              markers: true, // Add markers for debugging
-              scrub: true,
-              // onEnter: () => console.log("Text pin onEnter"),
-              // onLeave: () => console.log("Text pin onLeave"),
-              // onEnterBack: () => console.log("Text pin onEnterBack"),
-              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              // onUpdate: (self) =>
-              //   console.log("Text pin onUpdate", self.progress),
-            },
-          });
+      // Pinning the text element
+      if (refTextThree.current) {
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: refTextThree.current,
+            start: "top center",
+            end: "+=180%", // Adjust the end point based on your requirements
+            pin: true,
+            // markers: true, // Add markers for debugging
+            scrub: true,
+            // onEnter: () => console.log("Text pin onEnter"),
+            // onLeave: () => console.log("Text pin onLeave"),
+            // onEnterBack: () => console.log("Text pin onEnterBack"),
+            // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+            // onUpdate: (self) =>
+            //   console.log("Text pin onUpdate", self.progress),
+          },
+        });
 
-          tl.to(refImageThree.current, { opacity: 1, duration: 1 });
-
-
-
-        }
-
-        // Pinning the text element
-        if (refTextTwo.current) {
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: refTextTwo.current,
-              start: "top center",
-              endTrigger: refTextThree.current,
-              end: "+=180%", // Adjust the end point based on your requirements
-              pin: true,
-              // markers: true, // Add markers for debugging
-              scrub: true,
-              // onEnter: () => console.log("Text pin onEnter"),
-              // onLeave: () => console.log("Text pin onLeave"),
-              // onEnterBack: () => console.log("Text pin onEnterBack"),
-              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              // onUpdate: (self) =>
-              //   console.log("Text pin onUpdate", self.progress),
-            },
-          });
-
-          tl.to(refTextTwo.current, { opacity: 0, duration: 70 }).fromTo(
-            refTextThree.current,
-            { opacity: 0, duration: 10 },
-            { opacity: 1, duration: 20 },
-            "-=1"
-          );
-        }
-
-        // Pinning the text element
-        if (refTextThree.current) {
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: refTextThree.current,
-              start: "top center",
-              end: "+=180%", // Adjust the end point based on your requirements
-              pin: true,
-              // markers: true, // Add markers for debugging
-              scrub: true,
-              // onEnter: () => console.log("Text pin onEnter"),
-              // onLeave: () => console.log("Text pin onLeave"),
-              // onEnterBack: () => console.log("Text pin onEnterBack"),
-              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              // onUpdate: (self) =>
-              //   console.log("Text pin onUpdate", self.progress),
-            },
-          });
-
-          tl.to(refTextThree.current, { opacity: 0, duration: 70 });
-        }
-      },
-    )
-  
+        tl.to(refTextThree.current, { opacity: 0, duration: 70 });
+      }
+    });
 
     return () => {
       lenis.destroy();
@@ -428,20 +428,21 @@ export default function HomePage() {
                   className="w-full items-start justify-center flex-col gap-[10px] flex xl:items-start xl:w-[60%] text-left"
                 >
                   <span className="text-gray  text-left text-[14px]">
-                    Authentic Intelligence.
+                    Trained in Theology{" "}
                   </span>
                   <h3 className="text-white leading-[1.5rem] mt-[1.5rem]   xl:leading-[2rem]">
-                    No denominated spiritualization. Decentralized
-                    spiritualization.
+                    Know Thyself guide.
                   </h3>
                   <p className="text-gray text-[16px] mt-[1.5rem]">
-                    SolomonAI is one of kind leading Metaphysical AI, who aim to
-                    help aid the moral consciousness of todays age.
+                    Trained to look at scriptural text from a metaphysical POV
+                    and rather a Scentific POV. Urges to see the implicit
+                    meaning behind the scriptures
                   </p>
                 </div>
-                <figure 
-                ref = {refImageTwo}
-                className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between opacity-0 ">
+                <figure
+                  ref={refImageTwo}
+                  className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between pacity-0 md:opacity-100 "
+                >
                   <Video
                     src="https://solomon-v3.vercel.app/video3.mp4"
                     type="video/mp4"
@@ -471,22 +472,22 @@ export default function HomePage() {
                   className="w-full items-start justify-center flex-col gap-[10px] flex xl:items-start xl:w-[60%] text-left"
                 >
                   <span className="text-gray  text-left text-[14px]">
-                    Authentic Intelligence.
+                    Spirutal Ascension
                   </span>
                   <h3 className="text-white leading-[1.5rem] mt-[1.5rem]   xl:leading-[2rem]">
-                    No denominated spiritualization. Decentralized
-                    spiritualization.
+                    Enrich your spiritual growth
                   </h3>
                   <p className="text-gray text-[16px] mt-[1.5rem]">
-                    SolomonAI is one of kind leading Metaphysical AI, who aim to
-                    help aid the moral consciousness of todays age.
+                    Trained to look at scriptural text from a metaphysical POV.
+                    Urges to see the implicit meaning behind the scriptures
                   </p>
                 </div>
-                <figure 
-                  ref = {refImageThree}
-                className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between opacity-0 ">
+                <figure
+                  ref={refImageThree}
+                  className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between pacity-0 md:opacity-100 "
+                >
                   <Video
-                    src="https://solomon-v3.vercel.app/videoTwo.mp4"
+                    src="https://solomon-v3.vercel.app/AstroVideo.mp4"
                     type="video/mp4"
                     width="100%"
                     height="auto"
@@ -508,17 +509,15 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className="info-section-2 py-[20vh] px-8  w-full  flex items-start justify-start flex-col  md:gap-[20vh] gap-[3rem]">
-
-          
-          <h2 className=" text-white      xl:w-2/3 text-left">
+        <section className="info-section-2 py-[20vh] px-8  w-full  flex items-start justify-start flex-col  md:gap-[5vh] gap-[20vh]">
+          <h2 className=" text-white  w-full md:w-[50%]    xl:w-2/3 text-left">
             No more mysteries or spook, join us in evolution.
           </h2>
 
           <div className="mainVideoContainer flex flex-col gap-[3rem]">
             <Video
-                src= "https://solomon-v3.vercel.app/video3.mp4"
-                type="video/mp4"
+              src="https://solomon-v3.vercel.app/video3.mp4"
+              type="video/mp4"
               width="100%"
               height="auto"
               controls={false}
@@ -531,7 +530,6 @@ export default function HomePage() {
           </div>
 
           <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
-
         </section>
 
         {/* <hr className="w-full h-[1px] bg-white opacity-[.10]" /> */}
@@ -646,9 +644,9 @@ export default function HomePage() {
             </h2>
           </div>
           <div className="w-full flex py-[80px] features-container  h-full items-start md:flex-row justify-start flex-col xl:flex-row gap-[0px]  md:gap-[100px] xl:justify-start">
-            <figure className="w-full  flex flex-col md:flex-row gap-[10vw] items-start justify-between !max-w-full ">
+            <figure className="w-full relative flex flex-col md:flex-row gap-[10vw] items-start justify-between !max-w-full">
               <Video
-                src= "http://localhost:3000/OracleVideo.mp4"
+                src="https://solomon-v3.vercel.app/OracleVideo.mp4"
                 type="video/mp4"
                 width="100%"
                 height="auto"
@@ -656,6 +654,41 @@ export default function HomePage() {
                 autoPlay={true}
                 loop={true}
                 muted={true}
+                className={`object-cover transition-opacity duration-700 ${
+                  toggleFeature.oracle
+                    ? "opacity-100 relative"
+                    : "opacity-0 absolute"
+                }`}
+              />
+              <Video
+                src="https://solomon-v3.vercel.app/AstroVideo.mp4"
+                type="video/mp4"
+                width="100%"
+                height="auto"
+                controls={false}
+                autoPlay={true}
+                loop={true}
+                muted={true}
+                className={`object-cover transition-opacity duration-700 ${
+                  toggleFeature.astrology
+                    ? "opacity-100 relative"
+                    : "opacity-0 absolute"
+                }`}
+              />
+              <Video
+                src="https://solomon-v3.vercel.app/LifePathVid.mp4"
+                type="video/mp4"
+                width="100%"
+                height="auto"
+                controls={false}
+                autoPlay={true}
+                loop={true}
+                muted={true}
+                className={`object-cover transition-opacity duration-700 ${
+                  toggleFeature.lifePath
+                    ? "opacity-100 relative"
+                    : "opacity-0 absolute"
+                }`}
               />
             </figure>
             <div className="w-full md:w-[90%] h-full  flex items-start justify-start flex-col gap-8">
