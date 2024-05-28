@@ -141,7 +141,8 @@ export default function NavComponent() {
             href="/signup"
             className="px-2 py-1 md:text-[14px] !text-[12px] bg-gray border border-white/20 text-white rounded"
           >
-            Get Started
+            Join Beta
+            {/* Get Started */}
           </Link>
           <div
             ref={navIcon}

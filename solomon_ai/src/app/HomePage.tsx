@@ -124,17 +124,17 @@ export default function HomePage() {
     {
       id: 1,
       img: "/assets/studio-image.png",
-      blogTitle: "The scriptural science of words ",
-      releaseDate: "May 24th, 2024",
-      author: "Authors Name",
+      blogTitle: "Exploring the Ethics of Artifical Intelligence.",
+      releaseDate: "June 1st, 2024",
+      author: "Sydney Sanders",
     },
-    {
-      id: 2,
-      img: "/assets/studio-image.png",
-      blogTitle: "The scriptural science of words ",
-      releaseDate: "May 24th, 2024",
-      author: "Authors Name",
-    },
+    // {
+    //   id: 2,
+    //   img: "/assets/studio-image.png",
+    //   blogTitle: "The scriptural science of words ",
+    //   releaseDate: "May 24th, 2024",
+    //   author: "Authors Name",
+    // },
   ];
 
   const heroSectionRef = useRef<HTMLDivElement>(null);
