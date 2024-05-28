@@ -241,6 +241,7 @@ nav button {
 .mobileNav {
   transition: opacity 300ms ease-in-out;
   background: var(--main-black);
+  z-index: 80;
 }
 /* Nav Bar Code */
 
@@ -274,7 +275,7 @@ nav button {
 
 .homeHeaderContainer {
   transition: opacity 500ms ease-in-out;
-  z-index: 60;
+  z-index: 50;
 }
 
 .headerH1{
