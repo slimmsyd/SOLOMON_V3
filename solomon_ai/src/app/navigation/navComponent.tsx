@@ -13,6 +13,16 @@ export default function NavComponent() {
   };
 
 
+
+  useEffect(() => {
+    if (navState) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [navState]);
+
+  
   useEffect(() => {
     if (navState) {
       gsap.to('.line1', {
@@ -71,9 +81,9 @@ export default function NavComponent() {
       >
         <Link
           href="/"
-          className="p-2 text-white abc-diatype-bold text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem  w-[280px]"
+          className="p-2 text-white  text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem  md:w-[280px] w-auto"
         >
-          Solomon<span className="abc-diatype-thin text-2xl">AI</span>
+          Solomon<span className="">AI</span>
         </Link>
         <ul className="hidden items-center gap-[3rem] xl:flex">
           <Link
@@ -86,14 +96,14 @@ export default function NavComponent() {
             href="/"
             className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
-            Use Cases
+           Join Beta
           </Link>
-          <Link
+          {/* <Link
             href="/"
             className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
             Prices
-          </Link>
+          </Link> */}
           <Link
             href="/"
             className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
@@ -164,13 +174,14 @@ export default function NavComponent() {
           <span
             className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white"
           >
-            Use Cases
+            {/* Use Cases */}
+            Join Beta
           </span>
 
           </Link>
 
 
-          <Link        href="/" className="mobileNavLink">
+          {/* <Link        href="/" className="mobileNavLink">
 
           <span
             className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white"
@@ -178,7 +189,7 @@ export default function NavComponent() {
             Prices
           </span>
 
-          </Link>
+          </Link> */}
 
 
           <Link        href="/" className="mobileNavLink">

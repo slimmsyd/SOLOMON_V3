@@ -33,7 +33,7 @@ export default function HomePage() {
       span: "Authentic Intelligence.",
       h3: "No denominated spiritualization. Decentralized spiritualization.",
       p: "SolomonAI is one of kind leading Metaphysical AI, who aim to help aid the moral consciousness of todays age.",
-      video: "http://localhost:3000/video.mp4",
+      video: "https://solomon-v3.vercel.app/video.mp4",
     },
 
     {
@@ -41,14 +41,14 @@ export default function HomePage() {
       span: "Trained in Theology",
       h3: "Know Thyself guide.",
       p: "Trained to look at scriptural text from a metaphysical POV. Urges to see the implicit meaning behind the scriptures",
-      video: "http://localhost:3000/videoTwo.mp4",
+      video: "https://solomon-v3.vercel.app/videoTwo.mp4",
     },
     {
       id: 3,
       span: "Spirutal Ascension",
       h3: "Enrich your spiritual growth",
       p: "Trained to look at scriptural text from a metaphysical POV. Urges to see the implicit meaning behind the scriptures",
-      video: "http://localhost:3000/video3.mp4",
+      video: "https://solomon-v3.vercel.appvideo3.mp4",
     },
   ];
 
@@ -130,50 +130,52 @@ export default function HomePage() {
   const refTextTwo = useRef<HTMLDivElement>(null);
   const refTextThree = useRef<HTMLDivElement>(null);
 
+  const refImageTwo = useRef<HTMLDivElement>(null)
+  const refImageThree = useRef<HTMLDivElement>(null);
+
   //Controlling the Smooth Scrolling
   useEffect(() => {
     // Initialize Lenis for smooth scrolling
-    // const lenis = new Lenis({
-    //   duration: 1.2,
-    //   easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    //   direction: "vertical",
-    //   gestureDirection: "vertical",
-    //   smooth: true,
-    //   smoothTouch: false,
-    //   touchMultiplier: 2,
-    //   infinite: false,
-    // } as any);
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: "vertical",
+      gestureDirection: "vertical",
+      smooth: true,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    } as any);
 
-    // const raf = (time: number) => {
-    //   lenis.raf(time);
-    //   requestAnimationFrame(raf);
-    // };
+    const raf = (time: number) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
 
-    // requestAnimationFrame(raf);
+    requestAnimationFrame(raf);
 
 
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 800px)", () => {
+    mm.add("(min-width: 1200px)", () => {
 
         // Opacity change for hero section
         if (heroSectionRef.current) {
-          gsap.to(heroSectionRef.current, {
-            opacity: 0,
+          let tl = gsap.timeline({
             scrollTrigger: {
               trigger: heroSectionRef.current,
-              start: "top top",
-              end: "+=200%", // Adjust the end point to ensure the animation covers the scroll distance
+              start: "-=150",
+              end: "+=80%", // Adjust the end point to ensure the animation covers the scroll distance
               scrub: true,
               // markers: true, // Add markers for debugging
-              onEnter: () => console.log("ScrollTrigger onEnter"),
-              onLeave: () => console.log("ScrollTrigger onLeave"),
-              onEnterBack: () => console.log("ScrollTrigger onEnterBack"),
-              onLeaveBack: () => console.log("ScrollTrigger onLeaveBack"),
-              onUpdate: (self) =>
-                console.log("ScrollTrigger onUpdate", self.progress),
             },
           });
+    
+          tl.to(heroSectionRef.current, { opacity: 0, duration: 1 });
+    
+          // Adding a reverse to the opacity animation when scrolling back up
+          // tl.to(heroSectionRef.current, { opacity: 1, duration: 1 });
+
         }
 
         // Pinning the text element
@@ -187,21 +189,68 @@ export default function HomePage() {
               pin: true,
               // markers: true, // Add markers for debugging
               scrub: true,
-              onEnter: () => console.log("Text pin onEnter"),
-              onLeave: () => console.log("Text pin onLeave"),
-              onEnterBack: () => console.log("Text pin onEnterBack"),
-              onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              onUpdate: (self) =>
-                console.log("Text pin onUpdate", self.progress),
+              // onEnter: () => console.log("Text pin onEnter"),
+              // onLeave: () => console.log("Text pin onLeave"),
+              // onEnterBack: () => console.log("Text pin onEnterBack"),
+              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              // onUpdate: (self) =>
+              //   console.log("Text pin onUpdate", self.progress),
             },
           });
 
-          tl.to(refTextOne.current, { opacity: 0, duration: 50 }).fromTo(
+          tl.to(refTextOne.current, { opacity: 0, duration: 70 }).fromTo(
             refTextTwo.current,
             { opacity: 0, duration: 10 },
             { opacity: 1, duration: 20 },
             "-=1"
           );
+        }
+
+        if(refImageTwo.current){
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: refImageTwo.current,
+              start: "-=80%",
+              end: "+=80%", // 
+              markers: true, // Add markers for debugging
+              scrub: true,
+              // onEnter: () => console.log("Text pin onEnter"),
+              // onLeave: () => console.log("Text pin onLeave"),
+              // onEnterBack: () => console.log("Text pin onEnterBack"),
+              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              // onUpdate: (self) =>
+              //   console.log("Text pin onUpdate", self.progress),
+            },
+          });
+
+          tl.to(refImageTwo.current, { opacity: 1, duration: 1 });
+
+
+
+        }
+
+
+        if(refImageThree.current){
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: refImageThree.current,
+              start: "-=80%",
+              end: "+=80%", // 
+              markers: true, // Add markers for debugging
+              scrub: true,
+              // onEnter: () => console.log("Text pin onEnter"),
+              // onLeave: () => console.log("Text pin onLeave"),
+              // onEnterBack: () => console.log("Text pin onEnterBack"),
+              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              // onUpdate: (self) =>
+              //   console.log("Text pin onUpdate", self.progress),
+            },
+          });
+
+          tl.to(refImageThree.current, { opacity: 1, duration: 1 });
+
+
+
         }
 
         // Pinning the text element
@@ -215,16 +264,16 @@ export default function HomePage() {
               pin: true,
               // markers: true, // Add markers for debugging
               scrub: true,
-              onEnter: () => console.log("Text pin onEnter"),
-              onLeave: () => console.log("Text pin onLeave"),
-              onEnterBack: () => console.log("Text pin onEnterBack"),
-              onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              onUpdate: (self) =>
-                console.log("Text pin onUpdate", self.progress),
+              // onEnter: () => console.log("Text pin onEnter"),
+              // onLeave: () => console.log("Text pin onLeave"),
+              // onEnterBack: () => console.log("Text pin onEnterBack"),
+              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              // onUpdate: (self) =>
+              //   console.log("Text pin onUpdate", self.progress),
             },
           });
 
-          tl.to(refTextTwo.current, { opacity: 0, duration: 50 }).fromTo(
+          tl.to(refTextTwo.current, { opacity: 0, duration: 70 }).fromTo(
             refTextThree.current,
             { opacity: 0, duration: 10 },
             { opacity: 1, duration: 20 },
@@ -242,23 +291,23 @@ export default function HomePage() {
               pin: true,
               // markers: true, // Add markers for debugging
               scrub: true,
-              onEnter: () => console.log("Text pin onEnter"),
-              onLeave: () => console.log("Text pin onLeave"),
-              onEnterBack: () => console.log("Text pin onEnterBack"),
-              onLeaveBack: () => console.log("Text pin onLeaveBack"),
-              onUpdate: (self) =>
-                console.log("Text pin onUpdate", self.progress),
+              // onEnter: () => console.log("Text pin onEnter"),
+              // onLeave: () => console.log("Text pin onLeave"),
+              // onEnterBack: () => console.log("Text pin onEnterBack"),
+              // onLeaveBack: () => console.log("Text pin onLeaveBack"),
+              // onUpdate: (self) =>
+              //   console.log("Text pin onUpdate", self.progress),
             },
           });
 
-          tl.to(refTextThree.current, { opacity: 0, duration: 50 });
+          tl.to(refTextThree.current, { opacity: 0, duration: 70 });
         }
       },
     )
   
 
     return () => {
-      // lenis.destroy();
+      lenis.destroy();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
@@ -390,9 +439,11 @@ export default function HomePage() {
                     help aid the moral consciousness of todays age.
                   </p>
                 </div>
-                <figure className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between ">
+                <figure 
+                ref = {refImageTwo}
+                className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between opacity-0 ">
                   <Video
-                    src="http://localhost:3000/video.mp4"
+                    src="https://solomon-v3.vercel.app/video3.mp4"
                     type="video/mp4"
                     width="100%"
                     height="auto"
@@ -431,9 +482,11 @@ export default function HomePage() {
                     help aid the moral consciousness of todays age.
                   </p>
                 </div>
-                <figure className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between ">
+                <figure 
+                  ref = {refImageThree}
+                className="w-full videoFigureContainer  flex flex-col md:flex-row gap-[10vw] items-start justify-between opacity-0 ">
                   <Video
-                    src="http://localhost:3000/video.mp4"
+                    src="https://solomon-v3.vercel.app/videoTwo.mp4"
                     type="video/mp4"
                     width="100%"
                     height="auto"
@@ -456,14 +509,16 @@ export default function HomePage() {
           </div>
         </section>
         <section className="info-section-2 py-[20vh] px-8  w-full  flex items-start justify-start flex-col  md:gap-[20vh] gap-[3rem]">
+
+          
           <h2 className=" text-white      xl:w-2/3 text-left">
             No more mysteries or spook, join us in evolution.
           </h2>
 
           <div className="mainVideoContainer flex flex-col gap-[3rem]">
             <Video
-              src="http://localhost:3000/video.mp4"
-              type="video/mp4"
+                src= "https://solomon-v3.vercel.app/video3.mp4"
+                type="video/mp4"
               width="100%"
               height="auto"
               controls={false}
@@ -474,6 +529,9 @@ export default function HomePage() {
 
             <hr className="vidDivider"></hr>
           </div>
+
+          <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
+
         </section>
 
         {/* <hr className="w-full h-[1px] bg-white opacity-[.10]" /> */}
@@ -587,10 +645,10 @@ export default function HomePage() {
               One of a kind features.
             </h2>
           </div>
-          <div className="w-full flex py-[80px] features-container  h-full items-start md:flex-row justify-start flex-col xl:flex-row  gap-[100px] xl:justify-start">
-            <figure className="w-full  flex flex-col md:flex-row gap-[10vw] items-start justify-between ">
+          <div className="w-full flex py-[80px] features-container  h-full items-start md:flex-row justify-start flex-col xl:flex-row gap-[0px]  md:gap-[100px] xl:justify-start">
+            <figure className="w-full  flex flex-col md:flex-row gap-[10vw] items-start justify-between !max-w-full ">
               <Video
-                src="http://localhost:3000/video.mp4"
+                src= "http://localhost:3000/OracleVideo.mp4"
                 type="video/mp4"
                 width="100%"
                 height="auto"
@@ -600,7 +658,7 @@ export default function HomePage() {
                 muted={true}
               />
             </figure>
-            <div className="w-full md:w-[60%] h-full  flex items-start justify-start flex-col gap-8">
+            <div className="w-full md:w-[90%] h-full  flex items-start justify-start flex-col gap-8">
               <ul className="flex items-start gap-4">
                 <li className="text-white text-[14px] leading-[1.5rem] ">
                   <button
