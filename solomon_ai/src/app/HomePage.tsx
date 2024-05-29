@@ -327,7 +327,9 @@ export default function HomePage() {
       {isPopupVisible && <Popup togglePopup={togglePopup} />}
 
       <main className="page-wrapper w-full h-full">
-        <NavComponent />
+        <NavComponent
+        togglePopup = {togglePopup}
+        />
         <section className="hero-section relative mb-[100px] p-8  w-full h-screen flex items-center justify-center flex-col">
           <div className="backgroundOverlay"></div>
           <div className="absolute homeVidContainer">

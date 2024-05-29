@@ -1,57 +1,57 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-export default function NavComponent() {
+
+interface PopupProps {
+  togglePopup: () => void;
+}
+
+const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {
   const [animate, setAnimate] = useState(false);
   const [navState, setNavState] = useState(false);
   const navIcon = useRef<HTMLDivElement>(null);
   const mobileNav = useRef<HTMLUListElement>(null);
-  const navRef = useRef<HTMLDivElement>(null)
-
+  const navRef = useRef<HTMLDivElement>(null);
 
   const toggleNav = () => {
     setNavState(!navState);
   };
 
-
-
   useEffect(() => {
     if (navState) {
-      navRef.current?.classList.add('black-bg');
+      navRef.current?.classList.add("black-bg");
     } else {
-      navRef.current?.classList.remove('black-bg');
+      navRef.current?.classList.remove("black-bg");
     }
   }, [navState]);
 
-  
   useEffect(() => {
     if (navState) {
-      gsap.to('.line1', {
+      gsap.to(".line1", {
         rotation: 45,
         y: 3,
-        transformOrigin: 'center',
-        duration: 0.3
+        transformOrigin: "center",
+        duration: 0.3,
       });
-      gsap.to('.line2', {
+      gsap.to(".line2", {
         rotation: -45,
         y: -6,
-        transformOrigin: 'center',
-        duration: 0.3
+        transformOrigin: "center",
+        duration: 0.3,
       });
     } else {
-      gsap.to('.line1', {
+      gsap.to(".line1", {
         rotation: 0,
         y: 0,
-        duration: 0.3
+        duration: 0.3,
       });
-      gsap.to('.line2', {
+      gsap.to(".line2", {
         rotation: 0,
         y: 0,
-        duration: 0.3
+        duration: 0.3,
       });
     }
   }, [navState]);
-
 
   useEffect(() => {
     console.log("Loggin animate state", animate);
@@ -74,7 +74,7 @@ export default function NavComponent() {
   return (
     <>
       <nav
-      ref = {navRef}
+        ref={navRef}
         className={
           animate
             ? "fixed left-0 top-0 w-full px-6  flex items-center justify-between bg-main-transparent z-[9] slide-in"
@@ -95,10 +95,11 @@ export default function NavComponent() {
             Home
           </Link>
           <Link
+            onClick={togglePopup}
             href="/"
             className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
-           Join Beta
+            Join Beta
           </Link>
           {/* <Link
             href="/"
@@ -128,7 +129,8 @@ export default function NavComponent() {
               Sign In
             </Link> */}
             <Link
-              href="/signup"
+              onClick={togglePopup}
+              href="/"
               className="px-2 py-1 abc-diatype-Regular bg-gray border border-white/20 text-white text-[1.75rem] rounded  hover:bg-transparent hover:border-white/60"
             >
               Join Beta
@@ -138,7 +140,8 @@ export default function NavComponent() {
 
         <div className="flex flex-row xl:hidden gap-[3rem] items-center ">
           <Link
-            href="/signup"
+            onClick={togglePopup}
+            href="/"
             className="px-2 py-1 md:text-[14px] !text-[12px] bg-gray border border-white/20 text-white rounded"
           >
             Join Beta
@@ -149,8 +152,8 @@ export default function NavComponent() {
             onClick={toggleNav}
             className="w-[40px] h-[10px] relative z-50 flex items-center justify-between flex-col cursor-pointer xl:hidden"
           >
-      <div className="line line1 w-[60%] h-[1.25px] rounded bg-white"></div>
-      <div className="line line2 w-[60%] h-[1.25px] rounded bg-white"></div>
+            <div className="line line1 w-[60%] h-[1.25px] rounded bg-white"></div>
+            <div className="line line2 w-[60%] h-[1.25px] rounded bg-white"></div>
           </div>
         </div>
 
@@ -160,29 +163,23 @@ export default function NavComponent() {
           
           mobileNav
           absolute mt-[3rem] inset-0 p-6 bg-main-black w-full h-screen flex items-start justify-start flex-col  uppercase transition-transform duration-[1s] ease-in-out ${
-            navState ? " pointer-events-auto opacity-100 " : " pointer-events-none opacity-0"
+            navState
+              ? " pointer-events-auto opacity-100 "
+              : " pointer-events-none opacity-0"
           }`}
         >
-          <Link     href="/" className="mobileNavLink">
-            <span
-              className="text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white"
-            >
+          <Link href="/" className="mobileNavLink">
+            <span className="text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white">
               Home
             </span>
           </Link>
 
-
-          <Link     href="/" className="mobileNavLink">
-
-          <span
-            className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white"
-          >
-            {/* Use Cases */}
-            Join Beta
-          </span>
-
+          <Link onClick={togglePopup} href="/" className="mobileNavLink">
+            <span className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white">
+              {/* Use Cases */}
+              Join Beta
+            </span>
           </Link>
-
 
           {/* <Link        href="/" className="mobileNavLink">
 
@@ -194,28 +191,21 @@ export default function NavComponent() {
 
           </Link> */}
 
-
-          <Link        href="/" className="mobileNavLink">
-
-          <span
-            className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white"
-          >
-            About
-          </span>
-
+          <Link href="/" className="mobileNavLink">
+            <span className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white">
+              About
+            </span>
           </Link>
 
-          <Link        href="/"  className="mobileNavLink">
-
-          <span
-            className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white"
-          >
-            Blog
-          </span>
-
+          <Link href="/" className="mobileNavLink">
+            <span className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white">
+              Blog
+            </span>
           </Link>
         </ul>
       </nav>
     </>
   );
-}
+};
+
+export default NavComponent;
