@@ -324,7 +324,7 @@ export default function HomePage() {
 
   return (
     <div>
-      {!isPopupVisible && <Popup togglePopup={togglePopup} />}
+      {isPopupVisible && <Popup togglePopup={togglePopup} />}
 
       <main className="page-wrapper w-full h-full">
         <NavComponent />

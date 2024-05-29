@@ -72,8 +72,8 @@ export const Popup: React.FC<PopupProps> = (
         </div>
 
         <div className="homePopupFormContainer">
-          <form className="flex flex-row  ">
-            <input type="enter email" placeholder="email" />
+          <form className="flex flex-row gap-[15px] ">
+            <input type="email" placeholder="Enter Email" />
 
             <button type="submit" className="w-[32px] h-[32px] formImage">
               <Image src={ChestImage} alt="Waiting List Image" />
