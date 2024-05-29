@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 interface PopupProps {
-  togglePopup: () => void;
+  togglePopup?: () => void;
 }
 
 const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {

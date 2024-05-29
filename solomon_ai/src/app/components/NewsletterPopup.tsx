@@ -1,7 +1,6 @@
 import Link from "next/link";
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
-import React from 'react';
+import React, { FC, FormEvent, RefObject, useState } from "react";
 import Image from "next/image";
 import NewsImage from "../../../public/assets/homePage/NewsLetter_Image.png";
 import SwordIamge from "../../../public/assets/homePage/Sword_Icon.png";
@@ -19,6 +18,35 @@ export const Popup: React.FC<PopupProps> = (
     }
 
 ) => {
+
+
+    const [email, setEmail] = useState<string>("");
+
+    const joinSubmit = async (e: FormEvent) => {
+      e.preventDefault();
+  
+      const data = {
+        email: email,
+      };
+  
+      try {
+        const response = await axios.post(
+          "https://hook.us1.make.com/tlml7e81xrct3ff1btjfqhpna4j0jtk0",
+          data,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        console.log("Success:", response.data);
+          togglePopup()
+        // You might want to clear the form or give user feedback here
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle the error, e.g., display an error message to the user
+      }
+    };
+  
+
   return (
     <div className="homePopup">
       <div className="homePopupContainer">
@@ -72,7 +100,9 @@ export const Popup: React.FC<PopupProps> = (
         </div>
 
         <div className="homePopupFormContainer">
-          <form className="flex flex-row gap-[15px] ">
+          <form 
+            onSubmit={joinSubmit}
+          className="flex flex-row gap-[15px] ">
             <input type="email" placeholder="Enter Email" />
 
             <button type="submit" className="w-[32px] h-[32px] formImage">
