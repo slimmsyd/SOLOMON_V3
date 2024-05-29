@@ -6,8 +6,6 @@ import { LoadingRender } from "./components/helper/LoadingRender";
 import ChatDashboard from "./chat/app/page";
 import Profile from "./profile/page";
 import HomePage from "./HomePage";
-import { Html, Head, Main, NextScript } from "next/document";
-import Icon from '../app/favicon.ico'
 
 export default function Home() {
   return (
