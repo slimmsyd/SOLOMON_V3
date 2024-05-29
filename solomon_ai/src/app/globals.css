@@ -268,6 +268,7 @@ nav button {
   bottom: 0;
   right: 0;
   left: 0;
+  pointer-events: none;
 }
 .homeVidContainer video {
   object-fit: cover;
@@ -293,6 +294,7 @@ nav button {
 }
 .videoFigureContainer {
   max-width: 780px;
+  pointer-events: none;
   /* min-width: 800px; */
 }
 figure video {
@@ -327,6 +329,7 @@ figure video {
   }
   .oracleVideoContainer video {
     max-width: 100%;
+    pointer-events: none;
   }
 }
 .vidDivider {
