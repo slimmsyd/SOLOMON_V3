@@ -224,7 +224,7 @@ export default function HomePage() {
             trigger: refImageTwo.current,
             start: "-=80%",
             end: "+=80%", //
-            markers: true, // Add markers for debugging
+            // markers: true, // Add markers for debugging
             scrub: true,
             // onEnter: () => console.log("Text pin onEnter"),
             // onLeave: () => console.log("Text pin onLeave"),
@@ -244,7 +244,7 @@ export default function HomePage() {
             trigger: refImageThree.current,
             start: "-=80%",
             end: "+=80%", //
-            markers: true, // Add markers for debugging
+            // markers: true, // Add markers for debugging
             scrub: true,
             // onEnter: () => console.log("Text pin onEnter"),
             // onLeave: () => console.log("Text pin onLeave"),
