@@ -662,7 +662,7 @@ export default function HomePage() {
               One of a kind features.
             </h2>
           </div>
-          <div className="w-full flex py-[80px] features-container  h-full items-start md:flex-row justify-start flex-col xl:flex-row gap-[0px]  md:gap-[100px] xl:justify-start">
+          <div className="w-full flex py-[80px] features-container  h-full items-start md:flex-row justify-start flex-col xl:flex-row gap-[50px]  md:gap-[100px] xl:justify-start">
             <figure className="w-full relative flex flex-col md:flex-row gap-[10vw] items-start justify-between !max-w-full">
               <Video
                 src="https://solomon-v3.vercel.app/OracleVideo.mp4"
