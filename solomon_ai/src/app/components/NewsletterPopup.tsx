@@ -1,16 +1,30 @@
 import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
+import React from 'react';
 import Image from "next/image";
 import NewsImage from "../../../public/assets/homePage/NewsLetter_Image.png";
 import SwordIamge from "../../../public/assets/homePage/Sword_Icon.png";
 import ChestImage from "../../../public/assets/homePage/Chest_Icon.png";
 
-export const Popup: any = () => {
+interface PopupProps
+{ 
+    togglePopup: () => void;
+}
+
+
+export const Popup: React.FC<PopupProps> = (
+    {
+        togglePopup
+    }
+
+) => {
   return (
     <div className="homePopup">
       <div className="homePopupContainer">
-        <div className="closePopupContainer">
+        <div
+            onClick={togglePopup}
+        className="closePopupContainer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"

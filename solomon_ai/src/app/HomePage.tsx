@@ -315,14 +315,18 @@ export default function HomePage() {
     };
   }, []);
 
+  //Show Popup
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible);
+  };
+
   return (
     <div>
+      {!isPopupVisible && <Popup togglePopup={togglePopup} />}
 
-      <Popup />
       <main className="page-wrapper w-full h-full">
-
-      
-
         <NavComponent />
         <section className="hero-section relative mb-[100px] p-8  w-full h-screen flex items-center justify-center flex-col">
           <div className="backgroundOverlay"></div>
@@ -353,11 +357,12 @@ export default function HomePage() {
               To question God in all the ways
             </span>
             <p className="w-3/4  capitalize text-[20px]   xl:w-2/4">
-              SolomonAI is an leading Metaphysical AI, who aim to help
-              aid the moral consciousness of todays age.
+              SolomonAI is an leading Metaphysical AI, who aim to help aid the
+              moral consciousness of todays age.
             </p>
             <div className="w-full flex md:items-center items-start md:justify-center justify-start gap-[2.5rem]">
-              <button className="px-8 py-1 text-[14px]  main-black bg-white border border-white  rounded duration-300 ease-in-out hover:text-white/60 hover:bg-transparent hover:border-white/60">
+            <button onClick={togglePopup}
+              className="px-8 py-1 text-[14px]  main-black bg-white border border-white  rounded duration-300 ease-in-out hover:text-white/60 hover:bg-transparent hover:border-white/60">
                 Join waiting list
               </button>
               {/* <button className="py-1 text-[14px]   text-gray] border-b border-white/60 flex items-center gap-2">
@@ -386,8 +391,8 @@ export default function HomePage() {
             </form> */}
             <div className=" afterWrap relative py-4 md:px-8 p-[0px] md:w-[80%] w-full flex md:text-center align-center justify-center">
               <p className="text-white text-[14px] leading-[1.5rem] text-left  md:text-center w-full  xl:w-full">
-              SolomonAI is an leading Metaphysical AI, who aim to help
-              aid the moral consciousness of todays age..
+                SolomonAI is an leading Metaphysical AI, who aim to help aid the
+                moral consciousness of todays age..
               </p>
             </div>
           </div>
