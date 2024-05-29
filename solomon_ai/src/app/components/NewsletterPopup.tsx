@@ -31,7 +31,7 @@ export const Popup: React.FC<PopupProps> = (
   
       try {
         const response = await axios.post(
-          "https://hook.us1.make.com/tlml7e81xrct3ff1btjfqhpna4j0jtk0",
+          "https://hook.us1.make.com/l99169ajyoh8dcxhaqnay3d3zqxe0on4 ",
           data,
           {
             headers: { "Content-Type": "application/json" },
@@ -103,7 +103,9 @@ export const Popup: React.FC<PopupProps> = (
           <form 
             onSubmit={joinSubmit}
           className="flex flex-row gap-[15px] ">
-            <input type="email" placeholder="Enter Email" />
+            <input 
+            onChange={e => setEmail(e.target.value)}
+            type="email" placeholder="Enter Email" />
 
             <button type="submit" className="w-[32px] h-[32px] formImage">
               <Image src={ChestImage} alt="Waiting List Image" />

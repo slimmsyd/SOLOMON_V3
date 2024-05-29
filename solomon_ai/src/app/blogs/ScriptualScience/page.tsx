@@ -7,7 +7,10 @@ import Image from "next/image";
 export default function BlogPage() {
   return (
     <>
-      <NavComponent />
+      <NavComponent 
+      
+      
+      />
       <div className="layout-one my-[100px] px-[4rem] md:px-[2rem]  ">
         <div className="layout-header ">
           <div className="flex flex-col mt-[50px] gap-[1.5rem] w-3/4">

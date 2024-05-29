@@ -14,7 +14,7 @@ export const Footer: any = () => {
 
     try {
       const response = await axios.post(
-        "https://hook.us1.make.com/tlml7e81xrct3ff1btjfqhpna4j0jtk0",
+        "https://hook.us1.make.com/l99169ajyoh8dcxhaqnay3d3zqxe0on4 ",
         data,
         {
           headers: { "Content-Type": "application/json" },
