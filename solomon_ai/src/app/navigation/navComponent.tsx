@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import FaceIcon from '../../../public/faceIconSolomon.png'
+import Image from "next/image";
 
 interface PopupProps {
   togglePopup?: () => void;
@@ -83,9 +85,16 @@ const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {
       >
         <Link
           href="/"
-          className="p-2 text-white  text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem  md:w-[280px] w-auto"
+          className="p-2 text-white flex flex-row gap-[15px]  items-center text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem  md:w-[280px] w-auto"
         >
-          Solomon<span className="">AI</span>
+          <div>
+            <Image src = {FaceIcon}
+            alt = "Solomon Face"
+            width={32}
+            height = {32}
+            />
+          </div>
+          SolomonAI
         </Link>
         <ul className="hidden items-center gap-[3rem] xl:flex">
           <Link

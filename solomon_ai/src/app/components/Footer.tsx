@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React, { FC, FormEvent, RefObject, useState } from "react";
 import axios from "axios";
+import FaceIcon from '../../../public/faceIconSolomon.png'
+import Image from "next/image";
 
 export const Footer: any = () => {
   const [email, setEmail] = useState<string>("");
@@ -34,7 +36,14 @@ export const Footer: any = () => {
 
       <div className="flex md:flex-row gap-[6rem] flex-col justify-between w-full">
         <div className="flex-col flex items-start gap-[30px]">
-          <div className="flex flex-row gap-[15px]">
+          <div className="flex flex-row gap-[15px] items-center">
+            <div>
+                    <Image src = {FaceIcon}
+                    width = {32}
+                    height = {32}
+                    alt = "Solomon Face Icon"
+                    />
+            </div>
             <p>Solomon AI</p>
             <span>-</span>
             <p className="text-gray"> joint beta waiting list</p>
@@ -77,7 +86,7 @@ export const Footer: any = () => {
             <li className="text-[16px]">Social</li>
             <Link
               href="https://www.instagram.com/syddarchitect"
-              className="text-[14px] text-gray"
+              className="text-[14px] text-gray flex flex-row gap-[15px"
             >
               Instagram
             </Link>
