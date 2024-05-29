@@ -351,9 +351,9 @@ export default function HomePage() {
             </p>
             <div className="w-full flex md:items-center items-start md:justify-center justify-start gap-[2.5rem]">
               <button className="px-8 py-1 text-[14px]  main-black bg-white border border-white  rounded duration-300 ease-in-out hover:text-white/60 hover:bg-transparent hover:border-white/60">
-                Get Started
+                Join waiting list
               </button>
-              <button className="py-1 text-[14px]   text-gray] border-b border-white/60 flex items-center gap-2">
+              {/* <button className="py-1 text-[14px]   text-gray] border-b border-white/60 flex items-center gap-2">
                 Contact Sales{" "}
                 <span>
                   <svg
@@ -366,7 +366,7 @@ export default function HomePage() {
                     <path d="M21.883 12l-7.527 6.235 .5.75 9-7.521-9-7.479 -.5.75 7.529 6.236h-18.884v1h21.883z" />
                   </svg>
                 </span>
-              </button>
+              </button> */}
             </div>
             {/* <form onSubmit={handleHomeSubmit} className="w-[90%] h-[39px'">
               <input
@@ -535,14 +535,14 @@ export default function HomePage() {
 
           <div className="mainVideoContainer flex flex-col gap-[3rem]">
             <Video
-              src="https://solomon-v3.vercel.app/video3.mp4"
+              src="https://solomon-v3.vercel.app/Solomon_Intro.mp4"
               type="video/mp4"
               width="100%"
               height="auto"
-              controls={false}
+              controls={true}
               autoPlay={true}
               loop={true}
-              muted={true}
+              muted={false}
             />
 
             <hr className="vidDivider"></hr>
