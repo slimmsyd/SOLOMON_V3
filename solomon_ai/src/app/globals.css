@@ -630,7 +630,6 @@ figure video {
 }
 
 .topDiv{
-  font-family: "1982";
   position: absolute;
   width: 100%;
   margin: 0 auto;
@@ -641,7 +640,7 @@ figure video {
 }
 .topDivContainer{
 
-  font-size: 24px;
+  font-size: 30px;
   padding: 2rem;
   height: 50px;
   width: 362px;
