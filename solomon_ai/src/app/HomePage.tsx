@@ -10,6 +10,8 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 import { gsap } from "gsap";
 
+import { Popup } from "./components/NewsletterPopup";
+
 import Lenis from "lenis";
 
 export default function HomePage() {
@@ -315,7 +317,12 @@ export default function HomePage() {
 
   return (
     <div>
+
+      <Popup />
       <main className="page-wrapper w-full h-full">
+
+      
+
         <NavComponent />
         <section className="hero-section relative mb-[100px] p-8  w-full h-screen flex items-center justify-center flex-col">
           <div className="backgroundOverlay"></div>
@@ -663,7 +670,7 @@ export default function HomePage() {
             </h2>
           </div>
           <div className="w-full flex py-[80px] features-container  h-full items-start md:flex-row justify-start flex-col xl:flex-row gap-[50px]  md:gap-[100px] xl:justify-start">
-            <figure className="w-full relative flex flex-col md:flex-row gap-[10vw] items-start justify-between !max-w-full">
+            <figure className="w-full relative oracleVideoContainer flex flex-col md:flex-row gap-[10vw] items-start justify-between !max-w-full">
               <Video
                 src="https://solomon-v3.vercel.app/OracleVideo.mp4"
                 type="video/mp4"
