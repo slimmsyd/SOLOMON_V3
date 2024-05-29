@@ -433,7 +433,7 @@ export default function HomePage() {
                 w-full  flex flex-col md:flex-row gap-[10vw] items-end justify-between "
                 >
                   <Video
-                    src="http://localhost:3000/video.mp4"
+                    src="https://www.aisolomon.xyz/video.mp4"
                     type="video/mp4"
                     width="100%"
                     height="auto"
