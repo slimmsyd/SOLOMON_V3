@@ -551,7 +551,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className="info-section-2 py-[20vh] px-8  w-full  flex items-start justify-start flex-col  md:gap-[5vh] gap-[20vh]">
+        <section className="info-section-2 md:py-[20vh] pb-[0px] px-8  w-full  flex items-start justify-start flex-col  md:gap-[5vh] gap-[20vh]">
           <h2 className=" text-white  w-full md:w-[50%]    xl:w-2/3 text-left">
             No more mysteries or spook, join us in evolution.
           </h2>
