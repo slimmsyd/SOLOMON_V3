@@ -102,7 +102,7 @@ export const Popup: React.FC<PopupProps> = (
         <div className="homePopupFormContainer">
           <form 
             onSubmit={joinSubmit}
-          className="flex flex-row gap-[15px] ">
+          className="flex flex-row  gap-[15px] ">
             <input 
             onChange={e => setEmail(e.target.value)}
             type="email" placeholder="Enter Email" />
