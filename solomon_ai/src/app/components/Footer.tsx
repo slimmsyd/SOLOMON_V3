@@ -36,7 +36,7 @@ export const Footer: any = () => {
 
       <div className="flex md:flex-row gap-[6rem] flex-col justify-between w-full">
         <div className="flex-col flex items-start gap-[30px]">
-          <div className="flex flex-row gap-[15px] items-center">
+          <div className="flex flex-row gap-[5px] md:gap-[15px] items-center">
             <div>
                     <Image src = {FaceIcon}
                     width = {32}
