@@ -78,11 +78,11 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
           <Image src={SwordIamge} alt="Waiting List Image" />
         </div>
 
-        <div className="topDiv">
+        {/* <div className="topDiv">
           <div className="topDivContainer">
             <p>JOIN THE BETA</p>
           </div>
-        </div>
+        </div> */}
 
         <div className="homePopupImageContainer w-full items-center justify-center">
           <Image src={JoinImage} alt="Waiting List Image" />
