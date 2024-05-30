@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { FC, FormEvent, RefObject, useState } from "react";
 import axios from "axios";
-import FaceIcon from '../../../public/faceIconSolomon.png'
+import FaceIcon from "../../../public/faceIconSolomon.png";
 import Image from "next/image";
 
 export const Footer: any = () => {
@@ -38,11 +38,12 @@ export const Footer: any = () => {
         <div className="flex-col flex items-start gap-[30px]">
           <div className="flex flex-row gap-[5px] md:gap-[15px] items-center">
             <div>
-                    <Image src = {FaceIcon}
-                    width = {32}
-                    height = {32}
-                    alt = "Solomon Face Icon"
-                    />
+              <Image
+                src={FaceIcon}
+                width={32}
+                height={32}
+                alt="Solomon Face Icon"
+              />
             </div>
             <p>Solomon AI</p>
             <span>-</span>

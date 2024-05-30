@@ -681,7 +681,7 @@ export default function HomePage() {
 
         <section className="feature-section p-8   py-[8rem] xl:py-0 w-full h-auto  flex items-center justify-center flex-col gap-[3rem]">
           <div className="w-full block">
-            <h2 className=" text-white !text-[60px]   ] xl:w-2/3 text-left">
+            <h2 className=" text-white md:text-[60px] text-[40px]   ] xl:w-2/3 text-left">
               One of a kind features.
             </h2>
           </div>
@@ -827,7 +827,7 @@ export default function HomePage() {
 
         <section className="blog-section p-8 !md:py-[20vh] py-[10vh] w-full h-auto  flex items-left justify-center flex-col gap-[3rem]">
           <div className="w-full block">
-            <h2 className=" text-white !text-[60px]   leading-[2.75rem]   lg:leading-[3rem] xl:leading-[3.5rem] xl:w-2/3 text-left">
+            <h2 className=" text-white md:text-[60px] text-[40px]     leading-[2.75rem]   lg:leading-[3rem] xl:leading-[3.5rem] xl:w-2/3 text-left">
               Blogs
             </h2>
           </div>
