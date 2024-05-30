@@ -47,7 +47,7 @@ export const Footer: any = () => {
             </div>
             <p>Solomon AI</p>
             <span>-</span>
-            <p className="text-gray"> joint beta waiting list</p>
+            <p className="text-gray"> join beta waiting list</p>
           </div>
 
           <form
