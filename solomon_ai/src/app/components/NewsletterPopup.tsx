@@ -1,58 +1,47 @@
-import Link from "next/link";
+    import Link from "next/link";
 import axios from "axios";
 import React, { FC, FormEvent, RefObject, useState } from "react";
 import Image from "next/image";
 import NewsImage from "../../../public/assets/homePage/NewsLetter_Image.png";
 import SwordIamge from "../../../public/assets/homePage/Sword_Icon.png";
 import ChestImage from "../../../public/assets/homePage/Chest_Icon.png";
+import JoinImage from "../../../public/assets/homePage/JoinList.png";
 
-interface PopupProps
-{ 
-    togglePopup: () => void;
+interface PopupProps {
+  togglePopup: () => void;
 }
 
+export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
+  const [email, setEmail] = useState<string>("");
 
-export const Popup: React.FC<PopupProps> = (
-    {
-        togglePopup
-    }
+  const joinSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-) => {
-
-
-    const [email, setEmail] = useState<string>("");
-
-    const joinSubmit = async (e: FormEvent) => {
-      e.preventDefault();
-  
-      const data = {
-        email: email,
-      };
-  
-      try {
-        const response = await axios.post(
-          "https://hook.us1.make.com/l99169ajyoh8dcxhaqnay3d3zqxe0on4 ",
-          data,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        console.log("Success:", response.data);
-          togglePopup()
-        // You might want to clear the form or give user feedback here
-      } catch (error) {
-        console.error("Error:", error);
-        // Handle the error, e.g., display an error message to the user
-      }
+    const data = {
+      email: email,
     };
-  
+
+    try {
+      const response = await axios.post(
+        "https://hook.us1.make.com/l99169ajyoh8dcxhaqnay3d3zqxe0on4 ",
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log("Success:", response.data);
+      togglePopup();
+      // You might want to clear the form or give user feedback here
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle the error, e.g., display an error message to the user
+    }
+  };
 
   return (
     <div className="homePopup">
       <div className="homePopupContainer">
-        <div
-            onClick={togglePopup}
-        className="closePopupContainer">
+        <div onClick={togglePopup} className="closePopupContainer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -95,21 +84,43 @@ export const Popup: React.FC<PopupProps> = (
           </div>
         </div>
 
-        <div className="homePopupImageContainer">
-          <Image src={NewsImage} alt="Waiting List Image" />
+        <div className="homePopupImageContainer w-full items-center justify-center">
+          <Image src={JoinImage} alt="Waiting List Image" />
         </div>
 
-        <div className="homePopupFormContainer">
-          <form 
-            onSubmit={joinSubmit}
-          className="flex flex-row  gap-[15px] ">
-            <input 
-            onChange={e => setEmail(e.target.value)}
-            type="email" placeholder="Enter Email" />
+        <div className="homePopupFormContainer w-full flex flex-col items-center justify-center">
+          <div
+            className = "flex flex-col gap-[5px] mb-[20px] md:mb-[50px] mt-[20px] mx-[20px]"
+          >
+            <h3>Join the beta waiting list.</h3>
+            <p
+                className ="text-gray text-[14px]"
+            >
+              There is an undeniable power to having universal guidance at your
+              finger tips.
+            </p>
+          </div>
 
+          <form onSubmit={joinSubmit} className="flex flex-col  gap-[15px] ">
+            <input
+            className = "w-full h-[38px]"
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Enter Email"
+            />
+
+            <button
+                className = "joinBeta"
+            >
+
+                    Join Beta
+
+            </button>
+
+{/* 
             <button type="submit" className="w-[32px] h-[32px] formImage">
               <Image src={ChestImage} alt="Waiting List Image" />
-            </button>
+            </button> */}
           </form>
         </div>
       </div>

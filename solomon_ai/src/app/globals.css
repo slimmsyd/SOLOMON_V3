@@ -435,10 +435,20 @@ figure video {
 .displayShow {
   display: flex;
 }
+@media screen and (max-width: 375px)
+
+{
+  .homePopupContainer { 
+    width: 330px !important;
+
+  }
+
+}
 @media screen and (max-width: 1050px) {
   .homePopupContainer {
-    width: 100%;
+    width: 400px !important;
     height: 505px;
+
     flex-direction: column !important;
   }
   .homePopup {
@@ -449,18 +459,18 @@ figure video {
   }
   .homePopupImageContainer img {
     width: 100%;
-    opacity: 0.5;
     /* object-fit: contain !important; */
     max-width: 100% !important;
   }
   .homePopupFormContainer {
     z-index: 10;
     width: 100%;
+    padding-bottom: 20px !important;
+    margin: 0px !important;
     flex-basis: auto !important;
   }
   .homePopupFormContainer form {
-    justify-content: center !important;
-    align-items: center !important;
+
     padding-right: 20px;
     padding-left: 20px;
     font-family: inherit !important;
@@ -490,8 +500,6 @@ figure video {
   }
 
   .homePopupFormContainer > form > button { 
-    width: 100px;
-    height: 100px;
   }
 }
 .homePopupContainer {
@@ -507,6 +515,7 @@ figure video {
 }
 .homePopupImageContainer {
   position: relative;
+  flex-basis: 70%;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
@@ -514,35 +523,39 @@ figure video {
   justify-content: start;
 }
 .homePopupImageContainer img {
-  /* width: 100%; */
+  width: 100%;
   height: 100%;
+  z-index: 0;
   /* max-width: 150% !important; */
   object-fit: cover;
   /* transform: translateX(-20%); */
 }
 .homePopupFormContainer {
-  flex-basis: 5%;
+  flex-basis: 80%;
   display: flex;
-  justify-content: end;
+  margin: 0px 38px;
 }
 
 .homePopupFormContainer form {
   width: 100%;
-  height: 100%;
   display: flex;
-  justify-content: end;
-  align-items: end;
+  /* justify-content: end;
+  align-items: end; */
   padding-right: 20px;
-  padding-bottom: 100px;
 }
 .homePopupFormContainer form input {
-  height: 20px;
   background: transparent;
   border: 0.5px solid #6e6e6e;
   padding: 15px 5px;
   outline: none;
   border-radius: 6px;
   font-size: 14px;
+}
+.joinBeta{
+  background-color: white;
+  height: 38px;
+  border-radius: 6px;
+  color: black;
 }
 
 .formImage {
@@ -618,6 +631,7 @@ figure video {
   justify-content: center;
 }
 .topDivContainer {
+  z-index: 10;
   font-size: 30px;
   padding: 2rem;
   height: 50px;
