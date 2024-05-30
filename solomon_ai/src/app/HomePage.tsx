@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 import { gsap } from "gsap";
 
 import { Popup } from "./components/NewsletterPopup";
+import { SuccessPopup } from "./components/SucessPopup";
 
 import Lenis from "lenis";
 
