@@ -322,13 +322,20 @@ export default function HomePage() {
     setIsPopupVisible(!isPopupVisible);
   };
 
+  const scrollToSection = () => {
+    if (refTextTrigger.current) {
+      refTextTrigger.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div>
       {isPopupVisible && <Popup togglePopup={togglePopup} />}
 
       <main className="page-wrapper w-full h-full">
         <NavComponent
-        togglePopup = {togglePopup}
+          togglePopup={togglePopup}
+          scrollToSection={scrollToSection}
         />
         <section className="hero-section relative mb-[100px] p-8  w-full h-screen flex items-center justify-center flex-col">
           <div className="backgroundOverlay"></div>
@@ -363,8 +370,10 @@ export default function HomePage() {
               moral consciousness of todays age.
             </p>
             <div className="w-full flex md:items-center items-start md:justify-center justify-start gap-[2.5rem]">
-            <button onClick={togglePopup}
-              className="px-8 py-1 text-[14px]  main-black bg-white border border-white  rounded duration-300 ease-in-out hover:text-white/60 hover:bg-transparent hover:border-white/60">
+              <button
+                onClick={togglePopup}
+                className="px-8 py-1 text-[14px]  main-black bg-white border border-white  rounded duration-300 ease-in-out hover:text-white/60 hover:bg-transparent hover:border-white/60"
+              >
                 Join waiting list
               </button>
               {/* <button className="py-1 text-[14px]   text-gray] border-b border-white/60 flex items-center gap-2">

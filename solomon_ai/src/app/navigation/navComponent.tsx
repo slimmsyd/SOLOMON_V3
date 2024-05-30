@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import FaceIcon from '../../../public/faceIconSolomon.png'
+import FaceIcon from "../../../public/faceIconSolomon.png";
 import Image from "next/image";
 
 interface PopupProps {
   togglePopup?: () => void;
+  scrollToSection?: () => void;
 }
 
-const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {
+const NavComponent: React.FC<PopupProps> = ({
+  togglePopup,
+  scrollToSection,
+}) => {
   const [animate, setAnimate] = useState(false);
   const [navState, setNavState] = useState(false);
   const navIcon = useRef<HTMLDivElement>(null);
@@ -16,6 +20,13 @@ const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {
   const navRef = useRef<HTMLDivElement>(null);
 
   const toggleNav = () => {
+    setNavState(!navState);
+  };
+
+  const scrolToAbout = () => {
+    if(scrollToSection){ 
+      scrollToSection()
+    }
     setNavState(!navState);
   };
 
@@ -88,11 +99,7 @@ const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {
           className="p-2 text-white flex flex-row gap-[15px]  items-center text-4xl uppercase lg:text-[2.75rem] xl:text-[3rem  md:w-[280px] w-auto"
         >
           <div>
-            <Image src = {FaceIcon}
-            alt = "Solomon Face"
-            width={32}
-            height = {32}
-            />
+            <Image src={FaceIcon} alt="Solomon Face" width={32} height={32} />
           </div>
           SolomonAI
         </Link>
@@ -117,6 +124,7 @@ const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {
             Prices
           </Link> */}
           <Link
+            onClick={scrollToSection}
             href="/"
             className="abc-diatype-Regular text-gray text-[1.75rem] duration-300 ease-in-out hover:text-white"
           >
@@ -200,7 +208,7 @@ const NavComponent: React.FC<PopupProps> = ({ togglePopup }) => {
 
           </Link> */}
 
-          <Link href="/" className="mobileNavLink">
+          <Link onClick={scrolToAbout} href="/" className="mobileNavLink">
             <span className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white">
               About
             </span>
