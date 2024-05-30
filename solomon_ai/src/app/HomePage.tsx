@@ -125,9 +125,9 @@ export default function HomePage() {
   const blogData = [
     {
       id: 1,
-      img: "/assets/studio-image.png",
+      img: "/assets/Blogs/Morality_Ethics.png",
       blogTitle: "Exploring the Ethics of Artifical Intelligence.",
-      releaseDate: "June 1st, 2024",
+      releaseDate: "TBA | June 1st, 2024",
       author: "Sydney Sanders",
     },
     // {
@@ -838,7 +838,7 @@ export default function HomePage() {
             {blogData.map(({ id, img, blogTitle, releaseDate, author }) => (
               <div
                 key={id}
-                className=" blogImageWrapper w-full flex  justify-center text-center flex-col gap-4 xl:flex-row items-start xl:justify-start"
+                className=" blogImageWrapper w-full flex cursor-pointer  justify-center text-center flex-col gap-4 xl:flex-row items-start xl:justify-start"
               >
                 <div className="blogImage">
                   <Image src={img} width={415} height={245} alt="Blog Image" />
