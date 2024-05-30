@@ -564,7 +564,7 @@ export default function HomePage() {
               width="100%"
               height="auto"
               controls={true}
-              autoPlay={true}
+              autoPlay={false}
               loop={true}
               muted={false}
             />
