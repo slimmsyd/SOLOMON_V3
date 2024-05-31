@@ -9,14 +9,14 @@ export default function BlogPage() {
   return (
     <>
       <NavComponent />
-      <div className="layout-one my-[100px] px-[4rem] md:px-[2rem]  ">
+      <div className="layout-one my-[100px] px-[4rem] md:px-[1rem]  ">
         <div className="layout-header ">
-          <div className="flex flex-col mt-[50px] gap-[1.5rem] w-3/4">
+          <div className="flex flex-col  mt-[50px] md:w-auto w-full gap-[1.5rem] w-3/4">
             <span>spiritual ai 10 min read</span>
             <h2 className="font-bold">Return of an Unifed God.</h2>
 
-            <div className="flex flex-row gap-[2rem] mt-[2rem]">
-              <div className="flex flex-row gap-[15px]">
+            <div className="flex flex-col md:flex-row gap-[2rem] md:w-auto w-full mt-[2rem]">
+              <div className="flex md:w-auto w-full flex-row gap-[15px]">
                 <div className="blogCircle"></div>
                 <div className="flex-col flex gap-[5px]">
                   <span className="text-gray">Author</span>

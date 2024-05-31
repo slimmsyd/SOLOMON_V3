@@ -1190,7 +1190,8 @@ figure video {
 }
 .blogCircle{
   min-height: 30px;
-  max-height: 85px;
+  min-height: 30px;
+    min-width: 50px;
   width: 50px;
   border: 1px solid white;;
   border-radius: 50%;
