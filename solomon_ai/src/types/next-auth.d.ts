@@ -19,8 +19,21 @@ declare module 'next-auth' {
       id: string;
       username: string;
       email: string;
-    }
+    } & DefaultSession['user'];
   }
+
+
+  // interface Session {
+  //   user: {
+  //     id: string;
+  //     username: string;
+  //     email: string;
+  //   }
+  // }
+
+
+
+ 
 }
 
 //   interface Session {

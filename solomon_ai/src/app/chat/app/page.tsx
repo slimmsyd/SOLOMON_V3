@@ -12,9 +12,10 @@ import {MessageProvider} from '../../../utilis/MessageContext'
 
 
 
-
+//Utilis and helper functions 
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
+import { checkSession } from "@/utilis/CheckSession";
 
 // Dashboard
 
@@ -36,7 +37,7 @@ const ChatDashboard: React.FC = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [sessionStatus, setSessionStatus] = useState<string>("");
-  const [userId, setUserId] = useState<null>(null);
+  const [userId, setUserId] = useState<string>("");
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -122,71 +123,21 @@ const ChatDashboard: React.FC = () => {
     console.log("useEffect: Checking to see if the session ref changed", sessionRef.current);
   },[sessionRef])
 
-  useEffect(() => {
-    console.log("useEffect: Checking session status:", status);
-    sessionRef.current += 1;
-
-    if(sessionRef.current === 1 ) { 
-          return
-    }
-
-    async function checkSession() {
-
-      if (status === "loading") {
-        console.log("Session is loading...");
-        // return;
-      }
-
-      if (status === "unauthenticated") {
-        console.log("No session found, redirecting...");
-        router.push("/");
-      } else if (status === "authenticated") {
-
-        console.log(
-          "Session is authenticated, confirming session data...",
-          status
-        );
-
-        //For the first converation, we get the first ConvoId
-
-        setUserId(session.user.id);
-        setSessionStatus(status);
-        const currentSession = await getSession();
-        console.log("Loggin session", session)
-        console.log("Current session data:", currentSession);
-
-        if (!currentSession?.user.user) {
-          // setEmail(currentSession?.user.email.split("@")[0]);
-          setEmail(currentSession?.user.email.split("@")[0]);
-
-          //Just a back up just in case
-          setUserName(currentSession?.user.name)
-
-          if (isClient()) {
-            if (email !== null) {
-              sessionStorage.setItem("email", email);
-              console.log("Is the email beign set here", email);
-            }
-            if (userName !== null) {
-              sessionStorage.setItem("userName", userName);
-            }
-            if (splitUserName !== "") {
-              sessionStorage.setItem("splitUserName", splitUserName);
-            }
-          }
-          //We want to get Just to logo of the userName
-          setSplitUserName(currentSession?.user.email[0].toUpperCase());
-        }
-        console.log("Logging session user name", currentSession?.user.name);
-      }
-    }
-
-    if (status === "authenticated") {
-      checkSession();
-    }
+   // Update session storage whenever userName or splitUserName changes
+   useEffect(() => {
+    checkSession(status, {
+      setUserId,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName: '',
+      splitUserName,
+    });
   }, [status]);
-
-
 
   //Submit the Inquiry
   const handleSubmit = async (e) => {

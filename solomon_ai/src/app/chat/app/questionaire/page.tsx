@@ -25,9 +25,10 @@ import { SignupForm } from "../Signupform";
 
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
-//Importing the Zodiac Signs
+//Importing the Zodiac Signs ++ Helper functions
 import { zodiacSigns } from "@/utilis/zodaicSigns";
 import { greetings } from "@/utilis/randomGreeting";
+import { checkSession } from "@/utilis/CheckSession";
 
 
 const ChatDashboard: React.FC = () => {
@@ -43,11 +44,10 @@ const ChatDashboard: React.FC = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [sessionStatus, setSessionStatus] = useState<string>("");
-  const [userId, setUserId] = useState<null>(null);
+  const [userId, setUserId] = useState<string>("");
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [showTitleInput, setShowTitleInput] = useState(false);
   const [editTitleId, setEditTitleId] = useState<null>(null);
   const [editedTitle, setEditedTitle] = useState<string>("");
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
@@ -64,6 +64,7 @@ const ChatDashboard: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(1);
   const [borderClasses, setBorderClasses] = useState<string[]>([
     "selectedBorder",
+    "noneBorder",
     "noneBorder",
     "noneBorder",
     "noneBorder",
@@ -108,63 +109,24 @@ const ChatDashboard: React.FC = () => {
   }, []);
 
   // Update session storage whenever userName or splitUserName changes
-
   useEffect(() => {
-    async function checkSession() {
-      if (status === "loading") {
-        console.log("Session is loading...");
-        return;
-      }
+    checkSession(status, {
+      setUserId,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName: '',
+      splitUserName,
+    });
+  }, [status]);
 
-      if (status === "unauthenticated") {
-        console.log("No session found, redirecting...");
-        router.push("/");
-      } else if (status === "authenticated") {
-        console.log(
-          "Session is authenticated, confirming session data...",
-          status
-        );
 
-        //For the first converation, we get the first ConvoId
 
-        setUserId(session.user.id);
-        setSessionStatus(status);
-        const currentSession = await getSession();
-        console.log("Current session data:", currentSession);
-        if (!currentSession?.user.user) {
-          // setEmail(currentSession?.user.email.split("@")[0]);
-          setEmail(currentSession?.user.email.split("@")[0]);
-
-          //Just a back up just in case
-
-          if (isClient()) {
-            if (email !== null) {
-              sessionStorage.setItem("email", email);
-              console.log("Is the email beign set here", email);
-            }
-            if (userName !== null) {
-              sessionStorage.setItem("userName", userName);
-            }
-            if (splitUserName !== "") {
-              sessionStorage.setItem("splitUserName", splitUserName);
-            }
-          }
-          //We want to get Just to logo of the userName
-          setSplitUserName(currentSession?.user.email[0].toUpperCase());
-        }
-        console.log("Logging session user name", currentSession?.user.name);
-      }
-    }
-
-    if (status === "authenticated") {
-      checkSession();
-    }
-  }, [status, router]);
-
-  useEffect(() => {
-    console.log("logging the completed form chnage ", completedForm);
-  }, [completedForm]);
-
+  
   // Example border classes
   useEffect(() => {
     console.log("Logging the current question", currentQuestion);
@@ -176,7 +138,7 @@ const ChatDashboard: React.FC = () => {
   }, [readyToRedirect]);
 
   const handleNextQuestion = async () => {
-    if (currentQuestion < 5) {
+    if (currentQuestion < 6) {
       const updatedResponses = [
         ...responses,
         `Response to question ${currentQuestion}`,
@@ -187,7 +149,7 @@ const ChatDashboard: React.FC = () => {
       setBorderClasses(newBorderClasses);
 
       const newCurrentQuestion = currentQuestion + 1;
-      const isComplete = newCurrentQuestion >= 5;
+      const isComplete = newCurrentQuestion >= 6;
       setCurrentQuestion(newCurrentQuestion);
 
       console.log("Logging the updating Response", newCurrentQuestion);
@@ -207,7 +169,7 @@ const ChatDashboard: React.FC = () => {
           response
         );
 
-        if (response.data.data.currentQuestion === 5) {
+        if (response.data.data.currentQuestion === 6) {
           console.log("The form has been completed", response.data.data);
           setCompleteForm(true);
         }
@@ -230,6 +192,16 @@ const ChatDashboard: React.FC = () => {
       router.push("/chat/app/");
     }
   };
+
+  useEffect(() => {
+    console.log("logging the completed form chnage ", completedForm);
+    router.push("/chat/app/");
+
+    if(completedForm){
+      
+    }
+  }, [completedForm]);
+
 
   //Fetch the Progress
   useEffect(() => {
@@ -265,7 +237,7 @@ const ChatDashboard: React.FC = () => {
     console.log("SUbmitting hte quesitonnair form!!!", currentConversationId);
 
     //Ensure that we don't submit anymore
-    if (currentQuestion >= 5) {
+    if (currentQuestion >= 6) {
       setCompleteForm(true);
       setFirstConvoState(false);
 
@@ -692,9 +664,7 @@ const ChatDashboard: React.FC = () => {
   ) => {
     automatedMessageCounter.current += 1;
 
-    console.log(
-      `sendAutomatedMessage has been called ${automatedMessageCounter.current} times`
-    );
+
 
     if (automatedMessageCounter.current >= 2) {
       console.log(
@@ -711,9 +681,6 @@ const ChatDashboard: React.FC = () => {
       ? `${randomGreeting}, my name is ${session.user.name}`
       : `Hello, my name is ${randomGreeting}`;
 
-    console.log("Loggin the userId", userId);
-    console.log("Logging the message", userMessage);
-    console.log("Logging the conversatoinId", convoId);
     
     setResponses((prevResponses: any) => [
       ...prevResponses,
@@ -838,7 +805,6 @@ const ChatDashboard: React.FC = () => {
       userId
     );
 
-    console.log("Log status", status, "logg sessin", session);
     if (isClient()) {
       if (status === "authenticated" && session) {
         const sendGreetings = async () => {
@@ -1019,7 +985,7 @@ const ChatDashboard: React.FC = () => {
           <div className="flex flex-row w-full justify-between">
             <p className="text-[14px]">seek truth</p>
 
-            <p className="text-[14px]"> {currentQuestion}/5 Completed</p>
+            <p className="text-[14px]"> {currentQuestion}/6 Completed</p>
           </div>
 
           <div className="flex-row flex gap-[30px] w-full">

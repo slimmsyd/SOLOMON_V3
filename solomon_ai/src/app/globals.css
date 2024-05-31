@@ -167,6 +167,9 @@ img {
   .bg-main-black {
     background: #020202;
   }
+  .purple-text{
+    color: var(--purple);
+  }
 
   .bg-gray {
     background-color: rgba(255, 255, 255, 0.15);
@@ -1185,6 +1188,16 @@ figure video {
   /* background: white; */
   margin-bottom: 2rem;
 }
+.blogCircle{
+  min-height: 30px;
+  max-height: 85px;
+  width: 50px;
+  border: 1px solid white;;
+  border-radius: 50%;
+  background: url('../../public//assets//Blogs/ScriputalScience//sydneyDigitalTwo.png');
+  background-position: center center;
+  background-size: cover;
+}
 .googleForm {
   height: 41px;
   border: 0.5px solid #505050;
@@ -1295,7 +1308,7 @@ figure video {
 }
 
 .accountContainer {
-  border: 0.5px solid #505050;
+  border: 0.5px solid #737373;
   height: 100%;
   border-radius: 10px;
 }
@@ -1309,7 +1322,13 @@ figure video {
 .layout-text {
   max-width: 80%;
   margin-left: auto;
+
 }
+.layout-text p { 
+  color: #d2d2d2;
+
+}
+
 .layout-image {
   width: 100%;
   height: 100%;

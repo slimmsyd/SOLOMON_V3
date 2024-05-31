@@ -128,8 +128,9 @@ export default function HomePage() {
       id: 1,
       img: "/assets/Blogs/Morality_Ethics.png",
       blogTitle: "Exploring the Ethics of Artifical Intelligence.",
-      releaseDate: "TBA | June 1st, 2024",
+      releaseDate: "May 31st, 2024",
       author: "Sydney Sanders",
+      link: "blogs/unifiedGod"
     },
     // {
     //   id: 2,
@@ -836,8 +837,9 @@ export default function HomePage() {
           <hr className="w-full h-[1px] bg-white opacity-[.10]" />
 
           <div className="w-full flex items-start justify-start flex-col gap-8 md:mt-[15vh] xl:flex-row mt-[8vh]">
-            {blogData.map(({ id, img, blogTitle, releaseDate, author }) => (
-              <div
+            {blogData.map(({ id, img, blogTitle, releaseDate, author, link }) => (
+              <Link
+                href = {link}
                 key={id}
                 className=" blogImageWrapper w-full flex cursor-pointer  justify-center text-center flex-col gap-4 xl:flex-row items-start xl:justify-start"
               >
@@ -854,7 +856,7 @@ export default function HomePage() {
                     {author}
                   </p> */}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>

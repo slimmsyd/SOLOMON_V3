@@ -71,6 +71,7 @@ const Login = () => {
         });
 
         if (response.data) {
+          console.log("Logging the response data", response.data)
           //We are savying to see if Onmplete is true we redirect to the dashabord
           if (response.data.onComplete) {
             setCompleteForm(true || response.data.onComplete);
@@ -87,7 +88,10 @@ const Login = () => {
   //We are goging to fetch the userProgess on the rendering of this
   //If user Progres is True we are going to switch the redirect of the page
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("Logging the completd form here again", completedForm)
+    console.log("LOgging the current status aswell", status)
+  }, [completedForm]);
 
   // if (status === "authenticated" && completedForm) {
   //   console.log("Logging completed form", completedForm);
@@ -111,7 +115,7 @@ const Login = () => {
                 </p>
               </div>
               <div className="loginForm text-white flex items-center justify-center flex-col mt-8">
-                <div className="logoCircle"></div>
+                <div className="blogCircle"></div>
 
                 <h3>Create Your Free Account</h3>
 

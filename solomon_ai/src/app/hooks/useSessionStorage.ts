@@ -7,7 +7,7 @@ import { isClient } from '../../utilis/isClient';
 export const useSessionStorage = () => {
     const [userName, setUserName] = useState<string | null>(null);
     const [splitUserName, setSplitUserName] = useState<string>("");
-    const [email, setEmail] = useState<string | null>(null);
+    const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
     if (isClient()) {
