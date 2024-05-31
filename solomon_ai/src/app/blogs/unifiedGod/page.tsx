@@ -27,7 +27,7 @@ export default function BlogPage() {
 
               <div className="flex-col flex gap-[5px]">
                 <span className="text-gray">Published</span>
-                <span className="text-gray">June 2, 2024</span>
+                <span className="text-gray">May 1st, 2024</span>
               </div>
             </div>
           </div>
