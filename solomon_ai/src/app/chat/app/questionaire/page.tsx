@@ -195,10 +195,10 @@ const ChatDashboard: React.FC = () => {
 
   useEffect(() => {
     console.log("logging the completed form chnage ", completedForm);
-    router.push("/chat/app/");
+    
 
     if(completedForm){
-      
+      router.push("/chat/app/");
     }
   }, [completedForm]);
 
@@ -674,6 +674,8 @@ const ChatDashboard: React.FC = () => {
       return;
     }
 
+
+    console.log("Logging ot see the current state of automated messagesd here", automatedMessageCounter)
     // Inline ternary operation to set the message content
     const randomGreeting = getRandomGreeting();
 
@@ -754,21 +756,30 @@ const ChatDashboard: React.FC = () => {
     id: string;
     firstConvo: boolean;
   }
-  7;
+  
+
+  let fetchFirstConvCounter = useRef(0);
+
   const fetchFirstConversation = async (
     userId: string
   ): Promise<ConversationData> => {
     console.log("Logging FetchFirstConvo USER ID", userId);
     console.log("Logging the current conversation Id", currentConversationId);
+    fetchFirstConvCounter.current += 1;
 
     if (currentConversationId === 1) {
       throw new Error("Already initatied conersation");
     }
 
     console.log("Logging the has runGretting ", hasRunSendGreetings);
+ 
+    if(fetchFirstConvCounter.current >=2) { 
+      return Promise.reject("Function has already been called more than once.");
+    }
 
     if (!currentConversationId || !hasRunSendGreetings) {
       try {
+      
         const response = await fetch("/api/firstConversations", {
           method: "POST",
           headers: {
@@ -838,6 +849,7 @@ const ChatDashboard: React.FC = () => {
               return;
             }
           } else if (greetingSent) {
+            console.log("Logging greeting Sent", greetingSent)
             return;
           }
         };

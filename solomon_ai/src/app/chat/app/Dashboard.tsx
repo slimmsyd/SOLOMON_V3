@@ -11,16 +11,19 @@ interface DashboardProps {
   handleButtonClick?: (event: any) => void;
 }
 
-export const Dashboard: FC<DashboardProps> = ({ handleButtonClick }) => {
+export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [greeting, setGreeting] = useState<string>("");
 
-  const { userName, splitUserName, email, setEmail, setSplitUserName } =
+  const { splitUserName, email, setEmail, setSplitUserName } =
     useSessionStorage();
 
+
+
+    
   const { setMessage, message } = useMessageContext();
 
   useEffect(() => {}, [message]);

@@ -161,7 +161,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             </svg>
           </div>
 
-          <div className="flex flex-col gap-[13px] overflow-scroll w-[95%] ">
+          <div className="flex flex-col gap-[13px] overflow-scroll w-[95%] chatScrollbar ">
             {conversations.map((conversation) => (
               <div key={conversation.conversationId} className="relative">
                 <button

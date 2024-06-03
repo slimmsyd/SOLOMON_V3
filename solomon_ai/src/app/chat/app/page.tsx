@@ -41,7 +41,6 @@ const ChatDashboard: React.FC = () => {
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [showTitleInput, setShowTitleInput] = useState(false);
   const [editTitleId, setEditTitleId] = useState<null>(null);
   const [editedTitle, setEditedTitle] = useState<string>("");
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
@@ -54,6 +53,28 @@ const ChatDashboard: React.FC = () => {
   const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(
     null
   );
+  
+
+     // Update session storage whenever userName or splitUserName changes
+     useEffect(() => {
+      checkSession(status, {
+        setUserId,
+        setUserName,
+        setSessionStatus,
+        setEmail,
+        setSplitUserName,
+        isClient,
+        session,
+        router, 
+        email,
+        userName,
+        splitUserName,
+      });
+  
+  
+      console.log("Loggin the usrName in the chat App", userName)
+    }, [status]);
+
 
   //Stores the Chat
   const {
@@ -123,21 +144,7 @@ const ChatDashboard: React.FC = () => {
     console.log("useEffect: Checking to see if the session ref changed", sessionRef.current);
   },[sessionRef])
 
-   // Update session storage whenever userName or splitUserName changes
-   useEffect(() => {
-    checkSession(status, {
-      setUserId,
-      setSessionStatus,
-      setEmail,
-      setSplitUserName,
-      isClient,
-      session,
-      router,
-      email,
-      userName: '',
-      splitUserName,
-    });
-  }, [status]);
+
 
   //Submit the Inquiry
   const handleSubmit = async (e) => {
@@ -521,11 +528,6 @@ const ChatDashboard: React.FC = () => {
   //Send an automated Message on load
 
 
-  //Interface for this
-  interface ConversationData {
-    id: number;
-    firstConvo: boolean;
-  }
 
 
 

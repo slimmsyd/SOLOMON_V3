@@ -1065,6 +1065,7 @@ figure video {
   }
   .chatFormSubmit {
     width: 99% !important;
+    padding: 15px 15px !important;
   }
 }
 
@@ -1143,6 +1144,9 @@ figure video {
   border-radius: 5px;
   border: 1px solid #b4b4b4;
   padding: 24px 15px;
+}
+.chatScrollbar::-webkit-scrollbar{
+display: none;
 }
 
 /* DashBoard code  */

@@ -12,13 +12,19 @@ import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "../hooks/useSessionStorage";
 
+import { checkSession } from "@/utilis/CheckSession";
+
+
+
+
 import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
-  const { userName, splitUserName, email, } = useSessionStorage();
+  const { userName, setUserName , splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
 
   const router = useRouter();
   const { data: session, status } = useSession();
-
+  const [sessionStatus, setSessionStatus] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
   const [currentConversationId, setCurrentConversationId] = useState<
     string | null
   >(null);
@@ -26,6 +32,21 @@ const Profile: React.FC = () => {
   const [zodiac, setZodiac] = useState<null>(null);
   const [lifePath, setLifePathNumber] = useState<null>(null);
 
+  useEffect(() => {
+    checkSession(status, {
+      setUserId,
+      setUserName,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName: '',
+      splitUserName,
+    });
+  }, [status]);
 
 
   //Run the fetchUserInfo on Remout only
@@ -35,6 +56,7 @@ const Profile: React.FC = () => {
 
   async function fetchUserInfo(userId: number) {
     console.log("Loggin the user Id", typeof userId);
+    console.log("logging the user Id", userId)
     try {
       const response = await fetch(`/api/getUserInfo?userId=${Number(userId)}`);
       const data = await response.json();
@@ -65,7 +87,7 @@ const Profile: React.FC = () => {
     useEffect(() => {
       if (isClient()) {
         if (userName !== null) {
-          sessionStorage.setItem("userName", userName);
+          sessionStorage.setItem("userName", userName || session?.user.name) 
         }
   
         if (splitUserName !== "") {
@@ -81,9 +103,7 @@ const Profile: React.FC = () => {
    
 
 
-  //   if (!userName || !session) {
-  //     return <ErrorPage />;
-  //   }
+  
 
   const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);

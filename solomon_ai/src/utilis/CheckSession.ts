@@ -6,6 +6,7 @@ import { Session } from 'next-auth';
 
 interface CheckSessionOptions {
   setUserId: (id: string) => void;
+  setUserName: (status: string) => void;
   setSessionStatus: (status: string) => void;  
   setEmail: (email: string) => void;
   setSplitUserName: (splitUserName: string) => void;
@@ -23,12 +24,13 @@ export async function checkSession(
 ) {
   const {
     setUserId,
+    setUserName,
     setSessionStatus,
     setEmail,
     setSplitUserName,
     isClient,
     session,
-    router,
+    router, 
     email,
     userName,
     splitUserName,
@@ -46,17 +48,22 @@ export async function checkSession(
     router.push('/');
   } else if (status === 'authenticated') {
     console.log('Session is authenticated, confirming session data...', status);
-
+    console.log("Logging the session ID", session)
     setUserId(session?.user.id);
     setSessionStatus(status);
+    setUserName(session?.user.name)
     const currentSession = await getSession();
     console.log('Current session data:', currentSession);
 
     if (!currentSession?.user.user) {
       setEmail(currentSession?.user.email.split('@')[0]);
+      console.log("Logging userName is the session jiont", userName)
+      console.log("Logging teh current session userName in the joint", currentSession?.user.name)
+
 
       if (isClient()) {
         if (email !== null) {
+
           sessionStorage.setItem('email', email);
           console.log('Is the email being set here', email);
         }
@@ -69,7 +76,9 @@ export async function checkSession(
       }
 
       setSplitUserName(currentSession?.user.email[0].toUpperCase());
+      setUserName(currentSession?.user.name)
+ 
     }
-    console.log('Logging session user name', currentSession?.user.name);
+
   }
 }

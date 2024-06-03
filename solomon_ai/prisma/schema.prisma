@@ -30,6 +30,9 @@ model User {
   conversations  UserConversations[]
   accounts       Account[]
   progress       UserProgress?
+  progressId     String?             @unique
+
+
 }
 
 model Account {

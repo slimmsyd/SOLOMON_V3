@@ -31,6 +31,8 @@ const Login = () => {
   });
 
   const { register, handleSubmit } = form;
+
+  
   const [completedForm, setCompleteForm] = useState<boolean>(false);
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
@@ -88,10 +90,26 @@ const Login = () => {
   //We are goging to fetch the userProgess on the rendering of this
   //If user Progres is True we are going to switch the redirect of the page
 
-  useEffect(() => {
-    console.log("Logging the completd form here again", completedForm)
-    console.log("LOgging the current status aswell", status)
-  }, [completedForm]);
+useEffect(() => { 
+
+  console.log("Logging the completed From", completedForm)
+},[completedForm])
+
+  // useEffect(() => {
+
+  //   console.log("Logging the completd form here again", completedForm)
+  //   console.log("LOgging the current status aswell", status)
+
+
+    
+
+  //   if (status === 'authenticated' && completedForm) {
+  //     router.push('/chat/app');
+  //   } else if (status === 'authenticated' && !completedForm) {
+  //     router.push('/chat/app/questionaire');
+  //   }
+  // }, [status, completedForm, router]);
+
 
   // if (status === "authenticated" && completedForm) {
   //   console.log("Logging completed form", completedForm);
@@ -115,7 +133,7 @@ const Login = () => {
                 </p>
               </div>
               <div className="loginForm text-white flex items-center justify-center flex-col mt-8">
-                <div className="blogCircle"></div>
+                <div className="logoCircle"></div>
 
                 <h3>Create Your Free Account</h3>
 
@@ -123,9 +141,10 @@ const Login = () => {
                   <button
                     onClick={() => {
                       console.log("Completed Form: On Click", completedForm);
-                      signIn("google", {
-                        callbackUrl: "/chat/app",
-                      });
+                      signIn("google" ,{ 
+                        callbackUrl: "/chat/app"
+                      },
+                      );
                     }}
                     className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                   >
@@ -166,8 +185,8 @@ const Login = () => {
                   <button
                     onClick={() => {
                       console.log("Completed Form: On Click", completedForm);
-                      signIn("google", {
-                        callbackUrl: "/chat/app/questionaire",
+                      signIn("google", { 
+                          callbackUrl:"/chat/app/questionaire"
                       });
                     }}
                     className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
