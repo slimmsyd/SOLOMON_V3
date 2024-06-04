@@ -10,6 +10,7 @@ import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 import { Conversation } from "../../../../types";
 
 interface ChatContainerProps {
+  setConversations?: React.Dispatch<React.SetStateAction<Conversation[]>>;
   conversations?: Conversation[];
   splitUserName: string;
   userName: string;
@@ -28,6 +29,8 @@ interface ChatContainerProps {
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
+  setConversations,
+  conversations,
   splitUserName,
   userName,
   email,
@@ -42,7 +45,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   titleUpdated,
   handleKeyDown
 }) => {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
 
 
 
@@ -91,12 +93,13 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   useEffect(() => {
     // Retrieve the conversations from local storage
     const localStorageConversations = sessionStorage.getItem("conversations");
+    
 
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
         localStorageConversations
       );
-      setConversations(conversationArray); // Set the conversations state as an array
+      setConversations?.(conversationArray); // Safe call with optional chaining
       console.log("Loggin the conversations array", conversationArray)
     }
 
@@ -104,10 +107,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
 
 
-  useEffect(() => { 
 
-
-  })
+  
 
 
 
@@ -162,7 +163,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           </div>
 
           <div className="flex flex-col gap-[13px] overflow-scroll w-[95%] chatScrollbar ">
-            {conversations.map((conversation) => (
+            {conversations?.map((conversation) => (
               <div key={conversation.conversationId} className="relative">
                 <button
                 onClick={() => {

@@ -24,6 +24,7 @@ model User {
   emailVerified  Boolean?
   birthday       DateTime?
   zodiacSign     String?
+  ennealogy      Int?
   lifePathNumber Int?
   religion       String?
   messages       Messages[]

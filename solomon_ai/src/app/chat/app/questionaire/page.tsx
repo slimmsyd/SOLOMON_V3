@@ -26,10 +26,14 @@ import { SignupForm } from "../Signupform";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
 //Importing the Zodiac Signs ++ Helper functions
-import { zodiacSigns } from "@/utilis/zodaicSigns";
+import { extractLifePathNumber } from "@/utilis/textExtractor";
+import { extractZodiacSign } from "@/utilis/textExtractor";
+import { extractBirthday } from "@/utilis/textExtractor";
+import { extractEnnealogyNumber } from "@/utilis/textExtractor";
+import { extractReligion } from "@/utilis/textExtractor";
 import { greetings } from "@/utilis/randomGreeting";
 import { checkSession } from "@/utilis/CheckSession";
-
+import LoadingComponent from "@/app/components/helper/Loading";
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
@@ -37,8 +41,14 @@ const ChatDashboard: React.FC = () => {
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
 
-  const { userName, splitUserName, email, setEmail, setSplitUserName } =
-    useSessionStorage();
+  const {
+    userName,
+    setUserName,
+    splitUserName,
+    email,
+    setEmail,
+    setSplitUserName,
+  } = useSessionStorage();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -112,6 +122,7 @@ const ChatDashboard: React.FC = () => {
   useEffect(() => {
     checkSession(status, {
       setUserId,
+      setUserName,
       setSessionStatus,
       setEmail,
       setSplitUserName,
@@ -119,14 +130,11 @@ const ChatDashboard: React.FC = () => {
       session,
       router,
       email,
-      userName: '',
+      userName,
       splitUserName,
     });
   }, [status]);
 
-
-
-  
   // Example border classes
   useEffect(() => {
     console.log("Logging the current question", currentQuestion);
@@ -151,10 +159,6 @@ const ChatDashboard: React.FC = () => {
       const newCurrentQuestion = currentQuestion + 1;
       const isComplete = newCurrentQuestion >= 6;
       setCurrentQuestion(newCurrentQuestion);
-
-      console.log("Logging the updating Response", newCurrentQuestion);
-      console.log("Logging the updating Response", updatedResponses);
-      console.log("Logging the isComplete", isComplete);
 
       try {
         const response = await axios.post("/api/saveProgress", {
@@ -195,13 +199,11 @@ const ChatDashboard: React.FC = () => {
 
   useEffect(() => {
     console.log("logging the completed form chnage ", completedForm);
-    
 
-    if(completedForm){
+    if (completedForm) {
       router.push("/chat/app/");
     }
   }, [completedForm]);
-
 
   //Fetch the Progress
   useEffect(() => {
@@ -452,14 +454,11 @@ const ChatDashboard: React.FC = () => {
 
           // If the update fails, revert the change in the UI and alert the user
           const originalConversations = conversations.map((convo) =>
-            convo.id === editTitleId
+            convo.conversationId === editTitleId
               ? { ...convo, title: (convo as any).title }
               : convo
           );
-          // console.log(
-          //   "Reverting to original conversations:",
-          //   originalConversations
-          // );
+
           setConversations(originalConversations);
           sessionStorage.setItem(
             "conversations",
@@ -493,65 +492,76 @@ const ChatDashboard: React.FC = () => {
     setEditedTitle(event.target.value);
   };
 
-  // Logging the responses temp
-  // Extract life path number from the response text
-  const extractLifePathNumber = (responseText: string) => {
-    const match = responseText.match(
-      /life path (?:number|of the number) (\d+)/
-    );
-    return match ? parseInt(match[1], 10) : null;
-  };
+//
 
-  // Extract zodiac sign from the response text
-  const extractZodiacSign = (responseText: string) => {
-    for (const sign of zodiacSigns) {
-      if (responseText.includes(sign)) {
-        return sign;
-      }
-    }
-    return null;
-  };
 
-  // Update user progress with the extracted values
+  // Update user progress with the extracted vales
   const updateUserProgress = async (
     userId: string,
-    lifePathNumber: string,
-    zodiacSign: string
+    birthday: string | null,
+    lifePathNumber: number | null,
+    zodiacSign: string | null,
+    enealogyNumber: string | null,
+    religion: string | null
   ) => {
+
+
+
     try {
+
+
       const response = await axios.post("/api/updateUser", {
         userId,
-        lifePathNumber,
-        zodiacSign,
+        birthday: birthday ?? undefined,
+        lifePathNumber: lifePathNumber ?? undefined,
+        zodiacSign: zodiacSign ?? undefined,
+        enealogyNumber: enealogyNumber ?? undefined,
+        religion: religion ?? undefined,
       });
+
       console.log("User progress updated successfully:", response.data);
     } catch (error) {
       console.error("Error updating user progress:", error);
-    }
+    } 
   };
 
-  // useEffect(() => {
-  //   console.log(
-  //     "Logging the responses on the Questionnaire on send",
-  //     responses
-  //   );
+  useEffect(() => {
 
-  //   responses.forEach((response) => {
-  //     const lifePathNumber = extractLifePathNumber(response.response);
-  //     const zodiacSign = extractZodiacSign(response.response);
+    console.log("Logging the responses here before the Extract Life ", responses)
+    responses.forEach((response) => {
+      console.log("Logging response.repsone", response.response)
+      const lifePathNumber = extractLifePathNumber(response.response);
+      const zodiacSign = extractZodiacSign(response.response);
+      const birthday = extractBirthday(response.response || response.question )
+      const enealogyNumber = extractEnnealogyNumber(response.response)
+      const religion = extractReligion(response.response || response.question)
 
-  //     if (lifePathNumber !== null || zodiacSign !== null) {
-  //       console.log("Logging hte Life Path Nuber", lifePathNumber);
-  //       console.log("Logging the Zodiac Sign", zodiacSign);
-  //       console.log("Logging the userID", userId);
-  //       updateUserProgress(
-  //         userId as any,
-  //         lifePathNumber as any,
-  //         zodiacSign as any
-  //       );
-  //     }
-  //   });
-  // }, [responses, userId]);
+
+
+      console.log("Logging the Life Path", lifePathNumber)
+      console.log("Logging the Zodiac Sign", zodiacSign)
+      console.log("Logging To see the birthday", birthday)
+      console.log("Logging to see the ennealogy Number", enealogyNumber)
+      console.log("LOgging to see the religion", religion)
+
+
+      if (lifePathNumber !== null || zodiacSign !== null || birthday !== null || religion !== null || enealogyNumber !== null) {
+        console.log("Logging the Life Path Nuber", lifePathNumber);
+        console.log("Logging the Zodiac Sign", zodiacSign);
+        console.log("Logging the Birthday in if statement", birthday);
+        console.log("Logging the Religion in if statement", religion);
+        console.log("Logging the userID", userId);
+        updateUserProgress(
+          userId as any,
+          birthday as any,
+          lifePathNumber as any,
+          zodiacSign as any,
+          enealogyNumber as any,
+          religion as any
+        );
+      }
+    });
+  }, [responses, userId]);
 
   const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
@@ -582,11 +592,10 @@ const ChatDashboard: React.FC = () => {
     removeFirstChatResponse();
   }, [pathname]);
 
-
   const getRandomGreeting = () => {
     return greetings[Math.floor(Math.random() * greetings.length)];
   };
-  
+
   //This function Deletes the cvonersation
   async function deleteConversation(conversationId: string) {
     if (isClient()) {
@@ -653,7 +662,6 @@ const ChatDashboard: React.FC = () => {
 
   //Send an automated Message on load
   let automatedMessageCounter = useRef(0);
-  const [firstMessage, setFirstMessage] = useState<number>(1);
   const [hasRunSendGreetings, setHasRunSendGreetings] = useState(false);
   const [firstConvoState, setFirstConvoState] = useState<null | boolean>(null);
 
@@ -664,8 +672,6 @@ const ChatDashboard: React.FC = () => {
   ) => {
     automatedMessageCounter.current += 1;
 
-
-
     if (automatedMessageCounter.current >= 2) {
       console.log(
         "IS autoamted message contianer 2, is it being logged 2",
@@ -674,8 +680,10 @@ const ChatDashboard: React.FC = () => {
       return;
     }
 
-
-    console.log("Logging ot see the current state of automated messagesd here", automatedMessageCounter)
+    console.log(
+      "Logging ot see the current state of automated messagesd here",
+      automatedMessageCounter
+    );
     // Inline ternary operation to set the message content
     const randomGreeting = getRandomGreeting();
 
@@ -683,7 +691,6 @@ const ChatDashboard: React.FC = () => {
       ? `${randomGreeting}, my name is ${session.user.name}`
       : `Hello, my name is ${randomGreeting}`;
 
-    
     setResponses((prevResponses: any) => [
       ...prevResponses,
       { question: userMessage, response: null },
@@ -691,7 +698,6 @@ const ChatDashboard: React.FC = () => {
 
     try {
       // Add a new entry with a loading state before making the API call
-   
 
       const botReply = await fetch("/api/questionBot", {
         method: "POST",
@@ -705,47 +711,16 @@ const ChatDashboard: React.FC = () => {
         }),
       }).then((res) => res.json());
 
-
       // Update the response state with the actual response
-      
+
       setResponses((prevResponses) =>
-      prevResponses.map((resp) => {
-        if (resp.question === userMessage && resp.response === null) {
-          return { ...resp, response: botReply.message };
-        }
-        return resp;
-      })
-    );
-
-      // setResponses((prevResponses) => [
-      //   ...prevResponses,
-      //   { question: "", response: botReply.message },
-      // ]);
-
-      // setResponses((prevResponses) =>
-      //   prevResponses.map((resp) => {
-      //     if (resp.question === message) {
-      //       return { ...resp, response: botReply.message };
-      //     }
-      //     return resp;
-      //   })
-      // );
-
-      console.log("Logging the responses in automated message", responses);
-
-      // await fetch("/api/messages", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     userId: session?.user.id,
-      //     conversationId: convoId,
-      //     userContent: userMessage,
-      //     botResponse: botReply.message,
-      //     firstConvo: true, // Set the firstConvo flag
-      //   }),
-      // });
+        prevResponses.map((resp) => {
+          if (resp.question === userMessage && resp.response === null) {
+            return { ...resp, response: botReply.message };
+          }
+          return resp;
+        })
+      );
     } catch (error) {
       console.error("Error sending automated message:", error);
     }
@@ -756,7 +731,6 @@ const ChatDashboard: React.FC = () => {
     id: string;
     firstConvo: boolean;
   }
-  
 
   let fetchFirstConvCounter = useRef(0);
 
@@ -772,14 +746,13 @@ const ChatDashboard: React.FC = () => {
     }
 
     console.log("Logging the has runGretting ", hasRunSendGreetings);
- 
-    if(fetchFirstConvCounter.current >=2) { 
+
+    if (fetchFirstConvCounter.current >= 2) {
       return Promise.reject("Function has already been called more than once.");
     }
 
     if (!currentConversationId || !hasRunSendGreetings) {
       try {
-      
         const response = await fetch("/api/firstConversations", {
           method: "POST",
           headers: {
@@ -849,7 +822,7 @@ const ChatDashboard: React.FC = () => {
               return;
             }
           } else if (greetingSent) {
-            console.log("Logging greeting Sent", greetingSent)
+            console.log("Logging greeting Sent", greetingSent);
             return;
           }
         };
@@ -968,120 +941,127 @@ const ChatDashboard: React.FC = () => {
   }, [conversations]);
 
   return (
-    <div className="chatDashboard">
-      {/* Chat Container Componet  */}
+    <>
+      {completedForm ? (
+        <LoadingComponent />
+      ) : (
+        <div className="chatDashboard">
+          {/* Chat Container Componet  */}
 
-      <div className="tempOverlay h-full flex flex-col pointer-events-none">
-        <ChatContainer
-          splitUserName={splitUserName}
-          userName={userName || ""}
-          email={email || ""}
-          onConversationClick={handleConversationClick}
-          onDeleteConvo={deleteConversation}
-          onChangeConvoTitle={handleSubmitTitle}
-          handleTitleClick={handleTitleClick}
-          editTitleId={editTitleId}
-          editedTitle={editedTitle}
-          handleTitleChange={handleTitleChange}
-          editingTitle={editingTitle}
-          titleUpdated={titleUpdated}
-        />
-      </div>
-
-      {/* Chat Container Componet  */}
-
-      <div className="chatDashboardWrapper w-full text-left">
-        {/* Guidelines Hader */}
-
-        <header className=" text-[14px] guideLinesContainer gap-[12px] h-[70px] flex !flex-col items-start justify-end w-full px-[22px] mb-[50px] !border-none">
-          <div className="flex flex-row w-full justify-between">
-            <p className="text-[14px]">seek truth</p>
-
-            <p className="text-[14px]"> {currentQuestion}/6 Completed</p>
+          <div className="tempOverlay h-full flex flex-col pointer-events-none">
+            <ChatContainer
+              setConversations={setConversations}
+              conversations = {conversations}
+              splitUserName={splitUserName}
+              userName={userName || ""}
+              email={email || ""}
+              onConversationClick={handleConversationClick}
+              onDeleteConvo={deleteConversation}
+              onChangeConvoTitle={handleSubmitTitle}
+              handleTitleClick={handleTitleClick}
+              editTitleId={editTitleId}
+              editedTitle={editedTitle}
+              handleTitleChange={handleTitleChange}
+              editingTitle={editingTitle}
+              titleUpdated={titleUpdated}
+            />
           </div>
 
-          <div className="flex-row flex gap-[30px] w-full">
-            {borderClasses.map((borderClass, index) => (
-              <div key={index} className={`box ${borderClass}`}></div>
-            ))}
-          </div>
-        </header>
+          {/* Chat Container Componet  */}
 
-        <div className="chatDashBoardContainer">
-          {/* Dashboard Component  */}
+          <div className="chatDashboardWrapper w-full text-left">
+            {/* Guidelines Hader */}
 
-          <SignupForm
-            userName={userName || ""}
-            completedForm={completedForm}
-            sessionStatus={sessionStatus}
-            sendAutomatedMessage={sendAutomatedMessage}
-            fetchFirstConversation={fetchFirstConversation}
-          />
-        </div>
+            <header className=" text-[14px] guideLinesContainer gap-[12px] h-[70px] flex !flex-col items-start justify-end w-full px-[22px] mb-[50px] !border-none">
+              <div className="flex flex-row w-full justify-between">
+                <p className="text-[14px]">seek truth</p>
 
-        <form
-          ref={formRef}
-          onSubmit={handleQuestionaireResponse}
-          className="chatFormSubmit"
-        >
-          <div className="relative textAreaContainer">
-            <textarea
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  formRef.current?.requestSubmit();
-                }
-              }}
-              value={message}
-              placeholder="Ask Thou Question..."
-            ></textarea>
+                <p className="text-[14px]"> {currentQuestion}/6 Completed</p>
+              </div>
 
-            <div className="textAreaIconWrapper flex flex-row gap-[11px]">
-              <button className="textAreaIcon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </button>
+              <div className="flex-row flex gap-[30px] w-full">
+                {borderClasses.map((borderClass, index) => (
+                  <div key={index} className={`box ${borderClass}`}></div>
+                ))}
+              </div>
+            </header>
 
-              <button type="submit" className="textAreaIcon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  viewBox="0 0 32 32"
-                  className=""
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </button>
+            <div className="chatDashBoardContainer">
+              {/* Dashboard Component  */}
+
+              <SignupForm
+                userName={userName || ""}
+                completedForm={completedForm}
+                sessionStatus={sessionStatus}
+                sendAutomatedMessage={sendAutomatedMessage}
+                fetchFirstConversation={fetchFirstConversation}
+              />
             </div>
+
+            <form
+              ref={formRef}
+              onSubmit={handleQuestionaireResponse}
+              className="chatFormSubmit"
+            >
+              <div className="relative textAreaContainer">
+                <textarea
+                  onChange={(e) => {
+                    setMessage(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      formRef.current?.requestSubmit();
+                    }
+                  }}
+                  value={message}
+                  placeholder="Ask Thou Question..."
+                ></textarea>
+
+                <div className="textAreaIconWrapper flex flex-row gap-[11px]">
+                  <button className="textAreaIcon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+
+                  <button type="submit" className="textAreaIcon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 32 32"
+                      className=""
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
-
 function Header() {
   return (
     <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">

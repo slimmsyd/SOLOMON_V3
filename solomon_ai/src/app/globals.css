@@ -1320,6 +1320,14 @@ display: none;
 .accountDiv {
   padding: 20px;
 }
+
+.profileInput{
+  background: transparent;
+  width: 100px;
+  border-bottom: 1px solid #fff;
+  text-align: right;
+}
+
 /* PROFILE CSS */
 
 /* BLOG PAGES */

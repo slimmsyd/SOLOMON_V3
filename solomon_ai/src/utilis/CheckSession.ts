@@ -47,28 +47,25 @@ export async function checkSession(
     console.log('No session found, redirecting...');
     router.push('/');
   } else if (status === 'authenticated') {
-    console.log('Session is authenticated, confirming session data...', status);
-    console.log("Logging the session ID", session)
+
     setUserId(session?.user.id);
     setSessionStatus(status);
     setUserName(session?.user.name)
     const currentSession = await getSession();
-    console.log('Current session data:', currentSession);
 
     if (!currentSession?.user.user) {
       setEmail(currentSession?.user.email.split('@')[0]);
-      console.log("Logging userName is the session jiont", userName)
-      console.log("Logging teh current session userName in the joint", currentSession?.user.name)
+  
+
 
 
       if (isClient()) {
         if (email !== null) {
 
-          sessionStorage.setItem('email', email);
-          console.log('Is the email being set here', email);
+          sessionStorage.setItem('email', currentSession?.user.email.split('@')[0]);
         }
         if (userName !== null) {
-          sessionStorage.setItem('userName', userName);
+          sessionStorage.setItem('userName', currentSession?.user.name);
         }
         if (splitUserName !== '') {
           sessionStorage.setItem('splitUserName', splitUserName);
@@ -76,7 +73,6 @@ export async function checkSession(
       }
 
       setSplitUserName(currentSession?.user.email[0].toUpperCase());
-      setUserName(currentSession?.user.name)
  
     }
 

@@ -28,7 +28,7 @@ import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useTogglePosition } from "../../../../hooks/useTogglePosition";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
-//Utilis 
+//Utilis
 import { checkSession } from "@/utilis/CheckSession";
 
 import Link from "next/link";
@@ -40,12 +40,18 @@ export default function ConversationPage() {
   const pathName = usePathname();
   const formRef = useRef<HTMLFormElement>(null);
   //Should wrap these in a bigger function since being used multiple times?
-  
+
   const [sessionStatus, setSessionStatus] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
 
-  const { userName, setUserName , splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
-
+  const {
+    userName,
+    setUserName,
+    splitUserName,
+    email,
+    setEmail,
+    setSplitUserName,
+  } = useSessionStorage();
 
   const { responses, setResponses, message, setMessage } =
     useChatConversation();
@@ -85,21 +91,21 @@ export default function ConversationPage() {
       setCurrentConversationId
     );
 
-    useEffect(() => {
-      checkSession(status, {
-        setUserId,
-        setUserName,
-        setSessionStatus,
-        setEmail,
-        setSplitUserName,
-        isClient,
-        session,
-        router, 
-        email,
-        userName,
-        splitUserName,
-      });
-    }, [status]);
+  useEffect(() => {
+    checkSession(status, {
+      setUserId,
+      setUserName,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName,
+      splitUserName,
+    });
+  }, [status]);
   //Extract the variable name
   function extractNumber(url) {
     const regex = /(\d+)(?!.*\d)/; // Regular expression to match the last number in the string
@@ -350,7 +356,7 @@ export default function ConversationPage() {
 
       // If the update fails, revert the change in the UI and alert the user
       const originalConversations = conversations.map((convo) =>
-        convo.id === editTitleId
+        convo.conversationId === editTitleId
           ? { ...convo, title: (convo as any).title }
           : convo
       );
@@ -388,6 +394,9 @@ export default function ConversationPage() {
         "currentConversationId"
       );
 
+      let currentConvoId = sessionStorage.getItem("currentConvoId");
+      if (currentConvoId) setCurrentConversationId(currentConversationId);
+
       // 1. Set up the new response without any bot response yet.
       const newResponse = { question: message, response: "" };
 
@@ -402,7 +411,11 @@ export default function ConversationPage() {
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify({ message }),
+          body: JSON.stringify({
+            userId,
+            message,
+            conversationId: currentConvoId || currentConversationId,
+          }),
         }).then((res) => res.json());
 
         // 3. Update the responses array with the bot's reply
@@ -580,6 +593,8 @@ export default function ConversationPage() {
       {/* Chat Container Componet  */}
 
       <ChatContainer
+        setConversations={setConversations}
+        conversations={conversations}
         splitUserName={splitUserName}
         userName={userName || ""}
         email={email || ""}
