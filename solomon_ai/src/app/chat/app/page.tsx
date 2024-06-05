@@ -603,6 +603,8 @@ const ChatDashboard: React.FC = () => {
           titleUpdated={titleUpdated}
           handleKeyDown={handleKeyDown}
           chatContainerRef = {chatContainerRef as any}
+          handleMobileChatBtnClick = {handleMobileChatBtnClick}
+
 
         />
 

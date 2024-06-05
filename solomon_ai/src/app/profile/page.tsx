@@ -60,6 +60,46 @@ const Profile: React.FC = () => {
     });
   }, [status]);
 
+    //This funcitno shifts and shows the mobile Chat ccontainer 
+    const chatContainerRef = useRef<HTMLDivElement>(null);
+    const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
+  
+    const handleMobileChatBtnClick = () => {
+  
+      console.log("Logging the chat container Ref current state", chatContainerRef.current)
+  
+      if (chatContainerRef.current) {
+        if (isAtZero) {
+          chatContainerRef.current.style.transform = 'translateX(-100%)';
+        } else {
+          chatContainerRef.current.style.transform = 'translateX(0px)';
+        }
+        setIsAtZero(!isAtZero); // Toggle the state
+      }
+    };
+  
+    // Effect to handle viewport resize
+    useEffect(() => {
+      const handleResize = () => {
+        if (window.innerWidth >= 950 && chatContainerRef.current) {
+          chatContainerRef.current.style.transform = 'translateX(0px)';
+          setIsAtZero(false); // Reset the state
+        }else if (chatContainerRef.current) { 
+          chatContainerRef.current.style.transform = 'translateX(-100%)';
+          setIsAtZero(true); // Reset the state
+        }
+      };
+  
+      window.addEventListener('resize', handleResize);
+  
+      // Cleanup event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+  
+  
+
   //Run the fetchUserInfo on Remout only
   useEffect(() => {
     fetchUserInfo(session?.user.id);
@@ -190,13 +230,32 @@ const Profile: React.FC = () => {
         userName={userName || ""}
         email={email || ""}
         onConversationClick={handleConversationClick}
+        chatContainerRef = {chatContainerRef as any}
+        handleMobileChatBtnClick = {handleMobileChatBtnClick}
+
       />
       {/* Chat Container Componet  */}
 
       <div className="chatDashboardWrapper !h-full w-full text-left">
         {/* Guidelines Hader */}
 
+  
         <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
+          <div className=" flex-1   cursor-pointer mobileChatContainer">
+            <div 
+            onClick={handleMobileChatBtnClick}
+            className=" mobileChatBtn flex items-center justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+              </svg>
+            </div>
+          </div>
           <div className="flex flex-row gap-[18px] items-center justify-center">
             <button className="hover:text-[#807f7f]">Tour</button>
 
@@ -332,14 +391,14 @@ const Profile: React.FC = () => {
             <hr className="greyDivider"></hr>
 
             <div className="accountContainer">
-              <div className="flex flex-row justify-between accountDiv">
+              <div className="flex md:flex-row flex-col gap-[15px] md:gap-[0px] justify-between accountDiv">
                 <div className="flex flex-col">
                   <p>Active Account</p>
                   <p className="text-[12px]" id="greyText">
                     Signed in as {email}
                   </p>
                 </div>
-                <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] ">
+                <button className=" text-[14px] newChat   !flex flex-row items-center justify-center gap-[13px] ">
                   <div className="mainIcon">
                     <Image
                       alt="chatIcon"
@@ -353,14 +412,14 @@ const Profile: React.FC = () => {
               </div>
               <hr className="greyDivider"></hr>
 
-              <div className="flex flex-row justify-between accountDiv">
+              <div className="flex md:flex-row flex-col gap-[15px] md:gap-[0px] justify-between accountDiv">
                 <div className="flex flex-col">
                   <p>Sessions</p>
                   <p className="text-[12px]" id="greyText">
                     Devices or browsers where you are signed in
                   </p>
                 </div>
-                <button className=" text-[14px] newChat !w-[220px] flex flex-row items-center justify-center gap-[13px] ">
+                <button className=" text-[14px] newChat !w-[220px] !flex flex-row items-center justify-center gap-[13px] ">
                   <div className="mainIcon">
                     <Image
                       alt="chatIcon"
@@ -374,14 +433,14 @@ const Profile: React.FC = () => {
               </div>
               <hr className="greyDivider"></hr>
 
-              <div className="flex flex-row justify-between accountDiv">
+              <div className="flex flex-col  md:flex-row gap-[15px] md:gap-[0px justify-between accountDiv">
                 <div className="flex flex-col ">
                   <p>Delete Account</p>
                   <p className="text-[12px]" id="greyText">
                     Permanently delete your account and data
                   </p>
                 </div>
-                <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] ">
+                <button className=" text-[14px] newChat !flex flex-row items-center justify-center gap-[13px] ">
                   <div className="mainIcon">
                     <Image
                       alt="chatIcon"

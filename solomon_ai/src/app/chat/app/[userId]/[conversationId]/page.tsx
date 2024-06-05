@@ -636,6 +636,8 @@ export default function ConversationPage() {
         editingTitle={editingTitle}
         titleUpdated={titleUpdated}
         chatContainerRef = {chatContainerRef as any}
+        handleMobileChatBtnClick = {handleMobileChatBtnClick}
+
       />
 
       {/* Chat Container Componet  */}
