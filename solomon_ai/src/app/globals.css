@@ -678,7 +678,12 @@ figure video {
   background: linear-gradient(180deg, #2f0ffd30, #291d7850);
   border-radius: 5px;
 }
-
+@media screen and (max-width: 950px)
+{
+  .newChat{
+    display: none;
+  }
+}
 .chatSearchIcon {
   background: #4c35de27;
   border-radius: 5px;
@@ -700,6 +705,7 @@ figure video {
 }
 @media screen and (max-width: 950px) {
   .chatContainer {
+    margin-top:2rem;
     transform: translateX(-100%);
     position: absolute;
     z-index: 50;
