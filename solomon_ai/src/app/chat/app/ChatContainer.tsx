@@ -26,7 +26,7 @@ interface ChatContainerProps {
   titleUpdated?: boolean,
   handleKeyDown?: (event: any) => void;
   chatContainerRef?: React.Ref<HTMLDivElement>
-  handleMobileChatBtnClick: () => void;
+  handleMobileChatBtnClick?: () => void;
 
 }
 
