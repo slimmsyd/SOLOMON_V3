@@ -537,6 +537,47 @@ const ChatDashboard: React.FC = () => {
   useEffect(() => {
     console.log("Loggin the conversations in the app useEffect", conversations);
   }, [conversations]);
+  
+
+   //This funcitno shifts and shows the mobile Chat ccontainer 
+   const chatContainerRef = useRef<HTMLDivElement>(null);
+   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
+ 
+
+  const handleMobileChatBtnClick = () => {
+
+    console.log("Logging the chat container Ref current state", chatContainerRef.current)
+
+    if (chatContainerRef.current) {
+      if (isAtZero) {
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+      } else {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+      }
+      setIsAtZero(!isAtZero); // Toggle the state
+    }
+  };
+
+  // Effect to handle viewport resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 950 && chatContainerRef.current) {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+        setIsAtZero(false); // Reset the state
+      }else if (chatContainerRef.current) { 
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+        setIsAtZero(true); // Reset the state
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   return (
     <MessageProvider>
@@ -559,12 +600,16 @@ const ChatDashboard: React.FC = () => {
           editingTitle={editingTitle}
           titleUpdated={titleUpdated}
           handleKeyDown={handleKeyDown}
+          chatContainerRef = {chatContainerRef as any}
+
         />
 
         {/* Chat Container Componet  */}
 
         <div className="chatDashboardWrapper w-full text-left">
-          <Header />
+          <Header
+          handleMobileChatBtnClick = {handleMobileChatBtnClick}
+          />
 
           <div className="chatDashBoardContainer">
             {/* Dashboard Component  */}
@@ -642,9 +687,31 @@ const ChatDashboard: React.FC = () => {
   );
 };
 
-function Header() {
+interface HeaderProps {
+  handleMobileChatBtnClick: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ handleMobileChatBtnClick }) => {
+
+
+
   return (
     <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
+            <div className=" flex-1   cursor-pointer mobileChatContainer">
+            <div 
+            onClick={handleMobileChatBtnClick}
+            className=" mobileChatBtn flex items-center justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+              </svg>
+            </div>
+          </div>
       <div className="flex flex-row gap-[18px] items-center justify-center">
         <button className="hover:text-[#807f7f]">Tour</button>
 

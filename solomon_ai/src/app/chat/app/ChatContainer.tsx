@@ -25,6 +25,7 @@ interface ChatContainerProps {
   editingTitle?: boolean;
   titleUpdated?: boolean,
   handleKeyDown?: (event: any) => void;
+  chatContainerRef?: React.Ref<HTMLDivElement>
 
 }
 
@@ -43,7 +44,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   handleTitleChange,
   editingTitle,
   titleUpdated,
-  handleKeyDown
+  handleKeyDown,
+  chatContainerRef
 }) => {
 
 
@@ -113,11 +115,24 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
 
   return (
-    <div className="chatContainer flex flex-col flex-1">
+    <div 
+    ref = {chatContainerRef}
+    className="chatContainer flex flex-col flex-1">
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <div className="flex flex-row">
-          <div className="logoCircle"></div>
+        {/* <div 
+            className=" mobileChatBtn flex items-center justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+              </svg>
+            </div>           */}
           <h3>Logo</h3>
         </div>
         <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">

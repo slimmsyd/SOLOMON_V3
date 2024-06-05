@@ -116,9 +116,8 @@ h3 {
   line-height: 125% !important;
 }
 
-@media screen and(max-width: 400px)
-{ 
-  h3{
+@media screen and(max-width: 400px) {
+  h3 {
     font-size: 20px !important;
   }
 }
@@ -167,7 +166,7 @@ img {
   .bg-main-black {
     background: #020202;
   }
-  .purple-text{
+  .purple-text {
     color: var(--purple);
   }
 
@@ -438,14 +437,10 @@ figure video {
 .displayShow {
   display: flex;
 }
-@media screen and (max-width: 375px)
-
-{
-  .homePopupContainer { 
+@media screen and (max-width: 375px) {
+  .homePopupContainer {
     width: 330px !important;
-
   }
-
 }
 @media screen and (max-width: 1050px) {
   .homePopupContainer {
@@ -473,7 +468,6 @@ figure video {
     flex-basis: auto !important;
   }
   .homePopupFormContainer form {
-
     padding-right: 20px;
     padding-left: 20px;
     font-family: inherit !important;
@@ -502,7 +496,7 @@ figure video {
     z-index: 10;
   }
 
-  .homePopupFormContainer > form > button { 
+  .homePopupFormContainer > form > button {
   }
 }
 .homePopupContainer {
@@ -554,7 +548,7 @@ figure video {
   border-radius: 6px;
   font-size: 14px;
 }
-.joinBeta{
+.joinBeta {
   background-color: white;
   height: 38px;
   border-radius: 6px;
@@ -706,7 +700,22 @@ figure video {
 }
 @media screen and (max-width: 950px) {
   .chatContainer {
-    display: none !important;
+    transform: translateX(-100%);
+    position: absolute;
+    z-index: 50;
+    height: 100%;
+    background: var(--main-black);
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 10px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
+      0 2px 6px 2px rgba(0, 0, 0, 0.15);
+    gap:30px;
+    transition: transform 200ms ease-in-out;
+
+  }
+  .mobileChatBtn{
+    display: flex !important;
   }
   .chatDashBoardContainer {
     padding-left: 17px !important;
@@ -808,6 +817,14 @@ figure video {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+@media screen and (max-width: 950px)
+ {
+   .guideLinesContainer{
+    position: fixed;
+    background: var(--main-black);
+    z-index: 90;
+   }
+ }
 
 .guideLinesBtn {
   background: #333333;
@@ -1145,8 +1162,25 @@ figure video {
   border: 1px solid #b4b4b4;
   padding: 24px 15px;
 }
-.chatScrollbar::-webkit-scrollbar{
-display: none;
+.chatScrollbar::-webkit-scrollbar {
+  display: none;
+}
+.mobileChatBtn {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 80;
+  display: none;
+}
+.mobileChatBtn:hover {
+  cursor: pointer;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  background: rgba(72, 72, 72, 0.44);
 }
 
 /* DashBoard code  */
@@ -1192,14 +1226,14 @@ display: none;
   /* background: white; */
   margin-bottom: 2rem;
 }
-.blogCircle{
+.blogCircle {
   min-height: 30px;
   min-height: 30px;
-    min-width: 50px;
+  min-width: 50px;
   width: 50px;
-  border: 1px solid white;;
+  border: 1px solid white;
   border-radius: 50%;
-  background: url('../../public//assets//Blogs/ScriputalScience//sydneyDigitalTwo.png');
+  background: url("../../public//assets//Blogs/ScriputalScience//sydneyDigitalTwo.png");
   background-position: center center;
   background-size: cover;
 }
@@ -1321,7 +1355,7 @@ display: none;
   padding: 20px;
 }
 
-.profileInput{
+.profileInput {
   background: transparent;
   width: 100px;
   border-bottom: 1px solid #fff;
@@ -1335,11 +1369,9 @@ display: none;
 .layout-text {
   max-width: 80%;
   margin-left: auto;
-
 }
-.layout-text p { 
+.layout-text p {
   color: #d2d2d2;
-
 }
 
 .layout-image {

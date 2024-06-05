@@ -134,13 +134,6 @@ export default function ConversationPage() {
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
   const [titleUpdated, setTitleUpdated] = useState<boolean>(false); // New state for title updates
 
-  const handleNewChatClick = () => {
-    setShowTitleInput(true);
-  };
-
-  const handleBlur = () => {
-    setEditTitleId(null); // Exit edit mode when input loses focus
-  };
   //Editing the ability to change the existing title.
   const handleTitleClick = (convoId: string | number) => {
     const conversation = conversations.find(
@@ -375,14 +368,15 @@ export default function ConversationPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log("Logging Conversation Id in the Submit", currentConversationId);
-    console.log("is this scroll to bottom being called?")
+    console.log("is this scroll to bottom being called?");
     if (chatDashBoardRef.current) {
-      chatDashBoardRef.current.scrollTop += 50000;
+      chatDashBoardRef.current.scrollTo({
+        top: chatDashBoardRef.current.scrollHeight,
+        behavior: "smooth",
+      });
       console.log("Scrolled 50000px down");
     }
-    const scrollToBottom = () => {
-
-    };
+    const scrollToBottom = () => {};
 
     if (isClient()) {
       if (!currentConversationId) {
@@ -438,7 +432,6 @@ export default function ConversationPage() {
           })
         );
 
-
         // 4. Send the user question and bot response to the database
 
         await fetch("/api/messages", {
@@ -458,7 +451,6 @@ export default function ConversationPage() {
           "Loggign the current Conversation on a new click ",
           currentConversationId
         );
-
 
         scrollToBottom();
 
@@ -592,6 +584,48 @@ export default function ConversationPage() {
     return <p>No conversation found.</p>;
   }
 
+
+
+  //This funcitno shifts and shows the mobile Chat ccontainer 
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
+
+  const handleMobileChatBtnClick = () => {
+
+    console.log("Logging the chat container Ref current state", chatContainerRef.current)
+
+    if (chatContainerRef.current) {
+      if (isAtZero) {
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+      } else {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+      }
+      setIsAtZero(!isAtZero); // Toggle the state
+    }
+  };
+
+  // Effect to handle viewport resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 950 && chatContainerRef.current) {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+        setIsAtZero(false); // Reset the state
+      }else if (chatContainerRef.current) { 
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+        setIsAtZero(true); // Reset the state
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+
   return (
     <div className="chatDashboard">
       {/* Chat Container Componet  */}
@@ -611,16 +645,33 @@ export default function ConversationPage() {
         handleTitleChange={handleTitleChange}
         editingTitle={editingTitle}
         titleUpdated={titleUpdated}
+        chatContainerRef = {chatContainerRef as any}
       />
 
       {/* Chat Container Componet  */}
 
-      <div 
-      ref={chatDashBoardRef}
-      className="chatDashboardWrapper w-full text-left">
+      <div
+        ref={chatDashBoardRef}
+        className="chatDashboardWrapper w-full text-left"
+      >
         {/* Guidelines Hader */}
 
         <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
+          <div className=" flex-1   cursor-pointer mobileChatContainer">
+            <div 
+            onClick={handleMobileChatBtnClick}
+            className=" mobileChatBtn flex items-center justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+              </svg>
+            </div>
+          </div>
           <div className="flex flex-row gap-[18px] items-center justify-center">
             <button className="hover:text-[#807f7f]">Tour</button>
 
@@ -646,7 +697,7 @@ export default function ConversationPage() {
           </div>
         </header>
 
-        <div  className={`chatDashBoardContainer `}>
+        <div className={`chatDashBoardContainer `}>
           {/* Dashboard Component  */}
 
           {responses.length > 0 ? (
