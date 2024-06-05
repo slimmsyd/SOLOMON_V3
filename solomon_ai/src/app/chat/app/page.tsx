@@ -118,8 +118,8 @@ const ChatDashboard: React.FC = () => {
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
     if (isClient()) {
-      sessionStorage.removeItem("greetingSent")
-      sessionStorage.removeItem("currentConvoId")
+      sessionStorage.removeItem("greetingSent");
+      sessionStorage.removeItem("currentConvoId");
       if (userName !== null) {
         sessionStorage.setItem("userName", userName);
       }
@@ -174,10 +174,8 @@ const ChatDashboard: React.FC = () => {
       setResponses((responses) => [...responses, newResponse]); // Use functional update for state
       setMessage("");
 
-  // Fetch user information if not available in session storage
-  const userInfo = await fetchUserInfo(userId);
-
-
+      // Fetch user information if not available in session storage
+      const userInfo = await fetchUserInfo(userId);
 
       try {
         // 2. Fetch bot reply from the API
@@ -191,7 +189,6 @@ const ChatDashboard: React.FC = () => {
             message,
             conversationId: updatedConversationId,
             userInfo, // Send userInfo object
-
           }),
         }).then((res) => res.json());
 
@@ -207,15 +204,7 @@ const ChatDashboard: React.FC = () => {
 
         // 4. Send the user question and bot response to the database
 
-        console.log(
-          "logging the creation of a new chat in here",
-          session?.user.id
-        );
-
-        console.log(
-          "Logging the conversation id when i sent out the message",
-          currentConversationId
-        );
+   
 
         await fetch("/api/messages", {
           method: "POST",

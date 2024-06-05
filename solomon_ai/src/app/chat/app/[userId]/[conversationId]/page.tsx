@@ -371,9 +371,19 @@ export default function ConversationPage() {
     }
   };
 
+  const chatDashBoardRef = useRef<HTMLDivElement>(null);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log("Logging Conversation Id in the Submit", currentConversationId);
+    console.log("is this scroll to bottom being called?")
+    if (chatDashBoardRef.current) {
+      chatDashBoardRef.current.scrollTop += 50000;
+      console.log("Scrolled 50000px down");
+    }
+    const scrollToBottom = () => {
+
+    };
+
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
@@ -428,17 +438,8 @@ export default function ConversationPage() {
           })
         );
 
+
         // 4. Send the user question and bot response to the database
-
-        console.log(
-          "logging the creation of a new chat in here",
-          session?.user.id
-        );
-
-        console.log(
-          "Logging the conversation id when i sent out the message",
-          currentConversationId
-        );
 
         await fetch("/api/messages", {
           method: "POST",
@@ -457,6 +458,9 @@ export default function ConversationPage() {
           "Loggign the current Conversation on a new click ",
           currentConversationId
         );
+
+
+        scrollToBottom();
 
         //Add the conversations arrawy or update
       } catch (error) {
@@ -611,7 +615,9 @@ export default function ConversationPage() {
 
       {/* Chat Container Componet  */}
 
-      <div className="chatDashboardWrapper w-full text-left">
+      <div 
+      ref={chatDashBoardRef}
+      className="chatDashboardWrapper w-full text-left">
         {/* Guidelines Hader */}
 
         <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
@@ -640,7 +646,7 @@ export default function ConversationPage() {
           </div>
         </header>
 
-        <div className={`chatDashBoardContainer `}>
+        <div  className={`chatDashBoardContainer `}>
           {/* Dashboard Component  */}
 
           {responses.length > 0 ? (
