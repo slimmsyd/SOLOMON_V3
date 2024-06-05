@@ -5,7 +5,7 @@ import { isClient } from '../../utilis/isClient';
 
 
 export const useSessionStorage = () => {
-    const [userName, setUserName] = useState<string | null>(null);
+    const [userName, setUserName] = useState<string>("");
     const [splitUserName, setSplitUserName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
 

@@ -8,14 +8,13 @@ import { useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
 
 import dynamic from "next/dynamic";
-import {MessageProvider} from '../../../utilis/MessageContext'
+import { MessageProvider } from "../../../utilis/MessageContext";
 
-
-
-//Utilis and helper functions 
+//Utilis and helper functions
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 import { checkSession } from "@/utilis/CheckSession";
+import { fetchUserInfo } from "@/utilis/fetchUserInfo";
 
 // Dashboard
 
@@ -31,7 +30,14 @@ const ChatDashboard: React.FC = () => {
   //getting the user name
 
   //First introduction From
-  const { userName, setUserName , splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
+  const {
+    userName,
+    setUserName,
+    splitUserName,
+    email,
+    setEmail,
+    setSplitUserName,
+  } = useSessionStorage();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -41,19 +47,35 @@ const ChatDashboard: React.FC = () => {
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [showTitleInput, setShowTitleInput] = useState(false);
   const [editTitleId, setEditTitleId] = useState<null>(null);
   const [editedTitle, setEditedTitle] = useState<string>("");
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
   const [titleUpdated, setTitleUpdated] = useState<boolean>(false); // New state for title updates
 
   const [currentConversationId, setCurrentConversationId] = useState<
-    number| string | null
+    number | string | null
   >(null);
 
   const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(
     null
   );
+
+  // Update session storage whenever userName or splitUserName changes
+  useEffect(() => {
+    checkSession(status, {
+      setUserId,
+      setUserName,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName,
+      splitUserName,
+    });
+  }, [status]);
 
   //Stores the Chat
   const {
@@ -84,20 +106,20 @@ const ChatDashboard: React.FC = () => {
 
   // Clear the conversation ID on component mount
   useEffect(() => {
+    //Removed the border Classes From LocalStorage
+    localStorage.removeItem("borderClasses");
+    localStorage.removeItem("currentQuestion");
 
-    //Removed the border Classes From LocalStorage 
-    localStorage.removeItem("borderClasses")
-    localStorage.removeItem("currentQuestion")
     console.log("clearing the current conversation ID");
-    setResponses([])
+    setResponses([]);
     setCurrentConversationId(null);
   }, []);
-
-
 
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
     if (isClient()) {
+      sessionStorage.removeItem("greetingSent");
+      sessionStorage.removeItem("currentConvoId");
       if (userName !== null) {
         sessionStorage.setItem("userName", userName);
       }
@@ -112,32 +134,15 @@ const ChatDashboard: React.FC = () => {
     }
   }, [userName, splitUserName]);
 
- 
-
-
   // Update session storage whenever userName or splitUserName changes
 
-
   let sessionRef = useRef(0);
-  useEffect(() => { 
-    console.log("useEffect: Checking to see if the session ref changed", sessionRef.current);
-  },[sessionRef])
-
-   // Update session storage whenever userName or splitUserName changes
-   useEffect(() => {
-    checkSession(status, {
-      setUserId,
-      setSessionStatus,
-      setEmail,
-      setSplitUserName,
-      isClient,
-      session,
-      router,
-      email,
-      userName: '',
-      splitUserName,
-    });
-  }, [status]);
+  useEffect(() => {
+    console.log(
+      "useEffect: Checking to see if the session ref changed",
+      sessionRef.current
+    );
+  }, [sessionRef]);
 
   //Submit the Inquiry
   const handleSubmit = async (e) => {
@@ -147,36 +152,30 @@ const ChatDashboard: React.FC = () => {
       if (!currentConversationId) {
         console.log("No conversation selected.");
 
-        await createConversation()
-        .then(convoID => {
+        await createConversation().then((convoID) => {
           console.log("Logging the CONVO ID", convoID);
 
           setCurrentConversationId(convoID); // Store the convo ID if needed
-            sessionStorage.setItem("currentConversationId", convoID);
-            let localStorageConvoId: any;
-            localStorage.setItem("currentConversationId", convoID);
-            localStorageConvoId = localStorage.getItem("currentConversationId");
-
-        
-        })
-
-       
-      console.log("Logging the Current converattion id in the await convo created", currentConversationId)
-        
+          sessionStorage.setItem("currentConversationId", convoID);
+          let localStorageConvoId: any;
+          localStorage.setItem("currentConversationId", convoID);
+          localStorageConvoId = localStorage.getItem("currentConversationId");
+        });
       }
 
-        // Ensure that currentConversationId is updated before proceeding
-    const updatedConversationId = sessionStorage.getItem("currentConversationId");
-    console.log("Logging the Current conversation id in the await convo created", updatedConversationId);
+      // Ensure that currentConversationId is updated before proceeding
+      const updatedConversationId = sessionStorage.getItem(
+        "currentConversationId"
+      );
 
       // 1. Set up the new response without any bot response yet.
       const newResponse = { question: message, response: "" };
 
       setResponses((responses) => [...responses, newResponse]); // Use functional update for state
-
-
-      
       setMessage("");
+
+      // Fetch user information if not available in session storage
+      const userInfo = await fetchUserInfo(userId);
 
       try {
         // 2. Fetch bot reply from the API
@@ -185,7 +184,12 @@ const ChatDashboard: React.FC = () => {
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify({ message }),
+          body: JSON.stringify({
+            userId,
+            message,
+            conversationId: updatedConversationId,
+            userInfo, // Send userInfo object
+          }),
         }).then((res) => res.json());
 
         // 3. Update the responses array with the bot's reply
@@ -200,12 +204,7 @@ const ChatDashboard: React.FC = () => {
 
         // 4. Send the user question and bot response to the database
 
-        console.log(
-          "logging the creation of a new chat in here",
-          session?.user.id
-        );
-
-        console.log("Logging the conversation id when i sent out the message", currentConversationId)
+   
 
         await fetch("/api/messages", {
           method: "POST",
@@ -231,8 +230,6 @@ const ChatDashboard: React.FC = () => {
       }
     }
   };
-
-
 
   // Where we are going to send the Chat Data Request
 
@@ -272,6 +269,8 @@ const ChatDashboard: React.FC = () => {
     }
   }
 
+  useEffect(() => {});
+
   async function getConversation(conversationId: any) {
     console.log(
       "Logging the converatation ID in the getConversation",
@@ -308,93 +307,89 @@ const ChatDashboard: React.FC = () => {
 
     let titleChange: string = "";
 
-      if (isClient()) {
-        console.log("seeing if the function worked!!! ");
+    if (isClient()) {
+      console.log("seeing if the function worked!!! ");
 
-        event.preventDefault(); // Prevent form submission
-        const newTitle = editedTitle; // Capture the title at the time of submission
-        titleChange = editTitleId ?? "";
-        console.log("New title to be set:", newTitle);
-        console.log("New title Id being logged", editTitleId);
+      event.preventDefault(); // Prevent form submission
+      const newTitle = editedTitle; // Capture the title at the time of submission
+      titleChange = editTitleId ?? "";
+      console.log("New title to be set:", newTitle);
+      console.log("New title Id being logged", editTitleId);
 
-        if (editTitleId !== null && editTitleId !== "") {
-          const updatedConversations = conversations.map((convo) =>
-            (convo as any).conversationId === editTitleId
-              ? { ...convo, title: newTitle }
-              : convo
-          );
-          setConversations(updatedConversations);
-          console.log("Updated conversations:", updatedConversations);
+      if (editTitleId !== null && editTitleId !== "") {
+        const updatedConversations = conversations.map((convo) =>
+          (convo as any).conversationId === editTitleId
+            ? { ...convo, title: newTitle }
+            : convo
+        );
+        setConversations(updatedConversations);
+        console.log("Updated conversations:", updatedConversations);
 
-          sessionStorage.setItem(
-            "conversations",
-            JSON.stringify(updatedConversations)
-          );
-
-          setEditTitleId(null); // Exit edit mode
-          setEditedTitle(""); // Clear the edited title state
-          setEditingTitle(false);
-
-          console.log(
-            "logging the title change within the thing before ",
-            titleChange
-          );
-        }
-        console.log(
-          "logging the title change within the after before ",
-          titleChange
+        sessionStorage.setItem(
+          "conversations",
+          JSON.stringify(updatedConversations)
         );
 
-        try {
-          const response = await fetch(`/api/${editTitleId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
-          });
+        setEditTitleId(null); // Exit edit mode
+        setEditedTitle(""); // Clear the edited title state
+        setEditingTitle(false);
 
-          console.log("Are you sending the new Title", editedTitle);
-
-          if (response.ok) {
-            await getConversation(editTitleId);
-            setEditingTitle(false);
-            setTitleUpdated((prev) => !prev); // Toggle the titleUpdated state
-          }
-
-          if (!response.ok) {
-            throw new Error("Failed to update title");
-          }
-        } catch (error) {
-          console.error("Error updating title:", error);
-
-          // If the update fails, revert the change in the UI and alert the user
-          const originalConversations = conversations.map((convo) =>
-            convo.id === editTitleId
-              ? { ...convo, title: (convo as any).title }
-              : convo
-          );
-          // console.log(
-          //   "Reverting to original conversations:",
-          //   originalConversations
-          // );
-          setConversations(originalConversations);
-          sessionStorage.setItem(
-            "conversations",
-            JSON.stringify(originalConversations)
-          );
-
-          alert("Failed to update title, please try again."); // Inform the user
-        }
+        console.log(
+          "logging the title change within the thing before ",
+          titleChange
+        );
       }
-    
+      console.log(
+        "logging the title change within the after before ",
+        titleChange
+      );
+
+      try {
+        const response = await fetch(`/api/${editTitleId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
+        });
+
+        console.log("Are you sending the new Title", editedTitle);
+
+        if (response.ok) {
+          await getConversation(editTitleId);
+          setEditingTitle(false);
+          setTitleUpdated((prev) => !prev); // Toggle the titleUpdated state
+        }
+
+        if (!response.ok) {
+          throw new Error("Failed to update title");
+        }
+      } catch (error) {
+        console.error("Error updating title:", error);
+
+        // If the update fails, revert the change in the UI and alert the user
+        const originalConversations = conversations.map((convo) =>
+          convo.conversationId === editTitleId
+            ? { ...convo, title: (convo as any).title }
+            : convo
+        );
+
+        setConversations(originalConversations);
+        sessionStorage.setItem(
+          "conversations",
+          JSON.stringify(originalConversations)
+        );
+
+        alert("Failed to update title, please try again."); // Inform the user
+      }
+    }
   };
-  //Gets the key down change 
+  //Gets the key down change
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSubmitTitle(event as any); // Cast to any to satisfy FormEvent type
     }
-  }
+  };
 
   //Editing the ability to change the existing title.
   const handleTitleClick = (convoId: string) => {
@@ -520,145 +515,203 @@ const ChatDashboard: React.FC = () => {
 
   //Send an automated Message on load
 
-
-  //Interface for this
-  interface ConversationData {
-    id: number;
-    firstConvo: boolean;
-  }
-
-
-
-
-
   const handleCardClick = (text: string) => {
     setMessage(text);
   };
 
   const handleButtonClick = (event: any) => {
     const buttonElement = event.target as HTMLElement;
-    const cardElement = buttonElement.closest('div');
-    const text = cardElement?.querySelector('p')?.innerHTML || '';
+    const cardElement = buttonElement.closest("div");
+    const text = cardElement?.querySelector("p")?.innerHTML || "";
     handleCardClick(text);
 
-    console.log("click on this joint", text)
+    console.log("click on this joint", text);
   };
 
   useEffect(() => {
     console.log("Current message:", message);
   }, [message]);
 
- 
   //Get access to the current conversation Name and Id
 
   useEffect(() => {
     console.log("Loggin the conversations in the app useEffect", conversations);
   }, [conversations]);
+  
+
+   //This funcitno shifts and shows the mobile Chat ccontainer 
+   const chatContainerRef = useRef<HTMLDivElement>(null);
+   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
+ 
+
+  const handleMobileChatBtnClick = () => {
+
+    console.log("Logging the chat container Ref current state", chatContainerRef.current)
+
+    if (chatContainerRef.current) {
+      if (isAtZero) {
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+      } else {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+      }
+      setIsAtZero(!isAtZero); // Toggle the state
+    }
+  };
+
+  // Effect to handle viewport resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 950 && chatContainerRef.current) {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+        setIsAtZero(false); // Reset the state
+      }else if (chatContainerRef.current) { 
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+        setIsAtZero(true); // Reset the state
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   return (
-
     <MessageProvider>
+      <div className="chatDashboard">
+        {/* Chat Container Componet  */}
 
-    <div className="chatDashboard">
-      {/* Chat Container Componet  */}
+        <ChatContainer
+          setConversations={setConversations}
+          conversations={conversations}
+          splitUserName={splitUserName}
+          userName={userName || ""}
+          email={email || ""}
+          onConversationClick={handleConversationClick}
+          onDeleteConvo={deleteConversation}
+          onChangeConvoTitle={handleSubmitTitle}
+          handleTitleClick={handleTitleClick}
+          editTitleId={editTitleId}
+          editedTitle={editedTitle}
+          handleTitleChange={handleTitleChange}
+          editingTitle={editingTitle}
+          titleUpdated={titleUpdated}
+          handleKeyDown={handleKeyDown}
+          chatContainerRef = {chatContainerRef as any}
 
-      <ChatContainer
-        splitUserName={splitUserName}
-        userName={userName || ""}
-        email={email || ""}
-        onConversationClick={handleConversationClick}
-        onDeleteConvo={deleteConversation}
-        onChangeConvoTitle={handleSubmitTitle}
-        handleTitleClick={handleTitleClick}
-        editTitleId={editTitleId}
-        editedTitle={editedTitle}
-        handleTitleChange={handleTitleChange}
-        editingTitle={editingTitle}
-        titleUpdated={titleUpdated}
-        handleKeyDown = {handleKeyDown}
-      />
+        />
 
-      {/* Chat Container Componet  */}
+        {/* Chat Container Componet  */}
 
-      <div className="chatDashboardWrapper w-full text-left">
-        <Header />
+        <div className="chatDashboardWrapper w-full text-left">
+          <Header
+          handleMobileChatBtnClick = {handleMobileChatBtnClick}
+          />
 
-        <div className="chatDashBoardContainer">
-          {/* Dashboard Component  */}
-          {currentConversationId ? (
-            <ChatMessagesContainer responses={responses || "null"} />
-          ) : (
-            <Dashboard userName={userName || ""}
-            handleButtonClick = {handleButtonClick}
-            />
-          )}
-        </div>
-
-        <form ref={formRef} onSubmit={handleSubmit} className="chatFormSubmit">
-          <div className="relative textAreaContainer">
-            <textarea
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  formRef.current?.requestSubmit();
-                }
-              }}
-              value={message}
-              placeholder="Ask Thou Question..."
-            ></textarea>
-
-            <div className="textAreaIconWrapper flex flex-row gap-[11px]">
-              <button className="textAreaIcon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-
-              <button type="submit" className="textAreaIcon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  viewBox="0 0 32 32"
-                  className=""
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-            </div>
+          <div className="chatDashBoardContainer">
+            {/* Dashboard Component  */}
+            {currentConversationId ? (
+              <ChatMessagesContainer responses={responses || "null"} />
+            ) : (
+              <Dashboard
+                userName={userName || ""}
+                handleButtonClick={handleButtonClick}
+              />
+            )}
           </div>
-        </form>
+
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            className="chatFormSubmit"
+          >
+            <div className="relative textAreaContainer">
+              <textarea
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    formRef.current?.requestSubmit();
+                  }
+                }}
+                value={message}
+                placeholder="Ask Thou Question..."
+              ></textarea>
+
+              <div className="textAreaIconWrapper flex flex-row gap-[11px]">
+                <button className="textAreaIcon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+
+                <button type="submit" className="textAreaIcon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    viewBox="0 0 32 32"
+                    className=""
+                  >
+                    <path
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-
-        </MessageProvider>
-
+    </MessageProvider>
   );
 };
 
-function Header() {
+interface HeaderProps {
+  handleMobileChatBtnClick: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ handleMobileChatBtnClick }) => {
+
+
+
   return (
     <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
+            <div className=" flex-1   cursor-pointer mobileChatContainer">
+            <div 
+            onClick={handleMobileChatBtnClick}
+            className=" mobileChatBtn flex items-center justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+              </svg>
+            </div>
+          </div>
       <div className="flex flex-row gap-[18px] items-center justify-center">
         <button className="hover:text-[#807f7f]">Tour</button>
 

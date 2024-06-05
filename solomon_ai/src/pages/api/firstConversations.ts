@@ -31,7 +31,7 @@ async function getFirstConvo(userId: string) {
   if (!conversation) {
     (conversation as any) = await db.conversation.create({
       data: {
-        title: "Welcome! Let's get started.",
+        title: "Welcome!",
         firstConvo: true,
         participants: {
           create: {

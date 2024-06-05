@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Session } from "next-auth";
+import { Conversation } from "../../../types";
 interface User {
   id: number; 
   name?: string | null;
@@ -8,11 +9,11 @@ interface User {
   // Add other user properties if needed
 }
 
-interface Conversation { 
-  id: number;
-  participants: User[];
-  messages: string[]
-}
+// interface Conversation { 
+//   id: number;
+//   participants: User[];
+//   messages: string[]
+// }
 
 export default function useConversations(session: any) {
   const [conversations, setConversations] = useState<Conversation[]>([]);

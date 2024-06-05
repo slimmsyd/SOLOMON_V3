@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import ChatDashboard from "../chat/app/page";
 import axios from "axios";
 import { Session } from "next-auth";
+import LoadingComponent from "../components/helper/Loading";
 const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
   password: z
@@ -31,7 +32,8 @@ const Login = () => {
   });
 
   const { register, handleSubmit } = form;
-  const [completedForm, setCompleteForm] = useState<boolean>(false);
+
+  
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const signInData = await signIn("credentials", {
@@ -50,53 +52,104 @@ const Login = () => {
     console.log(values);
   };
 
-  const [loginData, setLoginData] = useState({
-    username: "",
-    password: "",
-  });
 
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false); // Track login initiation
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Track loading state for redirection
+  const [completedForm, setCompletedForm] = useState<boolean | null>(null); // null means not determined yet
 
   useEffect(() => {
-    console.log("Logging the session", session);
-    let userId = session?.user.id;
-    console.log("Loggin the userId before fetch Progress", userId);
-    const fetchProgress = async () => {
-      console.log("Logging the userID after the fetch Progress", userId);
-
+    const fetchProgress = async (userId: string) => {
       try {
         const response = await axios.get(`/api/getProgress`, {
           params: { userId },
         });
 
         if (response.data) {
-          console.log("Logging the response data", response.data)
-          //We are savying to see if Onmplete is true we redirect to the dashabord
           if (response.data.onComplete) {
-            setCompleteForm(true || response.data.onComplete);
-            console.log("Completed form is true");
+            console.log("Logging the response data", response.data);
+            setCompletedForm(true);
+            router.push('/chat/app');
+
+          } else {
+            setCompletedForm(false);
+
           }
+        } else {
+          setCompletedForm(false);
+
         }
       } catch (error) {
-        console.error("Error fetching progress:", error);
+        console.error('Error fetching progress:', error);
+        setCompletedForm(false);
       }
     };
-    fetchProgress();
+
+    if (status === 'authenticated' && session?.user?.id) {
+      const userId = session.user.id;
+      fetchProgress(userId);
+    } else if (status === 'unauthenticated') {
+      setIsLoggingIn(false); // Reset logging in state if authentication fails
+    }
   }, [session, completedForm]);
+
+
 
   //We are goging to fetch the userProgess on the rendering of this
   //If user Progres is True we are going to switch the redirect of the page
 
-  useEffect(() => {
-    console.log("Logging the completd form here again", completedForm)
-    console.log("LOgging the current status aswell", status)
-  }, [completedForm]);
 
-  // if (status === "authenticated" && completedForm) {
-  //   console.log("Logging completed form", completedForm);
-  //   return <ChatDashboard />;
-  // }
+
+
+  useEffect(() => {
+    if (completedForm !== null) {
+      setIsLoading(true);
+      if (status === 'authenticated' && completedForm) {
+        console.log("Logging completed form", completedForm);
+        router.push('/chat/app');
+      } else if (status === 'authenticated' && completedForm === false) {
+        router.push('/chat/app/questionaire');
+      }
+    }
+  }, [completedForm, status, router]);
+
+
+useEffect(() => {
+
+
+},[isLoggingIn])
+
+
+const handleSignIn = () => {
+  setIsLoggingIn(true); // Set logging in state to true when login is initiated
+  console.log("Logging the completed form in the Sign in joint ", completedForm);
+  if (completedForm) {
+    signIn('google', {
+      callbackUrl: '/redirect',
+    });
+  } else {
+    signIn('google', {
+      callbackUrl: '/redirect',
+    });
+  }
+};
+  useEffect(() => {
+    if (completedForm !== null) {
+      if (status === 'authenticated' && completedForm) {
+        console.log("Logging completed form", completedForm);
+        router.push('/chat/app');
+        
+      } else if (status === 'authenticated' && completedForm === false) {
+        router.push('/chat/app/questionaire');
+      }
+    }
+  }, [completedForm, status, router]);
+
+
+  if (isLoading) {
+    return <LoadingComponent />; // Show loading spinner if logging in or redirecting
+  }
 
   return (
     <>
@@ -115,17 +168,15 @@ const Login = () => {
                 </p>
               </div>
               <div className="loginForm text-white flex items-center justify-center flex-col mt-8">
-                <div className="blogCircle"></div>
+                <div className="logoCircle"></div>
 
                 <h3>Create Your Free Account</h3>
 
-                {completedForm && status === "authenticated" ? (
+                {status === "authenticated"   && completedForm ? (
                   <button
                     onClick={() => {
                       console.log("Completed Form: On Click", completedForm);
-                      signIn("google", {
-                        callbackUrl: "/chat/app",
-                      });
+                      handleSignIn()
                     }}
                     className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                   >
@@ -166,9 +217,7 @@ const Login = () => {
                   <button
                     onClick={() => {
                       console.log("Completed Form: On Click", completedForm);
-                      signIn("google", {
-                        callbackUrl: "/chat/app/questionaire",
-                      });
+                      handleSignIn()
                     }}
                     className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                   >

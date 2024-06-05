@@ -28,37 +28,44 @@ import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useTogglePosition } from "../../../../hooks/useTogglePosition";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
+//Utilis
+import { checkSession } from "@/utilis/CheckSession";
+
 import Link from "next/link";
 
 import { isClient } from "@/utilis/isClient";
-
 
 export default function ConversationPage() {
   const router = useRouter();
   const pathName = usePathname();
   const formRef = useRef<HTMLFormElement>(null);
+  //Should wrap these in a bigger function since being used multiple times?
 
-  const { userName, splitUserName, email, setEmail, setSplitUserName } = useSessionStorage();
+  const [sessionStatus, setSessionStatus] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
+  const {
+    userName,
+    setUserName,
+    splitUserName,
+    email,
+    setEmail,
+    setSplitUserName,
+  } = useSessionStorage();
 
   const { responses, setResponses, message, setMessage } =
     useChatConversation();
-    
-    let localStorageConvoId;
 
-    useEffect(() => { 
-      console.log("Is this loading???", currentConversationId)
-      if(localStorage.getItem("currentConversationId")) { 
-        localStorageConvoId = localStorage.getItem("currentConversationId");
-        setCurrentConversationId(localStorageConvoId)
-        console.log("Loggign in the local Storage get item", localStorageConvoId)
+  let localStorageConvoId;
 
-
- 
-     }
-
-
-    },[])
+  useEffect(() => {
+    console.log("Is this loading???", currentConversationId);
+    if (localStorage.getItem("currentConversationId")) {
+      localStorageConvoId = localStorage.getItem("currentConversationId");
+      setCurrentConversationId(localStorageConvoId);
+      console.log("Loggign in the local Storage get item", localStorageConvoId);
+    }
+  }, []);
 
   const form = useRef();
   const { data: session, status } = useSession();
@@ -84,64 +91,21 @@ export default function ConversationPage() {
       setCurrentConversationId
     );
 
-
-
-//We check session on hte loading of the page 
-useEffect(() => {
-  console.log("useEffect: Checking session status:", status);
-  
-
-  async function checkSession() {
-
-    if (status === "loading") {
-      console.log("Session is loading...");
-      // return;
-    }
-
-    if (status === "unauthenticated") {
-      console.log("No session found, redirecting...");
-      router.push("/");
-    } else if (status === "authenticated") {
-
-      console.log(
-        "Session is authenticated, confirming session data...",
-        status
-      );
-
-      //For the first converation, we get the first ConvoId
-
-      const currentSession = await getSession();
-      console.log("Current session data:", currentSession);
-      if (!currentSession?.user.user) {
-        // setEmail(currentSession?.user.email.split("@")[0]);
-        setEmail(currentSession?.user.email.split("@")[0]);
-
-        //Just a back up just in case
-
-        if (isClient()) {
-          if (email !== null) {
-            sessionStorage.setItem("email", email);
-            console.log("Is the email beign set here", email);
-          }
-          if (userName !== null) {
-            sessionStorage.setItem("userName", userName);
-          }
-          if (splitUserName !== "") {
-            sessionStorage.setItem("splitUserName", splitUserName);
-          }
-        }
-        //We want to get Just to logo of the userName
-        setSplitUserName(currentSession?.user.email[0].toUpperCase());
-      }
-      console.log("Logging session user name", currentSession?.user.name);
-    }
-  }
-
-  if (status === "authenticated") {
-    checkSession();
-  }
-}, [status]);
-
+  useEffect(() => {
+    checkSession(status, {
+      setUserId,
+      setUserName,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName,
+      splitUserName,
+    });
+  }, [status]);
   //Extract the variable name
   function extractNumber(url) {
     const regex = /(\d+)(?!.*\d)/; // Regular expression to match the last number in the string
@@ -170,26 +134,11 @@ useEffect(() => {
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
   const [titleUpdated, setTitleUpdated] = useState<boolean>(false); // New state for title updates
 
-  const handleNewChatClick = () => {
-    setShowTitleInput(true);
-  };
-
-  const handleBlur = () => {
-    setEditTitleId(null); // Exit edit mode when input loses focus
-  };
   //Editing the ability to change the existing title.
   const handleTitleClick = (convoId: string | number) => {
-    console.log("Title is clicking!!!", convoId);
-    console.log("Logging the title Id in the click function", editTitleId);
-    console.log("Logging the conversations", conversations);
-
-
-
     const conversation = conversations.find(
       (convo) => (convo as any).conversationId === convoId
     );
-
-
 
     if (conversation) {
       setEditTitleId((conversation as any).conversationId);
@@ -199,8 +148,6 @@ useEffect(() => {
     } else {
       console.log(`Conversation with ID ${convoId} not found`);
     }
-
-
   };
   useEffect(() => {}, [editTitleId, editedTitle]);
 
@@ -209,7 +156,10 @@ useEffect(() => {
   };
 
   async function getConversation(conversationId: any) {
-    console.log("Logging the converatation ID in the getConversation", conversationId);
+    console.log(
+      "Logging the converatation ID in the getConversation",
+      conversationId
+    );
     try {
       const response = await fetch(`/api/${conversationId}`);
       if (!response.ok) {
@@ -217,7 +167,10 @@ useEffect(() => {
       }
 
       const updatedConversation = await response.json();
-      console.log("Logging the converations before errorw", updatedConversation);
+      console.log(
+        "Logging the converations before errorw",
+        updatedConversation
+      );
       // Update local state
       setConversations((prevConversations) => {
         return prevConversations.map((convo) =>
@@ -305,8 +258,6 @@ useEffect(() => {
     let cachedConversations = sessionStorage.getItem("conversations");
 
     if (cachedConversations) {
-
-
       try {
         // Parse the cached conversations
         const parsedConversations = JSON.parse(cachedConversations);
@@ -321,7 +272,7 @@ useEffect(() => {
 
           sessionStorage.setItem("conversations", JSON.stringify(updatedCache));
 
-          console.log("Logging the updated Cache", updatedCache)
+          console.log("Logging the updated Cache", updatedCache);
         } else {
           console.error("Parsed cached conversations is not an array");
         }
@@ -337,177 +288,180 @@ useEffect(() => {
 
     if (event.key === "Enter") {
       console.log("seeing if the function worked!!! ");
-  
+
       event.preventDefault(); // Prevent form submission
       const newTitle = editedTitle; // Capture the title at the time of submission
       titleChange = editTitleId ?? "";
       console.log("New title to be set:", newTitle);
       console.log("New title Id being logged", editTitleId);
-  
+
       if (editTitleId !== null && editTitleId !== "") {
         const updatedConversations = conversations.map((convo) =>
-          (convo as any).conversationId === editTitleId ? { ...convo, title: newTitle } : convo
+          (convo as any).conversationId === editTitleId
+            ? { ...convo, title: newTitle }
+            : convo
         );
         setConversations(updatedConversations);
         console.log("Updated conversations:", updatedConversations);
-  
+
         sessionStorage.setItem(
           "conversations",
           JSON.stringify(updatedConversations)
         );
-  
+
         setEditTitleId(null); // Exit edit mode
         setEditedTitle(""); // Clear the edited title state
         setEditingTitle(false);
-  
-        console.log("logging the title change within the thing before ", titleChange);
+
+        console.log(
+          "logging the title change within the thing before ",
+          titleChange
+        );
       }
     }
-    console.log("logging the title change within the after before ", titleChange)
+    console.log(
+      "logging the title change within the after before ",
+      titleChange
+    );
+
+    try {
+      const response = await fetch(`/api/${editTitleId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
+      });
+
+      console.log("Are you sending the new Title", editedTitle);
+
+      if (response.ok) {
+        await getConversation(editTitleId);
+        setEditingTitle(false);
+        setTitleUpdated((prev) => !prev); // Toggle the titleUpdated state
+      }
+
+      if (!response.ok) {
+        throw new Error("Failed to update title");
+      }
+    } catch (error) {
+      console.error("Error updating title:", error);
+
+      // If the update fails, revert the change in the UI and alert the user
+      const originalConversations = conversations.map((convo) =>
+        convo.conversationId === editTitleId
+          ? { ...convo, title: (convo as any).title }
+          : convo
+      );
+
+      setConversations(originalConversations);
+      sessionStorage.setItem(
+        "conversations",
+        JSON.stringify(originalConversations)
+      );
+
+      alert("Failed to update title, please try again."); // Inform the user
+    }
+  };
+
+  const chatDashBoardRef = useRef<HTMLDivElement>(null);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    console.log("Logging Conversation Id in the Submit", currentConversationId);
+    console.log("is this scroll to bottom being called?");
+    if (chatDashBoardRef.current) {
+      chatDashBoardRef.current.scrollTo({
+        top: chatDashBoardRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+      console.log("Scrolled 50000px down");
+    }
+    const scrollToBottom = () => {};
+
+    if (isClient()) {
+      if (!currentConversationId) {
+        console.log("No conversation selected.");
+
+        await createConversation().then((convoID) => {
+          console.log("Logging the CONVO ID", convoID);
+
+          setCurrentConversationId(convoID); // Store the convo ID if needed
+          sessionStorage.setItem("currentConversationId", convoID);
+          let localStorageConvoId: any;
+          localStorage.setItem("currentConversationId", convoID);
+          localStorageConvoId = localStorage.getItem("currentConversationId");
+        });
+      }
+
+      // Ensure that currentConversationId is updated before proceeding
+      const updatedConversationId = sessionStorage.getItem(
+        "currentConversationId"
+      );
+
+      let currentConvoId = sessionStorage.getItem("currentConvoId");
+      if (currentConvoId) setCurrentConversationId(currentConversationId);
+
+      // 1. Set up the new response without any bot response yet.
+      const newResponse = { question: message, response: "" };
+
+      setResponses((responses) => [...responses, newResponse]); // Use functional update for state
+
+      setMessage("");
 
       try {
-        const response = await fetch(`/api/${editTitleId}`, {
-          method: "PUT",
+        // 2. Fetch bot reply from the API
+        const botReply = await fetch("/api/chatBot", {
+          method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-type": "application/json",
           },
-          body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
+          body: JSON.stringify({
+            userId,
+            message,
+            conversationId: currentConvoId || currentConversationId,
+          }),
+        }).then((res) => res.json());
+
+        // 3. Update the responses array with the bot's reply
+        setResponses((prevResponses) =>
+          prevResponses.map((resp) => {
+            if (resp.question === message) {
+              return { ...resp, response: botReply.message };
+            }
+            return resp;
+          })
+        );
+
+        // 4. Send the user question and bot response to the database
+
+        await fetch("/api/messages", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: session?.user.id, // Ensure you have the current user's ID
+            conversationId: updatedConversationId,
+            userContent: message, // User's message
+            botResponse: botReply.message, // Bot's response, obtained separately
+          }),
         });
 
-        console.log("Are you sending the new Title", editedTitle)
+        console.log(
+          "Loggign the current Conversation on a new click ",
+          currentConversationId
+        );
 
+        scrollToBottom();
 
-        if (response.ok) {
-          await getConversation(editTitleId);
-          setEditingTitle(false);
-          setTitleUpdated(prev => !prev); // Toggle the titleUpdated state
-        }
-
-        if (!response.ok) {
-          throw new Error("Failed to update title");
-        }
+        //Add the conversations arrawy or update
       } catch (error) {
-        console.error("Error updating title:", error);
-
-        // If the update fails, revert the change in the UI and alert the user
-        const originalConversations = conversations.map((convo) =>
-          convo.id === editTitleId ? { ...convo, title: (convo as any).title } : convo
-        );
-
-        setConversations(originalConversations);
-        sessionStorage.setItem(
-          "conversations",
-          JSON.stringify(originalConversations)
-        );
-
-        alert("Failed to update title, please try again."); // Inform the user
+        console.error("Error handling submission:", error);
       }
     }
+  };
 
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      console.log("Logging Conversation Id in the Submit", currentConversationId);
-      if (isClient()) {
-        if (!currentConversationId) {
-          console.log("No conversation selected.");
-  
-          await createConversation()
-          .then(convoID => {
-            console.log("Logging the CONVO ID", convoID);
-  
-            setCurrentConversationId(convoID); // Store the convo ID if needed
-              sessionStorage.setItem("currentConversationId", convoID);
-              let localStorageConvoId: any;
-              localStorage.setItem("currentConversationId", convoID);
-              localStorageConvoId = localStorage.getItem("currentConversationId");
-  
-          
-          })
-  
-         
-        console.log("Logging the Current converattion id in the await convo created", currentConversationId)
-          
-        }
-  
-          // Ensure that currentConversationId is updated before proceeding
-      const updatedConversationId = sessionStorage.getItem("currentConversationId");
-      console.log("Logging the Current conversation id in the await convo created", updatedConversationId);
-  
-        // 1. Set up the new response without any bot response yet.
-        const newResponse = { question: message, response: "" };
-  
-        setResponses((responses) => [...responses, newResponse]); // Use functional update for state
-  
-  
-        
-        setMessage("");
-  
-        try {
-          // 2. Fetch bot reply from the API
-          const botReply = await fetch("/api/chatBot", {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
-            },
-            body: JSON.stringify({ message }),
-          }).then((res) => res.json());
-  
-          // 3. Update the responses array with the bot's reply
-          setResponses((prevResponses) =>
-            prevResponses.map((resp) => {
-              if (resp.question === message) {
-                return { ...resp, response: botReply.message };
-              }
-              return resp;
-            })
-          );
-  
-          // 4. Send the user question and bot response to the database
-  
-          console.log(
-            "logging the creation of a new chat in here",
-            session?.user.id
-          );
-  
-          console.log("Logging the conversation id when i sent out the message", currentConversationId)
-  
-          await fetch("/api/messages", {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
-            },
-            body: JSON.stringify({
-              userId: session?.user.id, // Ensure you have the current user's ID
-              conversationId: updatedConversationId,
-              userContent: message, // User's message
-              botResponse: botReply.message, // Bot's response, obtained separately
-            }),
-          });
-  
-          console.log(
-            "Loggign the current Conversation on a new click ",
-            currentConversationId
-          );
-  
-          //Add the conversations arrawy or update
-        } catch (error) {
-          console.error("Error handling submission:", error);
-        }
-      }
-    };
-
-  //Get the associated ids with the current user on inital load.
-
-  // useEffect(() => {
-  //   // possibly set an initial conversation ID here if needed
-  //   if (conversations.length > 0 && !currentConversationId) {
-  //     setCurrentConversationId(conversations[0].id);
-  //     console.log("Logging the conversations in useEffect", conversations);
-  //   }
-  // }, [conversations]);
-
-  const handleConversationClick = (convoId: string ) => {
+  const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
@@ -519,37 +473,24 @@ useEffect(() => {
 
     localStorageConvoId = localStorage.getItem("currentConversationId");
     setCurrentConversationId(convoId);
-    // Check if we're already viewing the requested conversation to avoid unnecessary routing actions
-    // if (router.asPath !== targetPath) {
-    //   router.push(targetPath, undefined);
-    // }
-
-    console.log("Logging hte current conversation ID", currentConversationId);
-    console.log("Logging hte current The ConvoID", convoId);
   };
 
-
-
   //Get the full Message Conversation.
-
 
   const clearStorage = () => {
     sessionStorage.removeItem("initialMessage");
   };
-
 
   //Another Hook Check for the local storage
   useEffect(() => {
     console.log("Current Conversation ID has updated:", currentConversationId);
     console.log("Logging the localstorage id", localStorageConvoId);
 
-    if(currentConversationId) { 
-      handleConversationClick(currentConversationId as string)
+    if (currentConversationId) {
+      handleConversationClick(currentConversationId as string);
     }
     clearStorage();
   }, [currentConversationId]); // Dependency array includes state that triggers this effect
-
- 
 
   useEffect(() => {}, [isLoading]);
 
@@ -557,15 +498,16 @@ useEffect(() => {
   useEffect(() => {}, [messagesIsLoading]);
 
   //Fetch Message for this converations
-  const messagesRefCounter = useRef(0)
-  useEffect(() => 
-  { 
-    console.log("Logging to see how much the messages ref counter is loading", messagesRefCounter)
-  },[messagesRefCounter])
+  const messagesRefCounter = useRef(0);
+  useEffect(() => {
+    console.log(
+      "Logging to see how much the messages ref counter is loading",
+      messagesRefCounter
+    );
+  }, [messagesRefCounter]);
   const fetchMessagesForConversation = async (conversationId: string) => {
-    
-    messagesRefCounter.current += 1; 
-    if(messagesRefCounter.current > 1) { 
+    messagesRefCounter.current += 1;
+    if (messagesRefCounter.current > 1) {
       return;
     }
 
@@ -575,18 +517,13 @@ useEffect(() => {
     }
     setMessagesIsLoading(true);
 
-
-
-
-
     if (!conversationId) {
       console.error("no conversatoin ID");
       return;
     } else {
       try {
-
-        console.log("Loggging in stored messages", session?.user.id)
-        console.log("Loggging in stored messages", conversationId)
+        console.log("Loggging in stored messages", session?.user.id);
+        console.log("Loggging in stored messages", conversationId);
 
         const response = await fetch(
           `/api/storedMessages?authorId=${session?.user.id}&conversationId=${conversationId}`
@@ -596,7 +533,12 @@ useEffect(() => {
         }
         const messages = await response.json();
 
-        console.log("logging the MEssages in the joint", messages, session.user.id, conversationId)
+        console.log(
+          "logging the MEssages in the joint",
+          messages,
+          session.user.id,
+          conversationId
+        );
 
         // Map API response to expected format in state
         const formattedMessages = messages.map((msg: Message) => ({
@@ -618,52 +560,79 @@ useEffect(() => {
     }
   };
 
-
-
   useEffect(() => {
     setResponses([]); // Clear previous messages
-    console.log("Logging the CUrrent in the Fetch Resposnes", currentConversationId)
-    console.log("Loggin the local stroage iddd", localStorageConvoId)
+    console.log(
+      "Logging the CUrrent in the Fetch Resposnes",
+      currentConversationId
+    );
+    console.log("Loggin the local stroage iddd", localStorageConvoId);
     if (status === "authenticated" && session) {
       // Fetch messages for the current conversation if needed
-      if(currentConversationId === null) {
-        console.log("Fetch is Null fetch is nul", currentConversationId)
-        fetchMessagesForConversation(currentConversationId as any || localStorageConvoId);
-
-
-      }else { 
-        console.log("Fech is doing good", currentConversationId)
-
-        // fetchMessagesForConversation(Number(localStorageConvoId))
+      if (currentConversationId === null) {
+        console.log("Fetch is Null fetch is nul", currentConversationId);
+        fetchMessagesForConversation(
+          (currentConversationId as any) || localStorageConvoId
+        );
+      } else {
+        console.log("Fech is doing good", currentConversationId);
       }
     }
   }, [currentConversationId]);
 
-  //Fetch conversations on page reload 
-  useEffect(() => {
-    setResponses([]); // Clear previous messages
-    if (status === "authenticated" && session) {
-    if(currentConversationId === null) {
-        console.log("Fetch is Null fetch is nul", currentConversationId)
-        fetchMessagesForConversation(currentConversationId as any || localStorageConvoId);
-
-
-      }else { 
-        console.log("Status in fetch was not authenticated", status)
-      }
-    }
-  }, [session]);
-  
-
   if (!conversations) {
     return <p>No conversation found.</p>;
   }
+
+
+
+  //This funcitno shifts and shows the mobile Chat ccontainer 
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
+
+  const handleMobileChatBtnClick = () => {
+
+    console.log("Logging the chat container Ref current state", chatContainerRef.current)
+
+    if (chatContainerRef.current) {
+      if (isAtZero) {
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+      } else {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+      }
+      setIsAtZero(!isAtZero); // Toggle the state
+    }
+  };
+
+  // Effect to handle viewport resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 950 && chatContainerRef.current) {
+        chatContainerRef.current.style.transform = 'translateX(0px)';
+        setIsAtZero(false); // Reset the state
+      }else if (chatContainerRef.current) { 
+        chatContainerRef.current.style.transform = 'translateX(-100%)';
+        setIsAtZero(true); // Reset the state
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
 
   return (
     <div className="chatDashboard">
       {/* Chat Container Componet  */}
 
       <ChatContainer
+        setConversations={setConversations}
+        conversations={conversations}
         splitUserName={splitUserName}
         userName={userName || ""}
         email={email || ""}
@@ -674,16 +643,35 @@ useEffect(() => {
         editTitleId={editTitleId}
         editedTitle={editedTitle}
         handleTitleChange={handleTitleChange}
-        editingTitle = {editingTitle}
+        editingTitle={editingTitle}
         titleUpdated={titleUpdated}
+        chatContainerRef = {chatContainerRef as any}
       />
 
       {/* Chat Container Componet  */}
 
-      <div className="chatDashboardWrapper w-full text-left">
+      <div
+        ref={chatDashBoardRef}
+        className="chatDashboardWrapper w-full text-left"
+      >
         {/* Guidelines Hader */}
 
         <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
+          <div className=" flex-1   cursor-pointer mobileChatContainer">
+            <div 
+            onClick={handleMobileChatBtnClick}
+            className=" mobileChatBtn flex items-center justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+              </svg>
+            </div>
+          </div>
           <div className="flex flex-row gap-[18px] items-center justify-center">
             <button className="hover:text-[#807f7f]">Tour</button>
 

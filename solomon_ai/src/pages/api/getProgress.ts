@@ -27,6 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { userId: userId },
       });
 
+
       if (!userProgress) {
         res.status(404).json({ message: "Progress not found" });
         return;

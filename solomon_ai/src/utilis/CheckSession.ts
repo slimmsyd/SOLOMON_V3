@@ -6,6 +6,7 @@ import { Session } from 'next-auth';
 
 interface CheckSessionOptions {
   setUserId: (id: string) => void;
+  setUserName: (status: string) => void;
   setSessionStatus: (status: string) => void;  
   setEmail: (email: string) => void;
   setSplitUserName: (splitUserName: string) => void;
@@ -23,12 +24,13 @@ export async function checkSession(
 ) {
   const {
     setUserId,
+    setUserName,
     setSessionStatus,
     setEmail,
     setSplitUserName,
     isClient,
     session,
-    router,
+    router, 
     email,
     userName,
     splitUserName,
@@ -45,23 +47,25 @@ export async function checkSession(
     console.log('No session found, redirecting...');
     router.push('/');
   } else if (status === 'authenticated') {
-    console.log('Session is authenticated, confirming session data...', status);
 
     setUserId(session?.user.id);
     setSessionStatus(status);
+    setUserName(session?.user.name)
     const currentSession = await getSession();
-    console.log('Current session data:', currentSession);
 
     if (!currentSession?.user.user) {
       setEmail(currentSession?.user.email.split('@')[0]);
+  
+
+
 
       if (isClient()) {
         if (email !== null) {
-          sessionStorage.setItem('email', email);
-          console.log('Is the email being set here', email);
+
+          sessionStorage.setItem('email', currentSession?.user.email.split('@')[0]);
         }
         if (userName !== null) {
-          sessionStorage.setItem('userName', userName);
+          sessionStorage.setItem('userName', currentSession?.user.name);
         }
         if (splitUserName !== '') {
           sessionStorage.setItem('splitUserName', splitUserName);
@@ -69,7 +73,8 @@ export async function checkSession(
       }
 
       setSplitUserName(currentSession?.user.email[0].toUpperCase());
+ 
     }
-    console.log('Logging session user name', currentSession?.user.name);
+
   }
 }

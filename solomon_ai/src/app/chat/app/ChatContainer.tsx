@@ -10,6 +10,7 @@ import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 import { Conversation } from "../../../../types";
 
 interface ChatContainerProps {
+  setConversations?: React.Dispatch<React.SetStateAction<Conversation[]>>;
   conversations?: Conversation[];
   splitUserName: string;
   userName: string;
@@ -24,10 +25,13 @@ interface ChatContainerProps {
   editingTitle?: boolean;
   titleUpdated?: boolean,
   handleKeyDown?: (event: any) => void;
+  chatContainerRef?: React.Ref<HTMLDivElement>
 
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
+  setConversations,
+  conversations,
   splitUserName,
   userName,
   email,
@@ -40,9 +44,9 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   handleTitleChange,
   editingTitle,
   titleUpdated,
-  handleKeyDown
+  handleKeyDown,
+  chatContainerRef
 }) => {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
 
 
 
@@ -91,12 +95,13 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   useEffect(() => {
     // Retrieve the conversations from local storage
     const localStorageConversations = sessionStorage.getItem("conversations");
+    
 
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
         localStorageConversations
       );
-      setConversations(conversationArray); // Set the conversations state as an array
+      setConversations?.(conversationArray); // Safe call with optional chaining
       console.log("Loggin the conversations array", conversationArray)
     }
 
@@ -104,19 +109,30 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
 
 
-  useEffect(() => { 
 
-
-  })
+  
 
 
 
   return (
-    <div className="chatContainer flex flex-col flex-1">
+    <div 
+    ref = {chatContainerRef}
+    className="chatContainer flex flex-col flex-1">
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <div className="flex flex-row">
-          <div className="logoCircle"></div>
+        {/* <div 
+            className=" mobileChatBtn flex items-center justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+              </svg>
+            </div>           */}
           <h3>Logo</h3>
         </div>
         <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
@@ -161,8 +177,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             </svg>
           </div>
 
-          <div className="flex flex-col gap-[13px] overflow-scroll w-[95%] ">
-            {conversations.map((conversation) => (
+          <div className="flex flex-col gap-[13px] overflow-scroll w-[95%] chatScrollbar ">
+            {conversations?.map((conversation) => (
               <div key={conversation.conversationId} className="relative">
                 <button
                 onClick={() => {

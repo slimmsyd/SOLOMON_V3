@@ -11,79 +11,134 @@ import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "../hooks/useSessionStorage";
+import { Conversation } from "../../../types";
+
+import { checkSession } from "@/utilis/CheckSession";
+import { fetchUserInfo } from "@/utilis/fetchUserInfo";
+
+import axios from "axios";
 
 import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
-  const { userName, splitUserName, email, } = useSessionStorage();
+  const {
+    userName,
+    setUserName,
+    splitUserName,
+    email,
+    setEmail,
+    setSplitUserName,
+  } = useSessionStorage();
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   const router = useRouter();
   const { data: session, status } = useSession();
-
+  const [sessionStatus, setSessionStatus] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
   const [currentConversationId, setCurrentConversationId] = useState<
     string | null
   >(null);
 
-  const [zodiac, setZodiac] = useState<null>(null);
-  const [lifePath, setLifePathNumber] = useState<null>(null);
+  const [zodiac, setZodiac] = useState<string>("");
+  const [lifePath, setLifePathNumber] = useState<string>("");
+  const [practice, setPractice] = useState<null>(null);
+  const [ennealogy, setEnnealogyNumber] = useState<string>("");
 
-
+  useEffect(() => {
+    checkSession(status, {
+      setUserId,
+      setUserName,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName: "",
+      splitUserName,
+    });
+  }, [status]);
 
   //Run the fetchUserInfo on Remout only
   useEffect(() => {
     fetchUserInfo(session?.user.id);
   }, []);
 
-  async function fetchUserInfo(userId: number) {
-    console.log("Loggin the user Id", typeof userId);
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const userInfo = await fetchUserInfo(userId);
+
+      if (userInfo) {
+        const { lifePathNumber, zodiacSign, religion, ennealogy } = userInfo;
+        setLifePathNumber(lifePathNumber);
+        setZodiac(zodiacSign);
+        setEnnealogyNumber(ennealogy);
+      }
+    };
+
+    getUserInfo();
+  }, [userId]);
+
+
+  const handleSave = () => {
+    userId;
+    sessionStorage.setItem("zodiacSign", zodiac as any);
+    sessionStorage.setItem("lifePathNumber", lifePath as any);
+    sessionStorage.setItem("ennealogy", ennealogy as any);
+
+    updateUserProgress(
+      userId as any,
+       null,
+      lifePath as any,
+      zodiac as any,
+      ennealogy as any,
+      null
+    );
+    setIsEditing(false);
+  };
+
+  // Update user progress with the extracted vales
+  const updateUserProgress = async (
+    userId: string,
+    birthday: string | null,
+    lifePathNumber: number | null,
+    zodiacSign: string | null,
+    enealogyNumber: string | null,
+    religion: string | null
+  ) => {
     try {
-      const response = await fetch(`/api/getUserInfo?userId=${Number(userId)}`);
-      const data = await response.json();
+      const response = await axios.post("/api/updateUser", {
+        userId,
+        birthday: birthday ?? undefined,
+        lifePathNumber: lifePathNumber ?? undefined,
+        zodiacSign: zodiacSign ?? undefined,
+        enealogyNumber: enealogyNumber ?? undefined,
+        religion: religion ?? undefined,
+      });
 
-      if (response.ok) {
-        const { lifePathNumber, zodiacSign } = data.data;
-
-        const session = await getSession();
-        console.log("Logigng sesssion", session);
-        if (session) {
-          sessionStorage.setItem("lifePathNumber", lifePathNumber);
-          sessionStorage.setItem("zodiacSign", zodiacSign);
-
-          setLifePathNumber(lifePathNumber);
-          setZodiac(zodiacSign);
-        }
-        return data.data;
-      } else {
-        console.error("Failed to retrieve user information:", data.message);
-        return null;
-      }
+      console.log("User progress updated successfully:", response.data);
     } catch (error) {
-      console.error("Error fetching user information:", error);
-      return null;
+      console.error("Error updating user progress:", error);
     }
-  }
-    // Update session storage whenever userName or splitUserName changes
-    useEffect(() => {
-      if (isClient()) {
-        if (userName !== null) {
-          sessionStorage.setItem("userName", userName);
-        }
-  
-        if (splitUserName !== "") {
-          sessionStorage.setItem("splitUserName", splitUserName);
-        }
-  
-        if (email !== null) {
-          sessionStorage.setItem("email", email);
-        }
+  };
+
+  // Update session storage whenever userName or splitUserName changes
+  useEffect(() => {
+    if (isClient()) {
+      if (userName !== null) {
+        sessionStorage.setItem("userName", userName || session?.user.name);
       }
-    }, [userName, splitUserName]);
-  
-   
 
+      if (splitUserName !== "") {
+        sessionStorage.setItem("splitUserName", splitUserName);
+      }
 
-  //   if (!userName || !session) {
-  //     return <ErrorPage />;
-  //   }
+      if (email !== null) {
+        sessionStorage.setItem("email", email);
+      }
+    }
+  }, [userName, splitUserName]);
 
   const handleConversationClick = (convoId: string) => {
     console.log("Activating conversation with ID:", convoId);
@@ -107,9 +162,30 @@ const Profile: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    // Retrieve the conversations from session storage
+    const localStorageConversations = sessionStorage.getItem("conversations");
+
+    console.log("Logging the localStorage Convos", localStorageConversations);
+
+    if (localStorageConversations) {
+      const conversationArray: Conversation[] = JSON.parse(
+        localStorageConversations
+      );
+      if (conversationArray.length > 0) {
+        setConversations?.(conversationArray); // Safe call with optional chaining
+        console.log("Logging the conversations array", conversationArray);
+      }
+    }
+  }, [setConversations]);
+
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="chatDashboard">
       <ChatContainer
+        setConversations={setConversations}
+        conversations={conversations}
         splitUserName={splitUserName}
         userName={userName || ""}
         email={email || ""}
@@ -159,25 +235,75 @@ const Profile: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-[5px] w-[310px] ">
-              <div className="flex flex-row w-full justify-between">
-                <p id="greyText">Gender</p>
-                <p>Unselected</p>
-              </div>
+            <div className="flex flex-col gap-[5px] w-[310px]">
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Zodiac Sign</p>
-                <p>{sessionStorage.getItem("zodiacSign") || "Unselected"}</p>
+                {isEditing ? (
+                  <input
+                    className="profileInput"
+                    type="text"
+                    value={zodiac}
+                    onChange={(e) => setZodiac(e.target.value)}
+                  />
+                ) : (
+                  <p>{zodiac || sessionStorage.getItem("zodiacSign")}</p>
+                )}
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Life path number</p>
-                <p>
-                  {sessionStorage.getItem("lifePathNumber") || "Unselected"}
-                </p>
+                {isEditing ? (
+                  <input
+                    className="profileInput"
+                    type="text"
+                    value={lifePath as any}
+                    onChange={(e) => setLifePathNumber(e.target.value)}
+                  />
+                ) : (
+                  <p>{lifePath || sessionStorage.getItem("lifePathNumber")}</p>
+                )}
               </div>
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Ennealogy Number</p>
-                <p>Unselected</p>
+                {isEditing ? (
+                  <input
+                    className="profileInput"
+                    type="text"
+                    value={ennealogy as any}
+                    onChange={(e) => setEnnealogyNumber(e.target.value)}
+                  />
+                ) : (
+                  <p>{ennealogy || sessionStorage.getItem("ennealogy")}</p>
+                )}
               </div>
+              {/* <div className="flex flex-row w-full justify-between">
+        <p id="greyText">Spiritual Practice</p>
+        {isEditing ? (
+          <input
+            type="text"
+            value={religion}
+            onChange={(e) => setReligion(e.target.value)}
+          />
+        ) : (
+          <p>{religion}</p>
+        )}
+      </div> */}
+              {/* <div className="flex flex-row w-full justify-between mt-[5px]">
+                {isEditing ? (
+                  <button
+                    className="text-[14px] newChat flex flex-row items-center justify-center gap-[13px]"
+                    onClick={handleSave}
+                  >
+                    <p>Save</p>
+                  </button>
+                ) : (
+                  <button
+                    className="text-[14px] newChat flex flex-row items-center justify-center gap-[13px]"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <p>Edit Profile</p>
+                  </button>
+                )}
+              </div> */}
             </div>
 
             <hr className="greyDivider"></hr>
@@ -229,9 +355,9 @@ const Profile: React.FC = () => {
 
               <div className="flex flex-row justify-between accountDiv">
                 <div className="flex flex-col">
-                  <p>Active Account</p>
+                  <p>Sessions</p>
                   <p className="text-[12px]" id="greyText">
-                    Signed in as {email}
+                    Devices or browsers where you are signed in
                   </p>
                 </div>
                 <button className=" text-[14px] newChat !w-[220px] flex flex-row items-center justify-center gap-[13px] ">
@@ -250,9 +376,9 @@ const Profile: React.FC = () => {
 
               <div className="flex flex-row justify-between accountDiv">
                 <div className="flex flex-col ">
-                  <p>Active Account</p>
+                  <p>Delete Account</p>
                   <p className="text-[12px]" id="greyText">
-                    Signed in as {email}
+                    Permanently delete your account and data
                   </p>
                 </div>
                 <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] ">
