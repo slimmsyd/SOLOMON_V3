@@ -397,14 +397,13 @@ export default function ConversationPage() {
     e.preventDefault();
     console.log("Logging Conversation Id in the Submit", currentConversationId);
     console.log("is this scroll to bottom being called?");
-    if (chatDashBoardRef.current) {
-      chatDashBoardRef.current.scrollTo({
-        top: chatDashBoardRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-      console.log("Scrolled 50000px down");
-    }
-    const scrollToBottom = () => {};
+    // if (chatDashBoardRef.current) {
+    //   chatDashBoardRef.current.scrollTo({
+    //     top: chatDashBoardRef.current.scrollHeight,
+    //     behavior: "smooth",
+    //   });
+    //   console.log("Scrolled 50000px down");
+    // }
 
     if (isClient()) {
       if (!currentConversationId) {
@@ -480,7 +479,6 @@ export default function ConversationPage() {
           currentConversationId
         );
 
-        scrollToBottom();
 
         //Add the conversations arrawy or update
       } catch (error) {
