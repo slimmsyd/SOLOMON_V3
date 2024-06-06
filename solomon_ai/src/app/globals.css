@@ -678,9 +678,8 @@ figure video {
   background: linear-gradient(180deg, #2f0ffd30, #291d7850);
   border-radius: 5px;
 }
-@media screen and (max-width: 950px)
-{
-  .newChat{
+@media screen and (max-width: 950px) {
+  .newChat {
     display: none;
   }
 }
@@ -715,11 +714,10 @@ figure video {
     padding-left: 10px;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
       0 2px 6px 2px rgba(0, 0, 0, 0.15);
-    gap:30px;
+    gap: 30px;
     transition: transform 200ms ease-in-out;
-
   }
-  .mobileChatBtn{
+  .mobileChatBtn {
     display: flex !important;
   }
   .chatDashBoardContainer {
@@ -822,14 +820,13 @@ figure video {
   padding-top: 15px;
   padding-bottom: 15px;
 }
-@media screen and (max-width: 950px)
- {
-   .guideLinesContainer{
+@media screen and (max-width: 950px) {
+  .guideLinesContainer {
     /* position: fixed; */
     /* background: var(--main-black); */
     /* z-index: 90; */
-   }
- }
+  }
+}
 
 .guideLinesBtn {
   background: #333333;
@@ -1176,8 +1173,14 @@ figure video {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  background: rgba(72, 72, 72, 0.44);
+  cursor: pointer;
+  border-radius: 50%;
+  /* position: relative; */
   /* z-index: 80; */
+  top: 15px;
+  position: fixed;
+z-index: 10;
   display: none;
 }
 .mobileChatBtn:hover {

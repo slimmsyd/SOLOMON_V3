@@ -89,11 +89,11 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user, account, profile }) => {
-      console.log("JWT callback called");
-      console.log("Token:", token);
-      console.log("User:", user);
-      console.log("Account:", account);
-      console.log("Profile:", profile);
+      // console.log("JWT callback called");
+      // console.log("Token:", token);
+      // console.log("User:", user);
+      // console.log("Account:", account);
+      // console.log("Profile:", profile);
 
       if (account && account.provider === "google") {
         let existingUser = await db.user.findUnique({
@@ -101,7 +101,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!existingUser) {
-          console.log("Creating new user with Google profile:", profile);
+          // console.log("Creating new user with Google profile:", profile);
           const username = profile?.email?.split('@')[0]; // Using email prefix as username
           existingUser = await db.user.create({
             data: {
@@ -126,8 +126,8 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session: async ({ session, token }) => {
-      console.log("Session callback called");
-      console.log("Session data received:", session);
+      // console.log("Session callback called");
+      // console.log("Session data received:", session);
 
       if (token.uid) {
         session.user.id = token.uid;

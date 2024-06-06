@@ -553,7 +553,7 @@
   align-items: center;
   justify-content: center;
 }
-.user_Messages::beforße{
+.user_Messages::before{
   content: url("../../public/assets/Chat/SolomonImage.png");
   width: 30px;
   height: 30px;
@@ -566,6 +566,7 @@
 }
 
 .user_Messages {
+  z-index: 0;
   font-size: 14px;
   border-radius: 8px;
   margin: 70px 0px;

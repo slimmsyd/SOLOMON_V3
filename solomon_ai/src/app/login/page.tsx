@@ -255,11 +255,10 @@ const handleSignIn = () => {
                     Sign in with google
                   </button>
                 )}
-
+{/* 
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   style={{ color: "black" }}
-                  //   onSubmit={handleForm}
                   className="w-full flex items-center justify-start flex-col gap-4 my-6 text-white  "
                 >
                   <div className="flex flex-row gap-3 align-center items-center justify-center text-white ">
@@ -367,14 +366,12 @@ const handleSignIn = () => {
                         >
                           Login
                         </button>
-                        {/* <button className="p-4 w-full secondary-font font-light text-[1rem] border border-[rgba(0,0,0,.5)] rounded-lg">
-                        Sign in with Google
-                      </button> */}
+                    
                       </div>
                     </div>
                   </div>
                   <p className="secondary-font font-light text-[1rem] text-gray-500">
-                    Don't have an account yet?{" "}
+                    Don't have an account yet?
                     <Link
                       href="/signup"
                       className="text-white  cursor-pointer text-left text-sm self-end"
@@ -382,7 +379,7 @@ const handleSignIn = () => {
                       Sign up
                     </Link>
                   </p>
-                </form>
+                </form> */}
               </div>
             </div>
             {/* <figure className="hidden w-full h-full items-center justify-center lg:flex">
