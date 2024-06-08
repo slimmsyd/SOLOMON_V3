@@ -176,7 +176,7 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
         model: "gpt-4",
         max_tokens: 300,
         messages: messages,
-        // signal: controller.signal,
+        signal: controller.signal,
 
       });
 
