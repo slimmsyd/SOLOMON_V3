@@ -16,9 +16,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { userId, message, conversationId } = req.body;
-      console.log("User message:", message);
-      console.log("User conversationId :", conversationId);
-      console.log("User userId:", userId);
+
 
       // Check if conversationId is provided, if not, create a new conversation
       let currentConversationId = conversationId;
@@ -67,18 +65,7 @@ export default async function handler(
 
       // console.log("Logging the userID", userId)
  
-      // Extract birthday
-      const birthdayMatch = message.match(
-        /(?:born on|birthdate is|birthday is|)\b(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}|\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}(?:st|nd|rd|th)?,? \d{4})\b/i
-      );
-      let birthday = birthdayMatch ? birthdayMatch[1] : null;
-      // Extract religious beliefs
-      const religionMatch = message.match(
-        /I am (religious|spiritual|atheist|agnostic|none|Christian|Muslim|Hindu|Buddhist|Jewish|Islam|Christianity|Islamic|Judaism|Hinduism|Buddhism)/i
-      );
-      let religion = religionMatch ? religionMatch[1].toLowerCase() : null;
-
-      console.log("Parsed details:", { birthday, religion });
+    
       const messages = [
         {
           role: "system",
@@ -189,7 +176,7 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
         model: "gpt-4",
         max_tokens: 300,
         messages: messages,
-        signal: controller.signal,
+        // signal: controller.signal,
 
       });
 
