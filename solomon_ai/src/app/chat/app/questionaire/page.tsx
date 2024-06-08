@@ -492,8 +492,7 @@ const ChatDashboard: React.FC = () => {
     setEditedTitle(event.target.value);
   };
 
-//
-
+  //
 
   // Update user progress with the extracted vales
   const updateUserProgress = async (
@@ -504,12 +503,7 @@ const ChatDashboard: React.FC = () => {
     enealogyNumber: string | null,
     religion: string | null
   ) => {
-
-
-
     try {
-
-
       const response = await axios.post("/api/updateUser", {
         userId,
         birthday: birthday ?? undefined,
@@ -522,30 +516,35 @@ const ChatDashboard: React.FC = () => {
       console.log("User progress updated successfully:", response.data);
     } catch (error) {
       console.error("Error updating user progress:", error);
-    } 
+    }
   };
 
   useEffect(() => {
-
-    console.log("Logging the responses here before the Extract Life ", responses)
+    console.log(
+      "Logging the responses here before the Extract Life ",
+      responses
+    );
     responses.forEach((response) => {
-      console.log("Logging response.repsone", response.response)
+      console.log("Logging response.repsone", response.response);
       const lifePathNumber = extractLifePathNumber(response.response);
       const zodiacSign = extractZodiacSign(response.response);
-      const birthday = extractBirthday(response.response || response.question )
-      const enealogyNumber = extractEnnealogyNumber(response.response)
-      const religion = extractReligion(response.response || response.question)
+      const birthday = extractBirthday(response.response || response.question);
+      const enealogyNumber = extractEnnealogyNumber(response.response);
+      const religion = extractReligion(response.response || response.question);
 
+      console.log("Logging the Life Path", lifePathNumber);
+      console.log("Logging the Zodiac Sign", zodiacSign);
+      console.log("Logging To see the birthday", birthday);
+      console.log("Logging to see the ennealogy Number", enealogyNumber);
+      console.log("LOgging to see the religion", religion);
 
-
-      console.log("Logging the Life Path", lifePathNumber)
-      console.log("Logging the Zodiac Sign", zodiacSign)
-      console.log("Logging To see the birthday", birthday)
-      console.log("Logging to see the ennealogy Number", enealogyNumber)
-      console.log("LOgging to see the religion", religion)
-
-
-      if (lifePathNumber !== null || zodiacSign !== null || birthday !== null || religion !== null || enealogyNumber !== null) {
+      if (
+        lifePathNumber !== null ||
+        zodiacSign !== null ||
+        birthday !== null ||
+        religion !== null ||
+        enealogyNumber !== null
+      ) {
         console.log("Logging the Life Path Nuber", lifePathNumber);
         console.log("Logging the Zodiac Sign", zodiacSign);
         console.log("Logging the Birthday in if statement", birthday);
@@ -670,20 +669,13 @@ const ChatDashboard: React.FC = () => {
     convoId: string,
     userId: string
   ) => {
-    automatedMessageCounter.current += 1;
-
     if (automatedMessageCounter.current >= 2) {
-      console.log(
-        "IS autoamted message contianer 2, is it being logged 2",
-        automatedMessageCounter.current
-      );
       return;
     }
 
-    console.log(
-      "Logging ot see the current state of automated messagesd here",
-      automatedMessageCounter
-    );
+    automatedMessageCounter.current += 1;
+
+  
     // Inline ternary operation to set the message content
     const randomGreeting = getRandomGreeting();
 
@@ -951,7 +943,7 @@ const ChatDashboard: React.FC = () => {
           <div className="tempOverlay h-full flex flex-col pointer-events-none">
             <ChatContainer
               setConversations={setConversations}
-              conversations = {conversations}
+              conversations={conversations}
               splitUserName={splitUserName}
               userName={userName || ""}
               email={email || ""}

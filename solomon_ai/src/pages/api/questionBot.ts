@@ -7,7 +7,7 @@ const APIKEY =
   "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";
 const openai = new OpenAI({ apiKey: APIKEY });
 
-let conversationHistories = {};
+const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default async function handler(
   req: NextApiRequest,
@@ -180,12 +180,21 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
       ];
 
       console.time("openai call");
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
+
+
       
       const completion = await openai.chat.completions.create({
         model: "gpt-4",
         max_tokens: 300,
         messages: messages,
+        signal: controller.signal,
+
       });
+
+      clearTimeout(timeoutId);
+
 
       const response = completion.choices[0].message.content;
       console.timeEnd("openai call");
@@ -202,13 +211,13 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
       // console.log("AI Response:", response);
       res.json({ message: response });
     } catch (error) {
-      console.error("Error THIS IS NEW ERROR GOD ", error.message);
-      res
-        .status(500)
-        .json({
-          message: "Error occurred while processing the request",
-          error,
-        });
+      if (error.name === 'AbortError') {
+        console.error("OpenAI API call timed out");
+        res.status(504).json({ message: "OpenAI API call timed out" });
+      } else {
+        console.error("Error occurred while processing the request:", error);
+        res.status(500).json({ message: "Error occurred while processing the request", error });
+      }
     }
   } else {
     res.setHeader("ALLOW", ["POST"]);
