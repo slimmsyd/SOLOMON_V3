@@ -23,7 +23,6 @@ export default async function handler(
       // Check if conversationId is provided, if not, create a new conversation
       let currentConversationId = conversationId;
 
-
       // Check if there is already a message without a bot response
         // Check for an existing message without bot response
         let existingMessage = await db.messages.findFirst({
