@@ -124,19 +124,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <div className="flex flex-row">
-          {/* <div 
-            className=" mobileChatBtn flex items-center justify-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
-              </svg>
-            </div>           */}
-          {/* <h3>Logo</h3> */}
+     
         </div>
         <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
           <div className="mainIcon">
@@ -345,13 +333,16 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
           <p className="hover:text-[#807f7f]">Numerology Guidance</p>
         </button>
-        <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
+        <Link
+          href="/lifePathGuidance"
+          className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
+        >
           <div className="mainIcon !w-[20px] !h-[20px]">
             <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
           </div>
 
           <p className="hover:text-[#807f7f]">Life path guidance </p>
-        </button>
+        </Link>
       </div>
 
       {/* Settings  Container */}
@@ -389,11 +380,13 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         </Link>
       </div>
 
-
       <div className="flex flex-row gap-[10px] justify-end self-end items-center  text-[14px]   settingsContainer !border-none !mt-0 ">
         <Image src={FaceIcon} width={18} height={18} alt="Solomon Icon" />
         <p>Solomon AI</p>
-        <Link href="/" className="mainIcon flex items-center justify-center !w-[20px] !h-[20px] cursor-pointer">
+        <Link
+          href="/"
+          className="mainIcon flex items-center justify-center !w-[20px] !h-[20px] cursor-pointer"
+        >
           <svg
             width="16"
             height="16"

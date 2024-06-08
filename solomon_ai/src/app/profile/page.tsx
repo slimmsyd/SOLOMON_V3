@@ -15,8 +15,13 @@ import { Conversation } from "../../../types";
 
 import { checkSession } from "@/utilis/CheckSession";
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
+import { getChineseZodiac } from "@/utilis/textExtractor";
+import { getYearFromDateString } from "@/utilis/textExtractor";
+
 
 import axios from "axios";
+
+
 
 import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
@@ -43,6 +48,8 @@ const Profile: React.FC = () => {
   const [lifePath, setLifePathNumber] = useState<string>("");
   const [practice, setPractice] = useState<null>(null);
   const [ennealogy, setEnnealogyNumber] = useState<string>("");
+  const [birthday, setBirthDay] = useState<string>("");
+  const [chineseZodiac, setChineseZodiac] = useState<string>("");
 
   useEffect(() => {
     checkSession(status, {
@@ -109,8 +116,11 @@ const Profile: React.FC = () => {
     const getUserInfo = async () => {
       const userInfo = await fetchUserInfo(userId);
 
+
+      console.log("Just loggigng the user Info Here", userInfo)
+
       if (userInfo) {
-        const { lifePathNumber, zodiacSign, religion, ennealogy } = userInfo;
+        const { lifePathNumber, zodiacSign, ennealogy, birthday } = userInfo;
         setLifePathNumber(lifePathNumber);
         setZodiac(zodiacSign);
         setEnnealogyNumber(ennealogy);
@@ -119,6 +129,8 @@ const Profile: React.FC = () => {
 
     getUserInfo();
   }, [userId]);
+
+
 
 
   const handleSave = () => {
@@ -334,6 +346,34 @@ const Profile: React.FC = () => {
                   <p>{ennealogy || sessionStorage.getItem("ennealogy")}</p>
                 )}
               </div>
+          
+              <div className="flex flex-row w-full justify-between">
+                <p id="greyText">Cardology Number</p>
+                {isEditing ? (
+                  <input
+                    className="profileInput"
+                    type="text"
+                    value={ennealogy as any}
+                    onChange={(e) => setEnnealogyNumber(e.target.value)}
+                  />
+                ) : (
+                  <p></p>
+                )}
+              </div>
+
+              <div className="flex flex-row w-full justify-between">
+                <p id="greyText">Myles Bridge Personality Type</p>
+                {isEditing ? (
+                  <input
+                    className="profileInput"
+                    type="text"
+                    value={ennealogy as any}
+                    onChange={(e) => setEnnealogyNumber(e.target.value)}
+                  />
+                ) : (
+                  <p></p>
+                )}
+              </div>
               {/* <div className="flex flex-row w-full justify-between">
         <p id="greyText">Spiritual Practice</p>
         {isEditing ? (
@@ -456,7 +496,7 @@ const Profile: React.FC = () => {
 
             {/* FeedBack Container */}
 
-            <div className="accountContainer">
+            <div className="accountContainer max-h-[60px] h-[60px]">
               <div className="flex flex-row justify-between accountDiv">
                 <button className="flex flex-row items-center gap-[8px]">
                   <div className="mainIcon">

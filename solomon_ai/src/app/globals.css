@@ -491,9 +491,23 @@ figure video {
   .closePopupContainer {
     left: 50%;
   }
+  .guideLinesPopUpWrapper{
+    width: 90% !important;
+    margin: 0rem 2rem;
+    
+  }
+  .guideLinesPopupContainer{
+    padding: 0rem 2rem;
+  }
+  .zodiacPopup{
+    top: -1% !important;
+    left: 50%;
+
+  }
 
   .topDiv {
     z-index: 10;
+    
   }
 
   .homePopupFormContainer > form > button {
@@ -576,13 +590,13 @@ figure video {
   z-index: 95;
 }
 
-.closePopupContainer {
+.closePopupContainer, .zodiacPopup {
   cursor: pointer;
   background: white;
   display: flex;
   align-items: center;
-  justify-content: center;
   border-radius: 50%;
+  justify-content: center;
   position: absolute;
   top: -15%;
   right: -8%;
@@ -590,6 +604,12 @@ figure video {
   width: 32px;
   height: 32px;
   z-index: 95;
+}
+.zodiacPopup
+{ 
+  top: 0% ;
+  right: 0% !important;
+  z-index: 50;
 }
 .iconImageLeftTop {
   position: absolute;
@@ -730,6 +750,13 @@ figure video {
     min-width: auto !important;
     cursor: grab;
   }
+  .zodiacCardsWrapper {
+    overflow: none !important ;
+    width: 100% !important;
+    max-width: 100%;
+    min-width: 100% !important;
+  }
+
   .renderCardsWrapper::-webkit-scrollbar {
     display: none; /* Hides scrollbar in WebKit browsers */
   }
@@ -740,7 +767,13 @@ figure video {
     display: inline-block;
     pointer-events: none;
   }
-  .renderCards p {
+  .zodiacCards {
+    /* width: 250px !important; */
+    position: relative;
+    display: inline-block;
+  }
+  .renderCards p,
+  .zodiacCards p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; /* Truncate text with ellipsis */
@@ -996,7 +1029,8 @@ figure video {
   background: #b0d8e9;
 }
 
-.renderCardsWrapper {
+.renderCardsWrapper,
+.zodiacCardsWrapper {
   margin-top: 50px;
   position: relative;
   min-width: 800px;
@@ -1019,6 +1053,8 @@ figure video {
 
 .renderCardsWrapper::before,
 .renderCardsWrapper::after,
+.zodiacCardsWrapper::before,
+.zodiacCardsWrapper::after,
 .afterWrap::after,
 .afterWrap::before {
   content: "";
@@ -1029,19 +1065,22 @@ figure video {
   border-bottom: 0.5px solid #505050;
   border-left: 0.5px solid #505050;
 }
-.renderCardsWrapper::before {
+.renderCardsWrapper::before,
+.zodiacCardsWrapper::before {
   top: -20px;
   left: -5%;
   transform: rotate(90deg);
 }
 
-.renderCardsWrapper::after {
+.renderCardsWrapper::after,
+.zodiacCardsWrapper::after {
   bottom: -30%;
   right: 20%;
   transform: rotate(-90deg);
 }
 
-.renderCards {
+.renderCards,
+.zodiacCards {
   border: 1px solid #807f7f;
   width: 205px;
   height: 205px;
@@ -1050,6 +1089,13 @@ figure video {
   padding-right: 13px;
   cursor: pointer;
 }
+.renderCards img,
+.zodiacCards img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
 .renderCards:hover {
   background: #282828;
 }
@@ -1125,6 +1171,11 @@ figure video {
   border: 0.5px solid #6e6e6e;
   border-radius: 5px;
   padding: 5px;
+  transition: background 250ms ease-in-out;
+}
+.textAreaIcon:hover {
+  background: #827f7f2e;
+  transition: background 250ms ease-in-out;
 }
 @media screen and (max-width: 1357px) {
   .chatFormSubmit textarea {
@@ -1180,7 +1231,7 @@ figure video {
   /* z-index: 80; */
   top: 15px;
   position: fixed;
-z-index: 10;
+  z-index: 10;
   display: none;
 }
 .mobileChatBtn:hover {
@@ -1347,6 +1398,24 @@ z-index: 10;
 }
 
 /* PROFILE CSS */
+
+.zodiacOverlay {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(2, 2, 2, 0.406);
+  opacity: 0;
+  transition: opacity 250ms ease-in-out;
+}
+
+.zodiacOverlay:hover {
+  opacity: 1;
+  transition: opacity 250ms ease-in-out;
+}
+/* Life Path Number  CSS */
 .greyDivider {
   height: 2px;
   width: 100%;
@@ -1358,6 +1427,9 @@ z-index: 10;
   border: 0.5px solid #737373;
   height: 100%;
   border-radius: 10px;
+  overflow-y: hidden;
+  transition: height 250ms ease-in-out;
+  transition: max-height 250ms ease-in-out;
 }
 .accountDiv {
   padding: 20px;
@@ -1406,3 +1478,31 @@ z-index: 10;
   }
 }
 /* BLOG PAGES */
+
+/* GUIELINES POPUP CSS */
+.guideLinesPopupContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+.guideLinesPopUpWrapper {
+  position: relative;
+  border: 0.5px solid #807f7f;
+  background: #121212;
+  max-height: 631px;
+  overflow-y: scroll;
+  width: 600px;
+  position: absolute;
+  z-index: 10;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 2rem
+}
+/* GUIELINES POPUP CSS */
