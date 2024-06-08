@@ -6,6 +6,7 @@ interface UserInfo {
   zodiacSign: string;
   religion: string;
   ennealogy: string;
+  birthday: string;
 }
 
 export async function fetchUserInfo(userId: string): Promise<UserInfo | null> {
@@ -16,7 +17,7 @@ export async function fetchUserInfo(userId: string): Promise<UserInfo | null> {
     const data = await response.json();
 
     if (response.ok) {
-      const { lifePathNumber, zodiacSign, religion, ennealogy } = data.data;
+      const { lifePathNumber, zodiacSign, religion, ennealogy, birthday } = data.data;
       console.log("Logging the response here in profile", data);
 
       const session = await getSession();
@@ -27,7 +28,7 @@ export async function fetchUserInfo(userId: string): Promise<UserInfo | null> {
         sessionStorage.setItem("religion", religion);
         sessionStorage.setItem("ennealogy", ennealogy);
       }
-      return { lifePathNumber, zodiacSign, religion, ennealogy };
+      return { lifePathNumber, zodiacSign, religion, ennealogy, birthday };
     } else {
       console.error("Failed to retrieve user information:", data.message);
       return null;

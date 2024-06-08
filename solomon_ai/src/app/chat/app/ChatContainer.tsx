@@ -8,6 +8,8 @@ import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
 import iconChat from "../../../../public/assets/Chat/iconChat.png";
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 import { Conversation } from "../../../../types";
+import FaceIcon from "../../../../public/faceIconSolomon.png";
+// import { isClient } from "@/utilis/isClient";
 
 interface ChatContainerProps {
   setConversations?: React.Dispatch<React.SetStateAction<Conversation[]>>;
@@ -23,11 +25,10 @@ interface ChatContainerProps {
   editTitleId?: null;
   editedTitle?: string;
   editingTitle?: boolean;
-  titleUpdated?: boolean,
+  titleUpdated?: boolean;
   handleKeyDown?: (event: any) => void;
-  chatContainerRef?: React.Ref<HTMLDivElement>
+  chatContainerRef?: React.Ref<HTMLDivElement>;
   handleMobileChatBtnClick?: () => void;
-
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
@@ -47,11 +48,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   titleUpdated,
   handleKeyDown,
   chatContainerRef,
-  handleMobileChatBtnClick
+  handleMobileChatBtnClick,
 }) => {
-
-
-
   //Controlling hte hover state of the Delete SVG
   const [hoveredConversationId, setHoveredConversationId] = useState<
     null | string
@@ -71,11 +69,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     }
   };
 
-
   useEffect(() => {}, [editTitleId, editedTitle, editingTitle]);
-
-
-
 
   useEffect(() => {
     if (showDeleteContainer) {
@@ -90,52 +84,47 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   }, [showDeleteContainer]);
 
   //Checking hte hover VOneration ID
-  useEffect(() => {
-  }, [hoveredConversationId]);
+  useEffect(() => {}, [hoveredConversationId]);
 
   //Want to get access to the conversatiosn and display in local chat
   useEffect(() => {
     // Retrieve the conversations from local storage
     const localStorageConversations = sessionStorage.getItem("conversations");
-    
 
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
         localStorageConversations
       );
       setConversations?.(conversationArray); // Safe call with optional chaining
-      console.log("Loggin the conversations array", conversationArray)
+      console.log("Loggin the conversations array", conversationArray);
     }
-
   }, [titleUpdated]);
 
+  const [clientSplitUserName, setClientSplitUserName] =
+    useState<string>(splitUserName);
+  const [clientEmail, setClientEmail] = useState<string>(email as any);
 
+  const getSessionStorageItem = (key: string, defaultValue: string) => {
+    if (typeof window !== "undefined" && sessionStorage) {
+      return sessionStorage.getItem(key) || defaultValue;
+    }
+    return defaultValue;
+  };
 
+  useEffect(() => {
+    setClientSplitUserName(
+      getSessionStorageItem("splitUserName", splitUserName)
+    );
 
-  
-
-
+    setClientEmail(getSessionStorageItem("email", email as any));
+  }, [splitUserName, email]);
 
   return (
-    <div 
-    ref = {chatContainerRef}
-    className="chatContainer flex flex-col flex-1">
+    <div ref={chatContainerRef} className="chatContainer flex flex-col flex-1">
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <div className="flex flex-row">
-        {/* <div 
-            className=" mobileChatBtn flex items-center justify-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
-              </svg>
-            </div>           */}
-          {/* <h3>Logo</h3> */}
+     
         </div>
         <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
           <div className="mainIcon">
@@ -143,19 +132,20 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           </div>
           <p>New Chat</p>
         </button>
-        <div 
-            onClick={handleMobileChatBtnClick}
-            className=" mobileChatBtn flex items-center justify-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
-              </svg>
-            </div>
+        <div
+          onClick={handleMobileChatBtnClick}
+          className=" mobileChatBtn !relative flex items-center justify-start"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 256 256"
+          >
+            <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+          </svg>
+        </div>
         <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-[135px] chatSearchIcon ">
           <div className="mainIcon">
             <Image alt="searchIcon" src={searchIcon} width={100} height={100} />
@@ -196,11 +186,12 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             {conversations?.map((conversation) => (
               <div key={conversation.conversationId} className="relative">
                 <button
-                onClick={() => {
-                  if (!editingTitle) {
-                    onConversationClick && onConversationClick(conversation.conversationId);
-                  }
-                }}
+                  onClick={() => {
+                    if (!editingTitle) {
+                      onConversationClick &&
+                        onConversationClick(conversation.conversationId);
+                    }
+                  }}
                   onMouseEnter={() =>
                     setHoveredConversationId(conversation.conversationId)
                   }
@@ -216,13 +207,14 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                     />
                   </div>
 
-                {editTitleId === (conversation as any).conversationId && editingTitle === true  ? (
-                    <form 
+                  {editTitleId === (conversation as any).conversationId &&
+                  editingTitle === true ? (
+                    <form
                       onSubmit={onChangeConvoTitle}
-                    className="flex flex-row justify-center items-center gap-3">
-
+                      className="flex flex-row justify-center items-center gap-3"
+                    >
                       <input
-                      type = "text"
+                        type="text"
                         value={editedTitle}
                         onChange={handleTitleChange}
                         disabled={editTitleId === null}
@@ -230,34 +222,34 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                         // onBlur={handleBlur}
                       />
                     </form>
-                        
                   ) : (
-
                     <div className="flex flex-row justify-between items-center w-full pr-[5px]">
-                    <p className="hover:text-white  text-left">{conversation.title}</p>
-                    {hoveredConversationId === conversation.conversationId && (
-                      <svg
-                        width={10}
-                        height={10}
-                        aria-hidden="true"
-                        focusable="false"
-                        data-prefix="far"
-                        data-icon="layer-group"
-                        role="img"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 576 512"
-                        className="ml-2"
-                        onMouseDown={() => setShowDeleteContainer(true)}
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M288 0c-8.5 0-17 1.7-24.8 5.1L53.9 94.8C40.6 100.5 32 113.5 32 128s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2L312.8 5.1C305 1.7 296.5 0 288 0zm-5.9 49.2C284 48.4 286 48 288 48s4 .4 5.9 1.2L477.7 128 293.9 206.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 128 282.1 49.2zM53.9 222.8C40.6 228.5 32 241.5 32 256s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 235.5 477.7 256 293.9 334.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 256 146 235.5 85.1 209.4 53.9 222.8zm0 128C40.6 356.5 32 369.5 32 384s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 363.5 477.7 384 293.9 462.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 384 146 363.5 85.1 337.4 53.9 350.8z"
-                        ></path>
-                      </svg>
-                    )}
-                  </div>                  )}
-
-                 
+                      <p className="hover:text-white  text-left">
+                        {conversation.title}
+                      </p>
+                      {hoveredConversationId ===
+                        conversation.conversationId && (
+                        <svg
+                          width={10}
+                          height={10}
+                          aria-hidden="true"
+                          focusable="false"
+                          data-prefix="far"
+                          data-icon="layer-group"
+                          role="img"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 576 512"
+                          className="ml-2"
+                          onMouseDown={() => setShowDeleteContainer(true)}
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M288 0c-8.5 0-17 1.7-24.8 5.1L53.9 94.8C40.6 100.5 32 113.5 32 128s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2L312.8 5.1C305 1.7 296.5 0 288 0zm-5.9 49.2C284 48.4 286 48 288 48s4 .4 5.9 1.2L477.7 128 293.9 206.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 128 282.1 49.2zM53.9 222.8C40.6 228.5 32 241.5 32 256s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 235.5 477.7 256 293.9 334.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 256 146 235.5 85.1 209.4 53.9 222.8zm0 128C40.6 356.5 32 369.5 32 384s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 363.5 477.7 384 293.9 462.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 384 146 363.5 85.1 337.4 53.9 350.8z"
+                          ></path>
+                        </svg>
+                      )}
+                    </div>
+                  )}
                 </button>
               </div>
             ))}
@@ -282,9 +274,16 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  <p 
-                  onClick={() => handleTitleClick && hoveredConversationId !== null && handleTitleClick(hoveredConversationId)}
-                  className="text-white">Rename</p>
+                  <p
+                    onClick={() =>
+                      handleTitleClick &&
+                      hoveredConversationId !== null &&
+                      handleTitleClick(hoveredConversationId)
+                    }
+                    className="text-white"
+                  >
+                    Rename
+                  </p>
                 </button>
                 <button
                   onClick={() =>
@@ -334,13 +333,16 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
           <p className="hover:text-[#807f7f]">Numerology Guidance</p>
         </button>
-        <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
+        <Link
+          href="/lifePathGuidance"
+          className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
+        >
           <div className="mainIcon !w-[20px] !h-[20px]">
             <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
           </div>
 
           <p className="hover:text-[#807f7f]">Life path guidance </p>
-        </button>
+        </Link>
       </div>
 
       {/* Settings  Container */}
@@ -368,17 +370,23 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           className="  hoverBgBtn   text-[14px]   flex flex-row items-center justify-center gap-[13px] w-[135px]    "
         >
           <div className="mainIcon flex items-center justify-center">
-            {sessionStorage.getItem("splitUserName") || splitUserName}
+            {clientSplitUserName}
           </div>
-          <p>{sessionStorage.getItem("email") || email}</p>
+          <p>{clientEmail}</p>
         </Link>
 
         <Link href="/profile" className="mainIcon !w-[20px] !h-[20px]">
           <Image alt="chatIcon" src={settingsIcon} width={100} height={100} />
         </Link>
       </div>
-      <div className="flex flex-row gap-[4px] justify-end self-end   settingsContainer !border-none !mt-0 ">
-        <Link href="/" className="mainIcon !w-[20px] !h-[20px] cursor-pointer">
+
+      <div className="flex flex-row gap-[10px] justify-end self-end items-center  text-[14px]   settingsContainer !border-none !mt-0 ">
+        <Image src={FaceIcon} width={18} height={18} alt="Solomon Icon" />
+        <p>Solomon AI</p>
+        <Link
+          href="/"
+          className="mainIcon flex items-center justify-center !w-[20px] !h-[20px] cursor-pointer"
+        >
           <svg
             width="16"
             height="16"

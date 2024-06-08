@@ -212,6 +212,7 @@ const ChatDashboard: React.FC = () => {
       // 1. Set up the new response without any bot response yet.
       const newResponse = { question: message, response: "" };
 
+
       setResponses((responses) => [...responses, newResponse]); // Use functional update for state
       setMessage("");
 
@@ -247,18 +248,21 @@ const ChatDashboard: React.FC = () => {
 
    
 
-        await fetch("/api/messages", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: session?.user.id, // Ensure you have the current user's ID
-            conversationId: updatedConversationId,
-            userContent: message, // User's message
-            botResponse: botReply.message, // Bot's response, obtained separately
-          }),
-        });
+        //Keep her just in case I choose to use in in the fetch request instead of hte backend to recognize it.
+        
+        
+        // await fetch("/api/messages", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     userId: session?.user.id, // Ensure you have the current user's ID
+        //     conversationId: updatedConversationId,
+        //     userContent: message, // User's message
+        //     botResponse: botReply.message, // Bot's response, obtained separately
+        //   }),
+        // });
 
         console.log(
           "Loggign the current Conversation on a new click ",

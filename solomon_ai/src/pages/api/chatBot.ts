@@ -63,7 +63,7 @@ export default async function handler(
 
 
 
-      console.log("Logging the conversation histroy", conversationHistory)
+      // console.log("Logging the conversation histroy", conversationHistory)
 
   
       
@@ -587,7 +587,7 @@ export default async function handler(
     });
 
 
-      console.log("Loggin the REsponse", response);
+      // console.log("Loggin the REsponse", response);
       res.json({ message: response }); // This sends resposne back out to the FrontEnd
     } catch (error) {
       console.error("Error THIS IS HTE ERROR ON WHY", error.message);

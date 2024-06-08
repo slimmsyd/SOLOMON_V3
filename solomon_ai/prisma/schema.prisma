@@ -27,6 +27,8 @@ model User {
   ennealogy      Int?
   lifePathNumber Int?
   religion       String?
+  mylesBridgeType String? 
+  cardologyNumber String?
   messages       Messages[]
   conversations  UserConversations[]
   accounts       Account[]
