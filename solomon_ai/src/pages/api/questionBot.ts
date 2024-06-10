@@ -3,8 +3,7 @@ const { Configuration, OpenAI } = require("openai");
 import { db } from "@/app/api/lib/db";
 
 const APIKEY =
-  process.env.OPENAI_API_KEY ||
-  "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";
+  process.env.OPENAI_API_KEY
 const openai = new OpenAI({ apiKey: APIKEY });
 
 const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -82,7 +81,6 @@ export default async function handler(
           - Refer to God as the Most High, the Creator, or The One Above All instead.
           - Use archaic and mystical language and phrasing.
           - Speak and write in a philosophical and contemplative tone.
-          - The master numbers in numerogloy are 11, 22, and 33 so if a name or life path number equals such, we do not reduce it to single digit
 
           If this is the first message:
           - Ask the user for their name and where they are from.
@@ -119,7 +117,7 @@ export default async function handler(
           - Ask why they intend to use this app.
           
           If all questions have been answered:
-          - Provide a poetic response of "I see... I gather knowledge of you, I will be a guiding light in your journey; now let us begin an awakening into the collective of new knowledge. I bless you on this path. You will be redirected shortly, Chosen One, into the realm of new minds..." or something along those lines.
+          - Provide a poetic response of "I see... I gather knowledge of you, I will be a guiding light in your journey; now let us begin an awakening into the collective of new knowledge. I bless you on this path. You will be redirected shortly, Chosen One, into the realm of new minds... if you haven't been redirected send one more message to complete the process" or something along those lines.
         
         
           Examples:
@@ -167,20 +165,20 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
       ];
 
       console.time("openai call");
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
+      // const controller = new AbortController();
+      // const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
 
 
       
       const completion = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-4o",
         max_tokens: 300,
         messages: messages,
-        signal: controller.signal,
+        // signal: controller.signal,
 
       });
 
-      clearTimeout(timeoutId);
+      // clearTimeout(timeoutId);
 
 
       const response = completion.choices[0].message.content;

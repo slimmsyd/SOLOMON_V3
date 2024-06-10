@@ -18,10 +18,7 @@ import { fetchUserInfo } from "@/utilis/fetchUserInfo";
 import { getChineseZodiac } from "@/utilis/textExtractor";
 import { getYearFromDateString } from "@/utilis/textExtractor";
 
-
 import axios from "axios";
-
-
 
 import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
@@ -50,6 +47,8 @@ const Profile: React.FC = () => {
   const [ennealogy, setEnnealogyNumber] = useState<string>("");
   const [birthday, setBirthDay] = useState<string>("");
   const [chineseZodiac, setChineseZodiac] = useState<string>("");
+  const [cardologyNumber, setCardologyNumber] = useState("");
+  const [mylesBridgeType, setMylesBridgeType] = useState("");
 
   useEffect(() => {
     checkSession(status, {
@@ -67,45 +66,45 @@ const Profile: React.FC = () => {
     });
   }, [status]);
 
-    //This funcitno shifts and shows the mobile Chat ccontainer 
-    const chatContainerRef = useRef<HTMLDivElement>(null);
-    const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
-  
-    const handleMobileChatBtnClick = () => {
-  
-      console.log("Logging the chat container Ref current state", chatContainerRef.current)
-  
-      if (chatContainerRef.current) {
-        if (isAtZero) {
-          chatContainerRef.current.style.transform = 'translateX(-100%)';
-        } else {
-          chatContainerRef.current.style.transform = 'translateX(0px)';
-        }
-        setIsAtZero(!isAtZero); // Toggle the state
+  //This funcitno shifts and shows the mobile Chat ccontainer
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
+
+  const handleMobileChatBtnClick = () => {
+    console.log(
+      "Logging the chat container Ref current state",
+      chatContainerRef.current
+    );
+
+    if (chatContainerRef.current) {
+      if (isAtZero) {
+        chatContainerRef.current.style.transform = "translateX(-100%)";
+      } else {
+        chatContainerRef.current.style.transform = "translateX(0px)";
+      }
+      setIsAtZero(!isAtZero); // Toggle the state
+    }
+  };
+
+  // Effect to handle viewport resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 950 && chatContainerRef.current) {
+        chatContainerRef.current.style.transform = "translateX(0px)";
+        setIsAtZero(false); // Reset the state
+      } else if (chatContainerRef.current) {
+        chatContainerRef.current.style.transform = "translateX(-100%)";
+        setIsAtZero(true); // Reset the state
       }
     };
-  
-    // Effect to handle viewport resize
-    useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth >= 950 && chatContainerRef.current) {
-          chatContainerRef.current.style.transform = 'translateX(0px)';
-          setIsAtZero(false); // Reset the state
-        }else if (chatContainerRef.current) { 
-          chatContainerRef.current.style.transform = 'translateX(-100%)';
-          setIsAtZero(true); // Reset the state
-        }
-      };
-  
-      window.addEventListener('resize', handleResize);
-  
-      // Cleanup event listener on component unmount
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
-  
-  
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   //Run the fetchUserInfo on Remout only
   useEffect(() => {
@@ -116,62 +115,60 @@ const Profile: React.FC = () => {
     const getUserInfo = async () => {
       const userInfo = await fetchUserInfo(userId);
 
-
-      console.log("Just loggigng the user Info Here", userInfo)
+      console.log("Just loggigng the user Info Here", userInfo);
 
       if (userInfo) {
-        const { lifePathNumber, zodiacSign, ennealogy, birthday } = userInfo;
+        const { lifePathNumber, zodiacSign, ennealogy, birthday, cardologyNumber, mylesBridgeType } = userInfo;
         setLifePathNumber(lifePathNumber);
         setZodiac(zodiacSign);
         setEnnealogyNumber(ennealogy);
+        setCardologyNumber(cardologyNumber)
+        setMylesBridgeType(mylesBridgeType)
+
       }
     };
 
     getUserInfo();
   }, [userId]);
 
-
-
-
-  const handleSave = () => {
-    userId;
-    sessionStorage.setItem("zodiacSign", zodiac as any);
-    sessionStorage.setItem("lifePathNumber", lifePath as any);
-    sessionStorage.setItem("ennealogy", ennealogy as any);
-
-    updateUserProgress(
-      userId as any,
-       null,
-      lifePath as any,
-      zodiac as any,
-      ennealogy as any,
-      null
-    );
-    setIsEditing(false);
-  };
-
   // Update user progress with the extracted vales
   const updateUserProgress = async (
-    userId: string,
-    birthday: string | null,
-    lifePathNumber: number | null,
-    zodiacSign: string | null,
-    enealogyNumber: string | null,
-    religion: string | null
+    userId,
+    cardologyNumber,
+    mylesBridgeType
   ) => {
     try {
       const response = await axios.post("/api/updateUser", {
         userId,
-        birthday: birthday ?? undefined,
-        lifePathNumber: lifePathNumber ?? undefined,
-        zodiacSign: zodiacSign ?? undefined,
-        enealogyNumber: enealogyNumber ?? undefined,
-        religion: religion ?? undefined,
+        cardologyNumber: cardologyNumber ?? undefined,
+        mylesBridgeType: mylesBridgeType ?? undefined,
       });
+
+      //Going to save into Session to prevent the asynh loading issues 
+      if (isClient()) {
+  
+        sessionStorage.setItem("cardologyNumber", cardologyNumber)
+        sessionStorage.setItem("mylesBridgeType", mylesBridgeType)
+        // Sign out and redirect
+     
+      }
 
       console.log("User progress updated successfully:", response.data);
     } catch (error) {
       console.error("Error updating user progress:", error);
+    }
+  };
+
+  const handleSave = () => {
+    // Update state
+    updateUserProgress(userId, cardologyNumber, mylesBridgeType);
+    // Optionally, stop editing mode
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSave();
     }
   };
 
@@ -242,21 +239,20 @@ const Profile: React.FC = () => {
         userName={userName || ""}
         email={email || ""}
         onConversationClick={handleConversationClick}
-        chatContainerRef = {chatContainerRef as any}
-        handleMobileChatBtnClick = {handleMobileChatBtnClick}
-
+        chatContainerRef={chatContainerRef as any}
+        handleMobileChatBtnClick={handleMobileChatBtnClick}
       />
       {/* Chat Container Componet  */}
 
       <div className="chatDashboardWrapper !h-full w-full text-left">
         {/* Guidelines Hader */}
 
-  
         <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
           <div className=" flex-1   cursor-pointer mobileChatContainer">
-            <div 
-            onClick={handleMobileChatBtnClick}
-            className=" mobileChatBtn flex items-center justify-start">
+            <div
+              onClick={handleMobileChatBtnClick}
+              className=" mobileChatBtn flex items-center justify-start"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -346,18 +342,26 @@ const Profile: React.FC = () => {
                   <p>{ennealogy || sessionStorage.getItem("ennealogy")}</p>
                 )}
               </div>
-          
+
               <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Cardology Number</p>
                 {isEditing ? (
                   <input
-                    className="profileInput"
+                    className="profileInput outline-none"
                     type="text"
-                    value={ennealogy as any}
-                    onChange={(e) => setEnnealogyNumber(e.target.value)}
+                    value={cardologyNumber as any}
+                    onChange={(e) => setCardologyNumber(e.target.value)}
+                    onKeyDown={handleKeyDown}
                   />
                 ) : (
-                  <p></p>
+                  <input
+                    onClick={() => setIsEditing(true)}
+                    className="profileInput"
+                    type="text"
+                    placeholder="Add"
+                    value={cardologyNumber || sessionStorage.getItem("cardologyNumber") as any}
+                    readOnly
+                  />
                 )}
               </div>
 
@@ -367,11 +371,19 @@ const Profile: React.FC = () => {
                   <input
                     className="profileInput"
                     type="text"
-                    value={ennealogy as any}
-                    onChange={(e) => setEnnealogyNumber(e.target.value)}
+                    value={mylesBridgeType as any}
+                    onChange={(e) => setMylesBridgeType(e.target.value)}
+                    onKeyDown={handleKeyDown}
                   />
                 ) : (
-                  <p></p>
+                  <input
+                  onClick={() => setIsEditing(true)}
+                    className="profileInput"
+                    type="text"
+                    placeholder="Add"
+                    value={mylesBridgeType || sessionStorage.getItem("mylesBridgeType") as any}
+
+                  />
                 )}
               </div>
               {/* <div className="flex flex-row w-full justify-between">

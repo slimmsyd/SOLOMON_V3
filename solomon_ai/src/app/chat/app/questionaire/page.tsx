@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "../../../../styles/chat.module.css";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
@@ -187,13 +188,13 @@ const ChatDashboard: React.FC = () => {
         }
 
         if (isComplete) {
-          setReadyToRedirect(true);
+          setReadyToRedirect(false);
         }
       } catch (error) {
         console.error("Error saving progress:", error);
       }
     } else if (readyToRedirect) {
-      router.push("/chat/app/");
+      // router.push("/chat/app/");
     }
   };
 
@@ -201,7 +202,7 @@ const ChatDashboard: React.FC = () => {
     console.log("logging the completed form chnage ", completedForm);
 
     if (completedForm) {
-      router.push("/chat/app/");
+      // router.push("/chat/app/");
     }
   }, [completedForm]);
 
@@ -244,7 +245,7 @@ const ChatDashboard: React.FC = () => {
       setFirstConvoState(false);
 
       if (readyToRedirect) {
-        router.push("/chat/app/");
+        // router.push("/chat/app/");
       } else {
         return;
       }
@@ -675,7 +676,6 @@ const ChatDashboard: React.FC = () => {
 
     automatedMessageCounter.current += 1;
 
-  
     // Inline ternary operation to set the message content
     const randomGreeting = getRandomGreeting();
 
@@ -934,7 +934,7 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <>
-      {completedForm ? (
+      {readyToRedirect ? (
         <LoadingComponent />
       ) : (
         <div className="chatDashboard">
@@ -989,6 +989,13 @@ const ChatDashboard: React.FC = () => {
                 fetchFirstConversation={fetchFirstConversation}
               />
             </div>
+
+            <Link href = "/chat/app"
+              className={`${styles.popupBtn} absolute bottom-[50px] left-1/2 transform -translate-x-1/2 mb-4`}
+              style={{ display: currentQuestion >= 6 ? "flex" : "none" }}
+            >
+              Enter The Temple
+            </Link>
 
             <form
               ref={formRef}
