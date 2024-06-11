@@ -39,7 +39,7 @@ import LoadingComponent from "@/app/components/helper/Loading";
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
-  const questionBotApi = "https:/biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot"
+  const questionBotApi = "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot"
 
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
