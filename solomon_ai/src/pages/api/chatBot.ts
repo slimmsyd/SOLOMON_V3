@@ -57,6 +57,9 @@ export default async function handler(
         Life Path Number: ${userInfo?.lifePathNumber || "Unknown"},
         Zodiac Sign: ${userInfo?.zodiacSign || "Unknown"},
         Ennealogy Number: ${userInfo?.ennealogy || "Unknown"}
+        Myles Bridger Personality : ${userInfo?.mylesBridgeType || "Unknown"}
+        Cardolgy Number : ${userInfo?.cardologyNumber || "Unknown"}
+        Name Numerological Signature : ${userInfo?.nameNumerolgyNumber || "Unknown"}
       `;
 
 

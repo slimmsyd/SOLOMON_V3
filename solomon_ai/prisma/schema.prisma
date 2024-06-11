@@ -29,6 +29,8 @@ model User {
   religion       String?
   mylesBridgeType String? 
   cardologyNumber String?
+  nameNumerolgyNumber String?
+
   messages       Messages[]
   conversations  UserConversations[]
   accounts       Account[]

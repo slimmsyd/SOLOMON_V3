@@ -490,6 +490,9 @@ const ChatDashboard: React.FC = () => {
       }
     }
   };
+
+
+  
   useEffect(() => {
     removeFirstChatResponse();
   }, [pathname]);

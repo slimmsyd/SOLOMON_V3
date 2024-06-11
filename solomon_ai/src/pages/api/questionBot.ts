@@ -56,14 +56,8 @@ export default async function handler(
       });
 
 
+      console.log("Logging the conversation History",)
 
-      // console.log("Logging the conversation histroy", conversationHistory)
-
-      //      // Create a new message and link it to a user and a conversation
-
-
-      // console.log("Logging the userID", userId)
- 
     
       const messages = [
         {

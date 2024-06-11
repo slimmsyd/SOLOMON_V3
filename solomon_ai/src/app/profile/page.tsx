@@ -43,6 +43,7 @@ const Profile: React.FC = () => {
 
   const [zodiac, setZodiac] = useState<string>("");
   const [lifePath, setLifePathNumber] = useState<string>("");
+  const [nameNumerologyNumber, setNameNumerolgyNumber] = useState<string>("");
   const [practice, setPractice] = useState<null>(null);
   const [ennealogy, setEnnealogyNumber] = useState<string>("");
   const [birthday, setBirthDay] = useState<string>("");
@@ -118,13 +119,21 @@ const Profile: React.FC = () => {
       console.log("Just loggigng the user Info Here", userInfo);
 
       if (userInfo) {
-        const { lifePathNumber, zodiacSign, ennealogy, birthday, cardologyNumber, mylesBridgeType } = userInfo;
+        const {
+          lifePathNumber,
+          zodiacSign,
+          ennealogy,
+          birthday,
+          cardologyNumber,
+          mylesBridgeType,
+          nameNumerolgyNumber,
+        } = userInfo;
         setLifePathNumber(lifePathNumber);
         setZodiac(zodiacSign);
         setEnnealogyNumber(ennealogy);
-        setCardologyNumber(cardologyNumber)
-        setMylesBridgeType(mylesBridgeType)
-
+        setCardologyNumber(cardologyNumber);
+        setMylesBridgeType(mylesBridgeType);
+        setNameNumerolgyNumber(nameNumerolgyNumber);
       }
     };
 
@@ -134,23 +143,24 @@ const Profile: React.FC = () => {
   // Update user progress with the extracted vales
   const updateUserProgress = async (
     userId,
-    cardologyNumber,
-    mylesBridgeType
+    cardologyNumber: string,
+    mylesBridgeType: string,
+    nameNumerolgyNumber: string
   ) => {
     try {
       const response = await axios.post("/api/updateUser", {
         userId,
         cardologyNumber: cardologyNumber ?? undefined,
         mylesBridgeType: mylesBridgeType ?? undefined,
+        nameNumerolgyNumber: nameNumerolgyNumber ?? undefined,
       });
 
-      //Going to save into Session to prevent the asynh loading issues 
+      //Going to save into Session to prevent the asynh loading issues
       if (isClient()) {
-  
-        sessionStorage.setItem("cardologyNumber", cardologyNumber)
-        sessionStorage.setItem("mylesBridgeType", mylesBridgeType)
+        sessionStorage.setItem("cardologyNumber", cardologyNumber);
+        sessionStorage.setItem("mylesBridgeType", mylesBridgeType);
+        sessionStorage.setItem("mylesBridgeType", nameNumerolgyNumber);
         // Sign out and redirect
-     
       }
 
       console.log("User progress updated successfully:", response.data);
@@ -161,7 +171,12 @@ const Profile: React.FC = () => {
 
   const handleSave = () => {
     // Update state
-    updateUserProgress(userId, cardologyNumber, mylesBridgeType);
+    updateUserProgress(
+      userId,
+      cardologyNumber,
+      mylesBridgeType,
+      nameNumerologyNumber
+    );
     // Optionally, stop editing mode
     setIsEditing(false);
   };
@@ -330,6 +345,31 @@ const Profile: React.FC = () => {
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
+                <p id="greyText">Name Numerical Signature</p>
+                {isEditing ? (
+                  <input
+                    className="profileInput"
+                    type="text"
+                    value={nameNumerologyNumber as any}
+                    onChange={(e) => setNameNumerolgyNumber(e.target.value)}
+                    onKeyDown={handleKeyDown}
+
+                  />
+                ) : (
+                  <input
+                    onClick={() => setIsEditing(true)}
+                    className="profileInput"
+                    type="text"
+                    placeholder="Add"
+                    value={
+                      nameNumerologyNumber ||
+                      (sessionStorage.getItem("nameNumerolgyNumber") as any)
+                    }
+                    readOnly
+                  />
+                )}
+              </div>
+              <div className="flex flex-row w-full justify-between">
                 <p id="greyText">Ennealogy Number</p>
                 {isEditing ? (
                   <input
@@ -359,7 +399,10 @@ const Profile: React.FC = () => {
                     className="profileInput"
                     type="text"
                     placeholder="Add"
-                    value={cardologyNumber || sessionStorage.getItem("cardologyNumber") as any}
+                    value={
+                      cardologyNumber ||
+                      (sessionStorage.getItem("cardologyNumber") as any)
+                    }
                     readOnly
                   />
                 )}
@@ -377,12 +420,14 @@ const Profile: React.FC = () => {
                   />
                 ) : (
                   <input
-                  onClick={() => setIsEditing(true)}
+                    onClick={() => setIsEditing(true)}
                     className="profileInput"
                     type="text"
                     placeholder="Add"
-                    value={mylesBridgeType || sessionStorage.getItem("mylesBridgeType") as any}
-
+                    value={
+                      mylesBridgeType ||
+                      (sessionStorage.getItem("mylesBridgeType") as any)
+                    }
                   />
                 )}
               </div>

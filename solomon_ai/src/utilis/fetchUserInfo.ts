@@ -9,6 +9,7 @@ interface UserInfo {
   birthday: string;
   mylesBridgeType: string;
   cardologyNumber: string;
+  nameNumerolgyNumber: string;
 }
 
 export async function fetchUserInfo(userId: string): Promise<UserInfo | null> {
@@ -19,7 +20,7 @@ export async function fetchUserInfo(userId: string): Promise<UserInfo | null> {
     const data = await response.json();
 
     if (response.ok) {
-      const { lifePathNumber, zodiacSign, religion, ennealogy, birthday, cardologyNumber, mylesBridgeType  } = data.data;
+      const { lifePathNumber, zodiacSign, religion, ennealogy, birthday, cardologyNumber, mylesBridgeType, nameNumerolgyNumber  } = data.data;
       console.log("Logging the response here in profile", data);
 
       const session = await getSession();
@@ -28,9 +29,14 @@ export async function fetchUserInfo(userId: string): Promise<UserInfo | null> {
         sessionStorage.setItem("lifePathNumber", lifePathNumber);
         sessionStorage.setItem("zodiacSign", zodiacSign);
         sessionStorage.setItem("religion", religion);
+        sessionStorage.setItem("mylesBridgeType", mylesBridgeType);
+        sessionStorage.setItem("cardologyNumber", cardologyNumber);
+        sessionStorage.setItem("nameNumerolgyNumber", nameNumerolgyNumber);
         sessionStorage.setItem("ennealogy", ennealogy);
+
+
       }
-      return { lifePathNumber, zodiacSign, religion, ennealogy, birthday, cardologyNumber, mylesBridgeType  };
+      return { lifePathNumber, zodiacSign, religion, ennealogy, birthday, cardologyNumber, mylesBridgeType, nameNumerolgyNumber  };
     } else {
       console.error("Failed to retrieve user information:", data.message);
       return null;

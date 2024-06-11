@@ -39,6 +39,8 @@ import LoadingComponent from "@/app/components/helper/Loading";
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
+  const questionBotApi = "https:/biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot"
+
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
 
@@ -276,7 +278,7 @@ const ChatDashboard: React.FC = () => {
 
       try {
         // 2. Fetch bot reply from the API
-        const botReply = await fetch("/api/questionBot", {
+        const botReply = await fetch(questionBotApi, {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -691,7 +693,7 @@ const ChatDashboard: React.FC = () => {
     try {
       // Add a new entry with a loading state before making the API call
 
-      const botReply = await fetch("/api/questionBot", {
+      const botReply = await fetch(questionBotApi, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -1010,7 +1012,7 @@ const ChatDashboard: React.FC = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
-                      formRef.current?.requestSubmit();
+                    formRef.current?.requestSubmit();
                     }
                   }}
                   value={message}
