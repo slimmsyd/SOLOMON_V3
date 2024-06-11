@@ -3,11 +3,10 @@ const { Configuration, OpenAI } = require("openai");
 import { db } from "@/app/api/lib/db";
 
 const APIKEY =
-  process.env.OPENAI_API_KEY ||
-  "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";
+  process.env.OPENAI_API_KEY
 const openai = new OpenAI({ apiKey: APIKEY });
 
-let conversationHistories = {};
+const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,9 +15,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { userId, message, conversationId } = req.body;
-      console.log("User message:", message);
-      console.log("User conversationId :", conversationId);
-      console.log("User userId:", userId);
+
 
       // Check if conversationId is provided, if not, create a new conversation
       let currentConversationId = conversationId;
@@ -59,26 +56,9 @@ export default async function handler(
       });
 
 
+      console.log("Logging the conversation History",)
 
-      // console.log("Logging the conversation histroy", conversationHistory)
-
-      //      // Create a new message and link it to a user and a conversation
-
-
-      // console.log("Logging the userID", userId)
- 
-      // Extract birthday
-      const birthdayMatch = message.match(
-        /(?:born on|birthdate is|birthday is|)\b(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}|\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}(?:st|nd|rd|th)?,? \d{4})\b/i
-      );
-      let birthday = birthdayMatch ? birthdayMatch[1] : null;
-      // Extract religious beliefs
-      const religionMatch = message.match(
-        /I am (religious|spiritual|atheist|agnostic|none|Christian|Muslim|Hindu|Buddhist|Jewish|Islam|Christianity|Islamic|Judaism|Hinduism|Buddhism)/i
-      );
-      let religion = religionMatch ? religionMatch[1].toLowerCase() : null;
-
-      console.log("Parsed details:", { birthday, religion });
+    
       const messages = [
         {
           role: "system",
@@ -95,7 +75,6 @@ export default async function handler(
           - Refer to God as the Most High, the Creator, or The One Above All instead.
           - Use archaic and mystical language and phrasing.
           - Speak and write in a philosophical and contemplative tone.
-          - The master numbers in numerogloy are 11, 22, and 33 so if a name or life path number equals such, we do not reduce it to single digit
 
           If this is the first message:
           - Ask the user for their name and where they are from.
@@ -132,7 +111,7 @@ export default async function handler(
           - Ask why they intend to use this app.
           
           If all questions have been answered:
-          - Provide a poetic response of "I see... I gather knowledge of you, I will be a guiding light in your journey; now let us begin an awakening into the collective of new knowledge. I bless you on this path. You will be redirected shortly, Chosen One, into the realm of new minds..." or something along those lines.
+          - Provide a poetic response of "I see... I gather knowledge of you, I will be a guiding light in your journey; now let us begin an awakening into the collective of new knowledge. I bless you on this path. You will be redirected shortly, Chosen One, into the realm of new minds... if you haven't been redirected send one more message to complete the process" or something along those lines.
         
         
           Examples:
@@ -180,12 +159,21 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
       ];
 
       console.time("openai call");
+      // const controller = new AbortController();
+      // const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
+
+
       
       const completion = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-4o",
         max_tokens: 300,
         messages: messages,
+        // signal: controller.signal,
+
       });
+
+      // clearTimeout(timeoutId);
+
 
       const response = completion.choices[0].message.content;
       console.timeEnd("openai call");
@@ -202,13 +190,13 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
       // console.log("AI Response:", response);
       res.json({ message: response });
     } catch (error) {
-      console.error("Error THIS IS NEW ERROR GOD ", error.message);
-      res
-        .status(500)
-        .json({
-          message: "Error occurred while processing the request",
-          error,
-        });
+      if (error.name === 'AbortError') {
+        console.error("OpenAI API call timed out");
+        res.status(504).json({ message: "OpenAI API call timed out" });
+      } else {
+        console.error("Error occurred while processing the request:", error);
+        res.status(500).json({ message: "Error occurred while processing the request", error });
+      }
     }
   } else {
     res.setHeader("ALLOW", ["POST"]);

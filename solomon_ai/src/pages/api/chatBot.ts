@@ -4,8 +4,7 @@ const { Configuration, OpenAI } = require("openai");
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
 
 const APIKEY =
-  process.env.OPENAI_API_KEY ||
-  "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";
+  process.env.OPENAI_API_KEY
 const openai = new OpenAI({ apiKey: APIKEY });
 
 export default async function handler(
@@ -58,6 +57,9 @@ export default async function handler(
         Life Path Number: ${userInfo?.lifePathNumber || "Unknown"},
         Zodiac Sign: ${userInfo?.zodiacSign || "Unknown"},
         Ennealogy Number: ${userInfo?.ennealogy || "Unknown"}
+        Myles Bridger Personality : ${userInfo?.mylesBridgeType || "Unknown"}
+        Cardolgy Number : ${userInfo?.cardologyNumber || "Unknown"}
+        Name Numerological Signature : ${userInfo?.nameNumerolgyNumber || "Unknown"}
       `;
 
 

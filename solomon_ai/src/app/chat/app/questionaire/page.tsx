@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "../../../../styles/chat.module.css";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
@@ -37,6 +38,8 @@ import LoadingComponent from "@/app/components/helper/Loading";
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
+
+  const questionBotApi = "https:/biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot"
 
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
@@ -187,13 +190,13 @@ const ChatDashboard: React.FC = () => {
         }
 
         if (isComplete) {
-          setReadyToRedirect(true);
+          setReadyToRedirect(false);
         }
       } catch (error) {
         console.error("Error saving progress:", error);
       }
     } else if (readyToRedirect) {
-      router.push("/chat/app/");
+      // router.push("/chat/app/");
     }
   };
 
@@ -201,7 +204,7 @@ const ChatDashboard: React.FC = () => {
     console.log("logging the completed form chnage ", completedForm);
 
     if (completedForm) {
-      router.push("/chat/app/");
+      // router.push("/chat/app/");
     }
   }, [completedForm]);
 
@@ -244,7 +247,7 @@ const ChatDashboard: React.FC = () => {
       setFirstConvoState(false);
 
       if (readyToRedirect) {
-        router.push("/chat/app/");
+        // router.push("/chat/app/");
       } else {
         return;
       }
@@ -275,7 +278,7 @@ const ChatDashboard: React.FC = () => {
 
       try {
         // 2. Fetch bot reply from the API
-        const botReply = await fetch("/api/questionBot", {
+        const botReply = await fetch(questionBotApi, {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -492,8 +495,7 @@ const ChatDashboard: React.FC = () => {
     setEditedTitle(event.target.value);
   };
 
-//
-
+  //
 
   // Update user progress with the extracted vales
   const updateUserProgress = async (
@@ -504,12 +506,7 @@ const ChatDashboard: React.FC = () => {
     enealogyNumber: string | null,
     religion: string | null
   ) => {
-
-
-
     try {
-
-
       const response = await axios.post("/api/updateUser", {
         userId,
         birthday: birthday ?? undefined,
@@ -522,30 +519,35 @@ const ChatDashboard: React.FC = () => {
       console.log("User progress updated successfully:", response.data);
     } catch (error) {
       console.error("Error updating user progress:", error);
-    } 
+    }
   };
 
   useEffect(() => {
-
-    console.log("Logging the responses here before the Extract Life ", responses)
+    console.log(
+      "Logging the responses here before the Extract Life ",
+      responses
+    );
     responses.forEach((response) => {
-      console.log("Logging response.repsone", response.response)
+      console.log("Logging response.repsone", response.response);
       const lifePathNumber = extractLifePathNumber(response.response);
       const zodiacSign = extractZodiacSign(response.response);
-      const birthday = extractBirthday(response.response || response.question )
-      const enealogyNumber = extractEnnealogyNumber(response.response)
-      const religion = extractReligion(response.response || response.question)
+      const birthday = extractBirthday(response.response || response.question);
+      const enealogyNumber = extractEnnealogyNumber(response.response);
+      const religion = extractReligion(response.response || response.question);
 
+      console.log("Logging the Life Path", lifePathNumber);
+      console.log("Logging the Zodiac Sign", zodiacSign);
+      console.log("Logging To see the birthday", birthday);
+      console.log("Logging to see the ennealogy Number", enealogyNumber);
+      console.log("LOgging to see the religion", religion);
 
-
-      console.log("Logging the Life Path", lifePathNumber)
-      console.log("Logging the Zodiac Sign", zodiacSign)
-      console.log("Logging To see the birthday", birthday)
-      console.log("Logging to see the ennealogy Number", enealogyNumber)
-      console.log("LOgging to see the religion", religion)
-
-
-      if (lifePathNumber !== null || zodiacSign !== null || birthday !== null || religion !== null || enealogyNumber !== null) {
+      if (
+        lifePathNumber !== null ||
+        zodiacSign !== null ||
+        birthday !== null ||
+        religion !== null ||
+        enealogyNumber !== null
+      ) {
         console.log("Logging the Life Path Nuber", lifePathNumber);
         console.log("Logging the Zodiac Sign", zodiacSign);
         console.log("Logging the Birthday in if statement", birthday);
@@ -670,20 +672,12 @@ const ChatDashboard: React.FC = () => {
     convoId: string,
     userId: string
   ) => {
-    automatedMessageCounter.current += 1;
-
     if (automatedMessageCounter.current >= 2) {
-      console.log(
-        "IS autoamted message contianer 2, is it being logged 2",
-        automatedMessageCounter.current
-      );
       return;
     }
 
-    console.log(
-      "Logging ot see the current state of automated messagesd here",
-      automatedMessageCounter
-    );
+    automatedMessageCounter.current += 1;
+
     // Inline ternary operation to set the message content
     const randomGreeting = getRandomGreeting();
 
@@ -699,7 +693,7 @@ const ChatDashboard: React.FC = () => {
     try {
       // Add a new entry with a loading state before making the API call
 
-      const botReply = await fetch("/api/questionBot", {
+      const botReply = await fetch(questionBotApi, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -942,7 +936,7 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <>
-      {completedForm ? (
+      {readyToRedirect ? (
         <LoadingComponent />
       ) : (
         <div className="chatDashboard">
@@ -951,7 +945,7 @@ const ChatDashboard: React.FC = () => {
           <div className="tempOverlay h-full flex flex-col pointer-events-none">
             <ChatContainer
               setConversations={setConversations}
-              conversations = {conversations}
+              conversations={conversations}
               splitUserName={splitUserName}
               userName={userName || ""}
               email={email || ""}
@@ -998,6 +992,13 @@ const ChatDashboard: React.FC = () => {
               />
             </div>
 
+            <Link href = "/chat/app"
+              className={`${styles.popupBtn} absolute bottom-[50px] left-1/2 transform -translate-x-1/2 mb-4`}
+              style={{ display: currentQuestion >= 6 ? "flex" : "none" }}
+            >
+              Enter The Temple
+            </Link>
+
             <form
               ref={formRef}
               onSubmit={handleQuestionaireResponse}
@@ -1011,7 +1012,7 @@ const ChatDashboard: React.FC = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
-                      formRef.current?.requestSubmit();
+                    formRef.current?.requestSubmit();
                     }
                   }}
                   value={message}

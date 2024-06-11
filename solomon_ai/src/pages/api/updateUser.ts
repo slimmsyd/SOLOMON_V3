@@ -11,6 +11,9 @@ const progressSchema = z.object({
   lifePathNumber: z.number().optional(),
   enealogyNumber: z.number().optional(),
   religion: z.string().optional(),
+  cardologyNumber: z.string().optional(),
+  mylesBridgeType: z.string().optional(),
+  nameNumerolgyNumber: z.string().optional()
 });
 
 const parseDateString = (dateString: string): string | null => {
@@ -105,6 +108,9 @@ export default async function handler(
         zodiacSign,
         enealogyNumber,
         religion,
+        cardologyNumber,
+        mylesBridgeType,
+        nameNumerolgyNumber
       } = progressSchema.parse(req.body);
       // console.log(`Processing progress update for user ${userId}`);
       // console.log(`Processing progress Zodiac for user ${zodiacSign}`);
@@ -142,6 +148,9 @@ export default async function handler(
       if (finalLifePathNumber !== null && finalLifePathNumber !== undefined) updateData.lifePathNumber = finalLifePathNumber;
       if (finalEnnealogyNumber !== null && finalEnnealogyNumber !== undefined) updateData.ennealogy = finalEnnealogyNumber;
       if (religion) updateData.religion = religion;
+      if(cardologyNumber) updateData.cardologyNumber = cardologyNumber;
+      if(mylesBridgeType) updateData.mylesBridgeType = mylesBridgeType;
+      if(nameNumerolgyNumber) updateData.nameNumerolgyNumber = nameNumerolgyNumber;
 
       const userProgress = await db.user.update({
         where: { id: userId },

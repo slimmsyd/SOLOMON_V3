@@ -134,6 +134,10 @@ const Profile: React.FC = () => {
 
       if (userInfo) {
         const { lifePathNumber, zodiacSign, ennealogy, birthday } = userInfo;
+
+
+        console.log("Logging to see the Current Birthday", birthday)
+
         setLifePathNumber(lifePathNumber);
         setZodiac(zodiacSign);
         setEnnealogyNumber(ennealogy);
