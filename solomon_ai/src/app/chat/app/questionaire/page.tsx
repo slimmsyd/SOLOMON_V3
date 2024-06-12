@@ -32,14 +32,23 @@ import { extractZodiacSign } from "@/utilis/textExtractor";
 import { extractBirthday } from "@/utilis/textExtractor";
 import { extractEnnealogyNumber } from "@/utilis/textExtractor";
 import { extractReligion } from "@/utilis/textExtractor";
+import { checkCompletionText } from "@/utilis/textExtractor";
+
 import { greetings } from "@/utilis/randomGreeting";
 import { checkSession } from "@/utilis/CheckSession";
+
+import { parseDateString } from "@/utilis/updateUserUtils";
+import { calculateLifePathNumber } from "@/utilis/updateUserUtils";
+import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
+
+
 import LoadingComponent from "@/app/components/helper/Loading";
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
-  const questionBotApi = "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot"
+  const questionBotApi =
+    "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot";
 
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
@@ -60,11 +69,6 @@ const ChatDashboard: React.FC = () => {
   const [userId, setUserId] = useState<string>("");
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
-
-  const [editTitleId, setEditTitleId] = useState<null>(null);
-  const [editedTitle, setEditedTitle] = useState<string>("");
-  const [editingTitle, setEditingTitle] = useState<boolean>(false);
-  const [titleUpdated, setTitleUpdated] = useState<boolean>(false); // New state for title updates
 
   const [currentConversationId, setCurrentConversationId] = useState<
     number | string | null
@@ -389,113 +393,6 @@ const ChatDashboard: React.FC = () => {
       throw error; // Re-throw to handle it in the UI layer
     }
   }
-  const handleSubmitTitle = async (event: any) => {
-    event.preventDefault(); // Prevent form submission
-
-    let titleChange: string = "";
-
-    if (event.key === "Enter") {
-      if (isClient()) {
-        console.log("seeing if the function worked!!! ");
-
-        event.preventDefault(); // Prevent form submission
-        const newTitle = editedTitle; // Capture the title at the time of submission
-        titleChange = editTitleId ?? "";
-        console.log("New title to be set:", newTitle);
-        console.log("New title Id being logged", editTitleId);
-
-        if (editTitleId !== null && editTitleId !== "") {
-          const updatedConversations = conversations.map((convo) =>
-            (convo as any).conversationId === editTitleId
-              ? { ...convo, title: newTitle }
-              : convo
-          );
-          setConversations(updatedConversations);
-          console.log("Updated conversations:", updatedConversations);
-
-          sessionStorage.setItem(
-            "conversations",
-            JSON.stringify(updatedConversations)
-          );
-
-          setEditTitleId(null); // Exit edit mode
-          setEditedTitle(""); // Clear the edited title state
-          setEditingTitle(false);
-
-          console.log(
-            "logging the title change within the thing before ",
-            titleChange
-          );
-        }
-        console.log(
-          "logging the title change within the after before ",
-          titleChange
-        );
-
-        try {
-          const response = await fetch(`/api/${editTitleId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
-          });
-
-          console.log("Are you sending the new Title", editedTitle);
-
-          if (response.ok) {
-            await getConversation(editTitleId);
-            setEditingTitle(false);
-            setTitleUpdated((prev) => !prev); // Toggle the titleUpdated state
-          }
-
-          if (!response.ok) {
-            throw new Error("Failed to update title");
-          }
-        } catch (error) {
-          console.error("Error updating title:", error);
-
-          // If the update fails, revert the change in the UI and alert the user
-          const originalConversations = conversations.map((convo) =>
-            convo.conversationId === editTitleId
-              ? { ...convo, title: (convo as any).title }
-              : convo
-          );
-
-          setConversations(originalConversations);
-          sessionStorage.setItem(
-            "conversations",
-            JSON.stringify(originalConversations)
-          );
-
-          alert("Failed to update title, please try again."); // Inform the user
-        }
-      }
-    }
-  };
-
-  //Editing the ability to change the existing title.
-  const handleTitleClick = (convoId: string) => {
-    const conversation = conversations.find(
-      (convo) => (convo as any).conversationId === convoId
-    );
-
-    if (conversation) {
-      setEditTitleId((conversation as any).conversationId);
-      console.log("Logging the converatsion", conversation);
-      setEditedTitle((conversation as any).title);
-      setEditingTitle(true as boolean);
-    } else {
-      console.log(`Conversation with ID ${convoId} not found`);
-    }
-  };
-  useEffect(() => {}, [editTitleId, editedTitle]);
-
-  const handleTitleChange = (event) => {
-    setEditedTitle(event.target.value);
-  };
-
-  //
 
   // Update user progress with the extracted vales
   const updateUserProgress = async (
@@ -516,30 +413,52 @@ const ChatDashboard: React.FC = () => {
         religion: religion ?? undefined,
       });
 
-      console.log("User progress updated successfully:", response.data);
+      console.log(
+        "User progress updated successfully After fetch request :",
+        response.data
+      );
     } catch (error) {
       console.error("Error updating user progress:", error);
     }
   };
 
   useEffect(() => {
-    console.log(
-      "Logging the responses here before the Extract Life ",
-      responses
-    );
     responses.forEach((response) => {
-      console.log("Logging response.repsone", response.response);
       const lifePathNumber = extractLifePathNumber(response.response);
       const zodiacSign = extractZodiacSign(response.response);
       const birthday = extractBirthday(response.response || response.question);
       const enealogyNumber = extractEnnealogyNumber(response.response);
       const religion = extractReligion(response.response || response.question);
 
-      console.log("Logging the Life Path", lifePathNumber);
-      console.log("Logging the Zodiac Sign", zodiacSign);
-      console.log("Logging To see the birthday", birthday);
-      console.log("Logging to see the ennealogy Number", enealogyNumber);
-      console.log("LOgging to see the religion", religion);
+      const isTextComplete = checkCompletionText(response.response)
+      if(isTextComplete) { 
+        setCurrentQuestion(6)
+      }
+
+      //Getting the ISO birthday
+      // Convert birthday to ISO string if present
+      const isoBirthday = birthday ? parseDateString(birthday) : null;
+      if (birthday && !isoBirthday) {
+        throw new Error("Invalid birthday format");
+      }
+
+      // Calculate life path number if not provided and birthday is available
+      let finalLifePathNumber = lifePathNumber;
+      if (!finalLifePathNumber && isoBirthday) {
+        finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
+      }
+
+      let finalEnnealogyNumber = enealogyNumber;
+      if (!finalEnnealogyNumber && isoBirthday) {
+        finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
+      }
+
+      console.log(
+        "Logging Response.Response before we send to updateUserProgres",
+        response.response
+      );
+
+      console.log("Logging to see if The Completion text is TRUE", isTextComplete)
 
       if (
         lifePathNumber !== null ||
@@ -548,31 +467,23 @@ const ChatDashboard: React.FC = () => {
         religion !== null ||
         enealogyNumber !== null
       ) {
-        console.log("Logging the Life Path Nuber", lifePathNumber);
+        console.log("Logging the Life Path Nuber", finalLifePathNumber);
         console.log("Logging the Zodiac Sign", zodiacSign);
+        console.log("Logging the Ennegarm Number", finalEnnealogyNumber);
         console.log("Logging the Birthday in if statement", birthday);
         console.log("Logging the Religion in if statement", religion);
         console.log("Logging the userID", userId);
         updateUserProgress(
           userId as any,
           birthday as any,
-          lifePathNumber as any,
+          finalLifePathNumber as any,
           zodiacSign as any,
-          enealogyNumber as any,
+          finalEnnealogyNumber as any,
           religion as any
         );
       }
     });
   }, [responses, userId]);
-
-  const handleConversationClick = (convoId: string) => {
-    console.log("Activating conversation with ID:", convoId);
-    const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
-
-    router.push(targetPath, undefined);
-
-    setCurrentConversationId(convoId);
-  };
 
   //Lets clear the chat Responses when we first load in
   // Function to remove the first index of chatResponses
@@ -597,70 +508,6 @@ const ChatDashboard: React.FC = () => {
   const getRandomGreeting = () => {
     return greetings[Math.floor(Math.random() * greetings.length)];
   };
-
-  //This function Deletes the cvonersation
-  async function deleteConversation(conversationId: string) {
-    if (isClient()) {
-      const currentConversations = conversations;
-
-      // Optimistically remove the conversation from UI
-      const updatedConversations = currentConversations.filter(
-        (convo) => (convo as any).conversationId !== conversationId
-      );
-
-      setConversations(updatedConversations);
-      sessionStorage.setItem(
-        "conversations",
-        JSON.stringify(updatedConversations)
-      );
-
-      try {
-        const response = await fetch(`/api/${conversationId}`, {
-          method: "DELETE",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to delete the conversation");
-        }
-
-        // Filter out the deleted conversation
-        const updatedConversations = conversations.filter(
-          (convo) => (convo as any).converatoinID !== conversationId
-        );
-        console.log("Logging out the Conversation Filter", conversations);
-
-        // Update state and local storage
-        setConversations(updatedConversations); // Update React state
-        sessionStorage.setItem(
-          "conversations",
-          JSON.stringify(updatedConversations)
-        ); // Update local storage
-
-        console.log("Conversations after deletion:", updatedConversations);
-        console.log(
-          "Local storage after deletion:",
-          sessionStorage.getItem("conversations")
-        );
-
-        if (response.ok) {
-          // Update the conversations state
-          const updatedConversations = conversations.filter(
-            (convo) => (convo as any).conversationId !== conversationId
-          );
-          setConversations(updatedConversations);
-
-          // Update the session storage
-          sessionStorage.setItem(
-            "conversations",
-            JSON.stringify(updatedConversations)
-          );
-          router.push(`/chat/app`);
-        }
-      } catch (error) {
-        console.error("Error deleting conversation:", error.message);
-        alert("Could not delete the conversation. Please try again.");
-      }
-    }
-  }
 
   //Send an automated Message on load
   let automatedMessageCounter = useRef(0);
@@ -949,15 +796,6 @@ const ChatDashboard: React.FC = () => {
               splitUserName={splitUserName}
               userName={userName || ""}
               email={email || ""}
-              onConversationClick={handleConversationClick}
-              onDeleteConvo={deleteConversation}
-              onChangeConvoTitle={handleSubmitTitle}
-              handleTitleClick={handleTitleClick}
-              editTitleId={editTitleId}
-              editedTitle={editedTitle}
-              handleTitleChange={handleTitleChange}
-              editingTitle={editingTitle}
-              titleUpdated={titleUpdated}
             />
           </div>
 
@@ -992,7 +830,8 @@ const ChatDashboard: React.FC = () => {
               />
             </div>
 
-            <Link href = "/chat/app"
+            <Link
+              href="/chat/app"
               className={`${styles.popupBtn} absolute bottom-[50px] left-1/2 transform -translate-x-1/2 mb-4`}
               style={{ display: currentQuestion >= 6 ? "flex" : "none" }}
             >
@@ -1012,7 +851,7 @@ const ChatDashboard: React.FC = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
-                    formRef.current?.requestSubmit();
+                      formRef.current?.requestSubmit();
                     }
                   }}
                   value={message}
