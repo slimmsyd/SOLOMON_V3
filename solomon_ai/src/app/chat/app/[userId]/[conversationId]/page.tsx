@@ -36,6 +36,10 @@ import Link from "next/link";
 import { isClient } from "@/utilis/isClient";
 
 export default function ConversationPage() {
+
+  const chatBotUrl = "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/solomonAPI"
+
+
   const router = useRouter();
   const pathName = usePathname();
   const formRef = useRef<HTMLFormElement>(null);
@@ -437,7 +441,7 @@ export default function ConversationPage() {
 
       try {
         // 2. Fetch bot reply from the API
-        const botReply = await fetch("/api/chatBot", {
+        const botReply = await fetch(chatBotUrl, {
           method: "POST",
           headers: {
             "Content-type": "application/json",
