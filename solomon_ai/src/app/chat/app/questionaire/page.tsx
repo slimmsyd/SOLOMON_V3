@@ -438,9 +438,7 @@ const ChatDashboard: React.FC = () => {
       //Getting the ISO birthday
       // Convert birthday to ISO string if present
       const isoBirthday = birthday ? parseDateString(birthday) : null;
-      if (birthday && !isoBirthday) {
-        throw new Error("Invalid birthday format");
-      }
+  
 
       // Calculate life path number if not provided and birthday is available
       let finalLifePathNumber = lifePathNumber;
