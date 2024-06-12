@@ -51,6 +51,26 @@ const zodiacAnimals = [
 
 
 
+
+//Extract completion text 
+
+export function checkCompletionText(responseText: string ): boolean | null {
+  if (!responseText) return null; // Add nullish check
+  const phrases = [
+      "I see... I gather knowledge of you",
+      "if you haven't been redirected send one more message to complete the process"
+  ];
+
+  for (const phrase of phrases) {
+      if (responseText.includes(phrase)) {
+          return true;
+      }
+  }
+
+  return false;
+}
+
+
 // Create a map for efficient lookup
 const religionsMap = new Map(religions.map(religion => [religion, religion]));
 
