@@ -41,8 +41,8 @@ import { parseDateString } from "@/utilis/updateUserUtils";
 import { calculateLifePathNumber } from "@/utilis/updateUserUtils";
 import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
 
-
 import LoadingComponent from "@/app/components/helper/Loading";
+import { Erica_One } from "next/font/google";
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
@@ -175,11 +175,6 @@ const ChatDashboard: React.FC = () => {
           onComplete: isComplete, // Include the onComplete status in the request
         });
 
-        console.log(
-          "Logging The response in the handle Next question",
-          response
-        );
-
         if (response.data.data.currentQuestion === 6) {
           console.log("The form has been completed", response.data.data);
           setCompleteForm(true);
@@ -205,11 +200,7 @@ const ChatDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("logging the completed form chnage ", completedForm);
-
-    if (completedForm) {
-      // router.push("/chat/app/");
-    }
+ 
   }, [completedForm]);
 
   //Fetch the Progress
@@ -237,36 +228,25 @@ const ChatDashboard: React.FC = () => {
       }
     };
 
-    fetchProgress();
+    if (currentQuestion >= 2) {
+      fetchProgress();
+    }
   }, [userId]);
 
   const handleQuestionaireResponse = async (e: any) => {
     e.preventDefault();
 
-    console.log("SUbmitting hte quesitonnair form!!!", currentConversationId);
 
     //Ensure that we don't submit anymore
     if (currentQuestion >= 6) {
       setCompleteForm(true);
       setFirstConvoState(false);
 
-      if (readyToRedirect) {
-        // router.push("/chat/app/");
-      } else {
-        return;
-      }
     }
 
     let currentConvoId = sessionStorage.getItem("currentConvoId");
     if (currentConvoId) setCurrentConversationId(currentConversationId);
 
-    console.log(
-      "Logging the current conversation ID in the questionnnair",
-      currentConversationId
-    );
-
-    console.log("Loggingsession user Id", session?.user.id);
-    console.log("converoID user Id", currentConversationId);
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
@@ -306,17 +286,6 @@ const ChatDashboard: React.FC = () => {
 
         handleNextQuestion();
         // 4. Send the user question and bot response to the database
-
-        console.log(
-          "logging the creation of a new chat in here and before we send to api/message",
-          session?.user.id
-        );
-
-        console.log(
-          "Loggign the current Conversation on a new click ",
-          currentConversationId
-        );
-
         //Add the conversations arrawy or update
       } catch (error) {
         console.error("Error handling submission:", error);
@@ -324,75 +293,6 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
-  // Where we are going to send the Chat Data Request
-
-  function updateLocalStorage(
-    updatedConversation: any,
-    conversationId: string
-  ) {
-    if (isClient()) {
-      let cachedConversations = sessionStorage.getItem("conversations");
-
-      if (cachedConversations) {
-        try {
-          // Parse the cached conversations
-          const parsedConversations = JSON.parse(cachedConversations);
-
-          // Ensure that parsedConversations is an array
-          if (Array.isArray(parsedConversations)) {
-            const updatedCache = parsedConversations.map((convo) =>
-              convo.conversationId === conversationId
-                ? { ...convo, title: updatedConversation.title }
-                : convo
-            );
-
-            sessionStorage.setItem(
-              "conversations",
-              JSON.stringify(updatedCache)
-            );
-
-            console.log("Logging the updated Cache", updatedCache);
-          } else {
-            console.error("Parsed cached conversations is not an array");
-          }
-        } catch (e) {
-          console.error("Error parsing cached conversations:", e);
-        }
-      }
-    }
-  }
-
-  async function getConversation(conversationId: any) {
-    console.log(
-      "Logging the converatation ID in the getConversation",
-      conversationId
-    );
-    try {
-      const response = await fetch(`/api/${conversationId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch conversation");
-      }
-
-      const updatedConversation = await response.json();
-      console.log(
-        "Logging the converations before errorw",
-        updatedConversation
-      );
-      // Update local state
-      setConversations((prevConversations) => {
-        return prevConversations.map((convo) =>
-          convo === conversationId
-            ? { ...convo, title: updatedConversation.title }
-            : convo
-        );
-      });
-
-      updateLocalStorage(updatedConversation, conversationId);
-    } catch (error) {
-      console.error("Error fetching conversation:", error);
-      throw error; // Re-throw to handle it in the UI layer
-    }
-  }
 
   // Update user progress with the extracted vales
   const updateUserProgress = async (
@@ -430,15 +330,27 @@ const ChatDashboard: React.FC = () => {
       const enealogyNumber = extractEnnealogyNumber(response.response);
       const religion = extractReligion(response.response || response.question);
 
-      const isTextComplete = checkCompletionText(response.response)
-      if(isTextComplete) { 
-        setCurrentQuestion(6)
+      const isTextComplete = checkCompletionText(response.response);
+
+      async function updateProgressIfCompletedEarly() {
+        try {
+          const response = await axios.post("/api/saveProgress", {
+            userId,
+            currentQuestion: 6,
+            onComplete: true, // Include the onComplete status in the request
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      if (isTextComplete) {
+        setCurrentQuestion(6);
+        updateProgressIfCompletedEarly();
       }
 
       //Getting the ISO birthday
       // Convert birthday to ISO string if present
       const isoBirthday = birthday ? parseDateString(birthday) : null;
-  
 
       // Calculate life path number if not provided and birthday is available
       let finalLifePathNumber = lifePathNumber;
@@ -456,7 +368,6 @@ const ChatDashboard: React.FC = () => {
         response.response
       );
 
-      console.log("Logging to see if The Completion text is TRUE", isTextComplete)
 
       if (
         lifePathNumber !== null ||
@@ -527,8 +438,8 @@ const ChatDashboard: React.FC = () => {
     const randomGreeting = getRandomGreeting();
 
     const userMessage = session?.user?.name
-      ? `${randomGreeting}, my name is ${session.user.name}`
-      : `Hello, my name is ${randomGreeting}`;
+      ? `${randomGreeting}, ${messageContent} ${session.user.name}`
+      : `Hello, ${messageContent} ${randomGreeting}`;
 
     setResponses((prevResponses: any) => [
       ...prevResponses,
@@ -576,15 +487,11 @@ const ChatDashboard: React.FC = () => {
   const fetchFirstConversation = async (
     userId: string
   ): Promise<ConversationData> => {
-    console.log("Logging FetchFirstConvo USER ID", userId);
-    console.log("Logging the current conversation Id", currentConversationId);
     fetchFirstConvCounter.current += 1;
 
     if (currentConversationId === 1) {
       throw new Error("Already initatied conersation");
     }
-
-    console.log("Logging the has runGretting ", hasRunSendGreetings);
 
     if (fetchFirstConvCounter.current >= 2) {
       return Promise.reject("Function has already been called more than once.");
@@ -606,7 +513,6 @@ const ChatDashboard: React.FC = () => {
 
         const data = await response.json();
 
-        console.log("Logging the data on the first conversation on load", data);
         setCurrentConversationId(data.id);
         setFirstConvoState(data.firstConvo);
         return { id: data.id, firstConvo: data.firstConvo };
@@ -615,7 +521,6 @@ const ChatDashboard: React.FC = () => {
         throw error;
       }
     } else {
-      console.log("Current CONversation already identified");
       throw new Error("Already initatied conersation");
     }
   };
@@ -637,31 +542,20 @@ const ChatDashboard: React.FC = () => {
             const { id: convoId, firstConvo } = await fetchFirstConversation(
               userId
             ); // Destructure the returned object
-            console.log("Loggin the firstConvo", firstConvo);
             setCurrentConversationId(convoId);
             setFirstConvoState(firstConvo);
             sessionStorage.setItem("currentConvoId", convoId as any);
             sessionStorage.setItem("isFirstConvo", firstConvo as any);
             if (automatedMessageCounter.current < 1 && session?.user?.id) {
-              console.log(
-                "Calling hte current before we sent the automated message",
-                automatedMessageCounter.current
-              );
-              console.log("Loggin the COnvoID before send My name", convoId);
-              await sendAutomatedMessage("Hello, Solomon,", convoId, userId);
+              await sendAutomatedMessage("my name is", convoId, userId);
               sessionStorage.setItem("greetingSent", "true");
             } else if (
               automatedMessageCounter.current >= 1 ||
               sessionStorage.getItem("isFirstConvo")
             ) {
-              console.log(
-                "Calling hte current before we sent the automated second retrun",
-                automatedMessageCounter.current
-              );
               return;
             }
           } else if (greetingSent) {
-            console.log("Logging greeting Sent", greetingSent);
             return;
           }
         };
@@ -677,29 +571,11 @@ const ChatDashboard: React.FC = () => {
         ) {
           sendGreetings();
         } else if (fistConvoState && !completedForm) {
-          console.log(
-            "Just logging the session after the send Greetings before we fetch",
-            session
-          );
-
-          console.log(
-            "Logging the messages for conversation",
-            sessionStorage.getItem("currentConvoId")
-          );
-          console.log(
-            "Loggin the completed form before we fetch",
-            completedForm
-          );
           fetchMessagesForConversation(storedConvoId);
         }
       }
     }
     // Effect to send a greetings message when the component mounts
-
-    console.log(
-      "Logging the current AutomatedMessage",
-      automatedMessageCounter.current
-    );
   }, [status]);
 
   useEffect(() => {
@@ -711,7 +587,6 @@ const ChatDashboard: React.FC = () => {
   const fetchMessagesForConversation = async (
     conversationId: string | null
   ) => {
-    console.log("logging the Session in fetch convo", session);
     if (!session || !session.user || !session.user.id) {
       console.error("No user session available");
       return;
@@ -733,13 +608,6 @@ const ChatDashboard: React.FC = () => {
 
         const messages = await response.json();
 
-        console.log(
-          "logging the MEssages in the joint",
-          messages,
-          session.user.id,
-          conversationId
-        );
-
         // Map API response to expected format in state
         let formattedMessages = messages.map((msg: Message) => ({
           question: msg.userContent,
@@ -760,10 +628,6 @@ const ChatDashboard: React.FC = () => {
         setResponses([]);
 
         if (response.ok) {
-          console.log(
-            "Logging FetchMessageConversation Okay",
-            formattedMessages
-          );
           setResponses(formattedMessages);
         }
         setMessagesIsLoading(false);
@@ -775,9 +639,7 @@ const ChatDashboard: React.FC = () => {
 
   //Get access to the current conversation Name and Id
 
-  useEffect(() => {
-    console.log("Loggin the conversations in the app useEffect", conversations);
-  }, [conversations]);
+  useEffect(() => {}, [conversations]);
 
   return (
     <>
