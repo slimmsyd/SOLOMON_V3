@@ -10,12 +10,12 @@ const progressSchema = z.object({
     z.union([
       z.string(),
       z.object({
-        question: z.string().nullable(),
-        response: z.string(),
+        question: z.string().nullable().optional(),
+        response: z.string().optional(),
         firstConvo: z.boolean().optional(),
       }),
     ])
-  ),
+  ).optional(),
   onComplete: z.boolean().optional()
 
 });

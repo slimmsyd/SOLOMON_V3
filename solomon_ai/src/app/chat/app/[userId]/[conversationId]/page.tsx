@@ -30,15 +30,15 @@ import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
 //Utilis
 import { checkSession } from "@/utilis/CheckSession";
+import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoading";
 
 import Link from "next/link";
 
 import { isClient } from "@/utilis/isClient";
 
 export default function ConversationPage() {
-
-  const chatBotUrl = "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/solomonAPI"
-
+  const chatBotUrl =
+    "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/solomonAPI";
 
   const router = useRouter();
   const pathName = usePathname();
@@ -60,7 +60,7 @@ export default function ConversationPage() {
   const { responses, setResponses, message, setMessage } =
     useChatConversation();
 
-  let localStorageConvoId;
+  let localStorageConvoId: any;
 
   useEffect(() => {
     console.log("Is this loading???", currentConversationId);
@@ -76,6 +76,9 @@ export default function ConversationPage() {
   const [messagesIsLoading, setMessagesIsLoading] = useState<null | boolean>(
     null
   );
+
+  const [isReponseLoading, setResponseLoading] = useState<boolean>(false);
+
   //Set the conversation
   const [currentConversationId, setCurrentConversationId] = useState<
     number | string | null
@@ -110,19 +113,21 @@ export default function ConversationPage() {
       splitUserName,
     });
   }, [status]);
-  //This funcitno shifts and shows the mobile Chat ccontainer 
+  //This funcitno shifts and shows the mobile Chat ccontainer
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
   const handleMobileChatBtnClick = () => {
-
-    console.log("Logging the chat container Ref current state", chatContainerRef.current)
+    console.log(
+      "Logging the chat container Ref current state",
+      chatContainerRef.current
+    );
 
     if (chatContainerRef.current) {
       if (isAtZero) {
-        chatContainerRef.current.style.transform = 'translateX(-100%)';
+        chatContainerRef.current.style.transform = "translateX(-100%)";
       } else {
-        chatContainerRef.current.style.transform = 'translateX(0px)';
+        chatContainerRef.current.style.transform = "translateX(0px)";
       }
       setIsAtZero(!isAtZero); // Toggle the state
     }
@@ -132,23 +137,21 @@ export default function ConversationPage() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 950 && chatContainerRef.current) {
-        chatContainerRef.current.style.transform = 'translateX(0px)';
+        chatContainerRef.current.style.transform = "translateX(0px)";
         setIsAtZero(false); // Reset the state
-      }else if (chatContainerRef.current) { 
-        chatContainerRef.current.style.transform = 'translateX(-100%)';
+      } else if (chatContainerRef.current) {
+        chatContainerRef.current.style.transform = "translateX(-100%)";
         setIsAtZero(true); // Reset the state
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup event listener on component unmount
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-
 
   useEffect(() => {
     if (userName !== null) {
@@ -399,16 +402,7 @@ export default function ConversationPage() {
   const chatDashBoardRef = useRef<HTMLDivElement>(null);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Logging Conversation Id in the Submit", currentConversationId);
-    console.log("is this scroll to bottom being called?");
-    // if (chatDashBoardRef.current) {
-    //   chatDashBoardRef.current.scrollTo({
-    //     top: chatDashBoardRef.current.scrollHeight,
-    //     behavior: "smooth",
-    //   });
-    //   console.log("Scrolled 50000px down");
-    // }
-
+    setResponseLoading(true);
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
@@ -452,6 +446,7 @@ export default function ConversationPage() {
             conversationId: currentConvoId || currentConversationId,
           }),
         }).then((res) => res.json());
+        setResponseLoading(false);
 
         // 3. Update the responses array with the bot's reply
         setResponses((prevResponses) =>
@@ -482,7 +477,6 @@ export default function ConversationPage() {
           "Loggign the current Conversation on a new click ",
           currentConversationId
         );
-
 
         //Add the conversations arrawy or update
       } catch (error) {
@@ -526,6 +520,7 @@ export default function ConversationPage() {
 
   //Checking if Chat conversations is loading
   useEffect(() => {}, [messagesIsLoading]);
+  useEffect(() => {}, [isReponseLoading]);
 
   //Fetch Message for this converations
   const messagesRefCounter = useRef(0);
@@ -614,10 +609,6 @@ export default function ConversationPage() {
     return <p>No conversation found.</p>;
   }
 
-
-
-
-
   return (
     <div className="chatDashboard">
       {/* Chat Container Componet  */}
@@ -637,9 +628,8 @@ export default function ConversationPage() {
         handleTitleChange={handleTitleChange}
         editingTitle={editingTitle}
         titleUpdated={titleUpdated}
-        chatContainerRef = {chatContainerRef as any}
-        handleMobileChatBtnClick = {handleMobileChatBtnClick}
-
+        chatContainerRef={chatContainerRef as any}
+        handleMobileChatBtnClick={handleMobileChatBtnClick}
       />
 
       {/* Chat Container Componet  */}
@@ -652,9 +642,10 @@ export default function ConversationPage() {
 
         <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
           <div className=" flex-1   cursor-pointer mobileChatContainer">
-            <div 
-            onClick={handleMobileChatBtnClick}
-            className=" mobileChatBtn flex items-center justify-start">
+            <div
+              onClick={handleMobileChatBtnClick}
+              className=" mobileChatBtn flex items-center justify-start"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -740,21 +731,25 @@ export default function ConversationPage() {
               </button>
 
               <button type="submit" className="textAreaIcon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  viewBox="0 0 32 32"
-                  className=""
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
+                {isReponseLoading ? (
+                  <ButtonLoadingComponent />
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    viewBox="0 0 32 32"
+                    className=""
+                  >
+                    <path
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                )}
               </button>
             </div>
           </div>

@@ -200,7 +200,7 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
       
       const completion = await openai.chat.completions.create({
         model: "gpt-4o",
-        max_tokens: 300,
+        max_tokens: 500,
         messages: messages,
         // signal: controller.signal,
 
