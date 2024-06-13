@@ -243,6 +243,12 @@ SolomonGPT: "Indeed, the 1st of September, 1985. Your Life Path Number, derived 
 
 // Function to format the response into paragraphs
 function formatResponse(response: string): string {
-  const paragraphs = response.split('\n').filter(paragraph => paragraph.trim() !== '');
+  // Replace **text** with <strong>text</strong>
+  const formattedResponse = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // Split the response into paragraphs
+  const paragraphs = formattedResponse.split('\n').filter(paragraph => paragraph.trim() !== '');
+  
+  // Wrap each paragraph in <p> tags
   return paragraphs.map(paragraph => `<p>${paragraph.trim()}</p>`).join('\n');
 }
