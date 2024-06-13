@@ -229,6 +229,7 @@ const ChatDashboard: React.FC = () => {
     };
 
     if (currentQuestion >= 2) {
+      console.log("Fetch Progress is being called")
       fetchProgress();
     }
   }, [userId]);
@@ -384,7 +385,7 @@ const ChatDashboard: React.FC = () => {
         console.log("Logging the userID", userId);
         updateUserProgress(
           userId as any,
-          birthday as any,
+          isoBirthday as any,
           finalLifePathNumber as any,
           zodiacSign as any,
           finalEnnealogyNumber as any,

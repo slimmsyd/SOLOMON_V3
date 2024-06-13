@@ -48,33 +48,38 @@ export default async function handler(
       // console.log(`Processing progress Birthday for user ${birthday}`);
 
    // Convert birthday to ISO string if present
-   const isoBirthday = birthday ? parseDateString(birthday) : null;
-   if (birthday && !isoBirthday) {
-     throw new Error("Invalid birthday format");
-   }
+  //  const isoBirthday = birthday ? parseDateString(birthday) : null;
+  //  if (birthday && !isoBirthday) {
+  //    throw new Error("Invalid birthday format");
+  //  }
 
    // Calculate ennealogy number if not provided and birthday is available
   // Calculate life path number if not provided and birthday is available
-  let finalLifePathNumber = lifePathNumber;
-  if (!finalLifePathNumber && isoBirthday) {
-    finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
-  }
+  // let finalLifePathNumber = lifePathNumber;
+  // if (!finalLifePathNumber && isoBirthday) {
+  //   finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
+  // }
 
-  // Calculate ennealogy number if not provided and birthday is available
-  let finalEnnealogyNumber = enealogyNumber;
-  if (!finalEnnealogyNumber && isoBirthday) {
-    finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number ;
-  }
+  // // Calculate ennealogy number if not provided and birthday is available
+  // let finalEnnealogyNumber = enealogyNumber;
+  // if (!finalEnnealogyNumber && isoBirthday) {
+  //   finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number ;
+  // }
 
 
+
+
+      console.log("Logging Birthday In Update user", birthday)
+      console.log("Logging the lifePathNumber in update user", lifePathNumber)
+      console.log("Logging the enengarm number in ennealgoy", enealogyNumber)
 
        
       // Build the update object conditionally
       const updateData: any = {};
-      if (isoBirthday) updateData.birthday = isoBirthday;
+      if (birthday) updateData.birthday = birthday;
       if (zodiacSign) updateData.zodiacSign = zodiacSign;
-      if (finalLifePathNumber !== null && finalLifePathNumber !== undefined) updateData.lifePathNumber = finalLifePathNumber;
-      if (finalEnnealogyNumber !== null && finalEnnealogyNumber !== undefined) updateData.ennealogy = finalEnnealogyNumber;
+      if (lifePathNumber !== null && lifePathNumber !== undefined) updateData.lifePathNumber = lifePathNumber;
+      if (enealogyNumber !== null && enealogyNumber !== undefined) updateData.ennealogy = enealogyNumber;
       if (religion) updateData.religion = religion;
       if(cardologyNumber) updateData.cardologyNumber = cardologyNumber;
       if(mylesBridgeType) updateData.mylesBridgeType = mylesBridgeType;
