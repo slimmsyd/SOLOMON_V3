@@ -63,9 +63,7 @@ export const SignUpMessageContainer: FC<ChatMessageProps> = ({
                   )}
 
                   {response.response ?(
-                    <p className={styles.user_Messages}>
                       <ChatMessage message={response.response} />
-                    </p>
                   ) : (
                     <LoadingComponent />
                   )}
