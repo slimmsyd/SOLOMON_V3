@@ -1079,6 +1079,7 @@ figure video {
   transform: rotate(-90deg);
 }
 
+
 .renderCards,
 .zodiacCards {
   border: 1px solid #807f7f;
@@ -1088,6 +1089,7 @@ figure video {
   padding: 20px;
   padding-right: 13px;
   cursor: pointer;
+  overflow-y: scroll;
 }
 .renderCards img,
 .zodiacCards img {

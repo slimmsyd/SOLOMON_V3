@@ -1,20 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import CloseIcon from "../../../../../public/assets/close-arrow.png";
-import Plus from "../../../../../public/assets/plus-icon.png";
-import ChatIcon from "../../../../../public/assets/chat-icon.png";
-import Dots from "../../../../../public/assets/dots.png";
 import { useEffect, useState, useRef, FormEvent } from "react";
 import { useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
-import styles from "../../../../styles/chat.module.css";
-import ChatMessage from "../../../../components/Chatmessage";
-import DashboardNav from "../../../../components/DashboardNav";
-import DeleteComponent from "../../../../components/helper/DeleteComponent";
 
-import { Conversation } from "../../../../../../types";
 import { Message } from "../../../../../../types";
 
 import { ChatContainer } from "../../ChatContainer";
@@ -25,14 +15,12 @@ import LoadingComponent from "../../../../components/helper/Loading";
 import useConversations from "../../../../hooks/useConversations";
 import useCreateConversation from "../../../../hooks/createConversation";
 import { useChatConversation } from "@/app/hooks/ConversationContext";
-import { useTogglePosition } from "../../../../hooks/useTogglePosition";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
 //Utilis
 import { checkSession } from "@/utilis/CheckSession";
 import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoading";
 
-import Link from "next/link";
 
 import { isClient } from "@/utilis/isClient";
 
