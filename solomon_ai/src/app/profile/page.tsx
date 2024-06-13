@@ -44,10 +44,10 @@ const Profile: React.FC = () => {
   const [zodiac, setZodiac] = useState<string>("Enter");
   const [lifePath, setLifePathNumber] = useState<string>("Enter");
   const [nameNumerologyNumber, setNameNumerolgyNumber] = useState<string>("Enter");
-  const [practice, setPractice] = useState<null>(null);
+  // const [practice, setPractice] = useState<null>(null);
   const [ennealogy, setEnnealogyNumber] = useState<string>("Enter");
-  const [birthday, setBirthDay] = useState<string>("Enter");
-  const [chineseZodiac, setChineseZodiac] = useState<string>("Enter");
+  // const [birthday, setBirthDay] = useState<string>("Enter");
+  // const [chineseZodiac, setChineseZodiac] = useState<string>("Enter");
   const [cardologyNumber, setCardologyNumber] = useState("Enter");
   const [mylesBridgeType, setMylesBridgeType] = useState("Enter");
 
@@ -324,11 +324,11 @@ const Profile: React.FC = () => {
                   <input
                     className="profileInput"
                     type="text"
-                    value={zodiac}
+                    value={sessionStorage.getItem("zodiacSign") || zodiac  as any} 
                     onChange={(e) => setZodiac(e.target.value)}
                   />
                 ) : (
-                  <p>{zodiac || sessionStorage.getItem("zodiacSign")}</p>
+                  <p>{sessionStorage.getItem("zodiacSign")  || zodiac as any} </p>
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
@@ -337,11 +337,11 @@ const Profile: React.FC = () => {
                   <input
                     className="profileInput"
                     type="text"
-                    value={lifePath as any}
+                    value={sessionStorage.getItem("lifePathNumber") || lifePath as any}
                     onChange={(e) => setLifePathNumber(e.target.value)}
                   />
                 ) : (
-                  <p>{lifePath || sessionStorage.getItem("lifePathNumber")}</p>
+                  <p>{sessionStorage.getItem("lifePathNumber") || lifePath }</p>
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
@@ -362,8 +362,8 @@ const Profile: React.FC = () => {
                     type="text"
                     placeholder="Add"
                     value={
-                      nameNumerologyNumber ||
-                      (sessionStorage.getItem("nameNumerolgyNumber") as any)
+                      (sessionStorage.getItem("nameNumerolgyNumber") as any) ||
+                      nameNumerologyNumber
                     }
                     readOnly
                   />
@@ -379,7 +379,7 @@ const Profile: React.FC = () => {
                     onChange={(e) => setEnnealogyNumber(e.target.value)}
                   />
                 ) : (
-                  <p>{ennealogy || sessionStorage.getItem("ennealogy")}</p>
+                  <p>{ sessionStorage.getItem("ennealogy") || ennealogy}</p>
                 )}
               </div>
 
@@ -400,8 +400,8 @@ const Profile: React.FC = () => {
                     type="text"
                     placeholder="Add"
                     value={
-                      cardologyNumber ||
                       (sessionStorage.getItem("cardologyNumber") as any)
+                      || cardologyNumber
                     }
                     readOnly
                   />
@@ -425,8 +425,8 @@ const Profile: React.FC = () => {
                     type="text"
                     placeholder="Add"
                     value={
-                      mylesBridgeType ||
                       (sessionStorage.getItem("mylesBridgeType") as any)
+                      || mylesBridgeType
                     }
                   />
                 )}
