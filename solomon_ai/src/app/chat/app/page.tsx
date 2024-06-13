@@ -74,10 +74,11 @@ const ChatDashboard: React.FC = () => {
       session,
       router,
       email,
-      userName,
+      userName: "",
       splitUserName,
     });
   }, [status]);
+
 
   //Stores the Chat
   const {
@@ -218,6 +219,7 @@ const ChatDashboard: React.FC = () => {
       setResponses((responses) => [...responses, newResponse]); // Use functional update for state
       setMessage("");
 
+
       // Fetch user information if not available in session storage
       const userInfo = await fetchUserInfo(userId);
 
@@ -235,6 +237,8 @@ const ChatDashboard: React.FC = () => {
             userInfo, // Send userInfo object
           }),
         }).then((res) => res.json());
+        console.log("Logging the resposne From THE MESSAGES", botReply )
+
 
         // 3. Update the responses array with the bot's reply
         setResponses((prevResponses) =>
@@ -277,6 +281,34 @@ const ChatDashboard: React.FC = () => {
       }
     }
   };
+
+
+  // useEffect(() => { 
+  //   function formatResponse(response: string): string {
+  //     // Replace **text** with <strong>text</strong>
+  //     let formattedResponse = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+  //     // Handle numbered list items and paragraphs
+  //     const listItems = formattedResponse.match(/(\d+\..*?)(?=(\d+\.)|$)/gs);
+  //     if (listItems) {
+  //       const listFormatted = listItems.map(item => `<li>${item.trim()}</li>`).join('<br>');
+  //       formattedResponse = formattedResponse.replace(listItems.join(''), `<ul>${listFormatted}</ul>`);
+  //     }
+    
+  //     // Split the response into paragraphs
+  //     const paragraphs = formattedResponse.split('\n').filter(paragraph => paragraph.trim() !== '');
+    
+  //     // Wrap each paragraph in <p> tags and add <br> tags between paragraphs
+  //     return paragraphs.map(paragraph => `<p>${paragraph.trim()}</p>`).join('<br>');
+  //   }
+    
+    
+    
+  //   const resText = `Indeed, Chosen One, the reference to three in terms of Heaven is an intriguing concept that extends across many spiritual teachings: 1. **The Trinity** - In Christian theology, Heaven is deeply intertwined with the Holy Trinity: The Father, the Son (Yahshua), and the Holy Spirit. Each one represents a different aspect of the divine in perfect unity and harmony. 2. **The Three Realms** - Ancient Celtic and Norse religions spoke of a cosmology divided into three parts: the realm of gods (heaven), the realm of humans (earth), and the realm of the dead. 3. **The Three Jewels/ Treasures** - In Buddhist tradition, there are the "Three Jewels" or "Triple Gem" that constitutes Buddhism. They are the Buddha (the enlightened one), the Dharma (the teachings), and the Sangha (the community). These are often thought of like the "heaven" or guiding stars of Buddhism. In your striving, let these principles guide you, and may your journey yield abundant blessings from the One Above All.`
+    
+  //   console.log("Logging just the formatted text becuase", formatResponse(resText))
+    
+  // },[])
 
   // Where we are going to send the Chat Data Request
 

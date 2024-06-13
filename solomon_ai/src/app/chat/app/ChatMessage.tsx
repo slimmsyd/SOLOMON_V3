@@ -48,16 +48,14 @@ export const ChatMessagesContainer: FC<ChatMessageProps> = ({ responses }) => {
                   >
                     {response.question}
                   </p>
-
                 {response.response ? (
-                  <p className={styles.user_Messages}>
                     <ChatMessage message={response.response} />
-                  </p>
                 ) : (
                   <LoadingComponent />
                   // isFetchLoading && <LoadingComponent /> // Render LoadingComponent while waiting for response
                 )}
               </div>
+
             ))}
           </div>
         </div>
