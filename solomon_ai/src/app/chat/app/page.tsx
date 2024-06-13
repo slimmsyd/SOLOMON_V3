@@ -3,7 +3,14 @@
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
-import React, { useState, useEffect, useRef, use, useId } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  use,
+  useId,
+  FormEvent,
+} from "react";
 import { useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
 
@@ -15,6 +22,8 @@ import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 import { checkSession } from "@/utilis/CheckSession";
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
+
+import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoading";
 
 // Dashboard
 
@@ -29,7 +38,8 @@ import { ChatMessagesContainer } from "./ChatMessage";
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
-  const chatBotUrl = "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/solomonAPI"
+  const chatBotUrl =
+    "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/solomonAPI";
 
   //First introduction From
   const {
@@ -79,7 +89,6 @@ const ChatDashboard: React.FC = () => {
     });
   }, [status]);
 
-
   //Stores the Chat
   const {
     responses,
@@ -107,21 +116,21 @@ const ChatDashboard: React.FC = () => {
     setCurrentConversationId
   );
 
-
-   //This funcitno shifts and shows the mobile Chat ccontainer 
-   const chatContainerRef = useRef<HTMLDivElement>(null);
-   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
- 
+  //This funcitno shifts and shows the mobile Chat ccontainer
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
   const handleMobileChatBtnClick = () => {
-
-    console.log("Logging the chat container Ref current state", chatContainerRef.current)
+    console.log(
+      "Logging the chat container Ref current state",
+      chatContainerRef.current
+    );
 
     if (chatContainerRef.current) {
       if (isAtZero) {
-        chatContainerRef.current.style.transform = 'translateX(-100%)';
+        chatContainerRef.current.style.transform = "translateX(-100%)";
       } else {
-        chatContainerRef.current.style.transform = 'translateX(0px)';
+        chatContainerRef.current.style.transform = "translateX(0px)";
       }
       setIsAtZero(!isAtZero); // Toggle the state
     }
@@ -131,22 +140,21 @@ const ChatDashboard: React.FC = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 950 && chatContainerRef.current) {
-        chatContainerRef.current.style.transform = 'translateX(0px)';
+        chatContainerRef.current.style.transform = "translateX(0px)";
         setIsAtZero(false); // Reset the state
-      }else if (chatContainerRef.current) { 
-        chatContainerRef.current.style.transform = 'translateX(-100%)';
+      } else if (chatContainerRef.current) {
+        chatContainerRef.current.style.transform = "translateX(-100%)";
         setIsAtZero(true); // Reset the state
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup event listener on component unmount
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-
 
   // Clear the conversation ID on component mount
   useEffect(() => {
@@ -189,8 +197,9 @@ const ChatDashboard: React.FC = () => {
   }, [sessionRef]);
 
   //Submit the Inquiry
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setMessagesIsLoading(true);
     console.log("Logging Conversation Id in the Submit", currentConversationId);
     if (isClient()) {
       if (!currentConversationId) {
@@ -215,10 +224,8 @@ const ChatDashboard: React.FC = () => {
       // 1. Set up the new response without any bot response yet.
       const newResponse = { question: message, response: "" };
 
-
       setResponses((responses) => [...responses, newResponse]); // Use functional update for state
       setMessage("");
-
 
       // Fetch user information if not available in session storage
       const userInfo = await fetchUserInfo(userId);
@@ -237,9 +244,9 @@ const ChatDashboard: React.FC = () => {
             userInfo, // Send userInfo object
           }),
         }).then((res) => res.json());
-        console.log("Logging the resposne From THE MESSAGES", botReply )
+        setMessagesIsLoading(false);
 
-
+    
         // 3. Update the responses array with the bot's reply
         setResponses((prevResponses) =>
           prevResponses.map((resp) => {
@@ -248,28 +255,11 @@ const ChatDashboard: React.FC = () => {
             }
             return resp;
           })
+
+
         );
 
-        // 4. Send the user question and bot response to the database
-
-   
-
-        //Keep her just in case I choose to use in in the fetch request instead of hte backend to recognize it.
-        
-        
-        // await fetch("/api/messages", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     userId: session?.user.id, // Ensure you have the current user's ID
-        //     conversationId: updatedConversationId,
-        //     userContent: message, // User's message
-        //     botResponse: botReply.message, // Bot's response, obtained separately
-        //   }),
-        // });
-
+  
         console.log(
           "Loggign the current Conversation on a new click ",
           currentConversationId
@@ -283,32 +273,9 @@ const ChatDashboard: React.FC = () => {
   };
 
 
-  // useEffect(() => { 
-  //   function formatResponse(response: string): string {
-  //     // Replace **text** with <strong>text</strong>
-  //     let formattedResponse = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    
-  //     // Handle numbered list items and paragraphs
-  //     const listItems = formattedResponse.match(/(\d+\..*?)(?=(\d+\.)|$)/gs);
-  //     if (listItems) {
-  //       const listFormatted = listItems.map(item => `<li>${item.trim()}</li>`).join('<br>');
-  //       formattedResponse = formattedResponse.replace(listItems.join(''), `<ul>${listFormatted}</ul>`);
-  //     }
-    
-  //     // Split the response into paragraphs
-  //     const paragraphs = formattedResponse.split('\n').filter(paragraph => paragraph.trim() !== '');
-    
-  //     // Wrap each paragraph in <p> tags and add <br> tags between paragraphs
-  //     return paragraphs.map(paragraph => `<p>${paragraph.trim()}</p>`).join('<br>');
-  //   }
-    
-    
-    
-  //   const resText = `Indeed, Chosen One, the reference to three in terms of Heaven is an intriguing concept that extends across many spiritual teachings: 1. **The Trinity** - In Christian theology, Heaven is deeply intertwined with the Holy Trinity: The Father, the Son (Yahshua), and the Holy Spirit. Each one represents a different aspect of the divine in perfect unity and harmony. 2. **The Three Realms** - Ancient Celtic and Norse religions spoke of a cosmology divided into three parts: the realm of gods (heaven), the realm of humans (earth), and the realm of the dead. 3. **The Three Jewels/ Treasures** - In Buddhist tradition, there are the "Three Jewels" or "Triple Gem" that constitutes Buddhism. They are the Buddha (the enlightened one), the Dharma (the teachings), and the Sangha (the community). These are often thought of like the "heaven" or guiding stars of Buddhism. In your striving, let these principles guide you, and may your journey yield abundant blessings from the One Above All.`
-    
-  //   console.log("Logging just the formatted text becuase", formatResponse(resText))
-    
-  // },[])
+  useEffect(() => { 
+
+  },[messagesIsLoading])
 
   // Where we are going to send the Chat Data Request
 
@@ -525,8 +492,6 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
-
-  
   useEffect(() => {
     removeFirstChatResponse();
   }, [pathname]);
@@ -619,8 +584,6 @@ const ChatDashboard: React.FC = () => {
   useEffect(() => {
     console.log("Loggin the conversations in the app useEffect", conversations);
   }, [conversations]);
-  
-
 
   return (
     <MessageProvider>
@@ -643,18 +606,14 @@ const ChatDashboard: React.FC = () => {
           editingTitle={editingTitle}
           titleUpdated={titleUpdated}
           handleKeyDown={handleKeyDown}
-          chatContainerRef = {chatContainerRef as any}
-          handleMobileChatBtnClick = {handleMobileChatBtnClick}
-
-
+          chatContainerRef={chatContainerRef as any}
+          handleMobileChatBtnClick={handleMobileChatBtnClick}
         />
 
         {/* Chat Container Componet  */}
 
         <div className="chatDashboardWrapper w-full text-left">
-          <Header
-          handleMobileChatBtnClick = {handleMobileChatBtnClick}
-          />
+          <Header handleMobileChatBtnClick={handleMobileChatBtnClick} />
 
           <div className="chatDashBoardContainer">
             {/* Dashboard Component  */}
@@ -707,21 +666,25 @@ const ChatDashboard: React.FC = () => {
                 </button>
 
                 <button type="submit" className="textAreaIcon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    fill="none"
-                    viewBox="0 0 32 32"
-                    className=""
-                  >
-                    <path
-                      fill="currentColor"
-                      fill-rule="evenodd"
-                      d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
+                  {messagesIsLoading ? (
+                    <ButtonLoadingComponent />
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 32 32"
+                      className=""
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>
@@ -737,26 +700,24 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ handleMobileChatBtnClick }) => {
-
-
-
   return (
     <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
-            <div className=" flex-1   cursor-pointer mobileChatContainer">
-            <div 
-            onClick={handleMobileChatBtnClick}
-            className=" mobileChatBtn flex items-center justify-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
-              </svg>
-            </div>
-          </div>
+      <div className=" flex-1   cursor-pointer mobileChatContainer">
+        <div
+          onClick={handleMobileChatBtnClick}
+          className=" mobileChatBtn flex items-center justify-start"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 256 256"
+          >
+            <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
+          </svg>
+        </div>
+      </div>
       <div className="flex flex-row gap-[18px] items-center justify-center">
         <button className="hover:text-[#807f7f]">Tour</button>
 
@@ -782,5 +743,5 @@ const Header: React.FC<HeaderProps> = ({ handleMobileChatBtnClick }) => {
       </div>
     </header>
   );
-}
+};
 export default dynamic(() => Promise.resolve(ChatDashboard), { ssr: false });

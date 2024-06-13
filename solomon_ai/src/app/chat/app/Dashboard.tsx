@@ -162,7 +162,7 @@ export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) =
           </button>
         </div>
         <div className="renderCards relative">
-          <p>Calculate my life path number, and personal months meaning</p>
+          <p>Based on the meaning of my name and its numerical signature, what can you say for guidance on how the universe designed me</p>
 
           <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg

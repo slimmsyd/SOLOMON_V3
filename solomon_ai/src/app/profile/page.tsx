@@ -41,15 +41,15 @@ const Profile: React.FC = () => {
     string | null
   >(null);
 
-  const [zodiac, setZodiac] = useState<string>("");
-  const [lifePath, setLifePathNumber] = useState<string>("");
-  const [nameNumerologyNumber, setNameNumerolgyNumber] = useState<string>("");
+  const [zodiac, setZodiac] = useState<string>("Enter");
+  const [lifePath, setLifePathNumber] = useState<string>("Enter");
+  const [nameNumerologyNumber, setNameNumerolgyNumber] = useState<string>("Enter");
   const [practice, setPractice] = useState<null>(null);
-  const [ennealogy, setEnnealogyNumber] = useState<string>("");
-  const [birthday, setBirthDay] = useState<string>("");
-  const [chineseZodiac, setChineseZodiac] = useState<string>("");
-  const [cardologyNumber, setCardologyNumber] = useState("");
-  const [mylesBridgeType, setMylesBridgeType] = useState("");
+  const [ennealogy, setEnnealogyNumber] = useState<string>("Enter");
+  const [birthday, setBirthDay] = useState<string>("Enter");
+  const [chineseZodiac, setChineseZodiac] = useState<string>("Enter");
+  const [cardologyNumber, setCardologyNumber] = useState("Enter");
+  const [mylesBridgeType, setMylesBridgeType] = useState("Enter");
 
   useEffect(() => {
     checkSession(status, {

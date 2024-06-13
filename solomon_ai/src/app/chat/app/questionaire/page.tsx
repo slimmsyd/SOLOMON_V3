@@ -15,6 +15,9 @@ import axios from "axios";
 
 import { isClient } from "@/utilis/isClient";
 
+//Helper functions
+import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoading";
+
 // Dashboard
 
 import { useChatConversation } from "@/app/hooks/ConversationContext";
@@ -42,7 +45,6 @@ import { calculateLifePathNumber } from "@/utilis/updateUserUtils";
 import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
 
 import LoadingComponent from "@/app/components/helper/Loading";
-import { Erica_One } from "next/font/google";
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
@@ -159,6 +161,8 @@ const ChatDashboard: React.FC = () => {
         `Response to question ${currentQuestion}`,
       ]; // Example response
 
+      console.log("Logging the update responses", updatedResponses);
+
       const newBorderClasses = [...borderClasses];
       newBorderClasses[currentQuestion] = "selectedBorder"; // Update the border class for the current question
       setBorderClasses(newBorderClasses);
@@ -199,9 +203,7 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
-  useEffect(() => {
- 
-  }, [completedForm]);
+  useEffect(() => {}, [completedForm]);
 
   //Fetch the Progress
   useEffect(() => {
@@ -229,7 +231,7 @@ const ChatDashboard: React.FC = () => {
     };
 
     if (currentQuestion >= 2) {
-      console.log("Fetch Progress is being called")
+      console.log("Fetch Progress is being called");
       fetchProgress();
     }
   }, [userId]);
@@ -237,12 +239,11 @@ const ChatDashboard: React.FC = () => {
   const handleQuestionaireResponse = async (e: any) => {
     e.preventDefault();
 
-
+    setMessagesIsLoading(false);
     //Ensure that we don't submit anymore
     if (currentQuestion >= 6) {
       setCompleteForm(true);
       setFirstConvoState(false);
-
     }
 
     let currentConvoId = sessionStorage.getItem("currentConvoId");
@@ -275,6 +276,8 @@ const ChatDashboard: React.FC = () => {
           }),
         }).then((res) => res.json());
 
+        setMessagesIsLoading(false);
+
         // 3. Update the responses array with the bot's reply
         setResponses((prevResponses) =>
           prevResponses.map((resp) => {
@@ -294,6 +297,7 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
+  useEffect(() => {}, [messagesIsLoading]);
 
   // Update user progress with the extracted vales
   const updateUserProgress = async (
@@ -304,6 +308,15 @@ const ChatDashboard: React.FC = () => {
     enealogyNumber: string | null,
     religion: string | null
   ) => {
+    console.log(
+      "Logging The Ennegram before we updateh the user",
+      enealogyNumber
+    );
+    console.log(
+      "Logging the lifePathnumber before we update the user",
+      lifePathNumber
+    );
+
     try {
       const response = await axios.post("/api/updateUser", {
         userId,
@@ -339,6 +352,7 @@ const ChatDashboard: React.FC = () => {
             userId,
             currentQuestion: 6,
             onComplete: true, // Include the onComplete status in the request
+            // responses: updatedResponses,
           });
         } catch (e) {
           console.error(e);
@@ -351,7 +365,11 @@ const ChatDashboard: React.FC = () => {
 
       //Getting the ISO birthday
       // Convert birthday to ISO string if present
+
+      console.log("Logging the Birthday before ISO birthday", birthday);
       const isoBirthday = birthday ? parseDateString(birthday) : null;
+
+      console.log("Logging hte ISO birthdaty", isoBirthday);
 
       // Calculate life path number if not provided and birthday is available
       let finalLifePathNumber = lifePathNumber;
@@ -359,16 +377,22 @@ const ChatDashboard: React.FC = () => {
         finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
       }
 
+      console.log("Logging the finalPathNumber", finalLifePathNumber);
+
       let finalEnnealogyNumber = enealogyNumber;
       if (!finalEnnealogyNumber && isoBirthday) {
         finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
       }
 
       console.log(
+        "Logging the ennegram number after this stuff",
+        enealogyNumber
+      );
+
+      console.log(
         "Logging Response.Response before we send to updateUserProgres",
         response.response
       );
-
 
       if (
         lifePathNumber !== null ||
@@ -738,6 +762,25 @@ const ChatDashboard: React.FC = () => {
                   </button>
 
                   <button type="submit" className="textAreaIcon">
+                    {messagesIsLoading ? (
+                      <ButtonLoadingComponent />
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        viewBox="0 0 32 32"
+                        className=""
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    )}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="18"

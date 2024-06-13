@@ -575,7 +575,7 @@ export default async function handler(
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
-      max_tokens: 300,
+      max_tokens: 500,
       messages: messages,
     });
 

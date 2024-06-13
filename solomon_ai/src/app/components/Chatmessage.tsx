@@ -5,10 +5,11 @@ export const formatResponse = (response: string): string => {
   // Replace **text** with <strong>text</strong>
   let formattedResponse = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
+  
   // Handle numbered list items and paragraphs
   const listItems = formattedResponse.match(/(\d+\..*?)(?=(\d+\.)|$)/gs);
   if (listItems) {
-    const listFormatted = listItems.map(item => `<li>${item.trim()}</li>`).join('<br>');
+    const listFormatted = listItems.map(item => `<li>${item.trim()}</li>`).join('<br />');
     formattedResponse = formattedResponse.replace(listItems.join(''), `<ul>${listFormatted}</ul>`);
   }
 
