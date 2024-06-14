@@ -46,13 +46,15 @@ import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
 import LoadingComponent from "@/app/components/helper/Loading";
 
 
- const parseDateString = (dateString: string): string | null => {
+const monthNames: { [key: string]: number } = {
+  January: 0, Jan: 0, February: 1, Feb: 1, March: 2, Mar: 2, April: 3, Apr: 3, May: 4, June: 5, Jun: 5,
+  July: 6, Jul: 6, August: 7, Aug: 7, September: 8, Sept: 8, Sep: 8, October: 9, Oct: 9, November: 10, Nov: 10, December: 11, Dec: 11
+};
+const parseDateString = (dateString: string): string | null => {
+  console.log("Logging the Date String at top:", dateString);
 
-  console.log("Logging the Date String at top", dateString)
-
-  // Regular expressions to match common date formats
   if (!dateString) {
-    console.log("parseDateString received an invalid dateString:", dateString);
+    console.error("parseDateString received an invalid dateString:", dateString);
     return new Date().toISOString();  // Return current date as fallback
   }
 
@@ -64,72 +66,65 @@ import LoadingComponent from "@/app/components/helper/Loading";
 
   for (const pattern of datePatterns) {
     const match = dateString.match(pattern);
-
-
     console.log("Checking pattern:", pattern);
     console.log("Match result:", match);
-    if (match) {
 
-      
+    if (match) {
       console.log("Pattern matched:", pattern);
       console.log("Match groups:", match);
 
-
-      // If the matched pattern is "1st day of September in the year 2000"
       if (pattern === datePatterns[0]) {
-        console.log("Pattern matched:", pattern);
-        console.log("Match groups:", match);
-        const day = match[1];
-        const month = match[2];
-        const year = match[3];
-        console.log("Logging the New Date Return", month, day, year)
+        const day = parseInt(match[1]);
+        const month = monthNames[match[2].charAt(0).toUpperCase() + match[2].slice(1).toLowerCase()]; // Normalize month name
+        const year = parseInt(match[3]);
+        console.log("Parsed day:", day);
+        console.log("Parsed month:", month);
+        console.log("Parsed year:", year);
 
+        if (month !== undefined) {
+          const isoDate = new Date(Date.UTC(year, month, day)).toISOString();
+          console.log("Parsed ISO date:", isoDate);
+          return isoDate;
+        } else {
+          console.error("Invalid month name:", match[2]);
+        }
+      } else if (pattern === datePatterns[1]) {
+        const day = parseInt(match[2]);
+        const month = monthNames[match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase()]; // Normalize month name
+        const year = parseInt(match[3]);
+        console.log("Parsed day:", day);
+        console.log("Parsed month:", month);
+        console.log("Parsed year:", year);
 
-        console.log("No match for pattern: 1 ", pattern);
+        if (month !== undefined) {
+          const isoDate = new Date(Date.UTC(year, month, day)).toISOString();
+          console.log("Parsed ISO date:", isoDate);
+          return isoDate;
+        } else {
+          console.error("Invalid month name:", match[1]);
+        }
+      } else if (pattern === datePatterns[2]) {
+        const day = parseInt(match[1]);
+        const month = parseInt(match[2]) - 1; // Convert to zero-based month index
+        const year = match[3].length === 2 ? parseInt(`20${match[3]}`) : parseInt(match[3]);
+        console.log("Parsed day:", day);
+        console.log("Parsed month:", month);
+        console.log("Parsed year:", year);
 
-
-        return new Date(`${month} ${day}, ${year}`).toISOString();
+        const isoDate = new Date(Date.UTC(year, month, day)).toISOString();
+        console.log("Parsed ISO date:", isoDate);
+        return isoDate;
       }
 
-      // If the matched pattern is "September 1st, 2000"
-      if (pattern === datePatterns[1]) {
-        const month = match[1];
-        const day = match[2];
-        const year = match[3];
-        console.log("Logging the New Date Return", month, day, year)
-        console.log("No match for pattern: 2 ", pattern);
-
-
-        return new Date(`${month} ${day}, ${year}`).toISOString();
-      }
-
-      // If the matched pattern is "01/09/2000"
-      if (pattern === datePatterns[2]) {
-        const day = match[1];
-        const month = match[2];
-        const year = match[3].length === 2 ? `20${match[3]}` : match[3]; 
-        
-        console.log("No match for pattern: 3 ", pattern);
-
-        console.log("Logging the New Date Return", month, day, year)
-        // Handle 2-digit year
-        return new Date(`${month}/${day}/${year}`).toISOString();
-      }
-
-
-
-      console.log("Logging the Match result at the end", match)
-
+      console.log("Logging the Match result at the end", match);
+    } else {
+      console.log("No match for pattern:", pattern);
     }
   }
 
-
   console.error("No patterns matched. Returning null.");
-
-  // If no pattern matches, return null
   return null;
 };
-
 
 
 const ChatDashboard: React.FC = () => {
