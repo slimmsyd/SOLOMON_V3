@@ -45,7 +45,7 @@ export default async function handler(
       console.log(`Processing progress Birthday for user ${birthday}`);
 
       // Convert birthday to ISO string if present
-       const isoBirthday =  parseDateString(birthday as string) ;
+       const isoBirthday = birthday ? parseDateString(birthday) : null;
        if (birthday && !isoBirthday) {
         //  throw new Error("Invalid birthday format");
        }
