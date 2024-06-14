@@ -30,6 +30,7 @@ import { SignupForm } from "../Signupform";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 
 //Importing the Zodiac Signs ++ Helper functions
+import { parseDateString } from "@/utilis/updateUserUtils";
 import { extractLifePathNumber } from "@/utilis/textExtractor";
 import { extractZodiacSign } from "@/utilis/textExtractor";
 import { extractBirthday } from "@/utilis/textExtractor";
@@ -45,88 +46,6 @@ import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
 
 import LoadingComponent from "@/app/components/helper/Loading";
 
-const monthNames: { [key: string]: number } = {
-  january: 0, jan: 0, february: 1, feb: 1, march: 2, mar: 2, april: 3, apr: 3, may: 4, june: 5, jun: 5,
-  july: 6, jul: 6, august: 7, aug: 7, september: 8, sept: 8, sep: 8, october: 9, oct: 9, november: 10, nov: 10, december: 11, dec: 11
-};
-
-const parseDateString = (dateString: string): string | null => {
-  // Normalize input
-  dateString = dateString.trim().toLowerCase();
-  
-  console.log("Environment Info:", process.env);
-  console.log("Node.js Version:", process.version);
-  console.log("Locale:", Intl.DateTimeFormat().resolvedOptions().locale);
-  console.log("Time Zone:", Intl.DateTimeFormat().resolvedOptions().timeZone);
-  console.log("Logging the Date String at top:", dateString);
-
-  const datePatterns = [
-    /\b(\d{1,2})(?:st|nd|rd|th)? day of (\w+) in the year (\d{4})\b/i, // e.g., "1st day of September in the year 2000"
-    /\b(\w+)\s(\d{1,2})(?:st|nd|rd|th)?,?\s(\d{4})\b/i, // e.g., "September 1st, 2000"
-    /\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})\b/i, // e.g., "01/09/2000", "01-09-2000", "01.09.2000"
-  ];
-
-  for (const pattern of datePatterns) {
-    const match = dateString.match(pattern);
-    console.log("Checking pattern:", pattern);
-    console.log("Match result:", match);
-
-    if (match) {
-      console.log("Pattern matched:", pattern);
-      console.log("Match groups:", match);
-
-      if (pattern === datePatterns[0]) {
-        const day = parseInt(match[1]);
-        const month = monthNames[match[2].charAt(0).toUpperCase() + match[2].slice(1).toLowerCase()]; // Normalize month name
-        const year = parseInt(match[3]);
-        console.log("Parsed day:", day);
-        console.log("Parsed month:", month);
-        console.log("Parsed year:", year);
-
-        if (month !== undefined) {
-          const isoDate = new Date(Date.UTC(year, month, day)).toISOString();
-          console.log("Parsed ISO date:", isoDate);
-          return isoDate;
-        } else {
-          console.error("Invalid month name:", match[2]);
-        }
-      } else if (pattern === datePatterns[1]) {
-        const day = parseInt(match[2]);
-        const month = monthNames[match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase()]; // Normalize month name
-        const year = parseInt(match[3]);
-        console.log("Parsed day:", day);
-        console.log("Parsed month:", month);
-        console.log("Parsed year:", year);
-
-        if (month !== undefined) {
-          const isoDate = new Date(Date.UTC(year, month, day)).toISOString();
-          console.log("Parsed ISO date:", isoDate);
-          return isoDate;
-        } else {
-          console.error("Invalid month name:", match[1]);
-        }
-      } else if (pattern === datePatterns[2]) {
-        const day = parseInt(match[1]);
-        const month = parseInt(match[2]) - 1; // Convert to zero-based month index
-        const year = match[3].length === 2 ? parseInt(`20${match[3]}`) : parseInt(match[3]);
-        console.log("Parsed day:", day);
-        console.log("Parsed month:", month);
-        console.log("Parsed year:", year);
-
-        const isoDate = new Date(Date.UTC(year, month, day)).toISOString();
-        console.log("Parsed ISO date:", isoDate);
-        return isoDate;
-      }
-
-      console.log("Logging the Match result at the end", match);
-    } else {
-      console.log("No match for pattern:", pattern);
-    }
-  }
-
-  console.error("No patterns matched. Returning null.");
-  return null;
-};
 
 
 const ChatDashboard: React.FC = () => {
@@ -134,12 +53,6 @@ const ChatDashboard: React.FC = () => {
 
   const questionBotApi =
     "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot";
-
-
-    // Example usage
-const exampleBirthday = "September 1st 2000";
-const isoBirthday = parseDateString(exampleBirthday);
-console.log("ISO Birthday JUST TO LOG THE SHIT :", isoBirthday);
 
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
@@ -328,7 +241,7 @@ console.log("ISO Birthday JUST TO LOG THE SHIT :", isoBirthday);
   const handleQuestionaireResponse = async (e: any) => {
     e.preventDefault();
 
-    setMessagesIsLoading(false);
+    setMessagesIsLoading(true);
     //Ensure that we don't submit anymore
     if (currentQuestion >= 6) {
       setCompleteForm(true);
