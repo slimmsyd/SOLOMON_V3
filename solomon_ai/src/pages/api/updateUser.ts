@@ -16,11 +16,8 @@ const progressSchema = z.object({
   religion: z.string().optional(),
   cardologyNumber: z.string().optional(),
   mylesBridgeType: z.string().optional(),
-  nameNumerolgyNumber: z.string().optional()
+  nameNumerolgyNumber: z.string().optional(),
 });
-
-
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -38,52 +35,66 @@ export default async function handler(
         religion,
         cardologyNumber,
         mylesBridgeType,
-        nameNumerolgyNumber
+        nameNumerolgyNumber,
       } = progressSchema.parse(req.body);
       // console.log(`Processing progress update for user ${userId}`);
-      // console.log(`Processing progress Zodiac for user ${zodiacSign}`);
-      // console.log(`Processing progress LifePath for user ${lifePathNumber}`);
-      // console.log(`Processing progress Ennealogy for user ${enealogyNumber}`);
-      // console.log(`Processing progress relgion for user ${religion}`);
-      // console.log(`Processing progress Birthday for user ${birthday}`);
+      console.log(`Processing progress Zodiac for user ${zodiacSign}`);
+      console.log(`Processing progress LifePath for user ${lifePathNumber}`);
+      console.log(`Processing progress Ennealogy for user ${enealogyNumber}`);
+      console.log(`Processing progress relgion for user ${religion}`);
+      console.log(`Processing progress Birthday for user ${birthday}`);
 
-   // Convert birthday to ISO string if present
-  //  const isoBirthday = birthday ? parseDateString(birthday) : null;
-  //  if (birthday && !isoBirthday) {
-  //    throw new Error("Invalid birthday format");
-  //  }
+      // Convert birthday to ISO string if present
+      //  const isoBirthday = birthday ? parseDateString(birthday) : null;
+      //  if (birthday && !isoBirthday) {
+      //   //  throw new Error("Invalid birthday format");
+      //  }
 
-   // Calculate ennealogy number if not provided and birthday is available
-  // Calculate life path number if not provided and birthday is available
-  // let finalLifePathNumber = lifePathNumber;
-  // if (!finalLifePathNumber && isoBirthday) {
-  //   finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
-  // }
+      // Calculate ennealogy number if not provided and birthday is available
+      // Calculate life path number if not provided and birthday is available
+      let finalLifePathNumber = lifePathNumber;
+      if (!finalLifePathNumber && birthday) {
+        finalLifePathNumber = calculateLifePathNumber(birthday) as number;
+      }
 
-  // // Calculate ennealogy number if not provided and birthday is available
-  // let finalEnnealogyNumber = enealogyNumber;
-  // if (!finalEnnealogyNumber && isoBirthday) {
-  //   finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number ;
-  // }
+      // Calculate ennealogy number if not provided and birthday is available
+      let finalEnnealogyNumber = enealogyNumber;
+      if (!finalEnnealogyNumber && birthday) {
+        finalEnnealogyNumber = calculateEnnealogyNumber(birthday) as number;
+      }
 
+      console.log("Logging Birthday In Update user", birthday);
+      console.log("Logging the lifePathNumber in update user", lifePathNumber);
+      console.log("Logging the enengarm number in ennealgoy", enealogyNumber);
 
-
-
-      console.log("Logging Birthday In Update user", birthday)
-      console.log("Logging the lifePathNumber in update user", lifePathNumber)
-      console.log("Logging the enengarm number in ennealgoy", enealogyNumber)
-
-       
       // Build the update object conditionally
       const updateData: any = {};
       if (birthday) updateData.birthday = birthday;
       if (zodiacSign) updateData.zodiacSign = zodiacSign;
-      if (lifePathNumber !== null && lifePathNumber !== undefined) updateData.lifePathNumber = lifePathNumber;
-      if (enealogyNumber !== null && enealogyNumber !== undefined) updateData.ennealogy = enealogyNumber;
+      // Use lifePathNumber if available, otherwise use finalLifePathNumber
+      if (lifePathNumber !== null && lifePathNumber !== undefined) {
+        updateData.lifePathNumber = lifePathNumber;
+      } else if (
+        finalLifePathNumber !== null &&
+        finalLifePathNumber !== undefined
+      ) {
+        updateData.lifePathNumber = finalLifePathNumber;
+      }
+
+      // Use enealogyNumber if available, otherwise use finalEnnealogyNumber
+      if (enealogyNumber !== null && enealogyNumber !== undefined) {
+        updateData.ennealogy = enealogyNumber;
+      } else if (
+        finalEnnealogyNumber !== null &&
+        finalEnnealogyNumber !== undefined
+      ) {
+        updateData.ennealogy = finalEnnealogyNumber;
+      }
       if (religion) updateData.religion = religion;
-      if(cardologyNumber) updateData.cardologyNumber = cardologyNumber;
-      if(mylesBridgeType) updateData.mylesBridgeType = mylesBridgeType;
-      if(nameNumerolgyNumber) updateData.nameNumerolgyNumber = nameNumerolgyNumber;
+      if (cardologyNumber) updateData.cardologyNumber = cardologyNumber;
+      if (mylesBridgeType) updateData.mylesBridgeType = mylesBridgeType;
+      if (nameNumerolgyNumber)
+        updateData.nameNumerolgyNumber = nameNumerolgyNumber;
 
       const userProgress = await db.user.update({
         where: { id: userId },

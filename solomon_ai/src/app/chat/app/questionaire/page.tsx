@@ -546,7 +546,7 @@ const processResponses = async (responses, userId) => {
       if (status === "authenticated" && session) {
         const sendGreetings = async () => {
           const greetingSent = sessionStorage.getItem("greetingSent");
-          if (!currentConversationId && session?.user?.id && !greetingSent) {
+          if (!currentConversationId && session?. user?.id && !greetingSent) {
             setHasRunSendGreetings(true); // Mark the function as having run
             const { id: convoId, firstConvo } = await fetchFirstConversation(
               userId
