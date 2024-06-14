@@ -386,3 +386,83 @@ export const getZodiacDescription = (category: string, name: string) => {
     (zodiac) => zodiac.category === category && zodiac.name === name
   )?.description;
 };
+
+
+
+
+export const personalYear = {
+  1: {
+    theme: `The primary theme of a Personal Year 1 is Innovation and Self-Discovery. This period encourages you to take initiative, develop independence, and chart new courses. Much like the sprouting of a seed, it is a time to assert your identity and explore your unique path. Behold, I am doing a new thing; now it springs forth, do you not perceive it?" (Isaiah 43:19). The year beckons you to recognize and embrace these fresh beginnings.    `,
+    career: `Professionally, this year could signal the start of a new job, a significant project, or even a different career path. It’s a good time to take risks and act on those innovative ideas that have been simmering below the surface. The wise Laozi once said, "A journey of a thousand miles begins with a single step" – now is the time to take that first step.
+
+    `,
+    travel: ` Expect opportunities for trips that expand your horizons, possibly opening doors to new cultures, people, and experiences. Embrace these journeys as they will provide the raw material for your future projects.`,
+    description: `Your Personal Year 1 also aligns with the traits of Virgo – your analytical mind will serve you well in making practical decisions as you embark on new ventures. The INFJ personality and the Life Path 3 suggest that your creative vision and empathetic nature will shape the way you approach these opportunities, combining practicality with a deep sense of purpose.
+
+
+    In this year, you're a pioneer, an architect of your own destiny. The light of The Creator shines brightly upon you, illuminating the path and inviting you to tread it with courage and faith.
+    
+    
+    Remember, "In the beginning, God created the heavens and the earth" (Genesis 1:1). Just as creation started with an act of intention, so will your journey flourish with deliberate effort and divine guidance.
+    
+    
+    May you walk this path with wisdom and grace, embracing every new dawn as a gift from the heavens.`
+  },
+  2: {
+    theme: `The essence of a Personal Year 2 is one of harmony, balance, and relationships. This year is about cooperation, patience, and diplomacy. Unlike the bold and assertive energies of a Personal Year 1, the Personal Year 2 encourages you to pause and reflect, to nurture relationships, and to cultivate empathy and understanding.
+    `,
+    career: `In the realm of career, a Personal Year 2 might not be about drastic changes or leaps forward, but rather about laying important groundwork and building solid foundations.`,
+    travel: `Travel during a Personal Year 2 often gravitates toward peaceful and serene locations that promote reflection and relaxation—places where you can immerse yourself in nature or spend time with loved ones. Consider journeys that are less about grand adventures and more about rejuvenation, such as retreats, spiritual pilgrimages, or visits to family and friends.    `,
+    description: `The overarching tenor of a Personal Year 2 is gentleness and subtle progress. It is not a time for making swift or aggressive moves, but rather for developing a deeper understanding of yourself and others. In this year, you'll find opportunities to heal and grow through cooperation and empathy, forging deeper, more meaningful connections.
+
+
+    Reflect on these energies and embrace them, dear Lightbringer. By flowing in harmony with the cosmos, you allow yourself to fully experience and benefit from the gifts of this nurturing and harmonious year.`
+  },
+  3: {
+    theme: "Creativity",
+    career: "Expressing your talents",
+    travel: "Inspirational journeys",
+    description: "A year of artistic expression and joy."
+  },
+  4: {
+    theme: "Stability",
+    career: "Building a solid foundation",
+    travel: "Business-related trips",
+    description: "A year of hard work and establishing security."
+  },
+  5: {
+    theme: "Change",
+    career: "Taking risks",
+    travel: "Adventures",
+    description: "A year of freedom and unexpected events."
+  },
+  6: {
+    theme: "Responsibility",
+    career: "Focusing on home and family",
+    travel: "Family vacations",
+    description: "A year of caring for others and domestic concerns."
+  },
+  7: {
+    theme: "Reflection",
+    career: "Introspection and research",
+    travel: "Quiet retreats",
+    description: "A year of personal and spiritual growth."
+  },
+  8: {
+    theme: "Power",
+    career: "Advancing in career",
+    travel: "Luxury travel",
+    description: "A year of ambition and material success."
+  },
+  9: {
+    theme: "Completion",
+    career: "Wrapping up projects",
+    travel: "World travel",
+    description: "A year of endings and letting go."
+  }
+};
+
+const months = [
+  "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December"
+];
