@@ -359,9 +359,7 @@ const processResponses = async (responses, userId) => {
     }
     console.log("Logging the finalLifePathNumber:", finalLifePathNumber);
 
-    if (!finalEnnealogyNumber && isoBirthday) {
-      finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
-    }
+
     console.log("Logging the finalEnnealogyNumber:", finalEnnealogyNumber);
 
     //Cacluate the probality 
