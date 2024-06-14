@@ -70,6 +70,9 @@ import LoadingComponent from "@/app/components/helper/Loading";
     console.log("Match result:", match);
     if (match) {
 
+      
+      console.log("Pattern matched:", pattern);
+      console.log("Match groups:", match);
 
 
       // If the matched pattern is "1st day of September in the year 2000"
@@ -112,6 +115,11 @@ import LoadingComponent from "@/app/components/helper/Loading";
         // Handle 2-digit year
         return new Date(`${month}/${day}/${year}`).toISOString();
       }
+
+
+
+      console.log("Logging the Match result at the end", match)
+
     }
   }
 
