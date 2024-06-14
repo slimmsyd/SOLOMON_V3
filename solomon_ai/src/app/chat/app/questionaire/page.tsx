@@ -336,87 +336,70 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
+
+const processResponses = async (responses, userId) => {
+  for (const response of responses) {
+    const lifePathNumber = extractLifePathNumber(response.response);
+    const zodiacSign = extractZodiacSign(response.response);
+    const birthday = extractBirthday(response.response || response.question);
+    const enealogyNumber = extractEnnealogyNumber(response.response);
+    const religion = extractReligion(response.response || response.question);
+
+    const isTextComplete = checkCompletionText(response.response);
+
+    console.log("Logging the Birthday before ISO conversion:", birthday);
+    const isoBirthday = birthday ? parseDateString(birthday) : null;
+    console.log("Logging the ISO birthday:", isoBirthday);
+
+    let finalLifePathNumber = lifePathNumber;
+    if (!finalLifePathNumber && isoBirthday) {
+      finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
+    }
+    console.log("Logging the finalLifePathNumber:", finalLifePathNumber);
+
+    let finalEnnealogyNumber = enealogyNumber;
+    if (!finalEnnealogyNumber && isoBirthday) {
+      finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
+    }
+    console.log("Logging the finalEnnealogyNumber:", finalEnnealogyNumber);
+
+    console.log("Logging the response before updating progress:", response.response);
+
+    if (isTextComplete) {
+      setCurrentQuestion(6);
+      try {
+        await axios.post("/api/saveProgress", {
+          userId,
+          currentQuestion: 6,
+          onComplete: true,
+        });
+      } catch (e) {
+        console.error("Error updating progress early:", e);
+      }
+    }
+
+    if (lifePathNumber !== null || zodiacSign !== null || birthday !== null || religion !== null || enealogyNumber !== null) {
+      console.log("Logging the Life Path Number:", finalLifePathNumber);
+      console.log("Logging the Zodiac Sign:", zodiacSign);
+      console.log("Logging the Enneagram Number:", finalEnnealogyNumber);
+      console.log("Logging the Birthday:", birthday);
+      console.log("Logging the Religion:", religion);
+      console.log("Logging the User ID:", userId);
+      await updateUserProgress(
+        userId as any,
+        isoBirthday as any,
+        finalLifePathNumber as any,
+        zodiacSign as any,
+        finalEnnealogyNumber as any,
+        religion as any
+      );
+    }
+  }
+};
   useEffect(() => {
-    responses.forEach((response) => {
-      const lifePathNumber = extractLifePathNumber(response.response);
-      const zodiacSign = extractZodiacSign(response.response);
-      const birthday = extractBirthday(response.response || response.question);
-      const enealogyNumber = extractEnnealogyNumber(response.response);
-      const religion = extractReligion(response.response || response.question);
-
-      const isTextComplete = checkCompletionText(response.response);
-
-      async function updateProgressIfCompletedEarly() {
-        try {
-          const response = await axios.post("/api/saveProgress", {
-            userId,
-            currentQuestion: 6,
-            onComplete: true, // Include the onComplete status in the request
-            // responses: updatedResponses,
-          });
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      if (isTextComplete) {
-        setCurrentQuestion(6);
-        updateProgressIfCompletedEarly();
-      }
-
-      //Getting the ISO birthday
-      // Convert birthday to ISO string if present
-
-      console.log("Logging the Birthday before ISO birthday", birthday);
-      const isoBirthday = birthday ? parseDateString(birthday) : null;
-
-      console.log("Logging hte ISO birthdaty", isoBirthday);
-
-      // Calculate life path number if not provided and birthday is available
-      let finalLifePathNumber = lifePathNumber;
-      if (!finalLifePathNumber && isoBirthday) {
-        finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
-      }
-
-      console.log("Logging the finalPathNumber", finalLifePathNumber);
-
-      let finalEnnealogyNumber = enealogyNumber;
-      if (!finalEnnealogyNumber && isoBirthday) {
-        finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
-      }
-
-      console.log(
-        "Logging the ennegram number after this stuff",
-        enealogyNumber
-      );
-
-      console.log(
-        "Logging Response.Response before we send to updateUserProgres",
-        response.response
-      );
-
-      if (
-        lifePathNumber !== null ||
-        zodiacSign !== null ||
-        birthday !== null ||
-        religion !== null ||
-        enealogyNumber !== null
-      ) {
-        console.log("Logging the Life Path Nuber", finalLifePathNumber);
-        console.log("Logging the Zodiac Sign", zodiacSign);
-        console.log("Logging the Ennegarm Number", finalEnnealogyNumber);
-        console.log("Logging the Birthday in if statement", birthday);
-        console.log("Logging the Religion in if statement", religion);
-        console.log("Logging the userID", userId);
-        updateUserProgress(
-          userId as any,
-          isoBirthday as any,
-          finalLifePathNumber as any,
-          zodiacSign as any,
-          finalEnnealogyNumber as any,
-          religion as any
-        );
-      }
-    });
+    if (responses && userId) {
+      processResponses(responses, userId);
+    }
   }, [responses, userId]);
 
   //Lets clear the chat Responses when we first load in
