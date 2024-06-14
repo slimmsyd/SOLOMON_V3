@@ -47,6 +47,9 @@ import LoadingComponent from "@/app/components/helper/Loading";
 
 
  const parseDateString = (dateString: string): string | null => {
+
+  console.log("Logging the Date String at top", dateString)
+
   // Regular expressions to match common date formats
   if (!dateString) {
     console.log("parseDateString received an invalid dateString:", dateString);
@@ -385,6 +388,7 @@ const ChatDashboard: React.FC = () => {
   };
 
   const processResponses = async (responses, userId) => {
+
     for (const response of responses) {
       const lifePathNumber = extractLifePathNumber(response.response);
       const zodiacSign = extractZodiacSign(response.response);
