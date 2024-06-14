@@ -384,12 +384,11 @@ const processResponses = async (responses, userId) => {
       console.log("Logging the Zodiac Sign:", zodiacSign);
       console.log("Logging the Enneagram Number:", finalEnnealogyNumber);
       console.log("Logging the Birthday:", birthday);
-      const isoBirthday = birthday ? parseDateString(birthday) : null;
       console.log("Logging the Religion:", religion);
       console.log("Logging the User ID:", userId);
       await updateUserProgress(
         userId as any,
-        isoBirthday as any,
+        birthday as any,
         finalLifePathNumber as any,
         zodiacSign as any,
         finalEnnealogyNumber as any,
