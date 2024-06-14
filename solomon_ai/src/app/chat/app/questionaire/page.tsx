@@ -389,7 +389,7 @@ const processResponses = async (responses, userId) => {
       console.log("Logging the User ID:", userId);
       await updateUserProgress(
         userId as any,
-        isoBirthday as string,
+        isoBirthday as any,
         finalLifePathNumber as any,
         zodiacSign as any,
         finalEnnealogyNumber as any,
