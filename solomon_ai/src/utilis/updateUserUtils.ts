@@ -27,7 +27,7 @@ export const parseDateString = (dateString: string): string | null => {
       let month: number;
       let year: number;
 
-      if (pattern === datePatterns[0] || pattern === datePatterns[1]) {
+      if (pattern === datePatterns[0]) {
         day = parseInt(match[1]);
         month = monthNames[match[2]];
         year = parseInt(match[3]);
@@ -38,6 +38,18 @@ export const parseDateString = (dateString: string): string | null => {
           return isoDate;
         } else {
           console.log("Invalid month name:", match[2]);
+        }
+      } else if (pattern === datePatterns[1]) {
+        day = parseInt(match[2]);
+        month = monthNames[match[1]];
+        year = parseInt(match[3]);
+
+        if (month !== undefined) {
+          const isoDate = new Date(Date.UTC(year, month, day)).toISOString();
+          console.log("Parsed ISO date:", isoDate);
+          return isoDate;
+        } else {
+          console.log("Invalid month name:", match[1]);
         }
       } else if (pattern === datePatterns[2]) {
         day = parseInt(match[1]);
