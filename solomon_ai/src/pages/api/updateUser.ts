@@ -45,10 +45,10 @@ export default async function handler(
       console.log(`Processing progress Birthday for user ${birthday}`);
 
       // Convert birthday to ISO string if present
-      //  const isoBirthday = birthday ? parseDateString(birthday) : null;
-      //  if (birthday && !isoBirthday) {
-      //   //  throw new Error("Invalid birthday format");
-      //  }
+       const isoBirthday = birthday ? parseDateString(birthday) : null;
+       if (birthday && !isoBirthday) {
+        //  throw new Error("Invalid birthday format");
+       }
 
       // Calculate ennealogy number if not provided and birthday is available
       // Calculate life path number if not provided and birthday is available
@@ -69,7 +69,7 @@ export default async function handler(
 
       // Build the update object conditionally
       const updateData: any = {};
-      if (birthday) updateData.birthday = birthday;
+      if (isoBirthday) updateData.birthday = isoBirthday;
       if (zodiacSign) updateData.zodiacSign = zodiacSign;
       // Use lifePathNumber if available, otherwise use finalLifePathNumber
       if (lifePathNumber !== null && lifePathNumber !== undefined) {
