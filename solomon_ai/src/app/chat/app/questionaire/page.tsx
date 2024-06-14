@@ -401,7 +401,7 @@ const processResponses = async (responses, userId) => {
     if (responses && userId) {
       processResponses(responses, userId);
     }
-  }, [responses, userId]);
+  }, [responses]);
 
   //Lets clear the chat Responses when we first load in
   // Function to remove the first index of chatResponses

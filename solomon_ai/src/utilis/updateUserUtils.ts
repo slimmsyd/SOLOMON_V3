@@ -1,5 +1,10 @@
 export const parseDateString = (dateString: string): string | null => {
     // Regular expressions to match common date formats
+    if (!dateString) {
+      console.log("parseDateString received an invalid dateString:", dateString);
+      return null;
+    }
+    
     const datePatterns = [
       /\b(\d{1,2})(?:st|nd|rd|th)? day of (\w+) in the year (\d{4})\b/i, // e.g., "1st day of September in the year 2000"
       /\b(\w+)\s(\d{1,2})(?:st|nd|rd|th)?,?\s(\d{4})\b/i, // e.g., "September 1st, 2000"
@@ -41,6 +46,13 @@ export const parseDateString = (dateString: string): string | null => {
 
 
   export const calculateEnnealogyNumber = (dateString: string): number | null => {
+    if (!dateString) {
+      console.log("parseDateString received an invalid dateString:", dateString);
+      return null;
+    }
+  
+    
+
     const date = new Date(dateString);
 
     console.log("Logging the Date string", date)
@@ -67,6 +79,13 @@ export const parseDateString = (dateString: string): string | null => {
   
   // Function to calculate life path number using Pythagorean method
   export const calculateLifePathNumber = (dateString: string): number | null => {
+    
+    if (!dateString) {
+      console.log("parseDateString received an invalid dateString:", dateString);
+      return null;
+    }
+  
+    
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return null;
   
