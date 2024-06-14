@@ -349,8 +349,8 @@ const ChatDashboard: React.FC = () => {
       console.log("Logging the Birthday before ISO conversion:", birthday);
       const isoBirthday = birthday ? parseDateString(birthday) : null;
       console.log("Logging the ISO birthday:", isoBirthday);
-      let finalEnnealogyNumber = enealogyNumber;
-      let finalLifePathNumber = lifePathNumber;
+      let finalEnnealogyNumber
+      let finalLifePathNumber
       if (!finalLifePathNumber && isoBirthday) {
         finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
         finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
@@ -403,12 +403,7 @@ const ChatDashboard: React.FC = () => {
         religion !== null ||
         enealogyNumber !== null
       ) {
-        console.log("Logging the Life Path Number:", finalLifePathNumber);
-        console.log("Logging the Zodiac Sign:", zodiacSign);
-        console.log("Logging the Enneagram Number:", finalEnnealogyNumber);
-        console.log("Logging the Birthday:", birthday);
-        console.log("Logging the Religion:", religion);
-        console.log("Logging the User ID:", userId);
+
         await updateUserProgress(
           userId as any,
           birthday as any,

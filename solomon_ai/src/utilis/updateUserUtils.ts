@@ -1,9 +1,9 @@
 export const parseDateString = (dateString: string): string | null => {
     // Regular expressions to match common date formats
-    // if (!dateString) {
-    //   console.log("parseDateString received an invalid dateString:", dateString);
-    //   return new Date().toISOString();  // Return current date as fallback
-    // }
+    if (!dateString) {
+      console.log("parseDateString received an invalid dateString:", dateString);
+      return new Date().toISOString();  // Return current date as fallback
+    }
   
     const datePatterns = [
       /\b(\d{1,2})(?:st|nd|rd|th)? day of (\w+) in the year (\d{4})\b/i, // e.g., "1st day of September in the year 2000"
