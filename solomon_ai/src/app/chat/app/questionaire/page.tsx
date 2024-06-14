@@ -336,72 +336,87 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
+  const processResponses = async (responses, userId) => {
+    for (const response of responses) {
+      const lifePathNumber = extractLifePathNumber(response.response);
+      const zodiacSign = extractZodiacSign(response.response);
+      const birthday = extractBirthday(response.response || response.question);
+      const enealogyNumber = extractEnnealogyNumber(response.response);
+      const religion = extractReligion(response.response || response.question);
 
-const processResponses = async (responses, userId) => {
-  for (const response of responses) {
-    const lifePathNumber = extractLifePathNumber(response.response);
-    const zodiacSign = extractZodiacSign(response.response);
-    const birthday = extractBirthday(response.response || response.question);
-    const enealogyNumber = extractEnnealogyNumber(response.response);
-    const religion = extractReligion(response.response || response.question);
+      const isTextComplete = checkCompletionText(response.response);
 
-    const isTextComplete = checkCompletionText(response.response);
-
-    console.log("Logging the Birthday before ISO conversion:", birthday);
-    const isoBirthday = birthday ? parseDateString(birthday) : null;
-    console.log("Logging the ISO birthday:", isoBirthday);
-    let finalEnnealogyNumber = enealogyNumber;
-    let finalLifePathNumber = lifePathNumber;
-    if (!finalLifePathNumber && isoBirthday) {
-      finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
-      finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
-
-    }
-    console.log("Logging the finalLifePathNumber:", finalLifePathNumber);
+      console.log("Logging the Birthday before ISO conversion:", birthday);
+      const isoBirthday = birthday ? parseDateString(birthday) : null;
+      console.log("Logging the ISO birthday:", isoBirthday);
+      let finalEnnealogyNumber = enealogyNumber;
+      let finalLifePathNumber = lifePathNumber;
+      if (!finalLifePathNumber && isoBirthday) {
+        finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
+        finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
 
 
-    console.log("Logging the finalEnnealogyNumber:", finalEnnealogyNumber);
+        console.log("Logging the final llife in the if statment", calculateLifePathNumber(isoBirthday) as number)
+        console.log("Logging the final enneagmac in the if statment", calculateEnnealogyNumber(isoBirthday) as number)
 
-    //Cacluate the probality 
-  console.log("logging the ENnegarm numner in the front end",    
-     calculateEnnealogyNumber(isoBirthday as any) as number)
+      }
+      console.log("Logging the finalLifePathNumber:", finalLifePathNumber);
 
+      console.log("Logging the finalEnnealogyNumber:", finalEnnealogyNumber);
 
-  console.log("logging the Lifepath number in the front end",      calculateLifePathNumber(isoBirthday as any) as number)
+      //Cacluate the probality
+      console.log(
+        "logging the ENnegarm numner in the front end",
+        calculateEnnealogyNumber(isoBirthday as any) as number
+      );
 
-    console.log("Logging the response before updating progress:", response.response);
+      console.log(
+        "logging the Lifepath number in the front end",
+        calculateLifePathNumber(isoBirthday as any) as number
+      );
 
-    if (isTextComplete) {
-      setCurrentQuestion(6);
-      try {
-        await axios.post("/api/saveProgress", {
-          userId,
-          currentQuestion: 6,
-          onComplete: true,
-        });
-      } catch (e) {
-        console.error("Error updating progress early:", e);
+      console.log(
+        "Logging the response before updating progress:",
+        response.response
+      );
+
+      if (isTextComplete) {
+        setCurrentQuestion(6);
+        try {
+          await axios.post("/api/saveProgress", {
+            userId,
+            currentQuestion: 6,
+            onComplete: true,
+          });
+        } catch (e) {
+          console.error("Error updating progress early:", e);
+        }
+      }
+
+      if (
+        lifePathNumber !== null ||
+        zodiacSign !== null ||
+        birthday !== null ||
+        religion !== null ||
+        enealogyNumber !== null
+      ) {
+        console.log("Logging the Life Path Number:", finalLifePathNumber);
+        console.log("Logging the Zodiac Sign:", zodiacSign);
+        console.log("Logging the Enneagram Number:", finalEnnealogyNumber);
+        console.log("Logging the Birthday:", birthday);
+        console.log("Logging the Religion:", religion);
+        console.log("Logging the User ID:", userId);
+        await updateUserProgress(
+          userId as any,
+          birthday as any,
+          finalLifePathNumber as any,
+          zodiacSign as any,
+          finalEnnealogyNumber as any,
+          religion as any
+        );
       }
     }
-
-    if (lifePathNumber !== null || zodiacSign !== null || birthday !== null || religion !== null || enealogyNumber !== null) {
-      console.log("Logging the Life Path Number:", finalLifePathNumber);
-      console.log("Logging the Zodiac Sign:", zodiacSign);
-      console.log("Logging the Enneagram Number:", finalEnnealogyNumber);
-      console.log("Logging the Birthday:", birthday);
-      console.log("Logging the Religion:", religion);
-      console.log("Logging the User ID:", userId);
-      await updateUserProgress(
-        userId as any,
-        birthday as any,
-        finalLifePathNumber as any,
-        zodiacSign as any,
-        finalEnnealogyNumber as any,
-        religion as any
-      );
-    }
-  }
-};
+  };
   useEffect(() => {
     if (responses && userId) {
       processResponses(responses, userId);
@@ -551,7 +566,7 @@ const processResponses = async (responses, userId) => {
       if (status === "authenticated" && session) {
         const sendGreetings = async () => {
           const greetingSent = sessionStorage.getItem("greetingSent");
-          if (!currentConversationId && session?. user?.id && !greetingSent) {
+          if (!currentConversationId && session?.user?.id && !greetingSent) {
             setHasRunSendGreetings(true); // Mark the function as having run
             const { id: convoId, firstConvo } = await fetchFirstConversation(
               userId
@@ -770,7 +785,6 @@ const processResponses = async (responses, userId) => {
                         ></path>
                       </svg>
                     )}
-                
                   </button>
                 </div>
               </div>
