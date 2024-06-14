@@ -40,11 +40,59 @@ import { checkCompletionText } from "@/utilis/textExtractor";
 import { greetings } from "@/utilis/randomGreeting";
 import { checkSession } from "@/utilis/CheckSession";
 
-import { parseDateString } from "@/utilis/updateUserUtils";
 import { calculateLifePathNumber } from "@/utilis/updateUserUtils";
 import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
 
 import LoadingComponent from "@/app/components/helper/Loading";
+
+
+ const parseDateString = (dateString: string): string | null => {
+  // Regular expressions to match common date formats
+  if (!dateString) {
+    console.log("parseDateString received an invalid dateString:", dateString);
+    return new Date().toISOString();  // Return current date as fallback
+  }
+
+  const datePatterns = [
+    /\b(\d{1,2})(?:st|nd|rd|th)? day of (\w+) in the year (\d{4})\b/i, // e.g., "1st day of September in the year 2000"
+    /\b(\w+)\s(\d{1,2})(?:st|nd|rd|th)?,?\s(\d{4})\b/i, // e.g., "September 1st, 2000"
+    /\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})\b/i, // e.g., "01/09/2000", "01-09-2000", "01.09.2000"
+  ];
+
+  for (const pattern of datePatterns) {
+    const match = dateString.match(pattern);
+    if (match) {
+      // If the matched pattern is "1st day of September in the year 2000"
+      if (pattern === datePatterns[0]) {
+        const day = match[1];
+        const month = match[2];
+        const year = match[3];
+        return new Date(`${month} ${day}, ${year}`).toISOString();
+      }
+
+      // If the matched pattern is "September 1st, 2000"
+      if (pattern === datePatterns[1]) {
+        const month = match[1];
+        const day = match[2];
+        const year = match[3];
+        return new Date(`${month} ${day}, ${year}`).toISOString();
+      }
+
+      // If the matched pattern is "01/09/2000"
+      if (pattern === datePatterns[2]) {
+        const day = match[1];
+        const month = match[2];
+        const year = match[3].length === 2 ? `20${match[3]}` : match[3]; // Handle 2-digit year
+        return new Date(`${month}/${day}/${year}`).toISOString();
+      }
+    }
+  }
+
+  // If no pattern matches, return null
+  return null;
+};
+
+
 
 const ChatDashboard: React.FC = () => {
   //getting the user name
@@ -350,7 +398,7 @@ const ChatDashboard: React.FC = () => {
       let isoBirthday
       if(!isoBirthday && birthday) 
       { 
-        isoBirthday = parseDateString(birthday)
+        isoBirthday = parseDateString(birthday as string)
         console.log("Logging isBOrither in if statemnt", isoBirthday)
       }
       console.log("Logging the ISO birthday:", isoBirthday);
