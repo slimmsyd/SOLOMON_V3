@@ -44,32 +44,25 @@ export default async function handler(
       console.log(`Processing progress relgion for user ${religion}`);
       console.log(`Processing progress Birthday for user ${birthday}`);
 
-      // Convert birthday to ISO string if present
-       const isoBirthday = birthday ? parseDateString(birthday) : null;
-       if (birthday && !isoBirthday) {
-        //  throw new Error("Invalid birthday format");
-       }
+  
 
-      // // Calculate ennealogy number if not provided and birthday is available
-      // // Calculate life path number if not provided and birthday is available
-      // let finalLifePathNumber = lifePathNumber;
-      // if (!finalLifePathNumber && birthday) {
-      //   finalLifePathNumber = calculateLifePathNumber(birthday) as number;
-      // }
+    // Ensure birthday is correctly processed
+    const isoBirthday = parseDateString(birthday as string);
+    console.log("Logging the ISO birthday", isoBirthday);
 
-      // // Calculate ennealogy number if not provided and birthday is available
-      // let finalEnnealogyNumber = enealogyNumber;
-      // if (!finalEnnealogyNumber && birthday) {
-      //   finalEnnealogyNumber = calculateEnnealogyNumber(birthday) as number;
-      // }
+    // Calculate life path number if not provided and birthday is available
+    let finalLifePathNumber = lifePathNumber;
+    if (!finalLifePathNumber) {
+      finalLifePathNumber = calculateLifePathNumber(isoBirthday as string) as number;
+    }
+    console.log("Logging the lifePathNumber in update user", finalLifePathNumber);
 
-      console.log("loggin the ISO birthday", isoBirthday )
-      console.log("Logging Birthday In Update user", birthday);
-      console.log("Logging the lifePathNumber in update user", lifePathNumber);
-      console.log("Logging the life path number caluated", calculateLifePathNumber(parseDateString(birthday as string) as any))
-      console.log("Logging the Ennegram  number caluated", calculateEnnealogyNumber(parseDateString(birthday as string) as any) as number)
-      console.log("Logging the enengarm number in ennealgoy", enealogyNumber);
-
+    // Calculate ennealogy number if not provided and birthday is available
+    let finalEnnealogyNumber = enealogyNumber;
+    if (!finalEnnealogyNumber) {
+      finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday as string) as number;
+    }
+    console.log("Logging the enneagram number in update user", finalEnnealogyNumber);
       // Build the update object conditionally
       const updateData: any = {};
       if (isoBirthday) updateData.birthday = isoBirthday;
