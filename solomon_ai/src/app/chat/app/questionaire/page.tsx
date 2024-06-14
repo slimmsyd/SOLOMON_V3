@@ -45,21 +45,20 @@ import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
 
 import LoadingComponent from "@/app/components/helper/Loading";
 
-
 const monthNames: { [key: string]: number } = {
-  January: 0, Jan: 0, February: 1, Feb: 1, March: 2, Mar: 2, April: 3, Apr: 3, May: 4, June: 5, Jun: 5,
-  July: 6, Jul: 6, August: 7, Aug: 7, September: 8, Sept: 8, Sep: 8, October: 9, Oct: 9, November: 10, Nov: 10, December: 11, Dec: 11
+  january: 0, jan: 0, february: 1, feb: 1, march: 2, mar: 2, april: 3, apr: 3, may: 4, june: 5, jun: 5,
+  july: 6, jul: 6, august: 7, aug: 7, september: 8, sept: 8, sep: 8, october: 9, oct: 9, november: 10, nov: 10, december: 11, dec: 11
 };
+
 const parseDateString = (dateString: string): string | null => {
+  // Normalize input
+  dateString = dateString.trim().toLowerCase();
+  
   console.log("Environment Info:", process.env);
   console.log("Node.js Version:", process.version);
   console.log("Locale:", Intl.DateTimeFormat().resolvedOptions().locale);
   console.log("Time Zone:", Intl.DateTimeFormat().resolvedOptions().timeZone);
   console.log("Logging the Date String at top:", dateString);
-  if (!dateString) {
-    console.error("parseDateString received an invalid dateString:", dateString);
-    return new Date().toISOString();  // Return current date as fallback
-  }
 
   const datePatterns = [
     /\b(\d{1,2})(?:st|nd|rd|th)? day of (\w+) in the year (\d{4})\b/i, // e.g., "1st day of September in the year 2000"
@@ -135,6 +134,12 @@ const ChatDashboard: React.FC = () => {
 
   const questionBotApi =
     "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/chatbot";
+
+
+    // Example usage
+const exampleBirthday = "September 1st 2000";
+const isoBirthday = parseDateString(exampleBirthday);
+console.log("ISO Birthday JUST TO LOG THE SHIT :", isoBirthday);
 
   //First introduction From
   const [completedForm, setCompleteForm] = useState<boolean>(false);
