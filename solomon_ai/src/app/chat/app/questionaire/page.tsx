@@ -64,12 +64,27 @@ import LoadingComponent from "@/app/components/helper/Loading";
 
   for (const pattern of datePatterns) {
     const match = dateString.match(pattern);
+
+
+    console.log("Checking pattern:", pattern);
+    console.log("Match result:", match);
     if (match) {
+
+
+
       // If the matched pattern is "1st day of September in the year 2000"
       if (pattern === datePatterns[0]) {
+        console.log("Pattern matched:", pattern);
+        console.log("Match groups:", match);
         const day = match[1];
         const month = match[2];
         const year = match[3];
+        console.log("Logging the New Date Return", month, day, year)
+
+
+        console.log("No match for pattern: 1 ", pattern);
+
+
         return new Date(`${month} ${day}, ${year}`).toISOString();
       }
 
@@ -78,6 +93,10 @@ import LoadingComponent from "@/app/components/helper/Loading";
         const month = match[1];
         const day = match[2];
         const year = match[3];
+        console.log("Logging the New Date Return", month, day, year)
+        console.log("No match for pattern: 2 ", pattern);
+
+
         return new Date(`${month} ${day}, ${year}`).toISOString();
       }
 
@@ -85,11 +104,19 @@ import LoadingComponent from "@/app/components/helper/Loading";
       if (pattern === datePatterns[2]) {
         const day = match[1];
         const month = match[2];
-        const year = match[3].length === 2 ? `20${match[3]}` : match[3]; // Handle 2-digit year
+        const year = match[3].length === 2 ? `20${match[3]}` : match[3]; 
+        
+        console.log("No match for pattern: 3 ", pattern);
+
+        console.log("Logging the New Date Return", month, day, year)
+        // Handle 2-digit year
         return new Date(`${month}/${day}/${year}`).toISOString();
       }
     }
   }
+
+
+  console.error("No patterns matched. Returning null.");
 
   // If no pattern matches, return null
   return null;
