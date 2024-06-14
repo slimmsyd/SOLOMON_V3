@@ -42,6 +42,9 @@ export const parseDateString = (dateString: string): string | null => {
 
   export const calculateEnnealogyNumber = (dateString: string): number | null => {
     const date = new Date(dateString);
+
+    console.log("Logging the Date string", date)
+    console.log("Logging the date", dateString)
     if (isNaN(date.getTime())) return null;
   
     const month = date.getUTCMonth() + 1; // getUTCMonth() returns month from 0-11

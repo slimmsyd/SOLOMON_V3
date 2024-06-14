@@ -66,8 +66,8 @@ export default async function handler(
       console.log("loggin the ISO birthday", isoBirthday )
       console.log("Logging Birthday In Update user", birthday);
       console.log("Logging the lifePathNumber in update user", lifePathNumber);
-      console.log("Logging the life path number caluated", calculateLifePathNumber(birthday as string) as number)
-      console.log("Logging the Ennegram  number caluated", calculateEnnealogyNumber(birthday as string) as number)
+      console.log("Logging the life path number caluated", calculateLifePathNumber(parseDateString(birthday as string) as any))
+      console.log("Logging the Ennegram  number caluated", calculateEnnealogyNumber(parseDateString(birthday as string) as any) as number)
       console.log("Logging the enengarm number in ennealgoy", enealogyNumber);
 
       // Build the update object conditionally
@@ -76,7 +76,7 @@ export default async function handler(
       if (zodiacSign) updateData.zodiacSign = zodiacSign;
       // Use lifePathNumber if available, otherwise use finalLifePathNumber
       if (lifePathNumber !== null && lifePathNumber !== undefined) {
-        updateData.lifePathNumber = calculateLifePathNumber(birthday as string) as number || lifePathNumber; 
+        updateData.lifePathNumber = calculateLifePathNumber(parseDateString(birthday as string) as any) as number || lifePathNumber; 
       } else if (
         finalLifePathNumber !== null &&
         finalLifePathNumber !== undefined
@@ -86,7 +86,7 @@ export default async function handler(
 
       // Use enealogyNumber if available, otherwise use finalEnnealogyNumber
       if (enealogyNumber !== null && enealogyNumber !== undefined) {
-        updateData.ennealogy = calculateEnnealogyNumber(birthday as string) as number || enealogyNumber;
+        updateData.ennealogy = calculateEnnealogyNumber(parseDateString(birthday as string) as any) as number || enealogyNumber;
       } else if (
         finalEnnealogyNumber !== null &&
         finalEnnealogyNumber !== undefined
