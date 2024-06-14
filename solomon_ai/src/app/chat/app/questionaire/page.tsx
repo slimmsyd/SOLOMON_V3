@@ -364,6 +364,9 @@ const ChatDashboard: React.FC = () => {
 
       console.log("Logging the finalEnnealogyNumber:", finalEnnealogyNumber);
 
+
+      console.log("Logging the final out of it llife in the if statment", calculateLifePathNumber(isoBirthday as any) as number)
+      console.log("Logging the final enneagmac in the if statment", calculateEnnealogyNumber(isoBirthday as any) as number)
       //Cacluate the probality
       console.log(
         "logging the ENnegarm numner in the front end",
