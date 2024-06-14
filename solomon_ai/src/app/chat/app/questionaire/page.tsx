@@ -364,6 +364,10 @@ const processResponses = async (responses, userId) => {
     }
     console.log("Logging the finalEnnealogyNumber:", finalEnnealogyNumber);
 
+    //Cacluate the probality 
+  console.log("logging the ENnegarm numner in the front end", calculateEnnealogyNumber(parseDateString(birthday as string) as any))
+  console.log("logging the Lifepath number in the front end", calculateLifePathNumber(parseDateString(birthday as string) as any))
+
     console.log("Logging the response before updating progress:", response.response);
 
     if (isTextComplete) {
