@@ -1435,9 +1435,13 @@ figure video {
   overflow-y: hidden;
   transition: height 250ms ease-in-out;
   transition: max-height 250ms ease-in-out;
+  overflow-y: scroll;
 }
 .accountDiv {
   padding: 20px;
+}
+.accountContainer::-webkit-scrollbar{
+  display: none;
 }
 
 .profileInput {

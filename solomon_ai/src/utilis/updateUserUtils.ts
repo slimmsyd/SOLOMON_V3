@@ -115,3 +115,123 @@ export const parseDateString = (dateString: string): string | null => {
   };
   
   
+
+
+
+  // Handling getting the personal Year Numbers 
+export const calculatePersonalYearNumber = (dateString: string): number | null =>
+{ 
+
+  const date = new Date(dateString);
+
+
+  console.log("Logging the dat string", dateString)
+  let currentDate = new Date();
+  let currentYear = currentDate.getFullYear();
+  // Extract month, day, and year
+  const month = date.getUTCMonth() + 1; // getUTCMonth() returns 0-11, so we add 1
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
+
+  console.log("Logging the month", month)
+  console.log("Logging the day", day)
+
+
+
+
+
+  // Sum the digits of the month and day
+  let monthDaySum = reduceToSingleDigit(month) + reduceToSingleDigit(day);
+
+  monthDaySum = reduceToSingleDigit(monthDaySum)
+  console.log("Logging the monthDaySum", monthDaySum)
+
+  // Sum the digits of the year
+  currentYear = reduceToSingleDigit(currentYear)
+  console.log("Logging the current year", currentYear)
+
+
+
+  // Final calculation
+  const finalSum = reduceToSingleDigit(monthDaySum + currentYear);
+
+
+  if (finalSum) { 
+    return finalSum
+  }else {
+    return null
+  }
+
+
+}
+
+export const getPersonalMonth = (personalYear: number): number => {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+
+  // Mapping months to the specific values mentioned
+  const monthValues = {
+    1: 1, // January
+    2: 2, // February
+    3: 3, // March
+    4: 4, // April
+    5: 5, // May
+    6: 6, // June
+    7: 7, // July
+    8: 8, // August
+    9: 9, // September
+    10: 1, // October
+    11: 2, // November
+    12: 3, // December
+  };
+
+  const currentMonthValue = monthValues[month];
+  let personalMonth = (personalYear + currentMonthValue) % 9;
+
+  // Adjust if the personal month calculation results in 0
+  return personalMonth === 0 ? 9 : personalMonth;
+};
+
+// Function to calculate the personal month for a given month index
+export const calculatePersonalMonthForIndex = (personalYear: number, monthIndex: number): number => {
+  const monthValue = (personalYear + monthIndex - 1) % 9;
+  return monthValue === 0 ? 9 : monthValue;
+};
+
+// Function to get all personal months and the current month
+export const getAllPersonalMonths = (personalYear: number) => {
+  const months = [
+    "Personal Destiny",
+    "Personal Year",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+  const personalMonths = months.map((month, index) => {
+    if (index < 2) {
+      return month; // Keep "Personal Destiny" and "Personal Year" as they are
+    }
+    const monthValue = calculatePersonalMonthForIndex(personalYear, index);
+    return `${month} (${monthValue})`;
+  });
+
+  const currentPersonalMonth = calculatePersonalMonthForIndex(personalYear, currentMonth);
+
+  return {
+    personalMonths,
+    currentMonth,
+    currentPersonalMonth,
+  };
+};
