@@ -54,6 +54,7 @@ const parseDateString = (dateString: string): string | null => {
   console.log("Environment Info:", process.env);
   console.log("Node.js Version:", process.version);
   console.log("Locale:", Intl.DateTimeFormat().resolvedOptions().locale);
+  console.log("Time Zone:", Intl.DateTimeFormat().resolvedOptions().timeZone);
   console.log("Logging the Date String at top:", dateString);
   if (!dateString) {
     console.error("parseDateString received an invalid dateString:", dateString);
