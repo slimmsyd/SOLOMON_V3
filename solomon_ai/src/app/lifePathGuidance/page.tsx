@@ -8,6 +8,7 @@ import arrowLeft from "../../../public/assets/Chat/arrowLeft.png";
 import dynamic from "next/dynamic";
 
 import LoadingComponent from "../components/helper/Loading";
+import ButtonLoadingComponent from "../components/helper/buttonComponentLoading";
 
 import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
@@ -24,6 +25,15 @@ import { getCelticZodiac } from "@/utilis/textExtractor";
 import { getNativeAmericanZodiac } from "@/utilis/textExtractor";
 import { getZodiacImage } from "@/utilis/zodiacArray";
 
+import { calculatePersonalYearNumber } from "@/utilis/updateUserUtils";
+import { getPersonalMonth } from "@/utilis/updateUserUtils";
+import { getAllPersonalMonths } from "@/utilis/updateUserUtils";
+//Supporting Arrays
+import { personalYear } from "@/utilis/zodiacArray";
+import { personalDestiny } from "@/utilis/zodiacArray";
+import { personalMonthArray } from "@/utilis/zodiacArray";
+import { calculatePersonalMonthForIndex } from "@/utilis/updateUserUtils";
+
 import ChatMessage from "../components/Chatmessage";
 
 import styles from "../../styles/chat.module.css";
@@ -33,8 +43,6 @@ import { getZodiacDescription } from "@/utilis/zodiacArray";
 import axios from "axios";
 
 //Images to Channel
-
-import ErrorPage from "../error/page";
 const Profile: React.FC = () => {
   const {
     userName,
@@ -63,6 +71,12 @@ const Profile: React.FC = () => {
   const [practice, setPractice] = useState<null>(null);
   const [ennealogy, setEnnealogyNumber] = useState<string>("");
   const [birthday, setBirthDay] = useState<string>("");
+  //Get the personal year
+  const [personalYearNumber, setPersonalYear] = useState<number | null>(null);
+  const [personalMonthNumber, setPersonalMonthNumber] = useState<number | null>(
+    null
+  );
+
   const [chineseZodiac, setChineseZodiac] = useState<string>("");
   const [egyptianZodiac, setEgyptianZodiac] = useState<string>("");
   const [celticZodiacSign, setCelticZodiac] = useState<string>("");
@@ -90,11 +104,6 @@ const Profile: React.FC = () => {
   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
   const handleMobileChatBtnClick = () => {
-    console.log(
-      "Logging the chat container Ref current state",
-      chatContainerRef.current
-    );
-
     if (chatContainerRef.current) {
       if (isAtZero) {
         chatContainerRef.current.style.transform = "translateX(-100%)";
@@ -133,7 +142,6 @@ const Profile: React.FC = () => {
     const getUserInfo = async () => {
       const userInfo = await fetchUserInfo(userId);
       setDataLoading(true);
-      console.log("logging Data loading before update", dataLoading);
 
       console.log("Just loggigng the user Info Here", userInfo);
 
@@ -146,7 +154,11 @@ const Profile: React.FC = () => {
         setBirthDay(birthday);
 
         setDataLoading(false);
-        console.log("Logging DataLoading after we get the info", dataLoading);
+
+        const personalYear = calculatePersonalYearNumber(birthday);
+
+        setPersonalYear(personalYear);
+        setPersonalMonthNumber(getPersonalMonth(personalYear as number));
 
         //Set the Chinese Zodiac year and others etc.
         const birthYear = getYearFromDateString(birthday);
@@ -167,57 +179,7 @@ const Profile: React.FC = () => {
 
   //Log the chinese and the egyptian
 
-  useEffect(() => {
-    console.log("Logging the egyptian zodiac", egyptianZodiac);
-    console.log("Logging the celticZodiacnSign zodiac", celticZodiacSign);
-    console.log(
-      "Logging the Native American  zodiac",
-      nativeAmericanZodiacSign
-    );
-    console.log("Logging the chinese zodiac", chineseZodiac);
-  }, [chineseZodiac, egyptianZodiac]);
-
-  const handleSave = () => {
-    userId;
-    sessionStorage.setItem("zodiacSign", zodiac as any);
-    sessionStorage.setItem("lifePathNumber", lifePath as any);
-    sessionStorage.setItem("ennealogy", ennealogy as any);
-
-    updateUserProgress(
-      userId as any,
-      null,
-      lifePath as any,
-      zodiac as any,
-      ennealogy as any,
-      null
-    );
-    setIsEditing(false);
-  };
-
-  // Update user progress with the extracted vales
-  const updateUserProgress = async (
-    userId: string,
-    birthday: string | null,
-    lifePathNumber: number | null,
-    zodiacSign: string | null,
-    enealogyNumber: string | null,
-    religion: string | null
-  ) => {
-    try {
-      const response = await axios.post("/api/updateUser", {
-        userId,
-        birthday: birthday ?? undefined,
-        lifePathNumber: lifePathNumber ?? undefined,
-        zodiacSign: zodiacSign ?? undefined,
-        enealogyNumber: enealogyNumber ?? undefined,
-        religion: religion ?? undefined,
-      });
-
-      console.log("User progress updated successfully:", response.data);
-    } catch (error) {
-      console.error("Error updating user progress:", error);
-    }
-  };
+  useEffect(() => {}, [chineseZodiac, egyptianZodiac]);
 
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
@@ -237,14 +199,10 @@ const Profile: React.FC = () => {
   }, [userName, splitUserName]);
 
   const handleConversationClick = (convoId: string) => {
-    console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
     router.push(targetPath, undefined);
     setCurrentConversationId(convoId);
-
-    console.log("Logging hte current conversation ID", currentConversationId);
-    console.log("Logging hte current The ConvoID", convoId);
   };
 
   useEffect(() => {
@@ -264,12 +222,63 @@ const Profile: React.FC = () => {
     }
   }, [setConversations]);
 
-  const [showModal, setShowModal] = useState(false);
+  //Handling the peroannl year
+  const getPersonalYearContent = (personalYearNumber: number) => {
+    return personalYear[personalYearNumber] || {};
+  };
+  //Handling the peroannl year
+  const getDesinyYear = (lifePathNumber: number) => {
+    const result = personalDestiny.find(
+      (destiny) => destiny.number === lifePathNumber
+    );
+    return result;
+  };
+
+  const getMonthContent = (monthNumber: number) => {
+    const result = personalMonthArray.find(
+      (destiny) => destiny.number === monthNumber
+    );
+    return result;
+  };
+
+  const [personalYearTheme, setPersonalYearTheme] = useState<{
+    theme?: string;
+    career?: string;
+    travel?: string;
+    description?: string;
+  }>({});
+
+  const [personalDestinyTheme, setPersonalDestinyTheme] = useState<{
+    number?: number;
+    description?: string;
+  }>();
+
+  const [personalMonthTheme, setPersonalMonthTheme] = useState<{
+    number?: number;
+    description?: string;
+  }>();
+
+  useEffect(() => {
+    const yearContent = getPersonalYearContent(personalYearNumber as number);
+    setPersonalYearTheme(yearContent);
+
+    //Get the life path year aswell
+    const destinyYear = getDesinyYear(Number(lifePath) as number);
+    setPersonalDestinyTheme(destinyYear);
+
+    const month = getMonthContent(personalMonthNumber as number);
+    setPersonalMonthTheme(month);
+    console.log("Logging the prsonal month theme", personalMonthNumber);
+
+    //get all presonal months
+    const result = getAllPersonalMonths(personalYearNumber as number);
+
+    console.log("logging the result", result.personalMonths);
+  }, [personalYearNumber]);
 
   const months = [
     "Personsal Destiny",
     "Personal Year",
-    "Personal Weeks",
     "January",
     "February",
     "March",
@@ -284,6 +293,52 @@ const Profile: React.FC = () => {
     "December",
   ];
 
+  //Render the text based on the index
+  const renderTextForIndex = (index: number, personalYear: number) => {
+    if (index < 2) {
+      switch (index) {
+        case 0:
+          return personalDestinyTheme?.description ?? "No theme available";
+        case 1:
+          return personalYearTheme?.theme ?? "No theme available";
+        default:
+          return "No theme available";
+      }
+    } else {
+      const personalMonthNumber = calculatePersonalMonthForIndex(
+        personalYear,
+        index
+      );
+      const personalMonth = personalMonthArray.find(
+        (pm) => pm.number === personalMonthNumber
+      );
+      return personalMonth?.description ?? "No theme available";
+    }
+  };
+
+  const renderNumberForIndex = (index: number, personalYear) => {
+    if (index < 2) {
+      switch (index) {
+        case 0:
+          return `Personal Destiny ${lifePath}`;
+        case 1:
+          return `Personal Year ${personalYearNumber}`;
+
+        default:
+          return `Failed to render in`;
+      }
+    } else {
+      const personalMonthNumber = calculatePersonalMonthForIndex(
+        personalYear,
+        index
+      );
+      const personalMonth = personalMonthArray.find(
+        (pm) => pm.number === personalMonthNumber
+      );
+      return personalMonth?.number ?? "No theme available";
+    }
+  };
+
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   const [selectedZodiac, setSelectedZodiac] = useState<ZodiacImages | null>(
@@ -294,7 +349,6 @@ const Profile: React.FC = () => {
 
   const handleZodiacClick = (zodiac: ZodiacImages) => {
     setSelectedZodiac(zodiac);
-    console.log("LOgging hte zodiac when we select the joint", zodiac);
     setIsGuidelinesVisible(true);
   };
   const closePopup = () => {
@@ -580,8 +634,6 @@ const Profile: React.FC = () => {
             </div>
           </div>
 
-          
-
           <div className="flex flex-col gap-[26px]">
             {months.map((month, index) => (
               <div
@@ -594,20 +646,14 @@ const Profile: React.FC = () => {
                   <div className="flex flex-col gap-[8px]">
                     <p>{month}</p>
                     <p className="text-[12px]" id="greyText">
-                      Personal Month []
+                      {dataLoading ? (
+                        <ButtonLoadingComponent />
+                      ) : (
+                        <p>{`Personal Month | ${renderNumberForIndex(index, personalYearNumber as number)}`}</p>
+                      )}
                     </p>
                     <p className="text-[12px]">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the
-                      1960s with the release of Letraset sheets containing Lorem
-                      Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
+                      {renderTextForIndex(index, personalYearNumber as number)}
                     </p>
                   </div>
                   <button
