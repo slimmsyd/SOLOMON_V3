@@ -55,23 +55,26 @@ export default async function handler(
     if (!finalLifePathNumber) {
       finalLifePathNumber = calculateLifePathNumber(isoBirthday as string) as number;
     }
-    console.log("Logging the lifePathNumber in update user", finalLifePathNumber);
 
     // Calculate ennealogy number if not provided and birthday is available
     let finalEnnealogyNumber = enealogyNumber;
     if (!finalEnnealogyNumber) {
       finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday as string) as number;
     }
+    console.log("Logging the lifePathNumber in update user", finalLifePathNumber);
     console.log("Logging the enneagram number in update user", finalEnnealogyNumber);
+    console.log("Logging the lifePathNumber again in update user", enealogyNumber);
+    console.log("Logging the enneagram number again in update user", lifePathNumber);
+
       // Build the update object conditionally
       const updateData: any = {};
       if (isoBirthday) updateData.birthday = isoBirthday;
       if (zodiacSign) updateData.zodiacSign = zodiacSign;
       // Use lifePathNumber if available, otherwise use finalLifePathNumber
-        updateData.lifePathNumber = calculateLifePathNumber(parseDateString(birthday as string) as any) as number || lifePathNumber; 
+        updateData.lifePathNumber = lifePathNumber
    
       // Use enealogyNumber if available, otherwise use finalEnnealogyNumber
-        updateData.ennealogy = calculateEnnealogyNumber(parseDateString(birthday as string) as any) as number || enealogyNumber;
+        updateData.ennealogy = enealogyNumber
     
       if (religion) updateData.religion = religion;
       if (cardologyNumber) updateData.cardologyNumber = cardologyNumber;

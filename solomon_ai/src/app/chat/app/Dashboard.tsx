@@ -28,14 +28,7 @@ export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) =
 
   useEffect(() => {}, [message]);
 
-  // const handleButtonClick = (event) => {
-  //   const buttonElement = event.target as HTMLElement;
-  //   const cardElement = buttonElement.closest('div');
-  //   const text = cardElement?.querySelector('p')?.innerHTML || '';
-  //   handleCardClick(text);
 
-  //   console.log("click on this joint", text)
-  // };
 
   const getRandomGreeting = () => {
     return greetings[Math.floor(Math.random() * greetings.length)];

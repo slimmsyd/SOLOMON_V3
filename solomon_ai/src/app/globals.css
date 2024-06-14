@@ -1090,6 +1090,9 @@ figure video {
   padding-right: 13px;
   cursor: pointer;
   overflow-y: scroll;
+  scrollbar-width: none;
+  
+
 }
 .renderCards img,
 .zodiacCards img {
