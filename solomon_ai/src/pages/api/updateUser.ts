@@ -50,6 +50,9 @@ export default async function handler(
         //  throw new Error("Invalid birthday format");
        }
 
+
+
+
       // Calculate ennealogy number if not provided and birthday is available
       // Calculate life path number if not provided and birthday is available
       let finalLifePathNumber = lifePathNumber;
@@ -63,6 +66,7 @@ export default async function handler(
         finalEnnealogyNumber = calculateEnnealogyNumber(birthday) as number;
       }
 
+      console.log("loggin the ISO birthday", isoBirthday )
       console.log("Logging Birthday In Update user", birthday);
       console.log("Logging the lifePathNumber in update user", lifePathNumber);
       console.log("Logging the enengarm number in ennealgoy", enealogyNumber);
