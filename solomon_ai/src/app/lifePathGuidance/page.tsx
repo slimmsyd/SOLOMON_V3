@@ -55,6 +55,9 @@ const Profile: React.FC = () => {
     string | null
   >(null);
 
+  //Capture the loading of the infrmation
+  const [dataLoading, setDataLoading] = useState<boolean>(false);
+
   const [zodiac, setZodiac] = useState<string>("");
   const [lifePath, setLifePathNumber] = useState<string>("");
   const [practice, setPractice] = useState<null>(null);
@@ -129,19 +132,21 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       const userInfo = await fetchUserInfo(userId);
+      setDataLoading(true);
+      console.log("logging Data loading before update", dataLoading);
 
       console.log("Just loggigng the user Info Here", userInfo);
 
       if (userInfo) {
         const { lifePathNumber, zodiacSign, ennealogy, birthday } = userInfo;
 
-
-        console.log("Logging to see the Current Birthday", birthday)
-
         setLifePathNumber(lifePathNumber);
         setZodiac(zodiacSign);
         setEnnealogyNumber(ennealogy);
         setBirthDay(birthday);
+
+        setDataLoading(false);
+        console.log("Logging DataLoading after we get the info", dataLoading);
 
         //Set the Chinese Zodiac year and others etc.
         const birthYear = getYearFromDateString(birthday);
@@ -156,6 +161,9 @@ const Profile: React.FC = () => {
 
     getUserInfo();
   }, [userId]);
+
+  //catpure the updates of data loading
+  useEffect(() => {}, [dataLoading]);
 
   //Log the chinese and the egyptian
 
@@ -259,6 +267,9 @@ const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const months = [
+    "Personsal Destiny",
+    "Personal Year",
+    "Personal Weeks",
     "January",
     "February",
     "March",
@@ -283,13 +294,12 @@ const Profile: React.FC = () => {
 
   const handleZodiacClick = (zodiac: ZodiacImages) => {
     setSelectedZodiac(zodiac);
-    console.log("LOgging hte zodiac when we select the joint", zodiac)
+    console.log("LOgging hte zodiac when we select the joint", zodiac);
     setIsGuidelinesVisible(true);
   };
-  const closePopup = () => 
-   {
+  const closePopup = () => {
     setIsGuidelinesVisible(!isGuidelinesVisible);
-   }
+  };
 
   const handleExpandClick = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -360,64 +370,72 @@ const Profile: React.FC = () => {
               <div className={styles.chat_flex}>
                 <div className={styles.chat_Messages}>
                   <div className={styles.response_Flex}>
-                    <p className={styles.user_Messages}>
-                      <ChatMessage
-                        shouldAnimate={false}
-                        message={
-                          "Based on your information provided, Solomon the wise was able to draw more conclusion on your across varies of culture to gain a more wholistic perspective Below or Images generated of your zodiac signs and there personality trains across different cultures. Best choice of action, take this information and ask me more in chat for more guidance on your unique being. You can click on each image to get a more in depth understanding of what they symbolized."
-                        }
-                      />
-                    </p>
+                    <ChatMessage
+                      shouldAnimate={false}
+                      message={
+                        "Based on your information provided, Solomon the wise was able to draw more conclusion on your across varies of culture to gain a more wholistic perspective Below or Images generated of your zodiac signs and there personality trains across different cultures. Best choice of action, take this information and ask me more in chat for more guidance on your unique being. You can click on each image to get a more in depth understanding of what they symbolized."
+                      }
+                    />
 
-                    {isGuidelinesVisible && selectedZodiac && (
-                      <div className="guideLinesPopupContainer">
-                        <div className="guideLinesPopUpWrapper">
-                          <div
-                              onClick={closePopup}
-                            className=" zodiacPopup"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                fill="black"
-                                fill-rule="evenodd"
-                                d="M2.293 2.293a1 1 0 0 1 1.414 0l18 18a1 1 0 0 1-1.414 1.414l-2.514-2.514C16.204 20.24 14.274 21 12 21c-3.154 0-5.64-1.459-7.441-3.12-1.797-1.658-2.974-3.568-3.547-4.624a2.63 2.63 0 0 1 0-2.513c.578-1.065 1.78-3.017 3.624-4.693L2.293 3.707a1 1 0 0 1 0-1.414m3.759 5.173c-1.645 1.473-2.745 3.241-3.281 4.23a.63.63 0 0 0 0 .607c.518.955 1.57 2.656 3.143 4.106C7.482 17.855 9.506 19 12 19c1.65 0 3.09-.5 4.33-1.256l-1.934-1.934A4.502 4.502 0 0 1 8.19 9.604zm3.62 3.62 3.242 3.242a2.5 2.5 0 0 1-3.242-3.242"
-                                clip-rule="evenodd"
-                              ></path>
-                              <path
-                                fill="black"
-                                d="M10.223 5.2c.56-.128 1.152-.2 1.777-.2 2.494 0 4.518 1.146 6.086 2.591 1.572 1.45 2.625 3.15 3.144 4.106a.63.63 0 0 1-.002.608 17 17 0 0 1-1.344 2.095 1 1 0 0 0 1.6 1.2 19 19 0 0 0 1.503-2.342 2.63 2.63 0 0 0 0-2.514c-.572-1.056-1.749-2.966-3.546-4.623C17.64 4.459 15.154 3 12 3c-.779 0-1.52.09-2.223.25a1 1 0 0 0 .446 1.95"
-                              ></path>
-                            </svg>
-                          </div>
-
-                          <div>
-                            <Image
-                              src={selectedZodiac.link}
-                              width={300}
-                              height={300}
-                              alt={`${selectedZodiac.name} Image`}
-                            />
-                          </div>
-
-                          <h3>
-                            {selectedZodiac.category} - {selectedZodiac.name}
-                          </h3>
-                          <p>
-                            Here are the guidelines for the{" "}
-                            {selectedZodiac.name}
-                            ...
-                          </p>
-
-                          <p>{selectedZodiac.description}</p>
-                        </div>
+                    {dataLoading ? (
+                      <div className="w-full flex  justify-center items-center align-middle">
+                        <LoadingComponent />
                       </div>
+                    ) : (
+                      <>
+                        {isGuidelinesVisible && selectedZodiac && (
+                          <div className="guideLinesPopupContainer">
+                            <div className="guideLinesPopUpWrapper">
+                              <div
+                                onClick={closePopup}
+                                className=" zodiacPopup"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="24"
+                                  height="24"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="black"
+                                    fill-rule="evenodd"
+                                    d="M2.293 2.293a1 1 0 0 1 1.414 0l18 18a1 1 0 0 1-1.414 1.414l-2.514-2.514C16.204 20.24 14.274 21 12 21c-3.154 0-5.64-1.459-7.441-3.12-1.797-1.658-2.974-3.568-3.547-4.624a2.63 2.63 0 0 1 0-2.513c.578-1.065 1.78-3.017 3.624-4.693L2.293 3.707a1 1 0 0 1 0-1.414m3.759 5.173c-1.645 1.473-2.745 3.241-3.281 4.23a.63.63 0 0 0 0 .607c.518.955 1.57 2.656 3.143 4.106C7.482 17.855 9.506 19 12 19c1.65 0 3.09-.5 4.33-1.256l-1.934-1.934A4.502 4.502 0 0 1 8.19 9.604zm3.62 3.62 3.242 3.242a2.5 2.5 0 0 1-3.242-3.242"
+                                    clip-rule="evenodd"
+                                  ></path>
+                                  <path
+                                    fill="black"
+                                    d="M10.223 5.2c.56-.128 1.152-.2 1.777-.2 2.494 0 4.518 1.146 6.086 2.591 1.572 1.45 2.625 3.15 3.144 4.106a.63.63 0 0 1-.002.608 17 17 0 0 1-1.344 2.095 1 1 0 0 0 1.6 1.2 19 19 0 0 0 1.503-2.342 2.63 2.63 0 0 0 0-2.514c-.572-1.056-1.749-2.966-3.546-4.623C17.64 4.459 15.154 3 12 3c-.779 0-1.52.09-2.223.25a1 1 0 0 0 .446 1.95"
+                                  ></path>
+                                </svg>
+                              </div>
+
+                              <div>
+                                <Image
+                                  src={selectedZodiac.link}
+                                  width={300}
+                                  height={300}
+                                  alt={`${selectedZodiac.name} Image`}
+                                />
+                              </div>
+
+                              <h3>
+                                {selectedZodiac.category} -{" "}
+                                {selectedZodiac.name}
+                              </h3>
+                              <p>
+                                Here are the guidelines for the{" "}
+                                {selectedZodiac.name}
+                                ...
+                              </p>
+
+                              <p>{selectedZodiac.description}</p>
+                            </div>
+                          </div>
+                        )}
+                      </>
                     )}
+
                     {/* Images generated to showcase the informatian about them */}
 
                     <div className=" zodiacCardsWrapper flex-wrap !mt-[0px] !mb-[105px] flex flex-row gap-[23px] justify-start relative">
@@ -430,7 +448,10 @@ const Profile: React.FC = () => {
                               link:
                                 getZodiacImage("Egyptian", egyptianZodiac) ||
                                 "",
-                            description: getZodiacDescription("Egyptian", egyptianZodiac)
+                              description: getZodiacDescription(
+                                "Egyptian",
+                                egyptianZodiac
+                              ),
                             })
                           }
                           className="zodiacCards
@@ -461,8 +482,10 @@ const Profile: React.FC = () => {
                                   "Native American",
                                   nativeAmericanZodiacSign
                                 ) || "",
-                                description: getZodiacDescription("Native American", nativeAmericanZodiacSign)
-
+                              description: getZodiacDescription(
+                                "Native American",
+                                nativeAmericanZodiacSign
+                              ),
                             })
                           }
                           className="zodiacCards relative !p-0"
@@ -493,11 +516,11 @@ const Profile: React.FC = () => {
                               link:
                                 getZodiacImage("Celtic", celticZodiacSign) ||
                                 "",
-                                description: getZodiacDescription("Celtic", celticZodiacSign)
-
+                              description: getZodiacDescription(
+                                "Celtic",
+                                celticZodiacSign
+                              ),
                             })
-
-                            
                           }
                           className="zodiacCards relative !p-0"
                         >
@@ -522,7 +545,10 @@ const Profile: React.FC = () => {
                               name: chineseZodiac,
                               link:
                                 getZodiacImage("Chinese", chineseZodiac) || "",
-                                description: getZodiacDescription("Chinese", chineseZodiac)
+                              description: getZodiacDescription(
+                                "Chinese",
+                                chineseZodiac
+                              ),
                             })
                           }
                           className="zodiacCards relative !p-0"
@@ -542,19 +568,19 @@ const Profile: React.FC = () => {
 
                     {/* Images generated to showcase the informatian about them */}
 
-                    <p className={styles.user_Messages}>
-                      <ChatMessage
-                        shouldAnimate={false}
-                        message={
-                          "Based on your Life Path number, we have gave an syntheses on what the expect of the overall energies that will be effecting your unique being each month of the year. Give credit to the great lloyd strayhorn for the valuable knowledge in curating this ."
-                        }
-                      />
-                    </p>
+                    <ChatMessage
+                      shouldAnimate={false}
+                      message={
+                        "Based on your Life Path number, we have gave an syntheses on what the expect of the overall energies that will be effecting your unique being each month of the year. Give credit to the great lloyd strayhorn for the valuable knowledge in curating this ."
+                      }
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          
 
           <div className="flex flex-col gap-[26px]">
             {months.map((month, index) => (

@@ -41,9 +41,13 @@ const Profile: React.FC = () => {
     string | null
   >(null);
 
+
+
+  const [birthday, setBirthDay] = useState<string>("")
   const [zodiac, setZodiac] = useState<string>("Enter");
   const [lifePath, setLifePathNumber] = useState<string>("Enter");
-  const [nameNumerologyNumber, setNameNumerolgyNumber] = useState<string>("Enter");
+  const [nameNumerologyNumber, setNameNumerolgyNumber] =
+    useState<string>("Enter");
   // const [practice, setPractice] = useState<null>(null);
   const [ennealogy, setEnnealogyNumber] = useState<string>("Enter");
   // const [birthday, setBirthDay] = useState<string>("Enter");
@@ -134,11 +138,28 @@ const Profile: React.FC = () => {
         setCardologyNumber(cardologyNumber);
         setMylesBridgeType(mylesBridgeType);
         setNameNumerolgyNumber(nameNumerolgyNumber);
+        setBirthDay(formatDate(birthday));
+        
       }
     };
 
     getUserInfo();
   }, [userId]);
+
+
+  function formatDate(isoString: string) {
+    // Create a new Date object from the ISO string
+    const date = new Date(isoString);
+
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const year = date.getUTCFullYear();
+  
+    // Format the date as MM/DD/YYYY
+    const formattedDate = `${month}/${day}/${year}`;
+  
+    return formattedDate;
+  }
 
   // Update user progress with the extracted vales
   const updateUserProgress = async (
@@ -146,7 +167,7 @@ const Profile: React.FC = () => {
     cardologyNumber: string,
     mylesBridgeType: string,
     nameNumerolgyNumber: string
-  ) => {
+  ): Promise<void> => {
     try {
       const response = await axios.post("/api/updateUser", {
         userId,
@@ -177,6 +198,8 @@ const Profile: React.FC = () => {
       mylesBridgeType,
       nameNumerologyNumber
     );
+
+    window.alert("Profile Update");
     // Optionally, stop editing mode
     setIsEditing(false);
   };
@@ -242,8 +265,6 @@ const Profile: React.FC = () => {
       }
     }
   }, [setConversations]);
-
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="chatDashboard">
@@ -324,11 +345,15 @@ const Profile: React.FC = () => {
                   <input
                     className="profileInput"
                     type="text"
-                    value={sessionStorage.getItem("zodiacSign") || zodiac  as any} 
+                    value={
+                      sessionStorage.getItem("zodiacSign") || (zodiac as any)
+                    }
                     onChange={(e) => setZodiac(e.target.value)}
                   />
                 ) : (
-                  <p>{sessionStorage.getItem("zodiacSign")  || zodiac as any} </p>
+                  <p>
+                    {sessionStorage.getItem("zodiacSign") || (zodiac as any)}{" "}
+                  </p>
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
@@ -337,11 +362,14 @@ const Profile: React.FC = () => {
                   <input
                     className="profileInput"
                     type="text"
-                    value={sessionStorage.getItem("lifePathNumber") || lifePath as any}
+                    value={
+                      sessionStorage.getItem("lifePathNumber") ||
+                      (lifePath as any)
+                    }
                     onChange={(e) => setLifePathNumber(e.target.value)}
                   />
                 ) : (
-                  <p>{sessionStorage.getItem("lifePathNumber") || lifePath }</p>
+                  <p>{sessionStorage.getItem("lifePathNumber") || lifePath}</p>
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
@@ -353,7 +381,6 @@ const Profile: React.FC = () => {
                     value={nameNumerologyNumber as any}
                     onChange={(e) => setNameNumerolgyNumber(e.target.value)}
                     onKeyDown={handleKeyDown}
-
                   />
                 ) : (
                   <input
@@ -362,8 +389,9 @@ const Profile: React.FC = () => {
                     type="text"
                     placeholder="Add"
                     value={
-                      (sessionStorage.getItem("nameNumerolgyNumber") as any) ||
-                      nameNumerologyNumber
+                      (sessionStorage.getItem("nameNumerolgyNumber") as any)
+                        ? (sessionStorage.getItem("nameNumerolgyNumber") as any)
+                        : "Enter"
                     }
                     readOnly
                   />
@@ -379,7 +407,7 @@ const Profile: React.FC = () => {
                     onChange={(e) => setEnnealogyNumber(e.target.value)}
                   />
                 ) : (
-                  <p>{ sessionStorage.getItem("ennealogy") || ennealogy}</p>
+                  <p>{sessionStorage.getItem("ennealogy") || ennealogy}</p>
                 )}
               </div>
 
@@ -401,7 +429,8 @@ const Profile: React.FC = () => {
                     placeholder="Add"
                     value={
                       (sessionStorage.getItem("cardologyNumber") as any)
-                      || cardologyNumber
+                        ? (sessionStorage.getItem("cardologyNumber") as any)
+                        : "Enter"
                     }
                     readOnly
                   />
@@ -426,7 +455,31 @@ const Profile: React.FC = () => {
                     placeholder="Add"
                     value={
                       (sessionStorage.getItem("mylesBridgeType") as any)
-                      || mylesBridgeType
+                        ? (sessionStorage.getItem("mylesBridgeType") as any)
+                        : "Enter"
+                    }
+                  />
+                )}
+              </div>
+
+              <div className="flex flex-row w-full justify-between">
+                <p id="greyText">Date Of Birth</p>
+                {isEditing ? (
+                  <input
+                    className="profileInput"
+                    type="text"
+                    value={birthday as any}
+                    onChange={(e) => setBirthDay(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  />
+                ) : (
+                  <input
+                    onClick={() => setIsEditing(true)}
+                    className="profileInput"
+                    type="text"
+                    placeholder="Add"
+                    value={
+                        birthday
                     }
                   />
                 )}

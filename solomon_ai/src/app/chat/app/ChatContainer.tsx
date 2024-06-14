@@ -319,20 +319,20 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
       <div className="flex flex-col gap-[22px]">
         {" "}
-        <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
+        {/* <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
           <div className="mainIcon !w-[20px] !h-[20px]">
             <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
           </div>
 
           <p className="hover:text-[#807f7f]">About Me</p>
-        </button>
-        <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
+        </button> */}
+        {/* <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
           <div className="mainIcon !w-[20px] !h-[20px]">
             <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
           </div>
 
           <p className="hover:text-[#807f7f]">Numerology Guidance</p>
-        </button>
+        </button> */}
         <Link
           href="/lifePathGuidance"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "

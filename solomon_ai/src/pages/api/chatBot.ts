@@ -60,6 +60,7 @@ export default async function handler(
         Myles Bridger Personality : ${userInfo?.mylesBridgeType || "Unknown"}
         Cardolgy Number : ${userInfo?.cardologyNumber || "Unknown"}
         Name Numerological Signature : ${userInfo?.nameNumerolgyNumber || "Unknown"}
+        Birthday: ${userInfo?.birthday || "Unknown"}
       `;
 
 

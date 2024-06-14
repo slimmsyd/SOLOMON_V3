@@ -33,7 +33,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, shouldAnimate = true
     if (isTyping && displayedMessage.length < message.length) {
       const timer = setTimeout(() => {
         setDisplayedMessage(message.slice(0, displayedMessage.length + 1));
-      }, 30); // Adjust typing speed as necessary
+      }, 15); // Adjust typing speed as necessary
       return () => clearTimeout(timer);
     } else if (isTyping) {
       setIsTyping(false);

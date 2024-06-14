@@ -46,8 +46,6 @@ import { calculateEnnealogyNumber } from "@/utilis/updateUserUtils";
 
 import LoadingComponent from "@/app/components/helper/Loading";
 
-
-
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
@@ -310,15 +308,6 @@ const ChatDashboard: React.FC = () => {
     enealogyNumber: string | null,
     religion: string | null
   ) => {
-    console.log(
-      "Logging The Ennegram before we updateh the user",
-      enealogyNumber
-    );
-    console.log(
-      "Logging the lifePathnumber before we update the user",
-      lifePathNumber
-    );
-
     try {
       const response = await axios.post("/api/updateUser", {
         userId,
@@ -339,7 +328,6 @@ const ChatDashboard: React.FC = () => {
   };
 
   const processResponses = async (responses, userId) => {
-
     for (const response of responses) {
       const lifePathNumber = extractLifePathNumber(response.response);
       const zodiacSign = extractZodiacSign(response.response);
@@ -350,46 +338,18 @@ const ChatDashboard: React.FC = () => {
       const isTextComplete = checkCompletionText(response.response);
 
       console.log("Logging the Birthday before ISO conversion:", birthday);
-      let isoBirthday
-      if(!isoBirthday && birthday) 
-      { 
-        isoBirthday = parseDateString(birthday as string)
-        console.log("Logging isBOrither in if statemnt", isoBirthday)
+      let isoBirthday;
+      if (!isoBirthday && birthday) {
+        isoBirthday = parseDateString(birthday as string);
+        console.log("Logging isBOrither in if statemnt", isoBirthday);
       }
       console.log("Logging the ISO birthday:", isoBirthday);
-      let finalEnnealogyNumber
-      let finalLifePathNumber
+      let finalEnnealogyNumber;
+      let finalLifePathNumber;
       if (!finalLifePathNumber && isoBirthday) {
         finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
         finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
-
-
-        console.log("Logging the final llife in the if statment", calculateLifePathNumber(isoBirthday) as number)
-        console.log("Logging the final enneagmac in the if statment", calculateEnnealogyNumber(isoBirthday) as number)
-
       }
-      console.log("Logging the finalLifePathNumber:", finalLifePathNumber);
-
-      console.log("Logging the finalEnnealogyNumber:", finalEnnealogyNumber);
-
-
-      console.log("Logging the final out of it llife in the if statment", calculateLifePathNumber(isoBirthday as any) as number)
-      console.log("Logging the final enneagmac in the if statment", calculateEnnealogyNumber(isoBirthday as any) as number)
-      //Cacluate the probality
-      console.log(
-        "logging the ENnegarm numner in the front end",
-        calculateEnnealogyNumber(isoBirthday as any) as number
-      );
-
-      console.log(
-        "logging the Lifepath number in the front end",
-        calculateLifePathNumber(isoBirthday as any) as number
-      );
-
-      console.log(
-        "Logging the response before updating progress:",
-        response.response
-      );
 
       if (isTextComplete) {
         setCurrentQuestion(6);
@@ -404,6 +364,14 @@ const ChatDashboard: React.FC = () => {
         }
       }
 
+      //Set the zodiac sign to be always prsent if avaibled
+      if (zodiacSign) {
+        sessionStorage.setItem("zodiacSign", zodiacSign);
+      }
+      if (lifePathNumber) {
+        sessionStorage.setItem("lifePathNumber", lifePathNumber.toString());
+      }
+
       if (
         lifePathNumber !== null ||
         zodiacSign !== null ||
@@ -411,7 +379,6 @@ const ChatDashboard: React.FC = () => {
         religion !== null ||
         enealogyNumber !== null
       ) {
-
         await updateUserProgress(
           userId as any,
           birthday as any,
