@@ -350,14 +350,15 @@ const processResponses = async (responses, userId) => {
     console.log("Logging the Birthday before ISO conversion:", birthday);
     const isoBirthday = birthday ? parseDateString(birthday) : null;
     console.log("Logging the ISO birthday:", isoBirthday);
-
+    let finalEnnealogyNumber = enealogyNumber;
     let finalLifePathNumber = lifePathNumber;
     if (!finalLifePathNumber && isoBirthday) {
       finalLifePathNumber = calculateLifePathNumber(isoBirthday) as number;
+      finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
+
     }
     console.log("Logging the finalLifePathNumber:", finalLifePathNumber);
 
-    let finalEnnealogyNumber = enealogyNumber;
     if (!finalEnnealogyNumber && isoBirthday) {
       finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday) as number;
     }
