@@ -51,8 +51,10 @@ const monthNames: { [key: string]: number } = {
   July: 6, Jul: 6, August: 7, Aug: 7, September: 8, Sept: 8, Sep: 8, October: 9, Oct: 9, November: 10, Nov: 10, December: 11, Dec: 11
 };
 const parseDateString = (dateString: string): string | null => {
+  console.log("Environment Info:", process.env);
+  console.log("Node.js Version:", process.version);
+  console.log("Locale:", Intl.DateTimeFormat().resolvedOptions().locale);
   console.log("Logging the Date String at top:", dateString);
-
   if (!dateString) {
     console.error("parseDateString received an invalid dateString:", dateString);
     return new Date().toISOString();  // Return current date as fallback
