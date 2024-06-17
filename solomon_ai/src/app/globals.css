@@ -80,31 +80,56 @@
   text-decoration: none;
 }
 
-body {
-}
 html,
 body,
+section,
 .page-wrapper {
   width: 100%;
-  height: 100vh;
+  height: auto;
+}
+
+
+@keyframes marquee {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.marquee > * {
+  animation: marquee 15s linear infinite;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  /* background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    ) */
-  background: #0a0a0a;
-
-  /* background: var(--main-black); */
+  background: rgb(28, 28, 28);
+  background: -moz-linear-gradient(
+    145deg,
+    rgba(28, 28, 28, 1) 0%,
+    rgb(24, 14, 36) 37%,
+    rgba(12, 12, 12, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    145deg,
+    rgba(28, 28, 28, 1) 0%,
+    rgb(24, 14, 36) 37%,
+    /* rgba(34, 22, 49, 1) 37%, */
+    rgba(12, 12, 12, 1) 100%
+  );
+  background: linear-gradient(
+    145deg,
+    rgba(28, 28, 28, 1) 0%,
+    rgb(24, 14, 36) 37%,
+    rgba(12, 12, 12, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1c1c1c",endColorstr="#0c0c0c",GradientType=1);
 }
 
-h1 {
+/* h1 {
   font-size: 60px !important;
   line-height: 125% !important;
-}
+} */
 
 h2 {
   font-size: 50px;
@@ -135,10 +160,10 @@ h6 {
 }
 
 @media screen and (max-width: 950px) {
-  h1,
+  /* h1,
   .headerH1 {
     font-size: 44px !important;
-  }
+  } */
 
   h2 {
     font-size: 28px;
@@ -182,6 +207,23 @@ img {
     color: rgba(255, 255, 255, 0.6);
   }
 
+  .fira-sans-light {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 100;
+  }
+  .fira-sans {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: normal;
+  }
+  .fira-sans-semibold {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 500;
+  }
+  .montserrat {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 100;
+  }
+
   .abc-diatype-thin {
     font-family: "ABCDiatype-Thin", "oswald", sans-serif;
   }
@@ -218,7 +260,7 @@ img {
   background: var(--main-black);
 }
 
-nav {
+/* nav {
   z-index: 60 !important;
 }
 nav a,
@@ -231,29 +273,30 @@ a span {
 
 nav button {
   height: 35px;
-}
+} */
 
-.nav-icon {
+/* .nav-icon {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 40px; /* Adjust as needed */
-}
+  justify-content: center; */
+/* height: 40px;  */
+/* Adjust as needed */
+/* } */
 
-.mobileNavLink {
+/* .mobileNavLink {
   border-top: 0.5px solid #807f7f;
   width: 100%;
   height: 55px;
   display: flex;
-  align-items: center;
-  /* margin-bottom: 10px; */
-}
+  align-items: center; */
+/* margin-bottom: 10px; */
+/* } */
 
-.mobileNav {
+/* .mobileNav {
   transition: opacity 300ms ease-in-out;
   background: var(--main-black);
   z-index: 80;
-}
+} */
 /* Nav Bar Code */
 
 /* HOME CODE */
@@ -293,6 +336,7 @@ nav button {
   font-family: "Robert-Med" !important;
   font-size: 112px;
 }
+
 .homeHeaderContainer h1 {
 }
 
@@ -491,23 +535,20 @@ figure video {
   .closePopupContainer {
     left: 50%;
   }
-  .guideLinesPopUpWrapper{
+  .guideLinesPopUpWrapper {
     width: 90% !important;
     margin: 0rem 2rem;
-    
   }
-  .guideLinesPopupContainer{
+  .guideLinesPopupContainer {
     padding: 0rem 2rem;
   }
-  .zodiacPopup{
+  .zodiacPopup {
     top: -1% !important;
     left: 50%;
-
   }
 
   .topDiv {
     z-index: 10;
-    
   }
 
   .homePopupFormContainer > form > button {
@@ -590,7 +631,8 @@ figure video {
   z-index: 95;
 }
 
-.closePopupContainer, .zodiacPopup {
+.closePopupContainer,
+.zodiacPopup {
   cursor: pointer;
   background: white;
   display: flex;
@@ -605,9 +647,8 @@ figure video {
   height: 32px;
   z-index: 95;
 }
-.zodiacPopup
-{ 
-  top: 0% ;
+.zodiacPopup {
+  top: 0%;
   right: 0% !important;
   z-index: 50;
 }
@@ -1079,7 +1120,6 @@ figure video {
   transform: rotate(-90deg);
 }
 
-
 .renderCards,
 .zodiacCards {
   border: 1px solid #807f7f;
@@ -1091,8 +1131,6 @@ figure video {
   cursor: pointer;
   overflow-y: scroll;
   scrollbar-width: none;
-  
-
 }
 .renderCards img,
 .zodiacCards img {
@@ -1440,7 +1478,7 @@ figure video {
 .accountDiv {
   padding: 20px;
 }
-.accountContainer::-webkit-scrollbar{
+.accountContainer::-webkit-scrollbar {
   display: none;
 }
 
@@ -1513,6 +1551,6 @@ figure video {
   flex-direction: column;
   gap: 10px;
 
-  padding: 2rem
+  padding: 2rem;
 }
 /* GUIELINES POPUP CSS */
