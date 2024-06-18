@@ -31,13 +31,7 @@ const NavComponent: React.FC<PopupProps> = ({
   };
 
   useEffect(() => {
-    if (navState) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    }
+ 
     
     
   }, [navState]);
