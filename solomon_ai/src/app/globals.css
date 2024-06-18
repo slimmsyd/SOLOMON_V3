@@ -104,25 +104,19 @@ section,
 
 body {
   background: rgb(28, 28, 28);
-  background: -moz-linear-gradient(
+  /* background: -moz-linear-gradient(
     145deg,
     rgba(28, 28, 28, 1) 0%,
     rgb(24, 14, 36) 37%,
     rgba(12, 12, 12, 1) 100%
-  );
-  background: -webkit-linear-gradient(
-    145deg,
-    rgba(28, 28, 28, 1) 0%,
-    rgb(24, 14, 36) 37%,
-    /* rgba(34, 22, 49, 1) 37%, */
-    rgba(12, 12, 12, 1) 100%
-  );
-  background: linear-gradient(
+  ); */
+  background:-webkit-linear-gradient(145deg, rgba(28, 28, 28, 1) 0%, rgb(15 9 23) 37%, /* rgba(34, 22, 49, 1) 37%, */ rgba(12, 12, 12, 1) 100%);
+  /* background: linear-gradient(
     145deg,
     rgba(28, 28, 28, 1) 0%,
     rgb(24, 14, 36) 37%,
     rgba(12, 12, 12, 1) 100%
-  );
+  ); */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1c1c1c",endColorstr="#0c0c0c",GradientType=1);
 }
 
@@ -346,6 +340,7 @@ nav button {
 }
 .videoFigureContainer {
   max-width: 780px;
+  max-width: 605px;
   pointer-events: none;
   /* min-width: 800px; */
 }

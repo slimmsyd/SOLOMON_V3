@@ -200,7 +200,7 @@ export default function HomePage() {
             trigger: refTextOne.current,
             start: "top center",
             endTrigger: refTextTwo.current,
-            end: "+=180%", // Adjust the end point based on your requirements
+            end: "+=100%", // Adjust the end point based on your requirements
             pin: true,
             // markers: true, // Add markers for debugging
             scrub: true,
@@ -225,8 +225,8 @@ export default function HomePage() {
         let tl = gsap.timeline({
           scrollTrigger: {
             trigger: refImageTwo.current,
-            start: "-=80%",
-            end: "+=80%", //
+            start: "top center",
+            end: "+75%", //
             // markers: true, // Add markers for debugging
             scrub: true,
             // onEnter: () => console.log("Text pin onEnter"),
@@ -246,7 +246,7 @@ export default function HomePage() {
           scrollTrigger: {
             trigger: refImageThree.current,
             start: "-=80%",
-            end: "+=80%", //
+            // end: "+=100%", // Adjust the end point based on your requirements
             // markers: true, // Add markers for debugging
             scrub: true,
             // onEnter: () => console.log("Text pin onEnter"),
@@ -268,7 +268,7 @@ export default function HomePage() {
             trigger: refTextTwo.current,
             start: "top center",
             endTrigger: refTextThree.current,
-            end: "+=180%", // Adjust the end point based on your requirements
+            end: "+=100%", // Adjust the end point based on your requirements
             pin: true,
             // markers: true, // Add markers for debugging
             scrub: true,
@@ -295,7 +295,7 @@ export default function HomePage() {
           scrollTrigger: {
             trigger: refTextThree.current,
             start: "top center",
-            end: "+=180%", // Adjust the end point based on your requirements
+            end: "+=100%", // Adjust the end point based on your requirements
             pin: true,
             // markers: true, // Add markers for debugging
             scrub: true,
@@ -1007,7 +1007,7 @@ export default function HomePage() {
           <p className="text-white/80 montserrat">
             Solomon AI: Harnessing millennia of wisdom
           </p>
-          <div className="py-4 w-full flex items-center justify-center lg:p-8 xl:px-[6rem]">
+          <div className="py-4 w-full flex items-center justify-center lg:p-8 px-0">
             <div className="marquee w-full flex items-center justify-between overflow-hidden whitespace-nowrap">
               <p className="text-white text-3xl montserrat opacity-35 capitalize inline-block px-4">
                 שָׁלוֹם
@@ -1034,13 +1034,13 @@ export default function HomePage() {
           <h1 className="text-white text-center fira-sans-semibold capitalize text-[1.8rem] leading-[2rem] fira-sans-semibold lg:w-4/5 lg:text-[3rem] lg:leading-[3.5rem] xl:w-1/2">
             Discover Your Cosmic Guidance and Personal Insights
           </h1>
-          <p className="w-full pb-4 text-white text-center capitalize montserrat text-[1.175rem] leading-[1.8rem] lg:w-1/2">
+          <p className="w-full pb-4 text-white  capitalize montserrat text-[1.175rem] text-center leading-[1.8rem] lg:w-1/2">
             personalized readings that encompass metaphysical oracle guidance,
             detailed zodiac astrology insights, and illuminating life path
             consultations.
           </p>
-          <div className="w-full flex items-center flex-col">
-            <div className="w-full p-2 bg-white/20 flex items-center justify-between rounded-[1rem] lg:w-3/4 xl:w-1/2">
+          <div className="w-full flex items-center flex-col text-left">
+            <div className="w-full p-2 border-solid border-[0.5px] border-[#aaaaaa]	 flex items-center justify-between rounded-[1rem] text-left lg:w-3/4 xl:w-1/2">
               <button
                 onClick={() => handleFeatureToggle("oracle")}
                 className={
@@ -1073,14 +1073,14 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-          <div className="w-full pt-[2rem] flex items-center justify-center flex-col lg:items-start lg:justify-between lg:flex-row lg:max-w-[1300px]">
+          <div className="w-full py-[6rem] flex items-center justify-center flex-col lg:items-start lg:justify-between lg:flex-row lg:max-w-[1300px]">
             {toggleFeature.oracle && (
               <>
-                <div className="py-6 w-full flex items-center justify-center flex-col gap-4 text-white text-center lg:py-0 lg:pb-6">
-                  <h3 className="text-center w-full text-white uppercase fira-sans-semibold">
+                <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
+                <h3 className="text-left w-full text-white uppercase fira-sans-semibold">
                     Metaphysical Oracle
                   </h3>
-                  <p className="text-white  leading-[1.8rem] montserrat w-3/4">
+                  <p className="text-white text-left  text-gray leading-[1.8rem] montserrat w-full">
                     As the most individually capable model, you enter a realm of
                     infinite possibilities with Buddah Bot. It possesses the
                     ability to delve several levels deep into any metaphysical
@@ -1092,11 +1092,11 @@ export default function HomePage() {
             )}
             {toggleFeature.astrology && (
               <>
-                <div className="py-6 w-full flex items-center justify-center flex-col gap-4 text-white text-center lg:py-0 lg:pb-6">
-                  <h3 className="text-white uppercase fira-sans-semibold">
+                <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
+                  <h3 className="text-white uppercase  text-left fira-sans-semibold">
                     Zodiac Astrologist
                   </h3>
-                  <p className="text-white  leading-[1.8rem] montserrat w-3/4">
+                  <p className="text-white text-left text-gray    leading-[1.8rem] montserrat w-full">
                     Delve into the celestial realms and discover the profound
                     influences of the stars and planets on your life's journey.
                     From natal charts to planetary alignments, explore the
@@ -1109,11 +1109,11 @@ export default function HomePage() {
             )}
             {toggleFeature.lifePath && (
               <>
-                <div className="py-6 w-full flex items-center justify-center flex-col gap-4 text-white text-center lg:py-0 lg:pb-6">
-                  <h3 className="text-white uppercase fira-sans-semibold">
+                <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
+                <h3 className="text-white uppercase text-left fira-sans-semibold">
                     Life Path Consultant
                   </h3>
-                  <p className="text-white  leading-[1.8rem] montserrat w-3/4">
+                  <p className="text-white  text-left text-gray  leading-[1.8rem] montserrat w-full">
                     Gain clarity and guidance on your soul's purpose and
                     direction in life. Explore the depths of your existence,
                     uncover talents, overcome obstacles, and align with your
@@ -1125,7 +1125,7 @@ export default function HomePage() {
             )}
             <figure className="w-full relative oracleVideoContainer flex items-center justify-center flex-col">
               <Video
-                src="https://solomon-v3.vercel.app/OracleVideo.mp4"
+                src="http://localhost:3000/OracleVideo.mp4"
                 type="video/mp4"
                 controls={false}
                 autoPlay={true}
@@ -1133,8 +1133,8 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.oracle
-                    ? "w-[400px] h-auto opacity-100 relative"
-                    : "w-[400px] h-auto opacity-0 absolute"
+                    ? "w-600px] h-auto opacity-100 relative"
+                    : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
               <Video
@@ -1167,23 +1167,23 @@ export default function HomePage() {
           </div>
         </section>
         <section className="info-section w-full h-screen px-6 pt-[6rem]">
-          <div className="w-full flex items-center flex-col lg:px-[8rem]">
+          <div className="w-full flex items-center flex-col px-[2rem] lg:px-[8rem]">
             <div
               // ref={refTextTrigger}
               className="w-full flex items-center justify-center"
             >
               <h2
                 ref={refTextTrigger}
-                className="w-full text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-center lg:text-[3rem] lg:leading-[3.5rem]"
+                className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]"
               >
                 Built to open the mind of human kind
               </h2>
             </div>
-            <div className=" w-full h-auto pt-[2rem] flex items-center justify-center flex-col">
-              <div className="w-full h-auto flex items-center justify-center flex-col pt-[1rem] pb-[4rem] lg:flex-row lg:items-start">
+            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+              <div className="w-full h-auto flex items-center justify-center flex-col  lg:flex-row lg:items-start">
                 <div
-                  // ref={refTextOne}
-                  className="w-full py-[2rem] text-center flex items-center justify-center flex-col gap-[10px] lg:py-0"
+                  ref={refTextOne}
+                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[10px] lg:py-0"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Authentic Intelligence.
@@ -1192,7 +1192,7 @@ export default function HomePage() {
                     No denominated spiritualization. Decentralized
                     spiritualization.
                   </h3>
-                  <p className="text-white text-[16px] montserrat lg:w-3/4">
+                  <p className="text-white text-gray text-[16px] montserrat lg:w-3/4">
                     SolomonAI is one of kind leading Metaphysical AI, who aim to
                     help aid the moral consciousness of todays age.
                   </p>
@@ -1203,13 +1203,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                    src="https://www.aisolomon.xyz/video.mp4"
-                    type="video/mp4"
+                src="http://localhost:3000/OracleVideo.mp4"
+                type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-[400px] h-[400px]"
+                    className="w-full h-[505px]"
                   />
 
                   {/* <Image
@@ -1222,11 +1222,11 @@ export default function HomePage() {
                 </figure>
               </div>
             </div>
-            <div className=" w-full h-auto flex items-center justify-center flex-col">
-              <div className="w-full h-auto flex items-center justify-center flex-col pb-[4rem] lg:flex-row lg:items-start">
+            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+              <div className="w-full h-auto flex items-start justify-center flex-col pb-[4rem] lg:flex-row lg:items-start">
                 <div
-                  // ref={refTextTwo}
-                  className="w-full py-[2rem] text-center flex items-center justify-center flex-col gap-[10px] lg:py-0"
+                  ref={refTextTwo}
+                  className="w-full py-[2rem] text-left flex items-start justify-start flex-col gap-[10px] lg:py-0"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Trained in Theology{" "}
@@ -1234,26 +1234,26 @@ export default function HomePage() {
                   <h3 className="text-white fira-sans leading-[1.5rem] xl:leading-[2rem]">
                     Know Thyself guide.
                   </h3>
-                  <p className="text-white text-[16px] montserrat lg:w-3/4">
+                  <p className=" text-gray  text-[16px] montserrat lg:w-3/4">
                     Trained to look at scriptural text from a metaphysical POV
                     and rather a Scentific POV. Urges to see the implicit
                     meaning behind the scriptures
                   </p>
                 </div>
                 <figure
-                  // ref={refImageTwo}
+                  ref={refImageTwo}
                   className="
                 videoFigureContainer
                 w-full grid place-items-center"
                 >
                   <Video
-                    src="https://solomon-v3.vercel.app/video3.mp4"
-                    type="video/mp4"
+                src="http://localhost:3000/KnowThyselfVideo.mp4"
+                type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-[400px] h-[400px]"
+                    className="w-full h-[505px]"
                   />
 
                   {/* <Image
@@ -1267,11 +1267,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className=" w-full h-auto flex items-center justify-center flex-col">
-              <div className="w-full h-auto flex items-center justify-center flex-col lg:flex-row lg:items-start">
+            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+              <div className="w-full h-auto flex items-start justify-center flex-col lg:flex-row lg:items-start">
                 <div
-                  // ref={refTextThree}
-                  className="w-full py-[2rem] text-center flex items-center justify-center flex-col gap-[10px] lg:py-0"
+                  ref={refTextThree}
+                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[10px] lg:py-0"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Spirutal Ascension
@@ -1279,7 +1279,7 @@ export default function HomePage() {
                   <h3 className="text-white fira-sans leading-[1.5rem] xl:leading-[2rem]">
                     Enrich your spiritual growth
                   </h3>
-                  <p className="text-white text-[16px] montserrat lg:w-3/4">
+                  <p className="text-gray  text-[16px] montserrat lg:w-3/4">
                     Trained to look at scriptural text from a metaphysical POV.
                     Urges to see the implicit meaning behind the scriptures
                   </p>
@@ -1291,13 +1291,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                    src="https://solomon-v3.vercel.app/AstroVideo.mp4"
-                    type="video/mp4"
+                src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
+                type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-[400px] h-[400px]"
+                    className="w-full h-[505px]"
                   />
 
                   {/* <Image

@@ -231,7 +231,7 @@ const NavComponent: React.FC<PopupProps> = ({
           Solomon<span className="text-lg">Ai</span>
         </Link>
         <ul className="hidden items-center lg:flex">
-          <li className="px-8"><Link href='/' className="text-white montserrat">Features</Link></li>
+          <li className="px-8 "><Link href='/' className="text-white montserrat">Features</Link></li>
           <li className="px-8"><Link href='/' className="text-white montserrat">Pricing</Link></li>
           <li className="px-8"><Link href='/' className="text-white montserrat">About</Link></li>
           <li className="px-8"><Link href='/' className="text-white montserrat">Blog</Link></li>
