@@ -32,10 +32,14 @@ const NavComponent: React.FC<PopupProps> = ({
 
   useEffect(() => {
     if (navState) {
-      navRef.current?.classList.add("black-bg");
+      document.body.style.overflow = 'hidden';
     } else {
-      navRef.current?.classList.remove("black-bg");
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
     }
+    
+    
   }, [navState]);
 
   useEffect(() => {
@@ -235,35 +239,120 @@ const NavComponent: React.FC<PopupProps> = ({
         </Link>
         <ul className="hidden items-center lg:flex">
           <li className="px-8 ">
-          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
+            <Link
+              href="/"
+              className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
+            >
               Features
             </Link>
           </li>
           <li className="px-8">
-          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
-          Pricing
+            <Link
+              href="/"
+              className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
+            >
+              Pricing
             </Link>
           </li>
           <li className="px-8">
-          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
-          About
+            <Link
+              href="/"
+              className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
+            >
+              About
             </Link>
           </li>
           <li className="px-8">
-          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
-          Blog
+            <Link
+              href="/"
+              className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
+            >
+              Blog
             </Link>
           </li>
         </ul>
         <div className="flex items-center gap-6">
-          <button className="px-4 py-2 border border-white flex items-center justify-center text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white">
+          <button
+            onClick={togglePopup}
+            className="px-4 py-2 border border-white flex items-center justify-center text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white"
+          >
             Join Beta
           </button>
-          <div className="w-[32px] h-[24px] flex items-center justify-between flex-col cursor-pointer lg:hidden">
-            <div className="w-full h-[1px] bg-white rounded-full"></div>
-            <div className="w-full h-[1px] bg-white rounded-full"></div>
-            <div className="w-full h-[1px] bg-white rounded-full"></div>
+
+          <div className="flex flex-row xl:hidden gap-[3rem] items-center ">
+            {/* <Link
+              onClick={togglePopup}
+              href="/"
+              className="px-2 py-1 md:text-[14px] !text-[12px] bg-gray border border-white/20 text-white rounded"
+            >
+              Join Beta
+            </Link> */}
+            <div
+              ref={navIcon}
+              onClick={toggleNav}
+              className="w-[40px] h-[10px] relative z-50 flex items-center justify-between flex-col cursor-pointer xl:hidden mobileContainer"
+            >
+              <div className="line line1 w-[60%] h-[1.25px] rounded bg-white"></div>
+              <div className="line line2 w-[60%] h-[1.25px] rounded bg-white"></div>
+            </div>
           </div>
+
+          <ul
+            ref={mobileNav}
+            className={`
+
+          mobileNav
+          absolute mt-[6rem] inset-0 p-6 bg-main-black w-full h-screen flex items-start justify-start flex-col  uppercase transition-transform duration-[1s] ease-in-out ${
+            navState
+              ? " pointer-events-auto opacity-100 "
+              : " pointer-events-none opacity-0"
+          }`}
+          >
+            <Link href="/" className="mobileNavLink">
+              <span className="text-gray  capitalize duration-300 ease-in-out hover:text-white">
+                Home
+              </span>
+            </Link>
+
+            {/* <Link onClick={togglePopup} href="/" className="mobileNavLink">
+            <span className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white">
+              Join Beta
+            </span>
+          </Link> */}
+
+            {/* <Link        href="/" className="mobileNavLink">
+
+          <span
+            className=" text-gray text-[3rem] capitalize duration-300 ease-in-out hover:text-white"
+          >
+            Prices
+          </span>
+
+          </Link> */}
+
+            <Link onClick={scrolToAbout} href="/" className="mobileNavLink">
+              <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
+                Features
+              </span>
+            </Link>
+
+            <Link href="/blogs/unifiedGod" className="mobileNavLink">
+              <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
+                Pricing
+              </span>
+            </Link>
+            <Link onClick={scrolToAbout} href="/" className="mobileNavLink">
+              <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
+                About
+              </span>
+            </Link>
+
+            <Link href="/blogs/unifiedGod" className="mobileNavLink">
+              <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
+                Blog
+              </span>
+            </Link>
+          </ul>
         </div>
       </nav>
     </header>
