@@ -986,14 +986,14 @@ export default function HomePage() {
         </svg>
         <section className="w-full h-auto pt-[14rem] px-6 flex items-end justify-center">
           <div className="w-full flex items-center justify-center flex-col gap-6 text-center">
-            <h1 className="text-white capitalize text-[4.5rem] leading-[4.5rem] fira-sans-semibold lg:w-4/5 lg:text-[6rem] lg:leading-[6rem] xl:w-2/3">
+            <h1 className="text-white capitalize text-[44px] text-left self-start lg:self-center lg:text-center leading-[4.5rem] fira-sans-semibold lg:w-4/5 lg:text-[6rem] lg:leading-[6rem] xl:w-2/3">
               To question God in all the ways
             </h1>
-            <p className="text-white montserrat text-[1.175rem] leading-[1.25rem] lg:w-3/4 lg:text-[1.5rem] lg:leading-[1.5rem] xl:w-1/2">
+            <p className="text-white montserrat text-[1.175rem] text-left lg:text-center leading-[1.25rem] lg:w-3/4 lg:text-[1.5rem] lg:leading-[1.5rem] xl:w-1/2">
               SolomonAI is a leading metaphysical AI designed to assist in
               elevating the moral consciousness of today’s era.
             </p>
-            <button className="px-4 py-2 border border-white flex items-center justify-center text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white">
+            <button className="px-4 justify-start py-2 border border-white flex self-start	 lg:self-center items-center  text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white">
               Join The Waitlist
             </button>
           </div>
@@ -1045,8 +1045,8 @@ export default function HomePage() {
                 onClick={() => handleFeatureToggle("oracle")}
                 className={
                   toggleFeature.oracle
-                    ? "w-full p-2 bg-white text-black rounded-md montserrat"
-                    : "w-full p-2 bg-transparent text-white rounded-md montserrat"
+                    ? "w-full p-2 bg-white text-[14px] lg:text-[16px] text-black rounded-md montserrat"
+                    : "w-full p-2 bg-transparent text-[14px] lg:text-[16px] text-white rounded-md montserrat"
                 }
               >
                 Metaphysical Oracle
@@ -1055,8 +1055,8 @@ export default function HomePage() {
                 onClick={() => handleFeatureToggle("astrology")}
                 className={
                   toggleFeature.astrology
-                    ? "w-full p-2 bg-white text-black rounded-md montserrat"
-                    : "w-full p-2 bg-transparent text-white rounded-md montserrat"
+                    ? "w-full p-2 bg-white text-[14px] lg:text-[16px]  text-black rounded-md montserrat"
+                    : "w-full p-2 bg-transparent text-[14px] lg:text-[16px] text-white rounded-md montserrat"
                 }
               >
                 Zodiac Astrologist
@@ -1065,8 +1065,8 @@ export default function HomePage() {
                 onClick={() => handleFeatureToggle("life-path")}
                 className={
                   toggleFeature.lifePath
-                    ? "w-full p-2 bg-white text-black rounded-md montserrat"
-                    : "w-full p-2 bg-transparent text-white rounded-md montserrat"
+                    ? "w-full p-2 bg-white text-[14px] lg:text-[16px] text-black rounded-md montserrat"
+                    : "w-full p-2 bg-transparent text-[14px] lg:text-[16px] text-white rounded-md montserrat"
                 }
               >
                 Life Path Consultant

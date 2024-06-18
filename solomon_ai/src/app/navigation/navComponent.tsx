@@ -226,15 +226,34 @@ const NavComponent: React.FC<PopupProps> = ({
       <nav className="w-full pb-4 flex items-center justify-between border-b border-white/20">
         <Link
           href="/"
-          className="text-white text-3xl fira-sans-semibold uppercase"
+          className="p-2 text-white flex flex-row gap-[15px]  items-center uppercase w-auto"
         >
-          Solomon<span className="text-lg">Ai</span>
+          <div>
+            <Image src={FaceIcon} alt="Solomon Face" width={32} height={32} />
+          </div>
+          SolomonAI
         </Link>
         <ul className="hidden items-center lg:flex">
-          <li className="px-8 "><Link href='/' className="text-white montserrat">Features</Link></li>
-          <li className="px-8"><Link href='/' className="text-white montserrat">Pricing</Link></li>
-          <li className="px-8"><Link href='/' className="text-white montserrat">About</Link></li>
-          <li className="px-8"><Link href='/' className="text-white montserrat">Blog</Link></li>
+          <li className="px-8 ">
+          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
+              Features
+            </Link>
+          </li>
+          <li className="px-8">
+          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
+          Pricing
+            </Link>
+          </li>
+          <li className="px-8">
+          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
+          About
+            </Link>
+          </li>
+          <li className="px-8">
+          <Link href="/" className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]">
+          Blog
+            </Link>
+          </li>
         </ul>
         <div className="flex items-center gap-6">
           <button className="px-4 py-2 border border-white flex items-center justify-center text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white">
