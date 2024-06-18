@@ -1138,7 +1138,7 @@ export default function HomePage() {
                 }`}
               />
               <Video
-                src="https://solomon-v3.vercel.app/AstroVideo.mp4"
+                src="http://localhost:3000/KnowThyselfVideo.mp4"
                 type="video/mp4"
                 controls={false}
                 autoPlay={true}
@@ -1146,12 +1146,12 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.astrology
-                    ? "w-[400px] h-auto opacity-100 relative"
-                    : "w-[400px] h-auto opacity-0 absolute"
+                   ? "w-600px] h-auto opacity-100 relative"
+                    : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
               <Video
-                src="https://solomon-v3.vercel.app/LifePathVid.mp4"
+                src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
                 type="video/mp4"
                 controls={false}
                 autoPlay={true}
@@ -1159,8 +1159,8 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.lifePath
-                    ? "w-[400px] h-auto opacity-100 relative"
-                    : "w-[400px] h-auto opacity-0 absolute"
+                          ? "w-600px] h-auto opacity-100 relative"
+                    : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
             </figure>
