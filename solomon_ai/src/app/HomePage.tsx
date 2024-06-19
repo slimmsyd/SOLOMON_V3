@@ -689,7 +689,7 @@ export default function HomePage() {
             )}
             <figure className="w-full relative oracleVideoContainer flex items-center justify-center flex-col">
               <Video
-                src="http://localhost:3000/OracleVideo.mp4"
+                src="https://www.aisolomon.xyz/OracleVideo.mp4"
                 type="video/mp4"
                 controls={false}
                 autoPlay={true}
@@ -702,7 +702,7 @@ export default function HomePage() {
                 }`}
               />
               <Video
-                src="http://localhost:3000/KnowThyselfVideo.mp4"
+                src="https://www.aisolomon.xyz/KnowThyselfVideo.mp4"
                 type="video/mp4"
                 controls={false}
                 autoPlay={true}
@@ -715,7 +715,7 @@ export default function HomePage() {
                 }`}
               />
               <Video
-                src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
+                src="https://www.aisolomon.xyz/SpirtualAscenstionVideo.mp4"
                 type="video/mp4"
                 controls={false}
                 autoPlay={true}
@@ -767,7 +767,7 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="http://localhost:3000/OracleVideo.mp4"
+                src="https://www.aisolomon.xyz/OracleVideo.mp4"
                 type="video/mp4"
                     controls={false}
                     autoPlay={true}
@@ -811,7 +811,7 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="http://localhost:3000/KnowThyselfVideo.mp4"
+                src="https://www.aisolomon.xyz/KnowThyselfVideo.mp4"
                 type="video/mp4"
                     controls={false}
                     autoPlay={true}
@@ -855,7 +855,7 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
+                src="https://www.aisolomon.xyz/SpirtualAscenstionVideo.mp4"
                 type="video/mp4"
                     controls={false}
                     autoPlay={true}
