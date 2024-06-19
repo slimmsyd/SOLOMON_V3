@@ -80,6 +80,7 @@
   text-decoration: none;
 }
 
+
 html,
 body,
 section,
@@ -362,6 +363,10 @@ figure video {
   border: 0.5px solid #807f7f;
 }
 
+/* figure img {
+  width: 100%;
+  max-width: 1200px;
+} */
 .mainVideoContainer {
   max-height: 756px;
 
@@ -466,7 +471,16 @@ figure video {
   width: 100%;
   outline: none;
 }
-
+.homePopupInnerWrapper p {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-weight: bolder;
+  font-size: 18px;
+  text-align: center;
+}
 /* Home page popup code */
 .homePopup {
   display: flex;
@@ -481,17 +495,20 @@ figure video {
   z-index: 90;
   /* display: none; */
 }
+
 .displayShow {
   display: flex;
 }
 @media screen and (max-width: 375px) {
   .homePopupContainer {
     width: 330px !important;
+    justify-content: center;
   }
 }
 @media screen and (max-width: 1050px) {
   .homePopupContainer {
     width: 400px !important;
+    justify-content: center !important;
     height: 505px;
 
     flex-direction: column !important;
@@ -558,15 +575,17 @@ figure video {
   }
 }
 .homePopupContainer {
-  border: 0.5px solid #2f0ffd;
-  width: 800px;
-
+  /* border: 0.5px solid #2f0ffd; */
+  width: 400px;
+  background:rgb(20 20 20/1);
   height: 505px;
   position: relative;
-  background: #01010185;
   border-radius: 10px;
+  padding: 1.5rem 0rem;
   display: flex;
+  justify-content: start;
   flex-direction: row;
+  border: 0.5px solid #fff;
 }
 .homePopupImageContainer {
   position: relative;
@@ -586,14 +605,16 @@ figure video {
   /* transform: translateX(-20%); */
 }
 .homePopupFormContainer {
-  flex-basis: 80%;
+  flex-basis: 100%;
   display: flex;
-  margin: 0px 38px;
+  justify-content: start;
+  margin: 0px 0px;
 }
 
 .homePopupFormContainer form {
-  width: 100%;
+  width: 60%;
   display: flex;
+
   /* justify-content: end;
   align-items: end; */
   padding-right: 20px;
@@ -604,6 +625,7 @@ figure video {
   padding: 15px 5px;
   outline: none;
   border-radius: 6px;
+  height: 46px;
   font-size: 14px;
 }
 .joinBeta {
