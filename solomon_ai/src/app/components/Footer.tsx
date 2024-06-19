@@ -31,7 +31,7 @@ export const Footer: any = () => {
   };
 
   return (
-    <footer className="w-full p-8 relative flex flex-col gap-[20vh]">
+    <footer className="w-full p-8 relative flex flex-col gap-[2rem]">
       <hr className="w-full h-[1px] bg-white opacity-[.10]" />
 
       <div className="flex md:flex-row gap-[6rem] flex-col justify-between w-full">
@@ -45,9 +45,9 @@ export const Footer: any = () => {
                 alt="Solomon Face Icon"
               />
             </div>
-            <p>Solomon AI</p>
-            <span>-</span>
-            <p className="text-gray"> join beta waiting list</p>
+            <p className="firs-sans text-white">Solomon AI</p>
+            <span className="text-white font-[100]">-</span>
+            <p className="text-white capitalize montserrat"> join beta waiting list</p>
           </div>
 
           <form
@@ -57,7 +57,7 @@ export const Footer: any = () => {
             <div className="flex relative flex-row items-center">
               <input
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-transparent newsLetterInput"
+                className="bg-transparent newsLetterInput montserrat"
                 type="email"
                 placeholder="Email address"
               />
@@ -84,23 +84,23 @@ export const Footer: any = () => {
 
         <div className="flex-col md:w-[30%] w-full gap-[15px]">
           <ul className="flex flex-col gap-[15px]">
-            <li className="text-[16px]">Social</li>
+            <li className="text-[16px] text-white montserrat">Social</li>
             <Link
               href="https://www.instagram.com/syddarchitect"
-              className="text-[14px] text-gray flex flex-row gap-[15px"
+              className="text-[14px] text-white montserrat flex flex-row gap-[15px"
             >
               Instagram
             </Link>
             <Link
               href="https://www.instagram.com/syddarchitect"
-              className="text-[14px] text-gray"
+              className="text-[14px] text-white montserrat"
             >
               Creators - Instagram
             </Link>
-            <Link href="/" className="text-[14px] text-gray">
+            <Link href="/" className="text-[14px] text-white montserrat">
               Tiktok
             </Link>
-            <Link href="/" className="text-[14px] text-gray">
+            <Link href="/" className="text-[14px] text-white montserrat">
               Blogs
             </Link>
           </ul>
@@ -108,7 +108,7 @@ export const Footer: any = () => {
       </div>
 
       <div className="flex md:flex-row flex-col justify-between relative md:pb-[28px pb-[0px]]">
-        <p className="text-gray text-[14px]">
+        <p className="fira-sans-light text-white text-[14px]">
           {" "}
           © 2024 SolomonAI All rights reserved
         </p>
