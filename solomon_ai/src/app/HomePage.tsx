@@ -732,7 +732,7 @@ export default function HomePage() {
           </div>
         </section>
         <section className="info-section w-full h-auto px-6 pt-[6rem]">
-          <div className="w-full flex items-center flex-col px-[2rem] lg:px-[8rem]">
+          <div className="w-full flex items-center flex-col px-[0.5rem] lg:px-[8rem]">
             <div
               // ref={refTextTrigger}
               className="w-full flex items-center justify-center"
@@ -787,7 +787,7 @@ export default function HomePage() {
                 </figure>
               </div>
             </div>
-            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100%] lg:h-[100vh] py-[6rem] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-start justify-center flex-col pb-[4rem] lg:flex-row lg:items-start">
                 <div
                   ref={refTextTwo}
@@ -832,7 +832,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100%] lg:h-[100vh] py-[6rem] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-start justify-center flex-col lg:flex-row lg:items-start">
                 <div
                   ref={refTextThree}
