@@ -744,7 +744,7 @@ export default function HomePage() {
                 Built to open the mind of human kind
               </h2>
             </div>
-            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100%] lg:h-[100vh] py-[6rem] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-center justify-center flex-col  lg:flex-row lg:items-start">
                 <div
                   ref={refTextOne}
