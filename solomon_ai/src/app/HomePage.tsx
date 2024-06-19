@@ -60,8 +60,10 @@ export default function HomePage() {
   const planData = [
     {
       id: 1,
-      planTitle: "basic",
-      price: "$0 per month",
+      planTitle: "free",
+      price: "$0",
+      planDesc:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
       desc1: "manual editing",
       desc2: "manual editing",
       desc3: "manual editing",
@@ -69,8 +71,10 @@ export default function HomePage() {
     },
     {
       id: 2,
-      planTitle: "basic",
-      price: "$0 per month",
+      planTitle: "standard",
+      price: "$0",
+      planDesc:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
       desc1: "manual editing",
       desc2: "manual editing",
       desc3: "manual editing",
@@ -78,12 +82,87 @@ export default function HomePage() {
     },
     {
       id: 3,
-      planTitle: "basic",
-      price: "$0 per month",
+      planTitle: "pro",
+      price: "$0",
+      planDesc:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
       desc1: "manual editing",
       desc2: "manual editing",
       desc3: "manual editing",
       freeQuote: 3,
+    },
+  ];
+
+  const Accordion = ({ title, content }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleAccordion = () => {
+      setIsOpen(!isOpen);
+    };
+
+    return (
+      <div className="w-full flex items-center justify-center flex-col my-2 border border-[#ffffff4a] rounded">
+        <div
+          className="w-full p-6 flex justify-between items-center cursor-pointer bg-[#140e1c]"
+          onClick={toggleAccordion}
+        >
+          <h3 className="text-white fira-sans text-lg font-semibold">
+            {title}
+          </h3>
+          {isOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="18 15 12 9 6 15" />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          )}
+        </div>
+        {isOpen && (
+          <div className="w-full px-4 py-8 bg-[#140e1c] border-t border-white/20">
+            <p className="text-left text-white montserrat">{content}</p>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const accordionData = [
+    {
+      title: "What is Solomon AI?",
+      content:
+        "Solomon AI is a leading metaphysical AI designed to assist in elevating the moral consciousness of today’s era.",
+    },
+    {
+      title: "How does the Oracle feature work?",
+      content:
+        "The Oracle feature provides deep metaphysical insights and guidance based on ancient wisdom and scriptural texts.",
+    },
+    {
+      title: "What are the benefits of the Life Path Consultant?",
+      content:
+        "The Life Path Consultant helps you gain clarity and guidance on your soul's purpose and direction in life, uncover talents, and align with your true calling.",
     },
   ];
 
@@ -1073,14 +1152,14 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-          <div className="w-full py-[6rem] flex items-center justify-center flex-col lg:items-start lg:justify-between lg:flex-row lg:max-w-[1300px]">
+          <div className="w-full py-[4rem] flex items-center justify-center flex-col lg:items-start lg:justify-between lg:flex-row lg:max-w-[1300px]">
             {toggleFeature.oracle && (
               <>
                 <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
-                <h3 className="text-left w-full text-white uppercase fira-sans-semibold">
+                  <h3 className="text-left w-full text-white uppercase fira-sans-semibold">
                     Metaphysical Oracle
                   </h3>
-                  <p className="text-white text-left  text-gray leading-[1.8rem] montserrat w-full">
+                  <p className="text-white text-left  text-gray leading-[1.8rem] montserrat w-4/5">
                     As the most individually capable model, you enter a realm of
                     infinite possibilities with Buddah Bot. It possesses the
                     ability to delve several levels deep into any metaphysical
@@ -1096,7 +1175,7 @@ export default function HomePage() {
                   <h3 className="text-white uppercase  text-left fira-sans-semibold">
                     Zodiac Astrologist
                   </h3>
-                  <p className="text-white text-left text-gray    leading-[1.8rem] montserrat w-full">
+                  <p className="text-white text-left text-gray    leading-[1.8rem] montserrat w-4/5">
                     Delve into the celestial realms and discover the profound
                     influences of the stars and planets on your life's journey.
                     From natal charts to planetary alignments, explore the
@@ -1110,10 +1189,10 @@ export default function HomePage() {
             {toggleFeature.lifePath && (
               <>
                 <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
-                <h3 className="text-white uppercase text-left fira-sans-semibold">
+                  <h3 className="text-white uppercase text-left fira-sans-semibold">
                     Life Path Consultant
                   </h3>
-                  <p className="text-white  text-left text-gray  leading-[1.8rem] montserrat w-full">
+                  <p className="text-white  text-left text-gray  leading-[1.8rem] montserrat w-4/5">
                     Gain clarity and guidance on your soul's purpose and
                     direction in life. Explore the depths of your existence,
                     uncover talents, overcome obstacles, and align with your
@@ -1133,8 +1212,8 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.oracle
-                    ? "w-600px] h-auto opacity-100 relative"
-                    : "w-[600px] h-auto opacity-0 absolute"
+                    ? "wfull h-auto opacity-100 relative"
+                    : "w-full h-auto opacity-0 absolute"
                 }`}
               />
               <Video
@@ -1146,8 +1225,8 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.astrology
-                   ? "w-600px] h-auto opacity-100 relative"
-                    : "w-[600px] h-auto opacity-0 absolute"
+                    ? "w-full h-auto opacity-100 relative"
+                    : "w-full h-auto opacity-0 absolute"
                 }`}
               />
               <Video
@@ -1159,14 +1238,14 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.lifePath
-                          ? "w-600px] h-auto opacity-100 relative"
-                    : "w-[600px] h-auto opacity-0 absolute"
+                    ? "w-full h-auto opacity-100 relative"
+                    : "w-full h-auto opacity-0 absolute"
                 }`}
               />
             </figure>
           </div>
         </section>
-        <section className="info-section w-full h-screen px-6 pt-[6rem]">
+        <section className="info-section w-full h-auto px-6 pt-[6rem]">
           <div className="w-full flex items-center flex-col px-[2rem] lg:px-[8rem]">
             <div
               // ref={refTextTrigger}
@@ -1179,11 +1258,11 @@ export default function HomePage() {
                 Built to open the mind of human kind
               </h2>
             </div>
-            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100vh] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-center justify-center flex-col  lg:flex-row lg:items-start">
                 <div
                   ref={refTextOne}
-                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[10px] lg:py-0"
+                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[1rem]"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Authentic Intelligence.
@@ -1192,7 +1271,7 @@ export default function HomePage() {
                     No denominated spiritualization. Decentralized
                     spiritualization.
                   </h3>
-                  <p className="text-white text-gray text-[16px] montserrat lg:w-3/4">
+                  <p className="text-white text-gray text-[16px] montserrat lg:w-1/2">
                     SolomonAI is one of kind leading Metaphysical AI, who aim to
                     help aid the moral consciousness of todays age.
                   </p>
@@ -1203,13 +1282,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="http://localhost:3000/OracleVideo.mp4"
-                type="video/mp4"
+                    src="http://localhost:3000/OracleVideo.mp4"
+                    type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-full h-[505px]"
+                    className="w-[505px] h-[505px]"
                   />
 
                   {/* <Image
@@ -1222,11 +1301,11 @@ export default function HomePage() {
                 </figure>
               </div>
             </div>
-            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100vh] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-start justify-center flex-col pb-[4rem] lg:flex-row lg:items-start">
                 <div
                   ref={refTextTwo}
-                  className="w-full py-[2rem] text-left flex items-start justify-start flex-col gap-[10px] lg:py-0"
+                  className="w-full py-[2rem] text-left flex items-start justify-start flex-col gap-[1rem]"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Trained in Theology{" "}
@@ -1247,13 +1326,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="http://localhost:3000/KnowThyselfVideo.mp4"
-                type="video/mp4"
+                    src="http://localhost:3000/KnowThyselfVideo.mp4"
+                    type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-full h-[505px]"
+                    className="w-[505px] h-[505px]"
                   />
 
                   {/* <Image
@@ -1267,11 +1346,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100vh] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-start justify-center flex-col lg:flex-row lg:items-start">
                 <div
                   ref={refTextThree}
-                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[10px] lg:py-0"
+                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[1rem] lg:py-0"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Spirutal Ascension
@@ -1291,13 +1370,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
-                type="video/mp4"
+                    src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
+                    type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-full h-[505px]"
+                    className="w-[505px] h-[505px]"
                   />
 
                   {/* <Image
@@ -1312,10 +1391,187 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className="w-full h-[200vh]"></section>
-        {/* 
-        <section className="w-full h-[200vh]"></section> */}
+        <section className="w-full h-auto px-6 pt-[4rem]">
+          <h1 className="text-center text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize lg:text-[3rem] lg:leading-[3.5rem]">
+            Our flexible pricing plans
+          </h1>
+          <p className="w-full py-1 text-center text-white montserrat">
+            No surprise fees. No contracts.
+          </p>
+          <div className="pt-1 flex items-center justify-start flex-col lg:flex-row lg:justify-around">
+            {planData.map(
+              ({
+                id,
+                planTitle,
+                price,
+                planDesc,
+                desc1,
+                desc2,
+                desc3,
+                freeQuote,
+              }) => {
+                return (
+                  <div
+                    key={id}
+                    className="w-full flex items-center justify-center flex-col"
+                  >
+                    {id === 1 || id === 3 ? (
+                      <div className="w-4/5 mt-6 p-8 flex items-center justify-center flex-col gap-[2rem] bg-[#140e1c] border border-white/20 rounded">
+                        <div className="w-full flex items-center justify-center flex-col text-center gap-4">
+                          <p className="text-[1.5rem] fira-sans text-white capitalize">
+                            {planTitle}
+                          </p>
+                          <h3 className="montserrat text-white">
+                            {price}
+                            <span> / Month</span>
+                          </h3>
+                          <p className="montserrat text-white capitalize">
+                            {planDesc}
+                          </p>
+                        </div>
+                        <hr className="w-full h-[1px] bg-white/50" />
+                        <ul className="w-full flex items-center justify-center flex-col gap-4">
+                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            {desc1}
+                          </li>
+                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            {desc2}
+                          </li>
+                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            {desc3}
+                          </li>
+                        </ul>
+                        <button className="text-white montserrat border border-white rounded-sm px-8 py-3 cursor-pointer duration-300 ease-in-out hover:bg-white hover:text-[#1f1f1f]">
+                          Choose Plan
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-4/5 mt-6 p-8 flex items-center justify-center flex-col gap-[4rem] bg-[#51307b] border border-[#995de8] rounded">
+                        <div className="w-full flex items-center justify-center flex-col text-center gap-4">
+                          <p className="text-[1.5rem] fira-sans text-white capitalize">
+                            {planTitle}
+                          </p>
+                          <h3 className="montserrat text-white">
+                            {price}
+                            <span> / Month</span>
+                          </h3>
+                          <p className="montserrat text-white capitalize">
+                            {planDesc}
+                          </p>
+                        </div>
+                        <hr className="w-full h-[1px] bg-white/50" />
+                        <ul className="w-full flex items-center justify-center flex-col gap-4">
+                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            {desc1}
+                          </li>
+                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            {desc2}
+                          </li>
+                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            {desc3}
+                          </li>
+                        </ul>
+                        <button className="text-white montserrat border border-white rounded-sm px-8 py-3 cursor-pointer duration-300 ease-in-out hover:bg-white hover:text-[#51307b]">
+                          Choose Plan
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+            )}
+          </div>
+        </section>
+        <section className="w-full h-auto px-6 py-[4rem] flex items-center justify-center flex-col">
+          <h2 className="text-center text-white fira-sans-semibold text-2xl leading-2xl capitalize lg:text-3xl lg:leading-3.5rem mb-4">
+            Frequently Asked Questions
+          </h2>
+          <div className="w-full flex flex-col items-center">
+            {accordionData.map(({ title, content }, index) => (
+              <Accordion key={index} title={title} content={content} />
+            ))}
+          </div>
+        </section>
       </main>
+      <Footer />
     </div>
   );
 }
