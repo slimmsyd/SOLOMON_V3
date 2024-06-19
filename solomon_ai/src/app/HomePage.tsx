@@ -16,82 +16,10 @@ import { SuccessPopup } from "./components/SucessPopup";
 
 import Lenis from "lenis";
 
+
+
 export default function HomePage() {
-  const [homePrompt, setHomePrompt] = useState("");
-  const [toggleFeature, setToggleFeature] = useState({
-    oracle: true,
-    astrology: false,
-    lifePath: false,
-  });
 
-  const handleHomeSubmit = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-
-    console.log("Loggin home prompt:", homePrompt.trim());
-    setHomePrompt("");
-  };
-
-  const infoContent = [
-    {
-      id: 1,
-      h2: "Built to open the mind of human kind.",
-      span: "Authentic Intelligence.",
-      h3: "No denominated spiritualization. Decentralized spiritualization.",
-      p: "SolomonAI is one of kind leading Metaphysical AI, who aim to help aid the moral consciousness of todays age.",
-      video: "https://solomon-v3.vercel.app/video.mp4",
-    },
-
-    {
-      id: 2,
-      span: "Trained in Theology",
-      h3: "Know Thyself guide.",
-      p: "Trained to look at scriptural text from a metaphysical POV. Urges to see the implicit meaning behind the scriptures",
-      video: "https://solomon-v3.vercel.app/videoTwo.mp4",
-    },
-    {
-      id: 3,
-      span: "Spirutal Ascension",
-      h3: "Enrich your spiritual growth",
-      p: "Trained to look at scriptural text from a metaphysical POV. Urges to see the implicit meaning behind the scriptures",
-      video: "https://solomon-v3.vercel.appvideo3.mp4",
-    },
-  ];
-
-  const planData = [
-    {
-      id: 1,
-      planTitle: "free",
-      price: "$0",
-      planDesc:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
-      desc1: "manual editing",
-      desc2: "manual editing",
-      desc3: "manual editing",
-      freeQuote: 3,
-    },
-    {
-      id: 2,
-      planTitle: "standard",
-      price: "$0",
-      planDesc:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
-      desc1: "manual editing",
-      desc2: "manual editing",
-      desc3: "manual editing",
-      freeQuote: 3,
-    },
-    {
-      id: 3,
-      planTitle: "pro",
-      price: "$0",
-      planDesc:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
-      desc1: "manual editing",
-      desc2: "manual editing",
-      desc3: "manual editing",
-      freeQuote: 3,
-    },
-  ];
 
   const Accordion = ({ title, content }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -148,6 +76,46 @@ export default function HomePage() {
     );
   };
 
+
+
+  const planData = [
+    {
+      id: 1,
+      planTitle: "free",
+      price: "$0",
+      planDesc:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
+      desc1: "manual editing",
+      desc2: "manual editing",
+      desc3: "manual editing",
+      freeQuote: 3,
+    },
+    {
+      id: 2,
+      planTitle: "standard",
+      price: "$0",
+      planDesc:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
+      desc1: "manual editing",
+      desc2: "manual editing",
+      desc3: "manual editing",
+      freeQuote: 3,
+    },
+    {
+      id: 3,
+      planTitle: "pro",
+      price: "$0",
+      planDesc:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus in dapibus quam, ac tempor odio.",
+      desc1: "manual editing",
+      desc2: "manual editing",
+      desc3: "manual editing",
+      freeQuote: 3,
+    },
+  ];
+  
+  
+
   const accordionData = [
     {
       title: "What is Solomon AI?",
@@ -165,6 +133,49 @@ export default function HomePage() {
         "The Life Path Consultant helps you gain clarity and guidance on your soul's purpose and direction in life, uncover talents, and align with your true calling.",
     },
   ];
+
+  const [homePrompt, setHomePrompt] = useState("");
+  const [toggleFeature, setToggleFeature] = useState({
+    oracle: true,
+    astrology: false,
+    lifePath: false,
+  });
+
+  const handleHomeSubmit = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    console.log("Loggin home prompt:", homePrompt.trim());
+    setHomePrompt("");
+  };
+
+  const infoContent = [
+    {
+      id: 1,
+      h2: "Built to open the mind of human kind.",
+      span: "Authentic Intelligence.",
+      h3: "No denominated spiritualization. Decentralized spiritualization.",
+      p: "SolomonAI is one of kind leading Metaphysical AI, who aim to help aid the moral consciousness of todays age.",
+      video: "https://solomon-v3.vercel.app/video.mp4",
+    },
+
+    {
+      id: 2,
+      span: "Trained in Theology",
+      h3: "Know Thyself guide.",
+      p: "Trained to look at scriptural text from a metaphysical POV. Urges to see the implicit meaning behind the scriptures",
+      video: "https://solomon-v3.vercel.app/videoTwo.mp4",
+    },
+    {
+      id: 3,
+      span: "Spirutal Ascension",
+      h3: "Enrich your spiritual growth",
+      p: "Trained to look at scriptural text from a metaphysical POV. Urges to see the implicit meaning behind the scriptures",
+      video: "https://solomon-v3.vercel.appvideo3.mp4",
+    },
+  ];
+
+
+
 
   //Changing the video SRC aswell.
   const [videoSrc, setVideoSrc] = useState(
@@ -1152,14 +1163,14 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-          <div className="w-full py-[4rem] flex items-center justify-center flex-col lg:items-start lg:justify-between lg:flex-row lg:max-w-[1300px]">
+          <div className="w-full py-[6rem] flex items-center justify-center flex-col lg:items-start lg:justify-between lg:flex-row lg:max-w-[1300px]">
             {toggleFeature.oracle && (
               <>
                 <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
-                  <h3 className="text-left w-full text-white uppercase fira-sans-semibold">
+                <h3 className="text-left w-full text-white uppercase fira-sans-semibold">
                     Metaphysical Oracle
                   </h3>
-                  <p className="text-white text-left  text-gray leading-[1.8rem] montserrat w-4/5">
+                  <p className="text-white text-left  text-gray leading-[1.8rem] montserrat w-full">
                     As the most individually capable model, you enter a realm of
                     infinite possibilities with Buddah Bot. It possesses the
                     ability to delve several levels deep into any metaphysical
@@ -1175,7 +1186,7 @@ export default function HomePage() {
                   <h3 className="text-white uppercase  text-left fira-sans-semibold">
                     Zodiac Astrologist
                   </h3>
-                  <p className="text-white text-left text-gray    leading-[1.8rem] montserrat w-4/5">
+                  <p className="text-white text-left text-gray    leading-[1.8rem] montserrat w-full">
                     Delve into the celestial realms and discover the profound
                     influences of the stars and planets on your life's journey.
                     From natal charts to planetary alignments, explore the
@@ -1189,10 +1200,10 @@ export default function HomePage() {
             {toggleFeature.lifePath && (
               <>
                 <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
-                  <h3 className="text-white uppercase text-left fira-sans-semibold">
+                <h3 className="text-white uppercase text-left fira-sans-semibold">
                     Life Path Consultant
                   </h3>
-                  <p className="text-white  text-left text-gray  leading-[1.8rem] montserrat w-4/5">
+                  <p className="text-white  text-left text-gray  leading-[1.8rem] montserrat w-full">
                     Gain clarity and guidance on your soul's purpose and
                     direction in life. Explore the depths of your existence,
                     uncover talents, overcome obstacles, and align with your
@@ -1212,8 +1223,8 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.oracle
-                    ? "wfull h-auto opacity-100 relative"
-                    : "w-full h-auto opacity-0 absolute"
+                    ? "w-600px] h-auto opacity-100 relative"
+                    : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
               <Video
@@ -1225,8 +1236,8 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.astrology
-                    ? "w-full h-auto opacity-100 relative"
-                    : "w-full h-auto opacity-0 absolute"
+                   ? "w-600px] h-auto opacity-100 relative"
+                    : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
               <Video
@@ -1238,8 +1249,8 @@ export default function HomePage() {
                 muted={true}
                 className={`object-cover transition-opacity duration-700 ${
                   toggleFeature.lifePath
-                    ? "w-full h-auto opacity-100 relative"
-                    : "w-full h-auto opacity-0 absolute"
+                          ? "w-600px] h-auto opacity-100 relative"
+                    : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
             </figure>
@@ -1258,11 +1269,11 @@ export default function HomePage() {
                 Built to open the mind of human kind
               </h2>
             </div>
-            <div className=" w-full h-[100vh] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-center justify-center flex-col  lg:flex-row lg:items-start">
                 <div
                   ref={refTextOne}
-                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[1rem]"
+                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[10px] lg:py-0"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Authentic Intelligence.
@@ -1271,7 +1282,7 @@ export default function HomePage() {
                     No denominated spiritualization. Decentralized
                     spiritualization.
                   </h3>
-                  <p className="text-white text-gray text-[16px] montserrat lg:w-1/2">
+                  <p className="text-white text-gray text-[16px] montserrat lg:w-3/4">
                     SolomonAI is one of kind leading Metaphysical AI, who aim to
                     help aid the moral consciousness of todays age.
                   </p>
@@ -1282,13 +1293,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                    src="http://localhost:3000/OracleVideo.mp4"
-                    type="video/mp4"
+                src="http://localhost:3000/OracleVideo.mp4"
+                type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-[505px] h-[505px]"
+                    className="w-full h-[505px]"
                   />
 
                   {/* <Image
@@ -1301,11 +1312,11 @@ export default function HomePage() {
                 </figure>
               </div>
             </div>
-            <div className=" w-full h-[100vh] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-start justify-center flex-col pb-[4rem] lg:flex-row lg:items-start">
                 <div
                   ref={refTextTwo}
-                  className="w-full py-[2rem] text-left flex items-start justify-start flex-col gap-[1rem]"
+                  className="w-full py-[2rem] text-left flex items-start justify-start flex-col gap-[10px] lg:py-0"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Trained in Theology{" "}
@@ -1326,13 +1337,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                    src="http://localhost:3000/KnowThyselfVideo.mp4"
-                    type="video/mp4"
+                src="http://localhost:3000/KnowThyselfVideo.mp4"
+                type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-[505px] h-[505px]"
+                    className="w-full h-[505px]"
                   />
 
                   {/* <Image
@@ -1346,11 +1357,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className=" w-full h-[100vh] flex items-start justify-start flex-col">
+            <div className=" w-full h-[100vh] py-[6rem] flex items-start justify-start flex-col">
               <div className="w-full h-auto flex items-start justify-center flex-col lg:flex-row lg:items-start">
                 <div
                   ref={refTextThree}
-                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[1rem] lg:py-0"
+                  className="w-full py-[2rem] text-left flex items-start justify-center flex-col gap-[10px] lg:py-0"
                 >
                   <span className="text-white montserrat text-[14px]">
                     Spirutal Ascension
@@ -1370,13 +1381,13 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                    src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
-                    type="video/mp4"
+                src="http://localhost:3000/SpirtualAscenstionVideo.mp4"
+                type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className="w-[505px] h-[505px]"
+                    className="w-full h-[505px]"
                   />
 
                   {/* <Image
@@ -1391,11 +1402,13 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className="w-full h-auto px-6 pt-[4rem]">
-          <h1 className="text-center text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize lg:text-[3rem] lg:leading-[3.5rem]">
-            Our flexible pricing plans
-          </h1>
-          <p className="w-full py-1 text-center text-white montserrat">
+        <section className="w-full h-auto px-6 py-[4rem]">
+        <h2
+                className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]"
+              >
+                Frequently Ask Questions
+              </h2>
+          <p className="w-full py-1 text-left text-white montserrat">
             No surprise fees. No contracts.
           </p>
           <div className="pt-1 flex items-center justify-start flex-col lg:flex-row lg:justify-around">
@@ -1561,10 +1574,12 @@ export default function HomePage() {
           </div>
         </section>
         <section className="w-full h-auto px-6 py-[4rem] flex items-center justify-center flex-col">
-          <h2 className="text-center text-white fira-sans-semibold text-2xl leading-2xl capitalize lg:text-3xl lg:leading-3.5rem mb-4">
-            Frequently Asked Questions
-          </h2>
-          <div className="w-full flex flex-col items-center">
+              <h2
+                className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]"
+              >
+                Frequently Ask Questions
+              </h2>
+          <div className="w-full flex flex-col py-[4rem] items-center">
             {accordionData.map(({ title, content }, index) => (
               <Accordion key={index} title={title} content={content} />
             ))}
