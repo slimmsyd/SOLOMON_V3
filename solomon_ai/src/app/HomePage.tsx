@@ -29,7 +29,7 @@ export default function HomePage() {
     };
 
     return (
-      <div className={` ${isOpen ? "!h-[200px]" : "h-[75px"} transform duration-200	transition-all	 ease-in-out	  w-full flex items-start justify-start h-[75px] overflow-y-hidden flex-col my-2 border border-[#ffffff4a] rounded`}
+      <div className={` ${isOpen ? "!h-[200px]" : "h-[75px"} transform duration-200	transition-all	 ease-in-out	  w-full flex items-start justify-start lg:h-[75px] h-[85px] overflow-y-hidden flex-col my-2 border border-[#ffffff4a] rounded`}
       
       >
         <div
