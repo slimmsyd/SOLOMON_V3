@@ -2,6 +2,9 @@
   "extends": "next/core-web-vitals",
   "rules": {
     // Other rules can be added or modified here
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "react/jsx-no-comment-textnodes": "off",
+
+    
   }
 }

@@ -492,6 +492,7 @@ export default function HomePage() {
                 stroke="rgba(121,51,181,0.4)"
                 stroke-width="1"
               >
+     
                 <ellipse
                   cx="862.5"
                   cy="845.5"
@@ -1079,7 +1080,7 @@ export default function HomePage() {
             {accordionData.map(({ title, content }, index) => (
               <Accordion key={index} title={title} content={content} />
             ))}
-          </div>z
+          </div>
         </section>
       </main>
       <Footer />
