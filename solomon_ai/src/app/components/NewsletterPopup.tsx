@@ -7,6 +7,7 @@ import SwordIamge from "../../../public/assets/homePage/Sword_Icon.png";
 import ChestImage from "../../../public/assets/homePage/Chest_Icon.png";
 import JoinImage from "../../../public/assets/homePage/JoinList.png";
 import { SuccessPopup } from "./SucessPopup";
+import FaceIcon from "../../../public/faceIconSolomon.png";
 
 interface PopupProps {
   togglePopup: () => void;
@@ -33,7 +34,7 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
       );
       console.log("Success:", response.data);
       setSubmissionState(true);
-      console.log("Logging submissionstae", submissionState)
+      console.log("Logging submissionstae", submissionState);
       //   togglePopup();
       // You might want to clear the form or give user feedback here
     } catch (error) {
@@ -43,8 +44,8 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
   };
 
   useEffect(() => {
-    console.log("Loggin submission stae in the useEffect", submissionState)
-  },[submissionState])
+    console.log("Loggin submission stae in the useEffect", submissionState);
+  }, [submissionState]);
 
   return (
     <div className="homePopup">
@@ -73,55 +74,48 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
             </svg>
           </div>
 
-          <div className="iconImageRightTop">
-            <Image src={SwordIamge} alt="Waiting List Image" />
-          </div>
-
-          <div className="iconImageLeftTop">
-            <Image src={SwordIamge} alt="Waiting List Image" />
-          </div>
-
-          <div className="iconImageLeftBottom">
-            <Image src={SwordIamge} alt="Waiting List Image" />
-          </div>
-
-          <div className="iconImageRighttBottom">
-            <Image src={SwordIamge} alt="Waiting List Image" />
-          </div>
-
-          {/* <div className="topDiv">
-  <div className="topDivContainer">
-    <p>JOIN THE BETA</p>
-  </div>
-</div> */}
-
-          <div className="homePopupImageContainer w-full items-center justify-center">
-            <Image src={JoinImage} alt="Waiting List Image" />
-          </div>
-
           <div className="homePopupFormContainer w-full flex flex-col items-center justify-center">
-            <div className="flex flex-col gap-[5px] mb-[20px] md:mb-[50px] mt-[20px] mx-[20px]">
-              <h3>Join the beta waiting list.</h3>
+            <p className="text-gray font-thin">
+              Solomon AI | Spirtual AI Intergration
+            </p>
+
+            <div className=" homePopupInnerWrapper flex flex-col items-center gap-[5px] mb-[20px] md:mb-[50px] mt-[20px] mx-[20px]">
+              <h2 className="text-gray font-light text-[28px] text-center">
+                Join the beta waiting list.
+              </h2>
               <p className="text-gray text-[14px]">
                 There is an undeniable power to having universal guidance at
                 your finger tips.
+              </p>
+              <h2></h2>
+              <p id="greyText">
+                Wisdom is a forever process, let us aid in the ways{" "}
               </p>
             </div>
 
             <form onSubmit={joinSubmit} className="flex flex-col  gap-[15px] ">
               <input
-                className="w-full h-[38px]"
+                className="w-full h-[38px] font-thin text-white"
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Enter Email"
               />
 
-              <button className="joinBeta">Join Beta</button>
+              <button className="joinBeta">Join the waitlist</button>
 
               {/* 
     <button type="submit" className="w-[32px] h-[32px] formImage">
       <Image src={ChestImage} alt="Waiting List Image" />
     </button> */}
+
+              <div className="flex w-full mt-[20px] items-center justify-center">
+                <Image
+                  src={FaceIcon}
+                  alt="Solomon Logo"
+                  width={24}
+                  height={24}
+                />
+              </div>
             </form>
           </div>
         </div>

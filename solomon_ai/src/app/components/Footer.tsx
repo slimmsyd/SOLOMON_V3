@@ -54,7 +54,7 @@ export const Footer: any = () => {
             onSubmit={joinSubmit}
             className="w-full relative newsLetterForm "
           >
-            <div className="flex relative flex-row items-center">
+            <div className="flex relative text-white flex-row items-center">
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-transparent newsLetterInput montserrat"
