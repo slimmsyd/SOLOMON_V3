@@ -896,8 +896,8 @@ export default function HomePage() {
 
           <div className="mainVideoContainer flex flex-col gap-[3rem]">
             <Video
-              src="https://solomon-v3.vercel.app/Solomon_Intro_Vid.mp4"
-              type="video/mp4"
+                src="https://www.aisolomon.xyz/Trailer_Video.mp4"
+                type="video/mp4"
               width="100%"
               height="auto"
               controls={true}
