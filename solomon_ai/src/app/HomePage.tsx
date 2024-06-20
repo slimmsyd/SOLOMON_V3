@@ -423,15 +423,25 @@ export default function HomePage() {
     }
   };
 
+
+  const featuresRef =  useRef<HTMLDivElement>(null);
+  const scrollToFeatures = () => { 
+
+    if (featuresRef.current) {
+      featuresRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   return (
 
     <div>
-
-//   {isPopupVisible && <Popup togglePopup={togglePopup} />}
+   {isPopupVisible && <Popup togglePopup={togglePopup} />}
 
       <main className="w-full h-auto">
         <NavComponent
           togglePopup = {togglePopup}
+          scrollToSection={scrollToSection}
+          scrollToFeatures = {scrollToFeatures}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -595,7 +605,9 @@ export default function HomePage() {
             </div>
           </div>
         </figure>
-        <section className="w-full h-auto py-[2rem] px-6 flex items-center justify-center flex-col gap-4">
+        <section
+        ref = {featuresRef}
+        className="w-full h-auto py-[2rem] px-6 flex items-center justify-center flex-col gap-4">
           <h1 className="text-white text-center fira-sans-semibold capitalize text-[1.8rem] leading-[2rem] fira-sans-semibold lg:w-4/5 lg:text-[3rem] lg:leading-[3.5rem] xl:w-1/2">
             Discover Your Cosmic Guidance and Personal Insights
           </h1>
