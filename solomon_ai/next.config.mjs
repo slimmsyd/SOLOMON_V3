@@ -4,7 +4,7 @@ const nextConfig = {
     images: {
         domains: ['localhost:3000'], // Replace with your image hosting domain
       },
-
+ 
 };
 
 export default nextConfig;
