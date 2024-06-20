@@ -7,11 +7,13 @@ import Image from "next/image";
 interface PopupProps {
   togglePopup?: () => void;
   scrollToSection?: () => void;
+  scrollToFeatures?: () => void;
 }
 
 const NavComponent: React.FC<PopupProps> = ({
   togglePopup,
   scrollToSection,
+  scrollToFeatures
 }) => {
   const [animate, setAnimate] = useState(false);
   const [navState, setNavState] = useState(false);
@@ -29,6 +31,15 @@ const NavComponent: React.FC<PopupProps> = ({
     }
     setNavState(!navState);
   };
+
+  const scrollToFeaturesClose = () => { 
+    if (scrollToFeatures) {
+      scrollToFeatures();
+    }
+    setNavState(!navState);
+  };
+
+
 
   useEffect(() => {
  
@@ -98,6 +109,7 @@ const NavComponent: React.FC<PopupProps> = ({
         <ul className="hidden items-center lg:flex">
           <li className="px-8 ">
             <Link
+              onClick={scrollToFeaturesClose}
               href="/"
               className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
             >
@@ -183,7 +195,7 @@ const NavComponent: React.FC<PopupProps> = ({
 
           </Link> */}
 
-            <Link onClick={scrolToAbout} href="/" className="mobileNavLink">
+            <Link onClick={scrollToFeaturesClose} href="/" className="mobileNavLink">
               <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
                 Features
               </span>
