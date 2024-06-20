@@ -189,11 +189,11 @@ const NavComponent: React.FC<PopupProps> = ({
               </span>
             </Link>
 
-            <Link href="/blogs/unifiedGod" className="mobileNavLink">
+            {/* <Link href="/blogs/unifiedGod" className="mobileNavLink">
               <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
                 Pricing
               </span>
-            </Link>
+            </Link> */}
             <Link onClick={scrolToAbout} href="/" className="mobileNavLink">
               <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
                 About
