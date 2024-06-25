@@ -179,6 +179,7 @@ const Profile: React.FC = () => {
       //Going to save into Session to prevent the asynh loading issues
       if (isClient()) {
         sessionStorage.setItem("cardologyNumber", cardologyNumber);
+        
         sessionStorage.setItem("mylesBridgeType", mylesBridgeType);
         sessionStorage.setItem("mylesBridgeType", nameNumerolgyNumber);
         // Sign out and redirect
@@ -266,6 +267,17 @@ const Profile: React.FC = () => {
     }
   }, [setConversations]);
 
+
+  //Run a function that updates all the Character Traits right on reload 
+
+  useEffect(() => { 
+
+    console.log("Logging the change of the Myles brider number", mylesBridgeType)
+    console.log("Logging the name numerical sig", nameNumerologyNumber)
+
+  },[lifePath,ennealogy,mylesBridgeType,cardologyNumber,birthday,nameNumerologyNumber])
+
+
   return (
     <div className="chatDashboard">
       <ChatContainer
@@ -351,7 +363,7 @@ const Profile: React.FC = () => {
                     onChange={(e) => setZodiac(e.target.value)}
                   />
                 ) : (
-                  <p>
+                  <p className = "profileInput">
                     {sessionStorage.getItem("zodiacSign") || (zodiac as any)}{" "}
                   </p>
                 )}
@@ -369,7 +381,9 @@ const Profile: React.FC = () => {
                     onChange={(e) => setLifePathNumber(e.target.value)}
                   />
                 ) : (
-                  <p>{sessionStorage.getItem("lifePathNumber") || lifePath}</p>
+                  <p className = "profileInput">
+                    
+                    {sessionStorage.getItem("lifePathNumber") || lifePath}</p>
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
@@ -407,7 +421,8 @@ const Profile: React.FC = () => {
                     onChange={(e) => setEnnealogyNumber(e.target.value)}
                   />
                 ) : (
-                  <p>{sessionStorage.getItem("ennealogy") || ennealogy}</p>
+                  <p className = "profileInput">
+                    {sessionStorage.getItem("ennealogy") || ennealogy}</p>
                 )}
               </div>
 
@@ -430,7 +445,7 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("cardologyNumber") as any)
                         ? (sessionStorage.getItem("cardologyNumber") as any)
-                        : "Enter"
+                        : cardologyNumber
                     }
                     readOnly
                   />
@@ -456,7 +471,7 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("mylesBridgeType") as any)
                         ? (sessionStorage.getItem("mylesBridgeType") as any)
-                        : "Enter"
+                        : "Loading...."
                     }
                   />
                 )}
@@ -479,7 +494,7 @@ const Profile: React.FC = () => {
                     type="text"
                     placeholder="Add"
                     value={
-                        birthday
+                     birthday ? birthday : "Loading..."
                     }
                   />
                 )}

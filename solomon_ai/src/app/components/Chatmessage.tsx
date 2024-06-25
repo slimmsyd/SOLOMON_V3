@@ -29,6 +29,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, shouldAnimate = true
   const [displayedMessage, setDisplayedMessage] = useState<string>(shouldAnimate ? "" : formatResponse(message));
   const [isTyping, setIsTyping] = useState<boolean>(shouldAnimate);
 
+
+  useEffect(() => { 
+
+    console.log("Logging hte message on render", message)
+
+  },[message])
+
   useEffect(() => {
     if (isTyping && displayedMessage.length < message.length) {
       const timer = setTimeout(() => {
