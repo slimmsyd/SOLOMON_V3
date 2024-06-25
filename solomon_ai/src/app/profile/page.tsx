@@ -332,7 +332,7 @@ const Profile: React.FC = () => {
                 {splitUserName}
               </div>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col text-white">
                 <p>{userName}</p>
                 <p>{email}</p>
               </div>

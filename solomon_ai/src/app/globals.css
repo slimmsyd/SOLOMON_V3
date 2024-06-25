@@ -126,9 +126,14 @@ body {
   line-height: 125% !important;
 } */
 
+
+h1{
+  color: #fff;
+}
 h2 {
   font-size: 50px;
   line-height: 125% !important;
+  color: #fff;
 }
 
 h3 {
@@ -154,6 +159,10 @@ h6 {
   line-height: 125% !important;
 }
 
+span 
+{
+  color: #fff;
+}
 @media screen and (max-width: 950px) {
   /* h1,
   .headerH1 {
@@ -750,6 +759,11 @@ figure video {
 .mainIcon {
   width: 12px;
   height: 12px;
+  color: #fff;
+}
+button  > p, a > p { 
+  color: #fff;
+
 }
 .iconBorder {
   border: 1px solid #807f7f;
@@ -833,6 +847,7 @@ figure video {
     display: inline-block;
     pointer-events: none;
   }
+
   .zodiacCards {
     /* width: 250px !important; */
     position: relative;
@@ -935,6 +950,7 @@ figure video {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  color: #fff;
 }
 
 .chatDashboardWrapper h1 {
@@ -1163,7 +1179,9 @@ figure video {
   height: 100% !important;
   object-fit: cover !important;
 }
-
+.renderCards p, .zodiacCards p { 
+  color: #fff;
+}
 .renderCards:hover {
   background: #282828;
 }
@@ -1227,7 +1245,7 @@ figure video {
   padding-right: 90px;
   font-size: 14px;
   position: relative;
-  /* color:#807F7F; */
+  color:#ffff;
 }
 .textAreaIconWrapper {
   position: absolute;
@@ -1512,6 +1530,7 @@ figure video {
   width: 80px;
   /* border-bottom: 1px solid #fff; */
   text-align: right;
+  color :#fff;
   outline: none;
 }
 

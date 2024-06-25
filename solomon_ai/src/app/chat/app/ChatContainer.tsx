@@ -382,7 +382,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
       <div className="flex flex-row gap-[10px] justify-end self-end items-center  text-[14px]   settingsContainer !border-none !mt-0 ">
         <Image src={FaceIcon} width={18} height={18} alt="Solomon Icon" />
-        <p>Solomon AI</p>
+        <p className = "text-white">Solomon AI</p>
         <Link
           href="/"
           className="mainIcon flex items-center justify-center !w-[20px] !h-[20px] cursor-pointer"
