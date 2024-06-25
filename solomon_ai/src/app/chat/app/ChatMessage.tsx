@@ -22,9 +22,7 @@ interface ChatMessageProps {
   responses: ResponseObject[];
 }
 
-const isResponseValid = (response: { id: string; text: string }) => {
-  return response && response.id && response.text && response.text.trim() !== "";
-};
+
 
 
 export const ChatMessagesContainer: FC<ChatMessageProps> = ({ responses }) => {

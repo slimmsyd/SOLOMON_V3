@@ -426,9 +426,12 @@ const Profile: React.FC = () => {
                   <div className={styles.response_Flex}>
                     <ChatMessage
                       shouldAnimate={false}
-                      message={
-                        "Based on your information provided, Solomon the wise was able to draw more conclusion on your across varies of culture to gain a more wholistic perspective Below or Images generated of your zodiac signs and there personality trains across different cultures. Best choice of action, take this information and ask me more in chat for more guidance on your unique being. You can click on each image to get a more in depth understanding of what they symbolized."
-                      }
+                      response={{
+                        question: "",
+                        id: "",
+                        response:
+                          "Based on your information provided, Solomon the wise was able to draw more conclusion on your across varies of culture to gain a more wholistic perspective Below or Images generated of your zodiac signs and there personality trains across different cultures. Best choice of action, take this information and ask me more in chat for more guidance on your unique being. You can click on each image to get a more in depth understanding of what they symbolized.",
+                      }}
                     />
 
                     {dataLoading ? (
@@ -624,9 +627,16 @@ const Profile: React.FC = () => {
 
                     <ChatMessage
                       shouldAnimate={false}
-                      message={
-                        "Based on your Life Path number, we have gave an syntheses on what the expect of the overall energies that will be effecting your unique being each month of the year. Give credit to the great lloyd strayhorn for the valuable knowledge in curating this ."
+                      response={{
+                        response:
+                          "Based on your Life Path number, we have gave an syntheses on what the expect of the overall energies that will be effecting your unique being each month of the year. Give credit to the great lloyd strayhorn for the valuable knowledge in curating this .",
+
+                          question: "",
+                          id: ""
+
                       }
+                    
+                    }
                     />
                   </div>
                 </div>
@@ -649,7 +659,10 @@ const Profile: React.FC = () => {
                       {dataLoading ? (
                         <ButtonLoadingComponent />
                       ) : (
-                        <p>{`Personal Month | ${renderNumberForIndex(index, personalYearNumber as number)}`}</p>
+                        <p>{`Personal Month | ${renderNumberForIndex(
+                          index,
+                          personalYearNumber as number
+                        )}`}</p>
                       )}
                     </p>
                     <p className="text-[12px]">
