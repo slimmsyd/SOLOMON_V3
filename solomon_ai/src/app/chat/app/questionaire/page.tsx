@@ -256,10 +256,15 @@ const ChatDashboard: React.FC = () => {
         await createConversation(); // Make sure there is a conversation ID
       }
 
-      // 1. Set up the new response without any bot response yet.
-      const newResponse = { question: message, response: "" };
+    // 1. Set up the new response without any bot response yet.
+    const newResponse = { question: message, response: {
+      id: "",
+      text: ""
+    }, };
 
-      setResponses((responses) => [...responses, newResponse]); // Use functional update for state
+    setResponses((responses) => [...responses, newResponse]); // Use functional update for state
+
+
       setMessage("");
 
       try {

@@ -222,10 +222,11 @@ const ChatDashboard: React.FC = () => {
       );
 
       // 1. Set up the new response without any bot response yet.
-      const newResponse = { question: message, response: "" };
+    // 1. Set up the new response without any bot response yet.
+    const newResponse = { question: message, response: "" };
 
-      setResponses((responses) => [...responses, newResponse]); // Use functional update for state
-      setMessage("");
+    setResponses((responses) => [...responses, newResponse]); // Use functional update for state
+
 
       // Fetch user information if not available in session storage
       const userInfo = await fetchUserInfo(userId);
@@ -247,7 +248,6 @@ const ChatDashboard: React.FC = () => {
         setMessagesIsLoading(false);
 
     
-        // 3. Update the responses array with the bot's reply
         setResponses((prevResponses) =>
           prevResponses.map((resp) => {
             if (resp.question === message) {
@@ -255,9 +255,8 @@ const ChatDashboard: React.FC = () => {
             }
             return resp;
           })
-
-
         );
+
 
   
         console.log(
@@ -459,7 +458,12 @@ const ChatDashboard: React.FC = () => {
   };
 
   // Logging the responses temp
-  useEffect(() => {}, [responses]);
+  useEffect(() => {
+
+
+    console.log("Logging the responses on Re-render", responses)
+
+  }, [responses]);
 
   // sessionStorage.clear();
 
@@ -618,7 +622,7 @@ const ChatDashboard: React.FC = () => {
           <div className="chatDashBoardContainer">
             {/* Dashboard Component  */}
             {currentConversationId ? (
-              <ChatMessagesContainer responses={responses || "null"} />
+              <ChatMessagesContainer responses={responses || "null" } />
             ) : (
               <Dashboard
                 userName={userName || ""}

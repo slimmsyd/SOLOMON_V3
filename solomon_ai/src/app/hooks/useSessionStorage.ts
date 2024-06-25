@@ -15,7 +15,6 @@ export const useSessionStorage = () => {
       const storedSplitUserName = sessionStorage.getItem("splitUserName");
       const storedEmail = sessionStorage.getItem("email");
 
-      console.log("logging the email");
 
       if (storedUserName) {
         setUserName(storedUserName);

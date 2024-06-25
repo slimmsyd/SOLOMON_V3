@@ -35,6 +35,7 @@ export interface Conversation {
 }
 
 export interface Message {
+  id: string;
   userContent: string;
   botResponse: string;
   firstConvo: boolean;

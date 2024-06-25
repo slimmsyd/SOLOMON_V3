@@ -36,13 +36,6 @@ export const ConversationProvider = ({ children }: { children: ReactNode }) => {
   });
   const [message, setMessage] = useState<string>(""); // Current message being typed
 
-
-
-
-
-
-
-  
   const [isFetchLoading, setIsFetchLoading] = useState<boolean>(false); // New state to track loading status
 
   useEffect(() => {
