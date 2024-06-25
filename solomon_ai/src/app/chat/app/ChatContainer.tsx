@@ -230,8 +230,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                       {hoveredConversationId ===
                         conversation.conversationId && (
                         <svg
-                          width={10}
-                          height={10}
+                          width={15}
+                          height={15}
                           aria-hidden="true"
                           focusable="false"
                           data-prefix="far"

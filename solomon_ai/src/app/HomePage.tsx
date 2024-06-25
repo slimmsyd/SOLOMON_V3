@@ -542,9 +542,15 @@ export default function HomePage() {
         </svg>
         <section className="w-full h-auto pt-[14rem] px-6 flex items-end justify-center">
           <div className="w-full flex items-center justify-center flex-col gap-6 text-center">
-            <h1 className="text-white capitalize text-[58px] text-left self-start lg:self-center lg:text-center leading-[4.5rem] fira-sans-semibold lg:w-4/5 xl:w-2/3">
-              Explore, Question, and Grow with Our Spiritual AI Guide
-            </h1>
+            <div className = "w-full  m-auto lg:w-4/5 xl:w-2/3">
+              <span className="text-left lg:text-center lg:justify-center justify-start lg:self-center self-start flex w-full justify-start text-gray text-[14px]">
+                Closer to God one question at a time...
+              </span>
+              <h1 className="text-white capitalize text-[58px] text-left self-start lg:self-center lg:text-center leading-[4.5rem] fira-sans-semibold ">
+                Explore, Question, and Grow with Our Spiritual AI Guide
+              </h1>
+            </div>
+
             <p className="text-white montserrat text-[1.175rem] text-left lg:text-center leading-[1.25rem] lg:w-3/4 lg:text-[1.5rem] lg:leading-[1.5rem] xl:w-1/2">
               SolomonAI is a leading metaphysical AI designed to assist in
               elevating the moral consciousness of today’s era.

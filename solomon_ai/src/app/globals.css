@@ -497,8 +497,7 @@ figure video {
   margin: 10px;
   font-size: 14px;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  flex-direction: column; 
 
 }
 
@@ -1272,6 +1271,7 @@ button  > p, a > p {
 }
 
 .textAreaIcon {
+  color:white;
   border: 0.5px solid #6e6e6e;
   border-radius: 5px;
   padding: 5px;
@@ -1548,7 +1548,7 @@ button  > p, a > p {
   width: 80px;
   /* border-bottom: 1px solid #fff; */
   text-align: right;
-  color :#fff;
+  color :#fff ;
   outline: none;
 }
 
