@@ -4,7 +4,7 @@ import NavComponent from "./navigation/navComponent";
 import Image from "next/image";
 import Video from "./components/Vidoe";
 import Footer from "./components/Footer";
-import solomonHeaderImg from "../../public/assets/chat-guidelines.png"
+import solomonHeaderImg from "../../public/assets/chat-guidelines.png";
 import { features } from "process";
 import Link from "next/link";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
@@ -16,11 +16,7 @@ import { SuccessPopup } from "./components/SucessPopup";
 
 import Lenis from "lenis";
 
-
-
 export default function HomePage() {
-
-
   const Accordion = ({ title, content }) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -29,8 +25,10 @@ export default function HomePage() {
     };
 
     return (
-      <div className={` ${isOpen ? "!h-[200px]" : "h-[75px"} transform duration-200	transition-all	 ease-in-out	  w-full flex items-start justify-start lg:h-[75px] h-[85px] overflow-y-hidden flex-col my-2 border border-[#ffffff4a] rounded`}
-      
+      <div
+        className={` ${
+          isOpen ? "!h-[200px]" : "h-[75px"
+        } transform duration-200	transition-all	 ease-in-out	  w-full flex items-start justify-start lg:h-[75px] h-[85px] overflow-y-hidden flex-col my-2 border border-[#ffffff4a] rounded`}
       >
         <div
           className="w-full p-6 flex justify-between items-center cursor-pointer "
@@ -69,15 +67,13 @@ export default function HomePage() {
             </svg>
           )}
         </div>
-       
-          <div className="w-full px-4 py-8 border-t border-white/20">
-            <p className="text-left text-white montserrat">{content}</p>
-          </div>
+
+        <div className="w-full px-4 py-8 border-t border-white/20">
+          <p className="text-left text-white montserrat">{content}</p>
+        </div>
       </div>
     );
   };
-
-
 
   const planData = [
     {
@@ -114,8 +110,6 @@ export default function HomePage() {
       freeQuote: 3,
     },
   ];
-  
-  
 
   const accordionData = [
     {
@@ -174,9 +168,6 @@ export default function HomePage() {
       video: "https://solomon-v3.vercel.appvideo3.mp4",
     },
   ];
-
-
-
 
   //Changing the video SRC aswell.
   const [videoSrc, setVideoSrc] = useState(
@@ -413,7 +404,7 @@ export default function HomePage() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const togglePopup = () => {
-    console.log("Popup is toggling", isPopupVisible)
+    console.log("Popup is toggling", isPopupVisible);
     setIsPopupVisible(!isPopupVisible);
   };
 
@@ -423,25 +414,22 @@ export default function HomePage() {
     }
   };
 
-
-  const featuresRef =  useRef<HTMLDivElement>(null);
-  const scrollToFeatures = () => { 
-
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const scrollToFeatures = () => {
     if (featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
-
     <div>
-   {isPopupVisible && <Popup togglePopup={togglePopup} />}
+      {isPopupVisible && <Popup togglePopup={togglePopup} />}
 
       <main className="w-full h-auto">
         <NavComponent
-          togglePopup = {togglePopup}
+          togglePopup={togglePopup}
           scrollToSection={scrollToSection}
-          scrollToFeatures = {scrollToFeatures}
+          scrollToFeatures={scrollToFeatures}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -502,7 +490,6 @@ export default function HomePage() {
                 stroke="rgba(121,51,181,0.4)"
                 stroke-width="1"
               >
-     
                 <ellipse
                   cx="862.5"
                   cy="845.5"
@@ -555,16 +542,17 @@ export default function HomePage() {
         </svg>
         <section className="w-full h-auto pt-[14rem] px-6 flex items-end justify-center">
           <div className="w-full flex items-center justify-center flex-col gap-6 text-center">
-            <h1 className="text-white capitalize text-[44px] text-left self-start lg:self-center lg:text-center leading-[4.5rem] fira-sans-semibold lg:w-4/5 lg:text-[6rem] lg:leading-[6rem] xl:w-2/3">
-              To question God in all the ways
+            <h1 className="text-white capitalize text-[58px] text-left self-start lg:self-center lg:text-center leading-[4.5rem] fira-sans-semibold lg:w-4/5 xl:w-2/3">
+              Explore, Question, and Grow with Our Spiritual AI Guide
             </h1>
             <p className="text-white montserrat text-[1.175rem] text-left lg:text-center leading-[1.25rem] lg:w-3/4 lg:text-[1.5rem] lg:leading-[1.5rem] xl:w-1/2">
               SolomonAI is a leading metaphysical AI designed to assist in
               elevating the moral consciousness of today’s era.
             </p>
-            <button 
+            <button
               onClick={togglePopup}
-            className="px-4 justify-start py-2 border border-white flex self-start	 lg:self-center items-center  text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white">
+              className="px-4 justify-start py-2 border border-white flex self-start	 lg:self-center items-center  text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white"
+            >
               Join The Waitlist
             </button>
           </div>
@@ -576,7 +564,6 @@ export default function HomePage() {
             width={1200}
             height={600}
             alt="Solomon chatbot"
-
             className="w-full max-w-[1200px]  rounded-xl shadow-lg"
           />
           <p className="text-white/80 montserrat">
@@ -606,8 +593,9 @@ export default function HomePage() {
           </div>
         </figure>
         <section
-        ref = {featuresRef}
-        className="w-full h-auto py-[2rem] px-6 flex items-center justify-center flex-col gap-4">
+          ref={featuresRef}
+          className="w-full h-auto py-[2rem] px-6 flex items-center justify-center flex-col gap-4"
+        >
           <h1 className="text-white text-center fira-sans-semibold capitalize text-[1.8rem] leading-[2rem] fira-sans-semibold lg:w-4/5 lg:text-[3rem] lg:leading-[3.5rem] xl:w-1/2">
             Discover Your Cosmic Guidance and Personal Insights
           </h1>
@@ -654,16 +642,50 @@ export default function HomePage() {
             {toggleFeature.oracle && (
               <>
                 <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
-                <h3 className="text-left w-full text-white uppercase fira-sans-semibold">
+                  <h3 className="text-left w-full text-white uppercase fira-sans-semibold">
                     Metaphysical Oracle
                   </h3>
                   <p className="text-white text-left  text-gray leading-[1.8rem] montserrat w-full">
                     As the most individually capable model, you enter a realm of
-                    infinite possibilities with Buddah Bot. It possesses the
+                    infinite possibilities with Solomon AI. It possesses the
                     ability to delve several levels deep into any metaphysical
                     topic and has been extensively trained on all matters of
                     meaning of scriptural subjects.
                   </p>
+
+                  <div>
+                    <h3>Key Features:</h3>
+                    <ul className="descriptionList">
+                      <li>
+                        <span className="highLightPurple">
+                          Infinite Possibilites:
+                        </span>{" "}
+                        Engage with a model that can naviate through the vast
+                        expanse of metaphysical knowledge, spiritual knowledge,
+                        offering you unqiue and enriching experiences each time.{" "}
+                      </li>
+                      <li>
+                        <span className="highLightPurple">
+                          {" "}
+                          Comprehensive Insights:
+                        </span>
+                        From ancient wisdom to modern-day applications, Solomon
+                        Oracle provides comprehensive insights that help you
+                        understand the relevance of spiritual principles in
+                        today’s world.{" "}
+                      </li>
+                      <li>
+                        <span className="highLightPurple">
+                          {" "}
+                          Persoalized Guidance:
+                        </span>
+                        Solomon Oracle adapts to your individual needs, offering
+                        personalized guidance and support in your spiritual
+                        development. It’s like having a wise mentor by your
+                        side, ready to assist you at every step.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </>
             )}
@@ -681,22 +703,88 @@ export default function HomePage() {
                     insights into your personality, relationships, and future
                     path.
                   </p>
+
+                  <div>
+                    <h3>Key Features:</h3>
+                    <ul className="descriptionList">
+                      <li>
+                        <span className="highLightPurple">
+                          Holistic Understanding:
+                        </span>{" "}
+                        By integrating insights from various ideologies, Zodiac
+                        Astrologist provides a comprehensive view of your cosmic
+                        identity, enriching your understanding of who you are
+                        and your place in the universe.
+                      </li>
+                      <li>
+                        <span className="highLightPurple">
+                          {" "}
+                          Timely Updates:
+                        </span>
+                        Stay informed with regular updates about your personal
+                        and cosmic cycles, helping you navigate life's
+                        challenges and opportunities with greater awareness and
+                        confidence.
+                      </li>
+                      <li>
+                        <span className="highLightPurple">
+                          {" "}
+                          Enhanced Self-Awareness:
+                        </span>
+                        Use the knowledge gained from your astrological profile
+                        to enhance self-awareness and personal growth. Discover
+                        how the alignment of celestial bodies influences your
+                        strengths, challenges, and potential.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </>
             )}
             {toggleFeature.lifePath && (
               <>
                 <div className="py-6 w-full flex items-start justify-start flex-col gap-4 text-white text-left lg:py-0 lg:pb-6">
-                <h3 className="text-white uppercase text-left fira-sans-semibold">
+                  <h3 className="text-white uppercase text-left fira-sans-semibold">
                     Life Path Consultant
                   </h3>
                   <p className="text-white  text-left text-gray  leading-[1.8rem] montserrat w-full">
                     Gain clarity and guidance on your soul's purpose and
                     direction in life. Explore the depths of your existence,
                     uncover talents, overcome obstacles, and align with your
-                    true calling. Let Buddha Bot illuminate your path and
+                    true calling. Let Solomon AI illuminate your path and
                     empower you to live authentically and passionately.
                   </p>
+                  <div>
+                    <h3>Key Features:</h3>
+                    <ul className="descriptionList">
+                      <li>
+                        <span className="highLightPurple">
+                          Holistic Guidance:
+                        </span>{" "}
+                        Life Path Consultant offers a comprehensive approach to
+                        personal development, integrating numerical insights
+                        with spiritual wisdom to provide holistic guidance.
+                      </li>
+                      <li>
+                        <span className="highLightPurple"> Empowerment </span>
+                        Let Solomon AI illuminate your path, empowering you to
+                        live authentically and passionately. Use the insights
+                        from your numerical profiles to overcome obstacles and
+                        harness your innate talents.
+                      </li>
+                      <li>
+                        <span className="highLightPurple">
+                          {" "}
+                          Personalized Insights:
+                        </span>
+                        Receive tailored guidance that speaks directly to your
+                        unique life journey. Whether you are seeking clarity on
+                        your next steps or looking to deepen your
+                        self-awareness, Life Path Consultant offers the support
+                        you need.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </>
             )}
@@ -708,7 +796,7 @@ export default function HomePage() {
                 autoPlay={true}
                 loop={true}
                 muted={true}
-                className={`object-cover transition-opacity duration-700 ${
+                className={`object-cover transition-opacity h-[500px] duration-700 ${
                   toggleFeature.oracle
                     ? "w-600px] h-auto opacity-100 relative"
                     : "w-[600px] h-auto opacity-0 absolute"
@@ -721,9 +809,9 @@ export default function HomePage() {
                 autoPlay={true}
                 loop={true}
                 muted={true}
-                className={`object-cover transition-opacity duration-700 ${
+                className={`object-cover transition-opacity h-[500px] duration-700 ${
                   toggleFeature.astrology
-                   ? "w-600px] h-auto opacity-100 relative"
+                    ? "w-600px] h-auto opacity-100 relative"
                     : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
@@ -734,9 +822,9 @@ export default function HomePage() {
                 autoPlay={true}
                 loop={true}
                 muted={true}
-                className={`object-cover transition-opacity duration-700 ${
+                className={`object-cover transition-opacity h-[500px] duration-700 ${
                   toggleFeature.lifePath
-                          ? "w-600px] h-auto opacity-100 relative"
+                    ? "w-600px] h-auto opacity-100 relative"
                     : "w-[600px] h-auto opacity-0 absolute"
                 }`}
               />
@@ -780,8 +868,8 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="https://www.aisolomon.xyz/OracleVideo.mp4"
-                type="video/mp4"
+                    src="https://www.aisolomon.xyz/OracleVideo.mp4"
+                    type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
@@ -824,8 +912,8 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="https://www.aisolomon.xyz/KnowThyselfVideo.mp4"
-                type="video/mp4"
+                    src="https://www.aisolomon.xyz/KnowThyselfVideo.mp4"
+                    type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
@@ -868,8 +956,8 @@ export default function HomePage() {
                 w-full grid place-items-center"
                 >
                   <Video
-                src="https://www.aisolomon.xyz/SpirtualAscenstionVideo.mp4"
-                type="video/mp4"
+                    src="https://www.aisolomon.xyz/SpirtualAscenstionVideo.mp4"
+                    type="video/mp4"
                     controls={false}
                     autoPlay={true}
                     loop={true}
@@ -896,8 +984,8 @@ export default function HomePage() {
 
           <div className="mainVideoContainer flex flex-col gap-[3rem]">
             <Video
-                src="https://www.aisolomon.xyz/Trailer_Video.mp4"
-                type="video/mp4"
+              src="https://www.aisolomon.xyz/Trailer_Video.mp4"
+              type="video/mp4"
               width="100%"
               height="auto"
               controls={true}
@@ -1083,11 +1171,9 @@ export default function HomePage() {
           </div>
         </section> */}
         <section className="w-full h-auto px-6 py-[4rem] flex items-center justify-center flex-col">
-              <h2
-                className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]"
-              >
-                Frequently Ask Questions
-              </h2>
+          <h2 className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]">
+            Frequently Ask Questions
+          </h2>
           <div className="w-full flex flex-col py-[4rem] items-center">
             {accordionData.map(({ title, content }, index) => (
               <Accordion key={index} title={title} content={content} />
