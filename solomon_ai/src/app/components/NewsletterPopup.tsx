@@ -63,24 +63,18 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
           >
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
           </svg>
-          <div className=" w-full pb-2 flex items-center justify-center flex-col gap-4">
+          <div className=" w-full pb-2 flex items-start justify-center flex-col gap-4">
             <div className="flex w-full items-center justify-center">
-              <Image
-                src={FaceIcon}
-                alt="Solomon Logo"
-                width={48}
-                height={48}
-              />
+              <Image src={FaceIcon} alt="Solomon Logo" width={48} height={48} />
             </div>
-            <p className="text-white font-thin text-center text-indigo-00">
+            <p className="text-white px-2 font-thin text-left text-indigo-00">
               Solomon AI <br />
               <span className="text-lg">Spirtual AI Intergration</span>
             </p>
-              <p className="px-2 py-4 text-gray font-thin text-center border border-white/10 rounded text-[1.25rem] leading-[1.5rem]">
-                There is an undeniable power to having universal guidance at
-                your finger tips. Wisdom is a forever process, let us aid in the
-                ways.
-              </p>
+            <p className="p-2 text-gray font-thin text-left border border-white/10 rounded text-[1.25rem] leading-[1.5rem]">
+              There is an undeniable power to having universal guidance at your
+              finger tips. Wisdom is a forever process, let us aid in the ways.
+            </p>
             <form onSubmit={joinSubmit} className="w-full flex flex-col gap-4">
               <input
                 type="email"
@@ -91,9 +85,9 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
                 autoComplete="off"
               />
               {/* <div className="p-[1px] bg-gradient-to-br to-indigo-950 from-indigo-400 rounded"> */}
-                <button className="w-full p-2 font-thin bg-gradient-to-br to-indigo-950 from-indigo-800 border border-white/40 rounded-sm text-white bg-black">
-                  Join the waitlist
-                </button>
+              <button className="w-full p-2 font-thin bg-gradient-to-br to-indigo-950 from-indigo-800 border border-white/40 rounded-sm text-white bg-black">
+                Join the waitlist
+              </button>
               {/* </div> */}
             </form>
           </div>
