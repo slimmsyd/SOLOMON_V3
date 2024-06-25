@@ -52,70 +52,49 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
       {submissionState ? (
         <SuccessPopup togglePopup={togglePopup} />
       ) : (
-        <div className="homePopupContainer">
-          <div onClick={togglePopup} className="closePopupContainer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="black"
-                fill-rule="evenodd"
-                d="M2.293 2.293a1 1 0 0 1 1.414 0l18 18a1 1 0 0 1-1.414 1.414l-2.514-2.514C16.204 20.24 14.274 21 12 21c-3.154 0-5.64-1.459-7.441-3.12-1.797-1.658-2.974-3.568-3.547-4.624a2.63 2.63 0 0 1 0-2.513c.578-1.065 1.78-3.017 3.624-4.693L2.293 3.707a1 1 0 0 1 0-1.414m3.759 5.173c-1.645 1.473-2.745 3.241-3.281 4.23a.63.63 0 0 0 0 .607c.518.955 1.57 2.656 3.143 4.106C7.482 17.855 9.506 19 12 19c1.65 0 3.09-.5 4.33-1.256l-1.934-1.934A4.502 4.502 0 0 1 8.19 9.604zm3.62 3.62 3.242 3.242a2.5 2.5 0 0 1-3.242-3.242"
-                clip-rule="evenodd"
-              ></path>
-              <path
-                fill="black"
-                d="M10.223 5.2c.56-.128 1.152-.2 1.777-.2 2.494 0 4.518 1.146 6.086 2.591 1.572 1.45 2.625 3.15 3.144 4.106a.63.63 0 0 1-.002.608 17 17 0 0 1-1.344 2.095 1 1 0 0 0 1.6 1.2 19 19 0 0 0 1.503-2.342 2.63 2.63 0 0 0 0-2.514c-.572-1.056-1.749-2.966-3.546-4.623C17.64 4.459 15.154 3 12 3c-.779 0-1.52.09-2.223.25a1 1 0 0 0 .446 1.95"
-              ></path>
-            </svg>
-          </div>
-
-          <div className="homePopupFormContainer w-full flex flex-col items-center justify-center">
-            <p className="text-gray font-thin">
-              Solomon AI | Spirtual AI Intergration
-            </p>
-
-            <div className=" homePopupInnerWrapper flex flex-col items-center gap-[5px] mb-[20px] md:mb-[50px] mt-[20px] mx-[20px]">
-              <h2 className="text-gray font-light text-[28px] text-center">
-                Join the beta waiting list.
-              </h2>
-              <p className="text-gray text-[14px]">
-                There is an undeniable power to having universal guidance at
-                your finger tips.
-              </p>
-              <h2></h2>
-              <p id="greyText">
-                Wisdom is a forever process, let us aid in the ways{" "}
-              </p>
-            </div>
-
-            <form onSubmit={joinSubmit} className="flex flex-col  gap-[15px] ">
-              <input
-                className="w-full h-[38px] font-thin text-white"
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder="Enter Email"
+        <div className="bg-black border border-white/40 p-4 rounded-xl w-full h-auto md:w-[420px] relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            onClick={togglePopup}
+            className="absolute top-[1rem] right-[1rem] fill-white/80 cursor-pointer"
+            viewBox="0 0 16 16"
+          >
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+          </svg>
+          <div className=" w-full pb-2 flex items-center justify-center flex-col gap-4">
+            <div className="flex w-full items-center justify-center">
+              <Image
+                src={FaceIcon}
+                alt="Solomon Logo"
+                width={48}
+                height={48}
               />
-
-              <button className="joinBeta">Join the waitlist</button>
-
-              {/* 
-    <button type="submit" className="w-[32px] h-[32px] formImage">
-      <Image src={ChestImage} alt="Waiting List Image" />
-    </button> */}
-
-              <div className="flex w-full mt-[20px] items-center justify-center">
-                <Image
-                  src={FaceIcon}
-                  alt="Solomon Logo"
-                  width={24}
-                  height={24}
-                />
-              </div>
+            </div>
+            <p className="text-white font-thin text-center text-indigo-00">
+              Solomon AI <br />
+              <span className="text-lg">Spirtual AI Intergration</span>
+            </p>
+              <p className="px-2 py-4 text-gray font-thin text-center border border-white/10 rounded text-[1.25rem] leading-[1.5rem]">
+                There is an undeniable power to having universal guidance at
+                your finger tips. Wisdom is a forever process, let us aid in the
+                ways.
+              </p>
+            <form onSubmit={joinSubmit} className="w-full flex flex-col gap-4">
+              <input
+                type="email"
+                className="w-full p-2 font-thin text-white border-b border-white/55 bg-black placeholder:text-white/75 outline-none"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                autoComplete="off"
+              />
+              {/* <div className="p-[1px] bg-gradient-to-br to-indigo-950 from-indigo-400 rounded"> */}
+                <button className="w-full p-2 font-thin bg-gradient-to-br to-indigo-950 from-indigo-800 border border-white/40 rounded-sm text-white bg-black">
+                  Join the waitlist
+                </button>
+              {/* </div> */}
             </form>
           </div>
         </div>

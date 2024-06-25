@@ -13,6 +13,7 @@ import { gsap } from "gsap";
 
 import { Popup } from "./components/NewsletterPopup";
 import { SuccessPopup } from "./components/SucessPopup";
+import Marquee from "react-fast-marquee";
 
 import Lenis from "lenis";
 
@@ -570,7 +571,7 @@ export default function HomePage() {
             Solomon AI: Harnessing millennia of wisdom
           </p>
           <div className="py-4 w-full flex items-center justify-center lg:p-8 px-0">
-            <div className="marquee w-full flex items-center justify-between overflow-hidden whitespace-nowrap">
+            <Marquee className="w-full flex items-center justify-between">
               <p className="text-white text-3xl montserrat opacity-35 capitalize inline-block px-4">
                 שָׁלוֹם
               </p>
@@ -589,7 +590,7 @@ export default function HomePage() {
               <p className="text-white text-3xl montserrat opacity-35 capitalize px-4">
                 paix
               </p>
-            </div>
+            </Marquee>
           </div>
         </figure>
         <section

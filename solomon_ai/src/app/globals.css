@@ -89,20 +89,6 @@ section,
   height: auto;
 }
 
-
-@keyframes marquee {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.marquee > * {
-  animation: marquee 15s linear infinite;
-}
-
 body {
   background: rgb(28, 28, 28);
   /* background: -moz-linear-gradient(
@@ -554,13 +540,10 @@ color:rgb(255 255 255 / 0.6)
   .homePopupFormContainer {
     z-index: 10;
     width: 100%;
-    padding-bottom: 20px !important;
     margin: 0px !important;
     flex-basis: auto !important;
   }
   .homePopupFormContainer form {
-    padding-right: 20px;
-    padding-left: 20px;
     font-family: inherit !important;
     padding-bottom: 0px !important;
   }
