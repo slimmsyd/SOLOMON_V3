@@ -490,6 +490,24 @@ figure video {
   font-size: 18px;
   text-align: center;
 }
+
+
+.descriptionList >  li{
+  list-style-type: circle;
+  margin: 10px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+}
+
+.highLightPurple{
+/* color: ; */
+color:rgb(255 255 255 / 0.6)
+
+}
+
 /* Home page popup code */
 .homePopup {
   display: flex;
