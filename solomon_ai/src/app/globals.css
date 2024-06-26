@@ -1219,6 +1219,10 @@ button  > p, a > p {
 .renderAutoTextBtn:hover {
   background: #9484ff70;
 }
+.renderAutoTextBtn > svg {
+  fill: white;
+  color: white;
+}
 
 @media screen and (max-width: 800px) {
   .chatDashboard {
@@ -1328,6 +1332,7 @@ button  > p, a > p {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
   background: rgba(72, 72, 72, 0.44);
   cursor: pointer;
   border-radius: 50%;
@@ -1338,12 +1343,17 @@ button  > p, a > p {
   z-index: 10;
   display: none;
 }
+
 .mobileChatBtn:hover {
   cursor: pointer;
   border-radius: 50%;
   width: 45px;
   height: 45px;
   background: rgba(72, 72, 72, 0.44);
+}
+.mobileChatBtn > svg { 
+  color: #fff;
+  fill: #fff;
 }
 
 /* DashBoard code  */

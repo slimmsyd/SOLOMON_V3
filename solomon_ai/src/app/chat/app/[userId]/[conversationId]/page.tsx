@@ -23,6 +23,7 @@ import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoadi
 
 
 import { isClient } from "@/utilis/isClient";
+import { debug } from "console";
 
 export default function ConversationPage() {
   const chatBotUrl =
@@ -51,11 +52,9 @@ export default function ConversationPage() {
   let localStorageConvoId: any;
 
   useEffect(() => {
-    console.log("Is this loading???", currentConversationId);
     if (localStorage.getItem("currentConversationId")) {
       localStorageConvoId = localStorage.getItem("currentConversationId");
       setCurrentConversationId(localStorageConvoId);
-      console.log("Loggign in the local Storage get item", localStorageConvoId);
     }
   }, []);
 
@@ -106,10 +105,7 @@ export default function ConversationPage() {
   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
   const handleMobileChatBtnClick = () => {
-    console.log(
-      "Logging the chat container Ref current state",
-      chatContainerRef.current
-    );
+
 
     if (chatContainerRef.current) {
       if (isAtZero) {
@@ -179,10 +175,7 @@ export default function ConversationPage() {
   };
 
   async function getConversation(conversationId: any) {
-    console.log(
-      "Logging the converatation ID in the getConversation",
-      conversationId
-    );
+
     try {
       const response = await fetch(`/api/${conversationId}`);
       if (!response.ok) {
@@ -213,8 +206,6 @@ export default function ConversationPage() {
   async function deleteConversation(conversationId: string | number) {
     const currentConversations = conversations;
 
-    console.log("logging The Convo Id On Delet", conversationId);
-    console.log("logging The Convo Id On Delet", conversationId);
 
     // Optimistically remove the conversation from UI
     const updatedConversations = currentConversations.filter(
@@ -295,7 +286,6 @@ export default function ConversationPage() {
 
           sessionStorage.setItem("conversations", JSON.stringify(updatedCache));
 
-          console.log("Logging the updated Cache", updatedCache);
         } else {
           console.error("Parsed cached conversations is not an array");
         }
@@ -336,16 +326,9 @@ export default function ConversationPage() {
         setEditedTitle(""); // Clear the edited title state
         setEditingTitle(false);
 
-        console.log(
-          "logging the title change within the thing before ",
-          titleChange
-        );
+ 
       }
     }
-    console.log(
-      "logging the title change within the after before ",
-      titleChange
-    );
 
     try {
       const response = await fetch(`/api/${editTitleId}`, {
@@ -415,9 +398,15 @@ export default function ConversationPage() {
       if (currentConvoId) setCurrentConversationId(currentConversationId);
 
       // 1. Set up the new response without any bot response yet.
-      const newResponse = { question: message, response: "" };
+      const newResponse = {
+        question: message,
+        response: "",
+        id: "temp"
+       };
+      
+      // Use functional update for state
+      setResponses((responses) => [...responses, newResponse]);
 
-      setResponses((responses) => [...responses, newResponse]); // Use functional update for state
 
       setMessage("");
 
@@ -436,6 +425,8 @@ export default function ConversationPage() {
         }).then((res) => res.json());
         setResponseLoading(false);
 
+
+
         // 3. Update the responses array with the bot's reply
         setResponses((prevResponses) =>
           prevResponses.map((resp) => {
@@ -445,6 +436,9 @@ export default function ConversationPage() {
             return resp;
           })
         );
+
+        console.log("Logging the new Responses", responses)
+        
 
         // 4. Send the user question and bot response to the database
 
@@ -461,11 +455,7 @@ export default function ConversationPage() {
           }),
         });
 
-        console.log(
-          "Loggign the current Conversation on a new click ",
-          currentConversationId
-        );
-
+  
         //Add the conversations arrawy or update
       } catch (error) {
         console.error("Error handling submission:", error);
@@ -474,7 +464,6 @@ export default function ConversationPage() {
   };
 
   const handleConversationClick = (convoId: string) => {
-    console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
     router.push(targetPath, undefined);
@@ -495,9 +484,7 @@ export default function ConversationPage() {
 
   //Another Hook Check for the local storage
   useEffect(() => {
-    console.log("Current Conversation ID has updated:", currentConversationId);
-    console.log("Logging the localstorage id", localStorageConvoId);
-
+   
     if (currentConversationId) {
       handleConversationClick(currentConversationId as string);
     }
@@ -513,10 +500,7 @@ export default function ConversationPage() {
   //Fetch Message for this converations
   const messagesRefCounter = useRef(0);
   useEffect(() => {
-    console.log(
-      "Logging to see how much the messages ref counter is loading",
-      messagesRefCounter
-    );
+
   }, [messagesRefCounter]);
   const fetchMessagesForConversation = async (conversationId: string) => {
     messagesRefCounter.current += 1;
@@ -535,9 +519,7 @@ export default function ConversationPage() {
       return;
     } else {
       try {
-        console.log("Loggging in stored messages", session?.user.id);
-        console.log("Loggging in stored messages", conversationId);
-
+   
         const response = await fetch(
           `/api/storedMessages?authorId=${session?.user.id}&conversationId=${conversationId}`
         );
@@ -546,20 +528,21 @@ export default function ConversationPage() {
         }
         const messages = await response.json();
 
-        console.log(
-          "logging the MEssages in the joint",
-          messages,
-          session.user.id,
-          conversationId
-        );
+
+        console.log("Loggingthe messages", messages)
+ 
+        console.log("Add the IDS",messages.map(msgs => msgs.id))
+
 
         // Map API response to expected format in state
+        //Naming conventions matter
         const formattedMessages = messages.map((msg: Message) => ({
           question: msg.userContent,
           response: msg.botResponse,
+          id: msg.id,
         }));
 
-        console.log("Logging the formatted message", formattedMessages);
+    
         setResponses([]);
 
         if (response.ok) {
@@ -574,16 +557,18 @@ export default function ConversationPage() {
   };
 
   useEffect(() => {
+
+
+
+  }, [responses]);
+
+
+  useEffect(() => {
     setResponses([]); // Clear previous messages
-    console.log(
-      "Logging the CUrrent in the Fetch Resposnes",
-      currentConversationId
-    );
-    console.log("Loggin the local stroage iddd", localStorageConvoId);
+
     if (status === "authenticated" && session) {
       // Fetch messages for the current conversation if needed
       if (currentConversationId === null) {
-        console.log("Fetch is Null fetch is nul", currentConversationId);
         fetchMessagesForConversation(
           (currentConversationId as any) || localStorageConvoId
         );
@@ -674,7 +659,9 @@ export default function ConversationPage() {
           {/* Dashboard Component  */}
 
           {responses.length > 0 ? (
-            <ChatMessagesContainer responses={responses || "null"} />
+            <ChatMessagesContainer responses={responses as any || []}
+            
+            />
           ) : (
             <div className="w-full flex items-center justify-center">
               <LoadingComponent />

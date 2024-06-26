@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/app/api/lib/db";
 const { Configuration, OpenAI } = require("openai");
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
+import { v4 as uuidv4 } from 'uuid';
 
-const APIKEY =
-  process.env.OPENAI_API_KEY
+const APIKEY = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({ apiKey: APIKEY });
 
 export default async function handler(
@@ -15,14 +15,13 @@ export default async function handler(
     try {
       const { userId, message, conversationId, userInfo } = req.body;
 
-
       let currentConversationId = conversationId;
 
       let existingMessage = await db.messages.findFirst({
         where: {
           conversationId: currentConversationId,
           botResponse: null,
-        }
+        },
       });
 
       if (existingMessage) {
@@ -41,16 +40,14 @@ export default async function handler(
             title: "User Message",
             published: true,
             firstConvo: false,
-          }
+          },
         });
       }
 
       const conversationHistory = await db.messages.findMany({
         where: { conversationId: conversationId },
-        orderBy: { createdAt: 'asc' },
+        orderBy: { createdAt: "asc" },
       });
-
-
 
       // Add user info as context if necessary
       const userContext = `
@@ -59,17 +56,14 @@ export default async function handler(
         Ennealogy Number: ${userInfo?.ennealogy || "Unknown"}
         Myles Bridger Personality : ${userInfo?.mylesBridgeType || "Unknown"}
         Cardolgy Number : ${userInfo?.cardologyNumber || "Unknown"}
-        Name Numerological Signature : ${userInfo?.nameNumerolgyNumber || "Unknown"}
+        Name Numerological Signature : ${
+          userInfo?.nameNumerolgyNumber || "Unknown"
+        }
         Birthday: ${userInfo?.birthday || "Unknown"}
       `;
 
-
-
-
       // console.log("Logging the conversation histroy", conversationHistory)
 
-  
-      
       const messages = [
         {
           role: "system",
@@ -564,35 +558,31 @@ export default async function handler(
                 `,
         },
 
-        
         { role: "system", content: `User Context: ${userContext}` },
         ...conversationHistory.map(({ userContent, botResponse }) =>
-          userContent ? { role: 'user', content: userContent } : { role: 'assistant', content: botResponse }
+          userContent
+            ? { role: "user", content: userContent }
+            : { role: "assistant", content: botResponse }
         ),
         { role: "user", content: message },
       ];
 
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4",
+        max_tokens: 500,
+        messages: messages,
+      });
 
+      const response = completion.choices[0].message.content;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      max_tokens: 500,
-      messages: messages,
-    });
-
-    const response = completion.choices[0].message.content;
-
-
-
-    // Store the bot's response in the database
-    await db.messages.update({
-      where: { id: existingMessage.id },
-      data: { botResponse: response }
-    });
-
+      // Store the bot's response in the database
+      await db.messages.update({
+        where: { id: existingMessage.id },
+        data: { botResponse: response },
+      });
 
       // console.log("Loggin the REsponse", response);
-      res.json({ message: response }); // This sends resposne back out to the FrontEnd
+      res.json({ id: existingMessage.id, message: response });
     } catch (error) {
       console.error("Error THIS IS HTE ERROR ON WHY", error.message);
       res
@@ -601,26 +591,3 @@ export default async function handler(
     }
   }
 }
-// function formatResponse(response: string): string {
-//   // Replace **text** with <strong>text</strong>
-//   let formattedResponse = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-//   // Handle numbered list items and paragraphs
-//   const listItems = formattedResponse.match(/(\d+\..*?)(?=(\d+\.)|$)/gs);
-//   if (listItems) {
-//     const listFormatted = listItems.map(item => `<li>${item.trim()}</li>`).join('<br>');
-//     formattedResponse = formattedResponse.replace(listItems.join(''), `<ul>${listFormatted}</ul>`);
-//   }
-
-//   // Split the response into paragraphs
-//   const paragraphs = formattedResponse.split('\n').filter(paragraph => paragraph.trim() !== '');
-
-
-  
-
-//   // Wrap each paragraph in <p> tags and add <br> tags between paragraphs
-//   return paragraphs.map(paragraph => `<p className={styles.user_Messages}>${paragraph.trim()}</p>`).join('<br>');
-// }
-
-
-

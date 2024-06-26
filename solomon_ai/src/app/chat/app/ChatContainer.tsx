@@ -96,7 +96,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         localStorageConversations
       );
       setConversations?.(conversationArray); // Safe call with optional chaining
-      console.log("Loggin the conversations array", conversationArray);
     }
   }, [titleUpdated]);
 

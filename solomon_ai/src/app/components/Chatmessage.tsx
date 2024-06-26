@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from '../../styles/chat.module.css'
+import { debug } from "console";
+import { string } from "zod";
 
 export const formatResponse = (response: string): string => {
   // Replace **text** with <strong>text</strong>
@@ -20,43 +22,72 @@ export const formatResponse = (response: string): string => {
   return paragraphs.map(paragraph => `<p className="user_Messages">${paragraph.trim()}</p>`).join('<br>');
 };
 
+
+
+interface ResponseObject { 
+  question: string;
+  response: string;
+  id: string;
+}
+
 interface ChatMessageProps {
-  message: string;
+  response: ResponseObject;
   shouldAnimate?: boolean;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, shouldAnimate = true }) => {
-  const [displayedMessage, setDisplayedMessage] = useState<string>(shouldAnimate ? "" : formatResponse(message));
+
+
+const ChatMessage: React.FC<ChatMessageProps> = ({ response, shouldAnimate = true }) => {
+
+
+
+
+
+  // console.log("Logging the responses in the main messaeg", response)
+  // console.log("Logging the respsoneObejct In main", responseObject)
+
+
+
+  const [displayedMessage, setDisplayedMessage] = useState<string>(shouldAnimate ? "" : response.response);
+
   const [isTyping, setIsTyping] = useState<boolean>(shouldAnimate);
+  const [lastMessageId, setLastMessageId] = useState<string | null>(null);
 
 
-  useEffect(() => { 
 
-    console.log("Logging hte message on render", message)
 
-  },[message])
 
   useEffect(() => {
-    if (isTyping && displayedMessage.length < message.length) {
+    if (shouldAnimate) {
+      setIsTyping(true);
+      setDisplayedMessage('');
+    } else {
+      setIsTyping(false);
+      setDisplayedMessage(response.response);
+    }
+  }, [response, shouldAnimate]);
+
+  useEffect(() => {
+    if (isTyping && displayedMessage.length < response.response.length) {
       const timer = setTimeout(() => {
-        setDisplayedMessage(message.slice(0, displayedMessage.length + 1));
-      }, 15); // Adjust typing speed as necessary
+        setDisplayedMessage(response.response.slice(0, displayedMessage.length + 1));
+      }, 15);
       return () => clearTimeout(timer);
     } else if (isTyping) {
       setIsTyping(false);
     }
-  }, [isTyping, displayedMessage, message]);
+  }, [isTyping, displayedMessage, response]);
 
-  useEffect(() => {
-    if (isTyping) {
-      setDisplayedMessage('');
-      setIsTyping(true);
-    } else {
-      setDisplayedMessage(formatResponse(message));
-    }
-  }, [isTyping, message]);
+  // useEffect(() => {
+  //   if (isTyping) {
+  //     setDisplayedMessage('');
+  //     setIsTyping(true);
+  //   } else {
+  //     setDisplayedMessage(response.response);
+  //   }
+  // }, [isTyping, response]);
 
-  const formattedMessage = formatResponse(displayedMessage);
+  const formattedMessage =displayedMessage;
 
   const plainTextMessage = isTyping ? formattedMessage : formattedMessage;
 
