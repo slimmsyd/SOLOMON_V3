@@ -255,7 +255,7 @@ const ChatDashboard: React.FC = () => {
         setResponses((prevResponses) =>
           prevResponses.map((resp) => {
             if (resp.question === message) {
-              return { ...resp, response: botReply.message };
+              return { ...resp, response: botReply.message, id: botReply.id };
             }
             return resp;
           })
