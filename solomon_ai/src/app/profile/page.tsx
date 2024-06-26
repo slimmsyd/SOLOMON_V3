@@ -364,7 +364,7 @@ const Profile: React.FC = () => {
                   />
                 ) : (
                   <p className = "profileInput">
-                    {sessionStorage.getItem("zodiacSign") || (zodiac as any)}{" "}
+                    {sessionStorage.getItem("zodiacSign") ? sessionStorage.getItem("zodiacSign") : "Enter..." || (zodiac as any) ? (zodiac as any) : "Enter..."}
                   </p>
                 )}
               </div>
@@ -383,7 +383,7 @@ const Profile: React.FC = () => {
                 ) : (
                   <p className = "profileInput">
                     
-                    {sessionStorage.getItem("lifePathNumber") || lifePath}</p>
+                    {sessionStorage.getItem("lifePathNumber") ? sessionStorage.getItem("lifePathNumber") : "Enter..." || lifePath ? lifePath : "Enter..."}</p>
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
@@ -405,7 +405,7 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("nameNumerolgyNumber") as any)
                         ? (sessionStorage.getItem("nameNumerolgyNumber") as any)
-                        : "Enter"
+                        : nameNumerologyNumber ? nameNumerologyNumber : "Loading..."
                     }
                     readOnly
                   />
@@ -422,7 +422,7 @@ const Profile: React.FC = () => {
                   />
                 ) : (
                   <p className = "profileInput">
-                    {sessionStorage.getItem("ennealogy") || ennealogy}</p>
+                    {sessionStorage.getItem("ennealogy") ? sessionStorage.getItem("ennealogy") : "Enter..." || ennealogy ? ennealogy : "Enter..."}</p>
                 )}
               </div>
 
@@ -445,7 +445,7 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("cardologyNumber") as any)
                         ? (sessionStorage.getItem("cardologyNumber") as any)
-                        : cardologyNumber
+                        : cardologyNumber ? cardologyNumber : "Loading..."
                     }
                     readOnly
                   />
@@ -471,7 +471,7 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("mylesBridgeType") as any)
                         ? (sessionStorage.getItem("mylesBridgeType") as any)
-                        : "Loading...."
+                        : mylesBridgeType ? mylesBridgeType : "Loading..."
                     }
                   />
                 )}
@@ -494,7 +494,7 @@ const Profile: React.FC = () => {
                     type="text"
                     placeholder="Add"
                     value={
-                     birthday ? birthday : "Loading..."
+                     birthday ? birthday : "Enter..."
                     }
                   />
                 )}
