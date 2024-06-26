@@ -48,7 +48,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ response, shouldAnimate = tru
 
 
 
-  const [displayedMessage, setDisplayedMessage] = useState<string>(shouldAnimate ? "" : response.response);
+  const [displayedMessage, setDisplayedMessage] = useState<string>(shouldAnimate ? "" : formatResponse(response.response))
 
   const [isTyping, setIsTyping] = useState<boolean>(shouldAnimate);
   const [lastMessageId, setLastMessageId] = useState<string | null>(null);
@@ -87,7 +87,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ response, shouldAnimate = tru
   //   }
   // }, [isTyping, response]);
 
-  const formattedMessage =displayedMessage;
+  const formattedMessage = formatResponse(displayedMessage)
 
   const plainTextMessage = isTyping ? formattedMessage : formattedMessage;
 
