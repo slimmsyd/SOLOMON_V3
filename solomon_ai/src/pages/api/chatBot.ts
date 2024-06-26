@@ -591,20 +591,3 @@ export default async function handler(
     }
   }
 }
-// function formatResponse(response: string): string {
-//   // Replace **text** with <strong>text</strong>
-//   let formattedResponse = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-//   // Handle numbered list items and paragraphs
-//   const listItems = formattedResponse.match(/(\d+\..*?)(?=(\d+\.)|$)/gs);
-//   if (listItems) {
-//     const listFormatted = listItems.map(item => `<li>${item.trim()}</li>`).join('<br>');
-//     formattedResponse = formattedResponse.replace(listItems.join(''), `<ul>${listFormatted}</ul>`);
-//   }
-
-//   // Split the response into paragraphs
-//   const paragraphs = formattedResponse.split('\n').filter(paragraph => paragraph.trim() !== '');
-
-//   // Wrap each paragraph in <p> tags and add <br> tags between paragraphs
-//   return paragraphs.map(paragraph => `<p className={styles.user_Messages}>${paragraph.trim()}</p>`).join('<br>');
-// }

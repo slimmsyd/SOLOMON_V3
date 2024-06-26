@@ -1219,6 +1219,10 @@ button  > p, a > p {
 .renderAutoTextBtn:hover {
   background: #9484ff70;
 }
+.renderAutoTextBtn > svg {
+  fill: white;
+  color: white;
+}
 
 @media screen and (max-width: 800px) {
   .chatDashboard {

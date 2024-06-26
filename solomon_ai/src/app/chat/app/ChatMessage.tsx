@@ -41,14 +41,6 @@ export const ChatMessagesContainer: FC<ChatMessageProps> = ({ responses }) => {
   
 useEffect(() => { 
     
-  // console.log("Logging response" ,responses)
-
-  // console.log(responses.map((resp, index) => ({ response: resp.response })))
-
-  //   console.log(responses.map((resp, index) => ({ response: resp.response, index })))
-  //   console.log("Logging is loading")
-
-  console.log("Logging last messsage ID BEFORE AFTER ", lastMessageId)
 
   // debugger
 },[responses])

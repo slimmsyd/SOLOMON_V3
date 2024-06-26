@@ -10,6 +10,8 @@ import React, {
 interface ChatMessage {
   question: string;
   response: string;
+  id: string;
+
 }
 
 interface ConversationContextType {

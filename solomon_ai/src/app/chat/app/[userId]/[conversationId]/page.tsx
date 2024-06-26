@@ -412,7 +412,7 @@ export default function ConversationPage() {
 
       try {
         // 2. Fetch bot reply from the API
-        const botReply = await fetch("/api/chatBot", {
+        const botReply = await fetch(chatBotUrl, {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -559,7 +559,6 @@ export default function ConversationPage() {
   useEffect(() => {
 
 
-    console.log("Logging the responses on Re-render", responses)
 
   }, [responses]);
 

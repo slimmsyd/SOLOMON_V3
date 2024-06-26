@@ -223,10 +223,14 @@ const ChatDashboard: React.FC = () => {
 
       // 1. Set up the new response without any bot response yet.
     // 1. Set up the new response without any bot response yet.
-    const newResponse = { question: message, response: "" };
-
-    setResponses((responses) => [...responses, newResponse]); // Use functional update for state
-
+    const newResponse = {
+      question: message,
+      response: "",
+      id: "temp"
+     };
+    
+    // Use functional update for state
+    setResponses((responses) => [...responses, newResponse]);
 
       // Fetch user information if not available in session storage
       const userInfo = await fetchUserInfo(userId);
