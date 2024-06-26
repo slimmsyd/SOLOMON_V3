@@ -122,9 +122,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     <div ref={chatContainerRef} className="chatContainer flex flex-col flex-1">
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
-        <div className="flex flex-row">
-     
-        </div>
+        <div className="flex flex-row"></div>
         <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
           <div className="mainIcon">
             <Image alt="arrowLeft" src={arrowLeft} width={100} height={100} />
@@ -185,12 +183,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             {conversations?.map((conversation) => (
               <div key={conversation.conversationId} className="relative">
                 <button
-                  onClick={() => {
-                    if (!editingTitle) {
-                      onConversationClick &&
-                        onConversationClick(conversation.conversationId);
-                    }
-                  }}
                   onMouseEnter={() =>
                     setHoveredConversationId(conversation.conversationId)
                   }
@@ -223,7 +215,15 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                     </form>
                   ) : (
                     <div className="flex flex-row justify-between items-center w-full pr-[5px]">
-                      <p className="hover:text-white  text-left">
+                      <p
+                        onClick={() => {
+                          if (!editingTitle) {
+                            onConversationClick &&
+                              onConversationClick(conversation.conversationId);
+                          }
+                        }}
+                        className="hover:text-white  text-left"
+                      >
                         {conversation.title}
                       </p>
                       {hoveredConversationId ===
@@ -381,7 +381,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
       <div className="flex flex-row gap-[10px] justify-end self-end items-center  text-[14px]   settingsContainer !border-none !mt-0 ">
         <Image src={FaceIcon} width={18} height={18} alt="Solomon Icon" />
-        <p className = "text-white">Solomon AI</p>
+        <p className="text-white">Solomon AI</p>
         <Link
           href="/"
           className="mainIcon flex items-center justify-center !w-[20px] !h-[20px] cursor-pointer"

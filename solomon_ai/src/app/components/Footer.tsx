@@ -59,6 +59,7 @@ export const Footer: any = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-transparent newsLetterInput montserrat"
                 type="email"
+                required
                 placeholder="Email address"
               />
 
