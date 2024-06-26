@@ -122,7 +122,6 @@ export const SignupForm: FC<SignupFormProps> = ({
 
       <SignUpMessageContainer
         responses={responses || "null"}
-        firstMessage={firstMessage}
       />
 
  

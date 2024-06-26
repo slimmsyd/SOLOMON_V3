@@ -15,7 +15,6 @@ interface ResponseObject {
   question: string;
   response: string;
   id: string;
-  firstMessage: boolean;
 }
 
 
