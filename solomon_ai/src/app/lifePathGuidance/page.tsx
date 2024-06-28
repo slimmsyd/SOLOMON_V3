@@ -476,7 +476,9 @@ const Profile: React.FC = () => {
                                 />
                               </div>
 
-                              <h3>
+                              <h3
+                                className = "text-white"
+                              >
                                 {selectedZodiac.category} -{" "}
                                 {selectedZodiac.name}
                               </h3>
@@ -516,7 +518,7 @@ const Profile: React.FC = () => {
                         w-full relative !p-0"
                         >
                           <div className="zodiacOverlay">
-                            <p>{egyptianZodiac}</p>
+                            <p className="text-white">{egyptianZodiac}</p>
                           </div>
                           <Image
                             src={
@@ -548,7 +550,9 @@ const Profile: React.FC = () => {
                           className="zodiacCards relative !p-0"
                         >
                           <div className="zodiacOverlay">
-                            <p>{nativeAmericanZodiacSign}</p>
+                            <p className="text-white">
+                              {nativeAmericanZodiacSign}
+                            </p>
                           </div>
                           <Image
                             src={
@@ -582,7 +586,7 @@ const Profile: React.FC = () => {
                           className="zodiacCards relative !p-0"
                         >
                           <div className="zodiacOverlay">
-                            <p>{celticZodiacSign}</p>
+                            <p className="text-white">{celticZodiacSign}</p>
                           </div>
                           <Image
                             src={
@@ -611,7 +615,7 @@ const Profile: React.FC = () => {
                           className="zodiacCards relative !p-0"
                         >
                           <div className="zodiacOverlay">
-                            <p>{chineseZodiac}</p>
+                            <p className="text-white">{chineseZodiac}</p>
                           </div>
                           <Image
                             src={getZodiacImage("Chinese", chineseZodiac) || ""}
@@ -631,12 +635,9 @@ const Profile: React.FC = () => {
                         response:
                           "Based on your Life Path number, we have gave an syntheses on what the expect of the overall energies that will be effecting your unique being each month of the year. Give credit to the great lloyd strayhorn for the valuable knowledge in curating this .",
 
-                          question: "",
-                          id: ""
-
-                      }
-                    
-                    }
+                        question: "",
+                        id: "",
+                      }}
                     />
                   </div>
                 </div>
@@ -654,7 +655,7 @@ const Profile: React.FC = () => {
               >
                 <div className="flex flex-row  gap-[15px] md:gap-[0px] justify-between accountDiv">
                   <div className="flex flex-col gap-[8px]">
-                    <p>{month}</p>
+                    <p className="text-white">{month}</p>
                     <p className="text-[12px]" id="greyText">
                       {dataLoading ? (
                         <ButtonLoadingComponent />
@@ -665,7 +666,7 @@ const Profile: React.FC = () => {
                         )}`}</p>
                       )}
                     </p>
-                    <p className="text-[12px]">
+                    <p className="text-[12px] text-white">
                       {renderTextForIndex(index, personalYearNumber as number)}
                     </p>
                   </div>
