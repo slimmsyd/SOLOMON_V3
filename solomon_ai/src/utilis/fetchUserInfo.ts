@@ -13,18 +13,15 @@ interface UserInfo {
 }
 
 export async function fetchUserInfo(userId: string): Promise<UserInfo | null> {
-  console.log("Loggin the user Id", typeof userId);
-  console.log("logging the user Id", userId);
+
   try {
     const response = await fetch(`/api/getUserInfo?userId=${userId}`);
     const data = await response.json();
 
     if (response.ok) {
       const { lifePathNumber, zodiacSign, religion, ennealogy, birthday, cardologyNumber, mylesBridgeType, nameNumerolgyNumber  } = data.data;
-      console.log("Logging the response here in profile", data);
 
       const session = await getSession();
-      console.log("Loggin session", session);
       if (session) {
         sessionStorage.setItem("lifePathNumber", lifePathNumber);
         sessionStorage.setItem("zodiacSign", zodiacSign);

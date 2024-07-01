@@ -41,9 +41,7 @@ const Profile: React.FC = () => {
     string | null
   >(null);
 
-
-
-  const [birthday, setBirthDay] = useState<string>("")
+  const [birthday, setBirthDay] = useState<string>("");
   const [zodiac, setZodiac] = useState<string>("Enter");
   const [lifePath, setLifePathNumber] = useState<string>("Enter");
   const [nameNumerologyNumber, setNameNumerolgyNumber] =
@@ -139,25 +137,23 @@ const Profile: React.FC = () => {
         setMylesBridgeType(mylesBridgeType);
         setNameNumerolgyNumber(nameNumerolgyNumber);
         setBirthDay(formatDate(birthday));
-        
       }
     };
 
     getUserInfo();
   }, [userId]);
 
-
   function formatDate(isoString: string) {
     // Create a new Date object from the ISO string
     const date = new Date(isoString);
 
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
-    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based, so add 1
+    const day = String(date.getUTCDate()).padStart(2, "0");
     const year = date.getUTCFullYear();
-  
+
     // Format the date as MM/DD/YYYY
     const formattedDate = `${month}/${day}/${year}`;
-  
+
     return formattedDate;
   }
 
@@ -166,7 +162,8 @@ const Profile: React.FC = () => {
     userId,
     cardologyNumber: string,
     mylesBridgeType: string,
-    nameNumerolgyNumber: string
+    nameNumerolgyNumber: string,
+    birthday: string,
   ): Promise<void> => {
     try {
       const response = await axios.post("/api/updateUser", {
@@ -174,12 +171,13 @@ const Profile: React.FC = () => {
         cardologyNumber: cardologyNumber ?? undefined,
         mylesBridgeType: mylesBridgeType ?? undefined,
         nameNumerolgyNumber: nameNumerolgyNumber ?? undefined,
+        birthday: birthday ?? undefined,
       });
 
       //Going to save into Session to prevent the asynh loading issues
       if (isClient()) {
         sessionStorage.setItem("cardologyNumber", cardologyNumber);
-        
+
         sessionStorage.setItem("mylesBridgeType", mylesBridgeType);
         sessionStorage.setItem("mylesBridgeType", nameNumerolgyNumber);
         // Sign out and redirect
@@ -197,7 +195,8 @@ const Profile: React.FC = () => {
       userId,
       cardologyNumber,
       mylesBridgeType,
-      nameNumerologyNumber
+      nameNumerologyNumber,
+      birthday
     );
 
     window.alert("Profile Update");
@@ -267,16 +266,22 @@ const Profile: React.FC = () => {
     }
   }, [setConversations]);
 
+  //Run a function that updates all the Character Traits right on reload
 
-  //Run a function that updates all the Character Traits right on reload 
-
-  useEffect(() => { 
-
-    console.log("Logging the change of the Myles brider number", mylesBridgeType)
-    console.log("Logging the name numerical sig", nameNumerologyNumber)
-
-  },[lifePath,ennealogy,mylesBridgeType,cardologyNumber,birthday,nameNumerologyNumber])
-
+  useEffect(() => {
+    console.log(
+      "Logging the change of the Myles brider number",
+      mylesBridgeType
+    );
+    console.log("Logging the name numerical sig", nameNumerologyNumber);
+  }, [
+    lifePath,
+    ennealogy,
+    mylesBridgeType,
+    cardologyNumber,
+    birthday,
+    nameNumerologyNumber,
+  ]);
 
   return (
     <div className="chatDashboard">
@@ -363,8 +368,12 @@ const Profile: React.FC = () => {
                     onChange={(e) => setZodiac(e.target.value)}
                   />
                 ) : (
-                  <p className = "profileInput">
-                    {sessionStorage.getItem("zodiacSign") ? sessionStorage.getItem("zodiacSign") : "Enter..." || (zodiac as any) ? (zodiac as any) : "Enter..."}
+                  <p className="profileInput">
+                    {sessionStorage.getItem("zodiacSign")
+                      ? sessionStorage.getItem("zodiacSign")
+                      : "Enter..." || (zodiac as any)
+                      ? (zodiac as any)
+                      : "Enter..."}
                   </p>
                 )}
               </div>
@@ -381,9 +390,13 @@ const Profile: React.FC = () => {
                     onChange={(e) => setLifePathNumber(e.target.value)}
                   />
                 ) : (
-                  <p className = "profileInput">
-                    
-                    {sessionStorage.getItem("lifePathNumber") ? sessionStorage.getItem("lifePathNumber") : "Enter..." || lifePath ? lifePath : "Enter..."}</p>
+                  <p className="profileInput">
+                    {sessionStorage.getItem("lifePathNumber")
+                      ? sessionStorage.getItem("lifePathNumber")
+                      : "Enter..." || lifePath
+                      ? lifePath
+                      : "Enter..."}
+                  </p>
                 )}
               </div>
               <div className="flex flex-row w-full justify-between">
@@ -405,7 +418,9 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("nameNumerolgyNumber") as any)
                         ? (sessionStorage.getItem("nameNumerolgyNumber") as any)
-                        : nameNumerologyNumber ? nameNumerologyNumber : "Loading..."
+                        : nameNumerologyNumber
+                        ? nameNumerologyNumber
+                        : "Loading..."
                     }
                     readOnly
                   />
@@ -421,8 +436,13 @@ const Profile: React.FC = () => {
                     onChange={(e) => setEnnealogyNumber(e.target.value)}
                   />
                 ) : (
-                  <p className = "profileInput">
-                    {sessionStorage.getItem("ennealogy") ? sessionStorage.getItem("ennealogy") : "Enter..." || ennealogy ? ennealogy : "Enter..."}</p>
+                  <p className="profileInput">
+                    {sessionStorage.getItem("ennealogy")
+                      ? sessionStorage.getItem("ennealogy")
+                      : "Enter..." || ennealogy
+                      ? ennealogy
+                      : "Enter..."}
+                  </p>
                 )}
               </div>
 
@@ -445,7 +465,9 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("cardologyNumber") as any)
                         ? (sessionStorage.getItem("cardologyNumber") as any)
-                        : cardologyNumber ? cardologyNumber : "Loading..."
+                        : cardologyNumber
+                        ? cardologyNumber
+                        : "Loading..."
                     }
                     readOnly
                   />
@@ -471,7 +493,9 @@ const Profile: React.FC = () => {
                     value={
                       (sessionStorage.getItem("mylesBridgeType") as any)
                         ? (sessionStorage.getItem("mylesBridgeType") as any)
-                        : mylesBridgeType ? mylesBridgeType : "Loading..."
+                        : mylesBridgeType
+                        ? mylesBridgeType
+                        : "Loading..."
                     }
                   />
                 )}
@@ -493,9 +517,7 @@ const Profile: React.FC = () => {
                     className="profileInput"
                     type="text"
                     placeholder="Add"
-                    value={
-                     birthday ? birthday : "Enter..."
-                    }
+                    value={birthday ? birthday : "Enter..."}
                   />
                 )}
               </div>
@@ -558,7 +580,7 @@ const Profile: React.FC = () => {
             <div className="accountContainer">
               <div className="flex md:flex-row flex-col gap-[15px] md:gap-[0px] justify-between accountDiv">
                 <div className="flex flex-col">
-                  <p>Active Account</p>
+                  <p className="text-white">Active Account</p>
                   <p className="text-[12px]" id="greyText">
                     Signed in as {email}
                   </p>
@@ -579,7 +601,7 @@ const Profile: React.FC = () => {
 
               <div className="flex md:flex-row flex-col gap-[15px] md:gap-[0px] justify-between accountDiv">
                 <div className="flex flex-col">
-                  <p>Sessions</p>
+                  <p className="text-white">Sessions</p>
                   <p className="text-[12px]" id="greyText">
                     Devices or browsers where you are signed in
                   </p>
@@ -598,9 +620,9 @@ const Profile: React.FC = () => {
               </div>
               <hr className="greyDivider"></hr>
 
-              <div className="flex flex-col  md:flex-row gap-[15px] md:gap-[0px justify-between accountDiv">
+              <div className="flex flex-col   md:flex-row gap-[15px] md:gap-[0px justify-between accountDiv">
                 <div className="flex flex-col ">
-                  <p>Delete Account</p>
+                  <p className="text-white">Delete Account</p>
                   <p className="text-[12px]" id="greyText">
                     Permanently delete your account and data
                   </p>

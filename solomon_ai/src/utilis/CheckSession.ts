@@ -39,7 +39,6 @@ export async function checkSession(
 //   const router = useRouter();
 
   if (status === 'loading') {
-    console.log('Session is loading...');
     return;
   }
 
