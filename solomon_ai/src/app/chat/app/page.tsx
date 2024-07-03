@@ -235,6 +235,9 @@ const ChatDashboard: React.FC = () => {
       // Fetch user information if not available in session storage
       const userInfo = await fetchUserInfo(userId);
 
+      setMessage("");
+
+
       try {
         // 2. Fetch bot reply from the API
         const botReply = await fetch(chatBotUrl, {
