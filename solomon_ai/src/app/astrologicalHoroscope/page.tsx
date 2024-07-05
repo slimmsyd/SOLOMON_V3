@@ -134,56 +134,6 @@ const Horoscope: React.FC = () => {
     getUserInfo();
   }, [userId]);
 
-  // useEffect(() => {
-
-  //   const fetchHoroscope = async (selectedSign: string, selectedDay: string) => {
-  //       const url = `/get-horoscope`;
-  //       try {
-  //         const response = await fetch(url, {
-  //           method: 'GET',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           // body: JSON.stringify({ sign: selectedSign, day: selectedDay }),
-  //         });
-  //         const data = await response.json();
-  //       } catch (error) {
-  //         console.error('Error fetching horoscope:', error);
-  //       }
-  //     };
-
-  //     fetchHoroscope(zodiac, "TODAY")
-
-  // },[zodiac])
-
-  useEffect(() => {
-    const getHoroscope = async () => {
-      const username = "80c8676cf91c800a6bede904628f98cdf0de920d";
-      const password = "631626";
-
-      const auth = btoa(`${username}:${password}`);
-
-      const headers = new Headers({
-        Authorization: `Basic ${auth}`,
-      });
-
-      const url = `https://json.astrologyapi.com/v1/sun_sign_prediction/daily/aries`;
-      try {
-        const response = await fetch(url, {
-          headers,
-        });
-        const data = await response.json();
-
-        console.log("Logging the Data in the astro calendar", data);
-      } catch (error) {
-        console.error("Error fetching horoscope:", error);
-      }
-    };
-
-    getHoroscope();
-  }, [zodiac]);
-
-  //Just send a Request tothe this api
 
   useEffect(() => {}, [zodiac]);
 
@@ -359,11 +309,11 @@ const Horoscope: React.FC = () => {
                 </button>
                 <div style={lineStyle} className="transitionLine"></div>
               </div>
-              <div className="relative">
+              {/* <div className="relative">
                 <button onClick={(e) => moveTransitionLine(e.target)}>
                   Yesterday
                 </button>
-              </div>
+              </div> */}
               <div className="relative">
                 <button onClick={(e) => moveTransitionLine(e.target)}>
                   Weekly
@@ -374,11 +324,11 @@ const Horoscope: React.FC = () => {
                   Monthly
                 </button>
               </div>
-              <div className="relative">
+              {/* <div className="relative">
                 <button onClick={(e) => moveTransitionLine(e.target)}>
                   Annually
                 </button>
-              </div>
+              </div> */}
             </div>
 
             <div className="color-div text-[#4C35DE]">
@@ -409,12 +359,23 @@ const Horoscope: React.FC = () => {
           </div>
 
           {/* Conditional rendering based on currentDiv */}
-          {currentDiv === "Today" && <TodaysContainer zodiacSign={zodiac} />}
+          {currentDiv === "Today" && <TodaysContainer zodiacSign={zodiac}
+            period = {"day"}
+          />}
           {currentDiv === "Yesterday" && (
-            <YesterdayContainer zodiacSign={zodiac} />
+            <YesterdayContainer zodiacSign={zodiac}
+            period = {"yesterday"}
+            />
           )}
-          {currentDiv === "Weekly" && <WeeklyContainer zodiacSign={zodiac} />}
-          {currentDiv === "Monthly" && <MonthlyContainer zodiacSign={zodiac} />}
+          {currentDiv === "Weekly" && <WeeklyContainer zodiacSign={zodiac} 
+            period = {"week"}
+          />}
+          {currentDiv === "Monthly" && <MonthlyContainer zodiacSign={zodiac} 
+            period = {"month"}
+
+
+          
+          />}
           {currentDiv === "Annually" && <AnnualContainer zodiacSign={zodiac} />}
         </div>
       </div>

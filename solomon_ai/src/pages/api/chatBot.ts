@@ -15,6 +15,8 @@ export default async function handler(
     try {
       const { userId, message, conversationId, userInfo } = req.body;
 
+
+      console.log("Logging the current Converstaion id", conversationId)
       let currentConversationId = conversationId;
 
       let existingMessage = await db.messages.findFirst({
