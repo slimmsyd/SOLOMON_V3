@@ -317,6 +317,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       {/* Bottom Container */}
 
       <div className="flex flex-col gap-[22px]">
+
+
         {" "}
         {/* <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
           <div className="mainIcon !w-[20px] !h-[20px]">
@@ -332,6 +334,20 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
           <p className="hover:text-[#807f7f]">Numerology Guidance</p>
         </button> */}
+        
+
+        <Link
+          href="/dreamCalculator"
+          className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
+        >
+          <div className="mainIcon !w-[20px] !h-[20px]">
+            <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
+          </div>
+
+          <p className="hover:text-[#807f7f]">Dream Calculator </p>
+        </Link>
+
+        
         <Link
           href="/astrologicalHoroscope"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "

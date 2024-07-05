@@ -933,6 +933,7 @@ button  > p, a > p {
   border-radius: 8px;
   border: 0.5px solid #807f7f57;
   overflow-x: hidden;
+  position: relative;
 }
 
 .chatDashBoardContainer {
@@ -1239,6 +1240,8 @@ button  > p, a > p {
   .chatFormSubmit {
     width: 99% !important;
     padding: 15px 15px !important;
+    min-width: auto !important;
+    
   }
 }
 
@@ -1252,6 +1255,15 @@ button  > p, a > p {
   align-items: end;
   font-size: 14px;
   position: fixed;
+}
+@media screen and (max-width: 1180px)
+{
+  .chatFormSubmit {
+    padding: 15px 0px;
+    min-width: 650px ;
+    width: auto;
+
+  }
 }
 
 .chatFormSubmit textarea {
