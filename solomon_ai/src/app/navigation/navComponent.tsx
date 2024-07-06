@@ -116,14 +116,14 @@ const NavComponent: React.FC<PopupProps> = ({
               Features
             </Link>
           </li>
-          <li className="px-8">
-            {/* <Link
+          {/* <li className="px-8">
+             <Link
               href="/"
               className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
             >
               Pricing
-            </Link> */}
-          </li>
+            </Link> 
+          </li> */}
           <li className="px-8">
             <Link
               href="/"
