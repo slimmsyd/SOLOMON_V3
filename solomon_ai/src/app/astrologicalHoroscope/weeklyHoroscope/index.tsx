@@ -5,14 +5,62 @@ import arrowLeft from '../../../../public/assets/Chat/arrowLeft.png'
 
 
 
+
 interface Horoscope { 
-    zodiacSign: string;
+  zodiacSign: string;
+  period: string;
 }
 
 
+
 export const WeeklyContainer: FC<Horoscope> = ({
-    zodiacSign
+    zodiacSign,
+    period
   }) => {
+
+    const [horoscope, setHoroscope] = useState(null);
+    const [error, setError] = useState(null);
+
+
+
+    useEffect(() => {
+      console.log("Logging in the container of weekly", zodiacSign)
+      const fetchHoroscope = async (zodiacSign) => {
+        const url = `https://horoscope-daily-api.p.rapidapi.com/horoscope/${period}?sign=${zodiacSign}`;
+  
+        const options = {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-key': '992fcc9ef2mshb8d3038e15f69ecp144a29jsnb7bd0bcedd63',
+            'x-rapidapi-host': 'horoscope-daily-api.p.rapidapi.com'
+          }
+        };
+  
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          const data = await response.json();
+          console.log("Logging the weekly data", data)
+          setHoroscope(data[0]);
+        } catch (error) {
+          setError(error);
+          console.error('Error fetching horoscope:', error);
+        }
+      };
+  
+      fetchHoroscope(zodiacSign.toLowerCase());
+    }, [zodiacSign]);
+
+
+    useEffect(() => { 
+
+
+    },[horoscope])
+  
+
 
     return ( 
         <div className="flex md:flex-row flex-col gap-[15px] rounded-[10px] md:gap-[0px border-[0.5px] border-[#737373] justify-between accountDiv">
@@ -27,7 +75,7 @@ export const WeeklyContainer: FC<Horoscope> = ({
           </div>
           <p className="text-white">Sun Sign: {zodiacSign}</p>
           <p className="text-[14px] text-white">
-            Weekly
+            {horoscope}
           </p>
       
         </div>

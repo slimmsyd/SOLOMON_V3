@@ -44,3 +44,4 @@ export interface Message {
 
 export type SetConversations = (conversations: Conversation[] | ((prev: Conversation[]) => Conversation[])) => void;
 export type SetCurrentConversationId = (id: number | string) => void;
+
