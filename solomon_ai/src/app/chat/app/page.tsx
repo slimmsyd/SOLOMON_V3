@@ -162,7 +162,7 @@ const ChatDashboard: React.FC = () => {
     localStorage.removeItem("borderClasses");
     localStorage.removeItem("currentQuestion");
 
-    console.log("clearing the current conversation ID");
+    // console.log("clearing the current conversation ID");
     setResponses([]);
     setCurrentConversationId(null);
   }, []);
@@ -577,13 +577,13 @@ const ChatDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Current message:", message);
+    // console.log("Current message:", message);
   }, [message]);
 
   //Get access to the current conversation Name and Id
 
   useEffect(() => {
-    console.log("Loggin the conversations in the app useEffect", conversations);
+    // console.log("Loggin the conversations in the app useEffect", conversations);
   }, [conversations]);
 
   return (

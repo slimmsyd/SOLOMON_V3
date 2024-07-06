@@ -6,6 +6,7 @@ import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { isClient } from "@/utilis/isClient";
 import useCreateConversation from "@/app/hooks/createConversation";
 import useConversations from "@/app/hooks/useConversations";
+import LoadingComponent from "@/app/components/helper/Loading";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { v4 as uuidv4 } from "uuid";
@@ -21,6 +22,7 @@ interface Horoscope {
 export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
   const [horoscope, setHoroscope] = useState(null);
   const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [currentConversationId, setCurrentConversationId] = useState<
     number | string | null
@@ -126,10 +128,12 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
   useEffect(() => {
     const currentDate = new Date().toISOString().split("T")[0];
     const storedHoroscope = localStorage.getItem(`horoscope-${currentDate}`);
+    setLoading(true);
 
 
     if (storedHoroscope) {
       setHoroscope(JSON.parse(storedHoroscope));
+      setLoading(false)
     } else {
       const sendGreetings = async () => {
         if (!currentConversationId && session?.user?.id) {
@@ -159,7 +163,7 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
 
 
 
-  }, [zodiacSign, session?.user?.id, currentConversationId, userId]);
+  }, [zodiacSign, session?.user?.id, currentConversationId, userId, loading]);
 
 
 
@@ -193,7 +197,17 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
           />
         </div>
         <p className="text-white">Sun Sign: {zodiacSign}</p>
-        <p className="text-[14px] text-white">{horoscope}</p>
+
+      {!loading ? (
+      <p className="text-[14px] text-white">{horoscope}</p>
+
+
+      ):  ( 
+
+        <LoadingComponent />
+
+      )
+    }
       </div>
     </div>
   );
