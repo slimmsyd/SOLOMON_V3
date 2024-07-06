@@ -127,10 +127,8 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
     const currentDate = new Date().toISOString().split("T")[0];
     const storedHoroscope = localStorage.getItem(`horoscope-${currentDate}`);
 
-    console.log("Loggign the stored Horoscope", storedHoroscope);
 
     if (storedHoroscope) {
-      console.log("THere isn't a stored horoscope", storedHoroscope);
       setHoroscope(JSON.parse(storedHoroscope));
     } else {
       const sendGreetings = async () => {

@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, FormEvent } from "react";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
 
@@ -11,6 +10,7 @@ import ButtonLoadingComponent from "../components/helper/buttonComponentLoading"
 import { DreamDashboard } from "./DreamDashboard";
 import { Header } from "../components/Header";
 import { ChatMessagesContainer } from "../chat/app/ChatMessage";
+import { SignUpMessageContainer } from "../chat/app/components/SignUpMessageContainer";
 
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
@@ -24,9 +24,6 @@ import { fetchUserInfo } from "@/utilis/fetchUserInfo";
 import { greetings } from "@/utilis/randomGreeting";
 import { useChatConversation } from "../hooks/ConversationContext";
 
-//Images
-import VirgoImage from "../../../public/assets/zodiacIcons/virgopng.png";
-import ChatMessage from "../components/Chatmessage";
 
 import useCreateConversation from "../hooks/createConversation";
 import LoadingComponent from "../components/helper/Loading";
@@ -211,13 +208,11 @@ const Horoscope: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setMessagesIsLoading(true);
-    console.log("Logging Conversation Id in the Submit", currentConversationId);
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
 
         await createConversation().then((convoID) => {
-          console.log("Logging the CONVO ID", convoID);
 
           setCurrentConversationId(convoID); // Store the convo ID if needed
           sessionStorage.setItem("currentConversationId", convoID);
@@ -239,11 +234,6 @@ const Horoscope: React.FC = () => {
       // Ensure that currentConversationId is updated before proceeding
       const updatedConversationId = sessionStorage.getItem(
         "currentConversationId"
-      );
-
-      console.log(
-        "Logging the updated conversationalID",
-        updatedConversationId
       );
 
       // 1. Set up the new response without any bot response yet.
@@ -287,11 +277,6 @@ const Horoscope: React.FC = () => {
           })
         );
 
-        console.log(
-          "Loggign the current Conversation on a new click ",
-          currentConversationId
-        );
-
         //Add the conversations arrawy or update
       } catch (error) {
         console.error("Error handling submission:", error);
@@ -303,6 +288,23 @@ const Horoscope: React.FC = () => {
   //Fetch if there a dream storageID to go by
   useEffect(() => {
     let dreamStorage;
+
+    const dreamSessionStorage = sessionStorage.getItem("dreamConversationID");
+    const localDreamStorage = localStorage.getItem("dreamConversationID");
+    if (dreamSessionStorage) {
+      setDreamLocalStorage(dreamSessionStorage as any);
+
+      dreamStorage = dreamSessionStorage;
+    } else if (localDreamStorage) {
+      setDreamLocalStorage(localDreamStorage as any);
+      dreamStorage = localDreamStorage;
+    }
+
+  
+  }, [dreamLocalStorage]);
+
+  useEffect(() => {
+    let dreamStorage: string;
     const dreamSessionStorage = sessionStorage.getItem("dreamConversationID");
     const localDreamStorage = localStorage.getItem("dreamConversationID");
     if (dreamSessionStorage) {
@@ -312,46 +314,27 @@ const Horoscope: React.FC = () => {
       setDreamLocalStorage(localDreamStorage as any);
       dreamStorage = localDreamStorage;
     }
-
-    if (dreamLocalStorage === localDreamStorage) {
-    }
-
-  }, [dreamLocalStorage]);
-
-  useEffect(() => {
- 
-
   }, []);
 
   const messagesRefCounter = useRef(0);
-  useEffect(() => {
-
-  }, [messagesRefCounter]);
+  useEffect(() => {}, [messagesRefCounter]);
   const fetchMessagesForConversation = async (conversationId: string) => {
     messagesRefCounter.current += 1;
     if (messagesRefCounter.current > 1) {
       return;
     }
 
-
-    console.log("Logging fetch before checking for session")
-    console.log("Logging the fech before sessioon with ID",conversationId )
-
     if (!session || !session.user || !session.user.id) {
-      console.error("No user session available")
+      console.error("No user session available");
       return;
     }
     setMessagesIsLoading(true);
-
-
-    console.log("Logging the session Id after return", session?.user.id)
 
     if (!conversationId) {
       console.error("no conversatoin ID");
       return;
     } else {
       try {
-   
         const response = await fetch(
           `/api/storedMessages?authorId=${session?.user.id}&conversationId=${conversationId}`
         );
@@ -359,9 +342,6 @@ const Horoscope: React.FC = () => {
           throw new Error("Failed to fetch messages");
         }
         const messages = await response.json();
-
-        console.log("Logging response on return", response)
-        console.log("Logging the fetch messages on return", messages)
 
 
 
@@ -373,7 +353,6 @@ const Horoscope: React.FC = () => {
           id: msg.id,
         }));
 
-    
         setResponses([]);
 
         if (response.ok) {
@@ -397,38 +376,26 @@ const Horoscope: React.FC = () => {
   }, []);
 
   useEffect(() => {
+  }, [responses]);
+
+  useEffect(() => {
     setResponses([]); // Clear previous messages
 
-
-
-    let dreamStorage;
-    const dreamSessionStorage = sessionStorage.getItem("dreamConversationID");
-    const localDreamStorage = localStorage.getItem("dreamConversationID");
-    if (dreamSessionStorage) {
-      setDreamLocalStorage(dreamSessionStorage as any);
-      dreamStorage = dreamSessionStorage;
-    } else if (localDreamStorage) {
-      setDreamLocalStorage(localDreamStorage as any);
-      dreamStorage = localDreamStorage;
-
+    // Fetch messages for the current conversation if needed
+    if (currentConversationId === null) {
+      console.log("Logging the fetch convo before", currentConversationId);
+      fetchMessagesForConversation(
+        (currentConversationId as any) || localStorageConvoId
+      );
+    } else {
+      fetchMessagesForConversation(
+        (currentConversationId as any) || localStorageConvoId
+      );
+      console.log("Fech is doing good", currentConversationId);
     }
 
- 
-      // Fetch messages for the current conversation if needed
-      if (currentConversationId === null) {
-        console.log("Logging the fetch convo before", currentConversationId)
-        fetchMessagesForConversation(
-          (currentConversationId as any) || localStorageConvoId
-        );
-      } else {
-        fetchMessagesForConversation(
-            (currentConversationId as any) || localStorageConvoId
-          );
-        console.log("Fech is doing good", currentConversationId);
-      }
+
   }, [currentConversationId]);
-  
-  
 
   //Handling the peroannl year
 
@@ -454,10 +421,12 @@ const Horoscope: React.FC = () => {
         {/* Dashboard Component  */}
 
         <div className="chatDashBoardContainer">
-          {currentConversationId || dreamLocalStorage ? (
-            <ChatMessagesContainer responses={responses || "null"} />
+          {dreamLocalStorage ? (
+            <SignUpMessageContainer responses={responses || "null"} />
           ) : (
-                <LoadingComponent />
+            <div className="w-full flex flex-center justify-center">
+              <LoadingComponent />
+            </div>
           )}
         </div>
 

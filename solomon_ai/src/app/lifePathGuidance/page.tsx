@@ -209,7 +209,6 @@ const Profile: React.FC = () => {
     // Retrieve the conversations from session storage
     const localStorageConversations = sessionStorage.getItem("conversations");
 
-    console.log("Logging the localStorage Convos", localStorageConversations);
 
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
