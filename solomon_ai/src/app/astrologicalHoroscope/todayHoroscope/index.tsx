@@ -182,41 +182,6 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
   }, [horoscope]);
 
 
-  const fetchEphemerisData = async () => {
-    const url = 'http://ephemeris.kibo.cz/api/v1/planets';
-    const payload = {
-      event: '20230101120000', // Example date in YYYYMMDDhhmmss format
-      planets: ['Sun', 'Moon'],
-      topo: [100.75, 1.5, 0], // Example longitude, latitude, and geoalt
-      zodiac: 'sidereal'
-    };
-  
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-
-
-      });
-
-      
-
-      console.log("Logging the response in the joint", response)
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log('Ephemeris data:', data);
-    } catch (error) {
-      console.error('Error fetching ephemeris data:', error);
-    }
-  };
-  
-  fetchEphemerisData();
   
   return (
     <div className="flex md:flex-row flex-col gap-[15px] rounded-[10px] md:gap-[0px border-[0.5px] border-[#737373] justify-between accountDiv">

@@ -18,6 +18,12 @@ export default async function handler(
       console.log("Request body Recived", req.body)
 
 
+
+
+
+      
+
+
      
       // console.log("Logging the conversation histroy", conversationHistory)
 
