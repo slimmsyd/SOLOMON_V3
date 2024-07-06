@@ -10,7 +10,6 @@ import ButtonLoadingComponent from "../components/helper/buttonComponentLoading"
 import { DreamDashboard } from "./DreamDashboard";
 import { Header } from "../components/Header";
 import { ChatMessagesContainer } from "../chat/app/ChatMessage";
-import { SignUpMessageContainer } from "../chat/app/components/SignUpMessageContainer";
 
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
@@ -23,7 +22,6 @@ import { fetchUserInfo } from "@/utilis/fetchUserInfo";
 
 import { greetings } from "@/utilis/randomGreeting";
 import { useChatConversation } from "../hooks/ConversationContext";
-
 
 import useCreateConversation from "../hooks/createConversation";
 import LoadingComponent from "../components/helper/Loading";
@@ -208,12 +206,14 @@ const Horoscope: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setMessagesIsLoading(true);
+
+
+
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
 
         await createConversation().then((convoID) => {
-
           setCurrentConversationId(convoID); // Store the convo ID if needed
           sessionStorage.setItem("currentConversationId", convoID);
           sessionStorage.setItem("dreamConversationID", convoID);
@@ -221,7 +221,6 @@ const Horoscope: React.FC = () => {
           let dreamLocalStorageConvoId: any;
           localStorage.setItem("currentConversationId", convoID);
           localStorage.setItem("dreamConversationID", convoID);
-
           localStorageConvoId = localStorage.getItem("currentConversationId");
           dreamLocalStorageConvoId = localStorage.getItem(
             "dreamConversationID"
@@ -277,6 +276,9 @@ const Horoscope: React.FC = () => {
           })
         );
 
+
+        console.log("Logging the responses in the handleSubmit", responses)
+
         //Add the conversations arrawy or update
       } catch (error) {
         console.error("Error handling submission:", error);
@@ -284,8 +286,9 @@ const Horoscope: React.FC = () => {
     }
   };
 
-  //Save the dreamLocal Storage State
-  //Fetch if there a dream storageID to go by
+
+
+  //This is used for when we add it and update it on first conversation Submit
   useEffect(() => {
     let dreamStorage;
 
@@ -299,10 +302,9 @@ const Horoscope: React.FC = () => {
       setDreamLocalStorage(localDreamStorage as any);
       dreamStorage = localDreamStorage;
     }
-
-  
   }, [dreamLocalStorage]);
 
+  //This just does it on render 
   useEffect(() => {
     let dreamStorage: string;
     const dreamSessionStorage = sessionStorage.getItem("dreamConversationID");
@@ -343,8 +345,6 @@ const Horoscope: React.FC = () => {
         }
         const messages = await response.json();
 
-
-
         // Map API response to expected format in state
         //Naming conventions matter
         const formattedMessages = messages.map((msg: Message) => ({
@@ -376,10 +376,11 @@ const Horoscope: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log("Logging the responses on Re-render", responses);
   }, [responses]);
 
   useEffect(() => {
-    setResponses([]); // Clear previous messages
+    // setResponses([]); // Clear previous messages
 
     // Fetch messages for the current conversation if needed
     if (currentConversationId === null) {
@@ -393,8 +394,6 @@ const Horoscope: React.FC = () => {
       );
       console.log("Fech is doing good", currentConversationId);
     }
-
-
   }, [currentConversationId]);
 
   //Handling the peroannl year
@@ -421,8 +420,8 @@ const Horoscope: React.FC = () => {
         {/* Dashboard Component  */}
 
         <div className="chatDashBoardContainer">
-          {dreamLocalStorage ? (
-            <SignUpMessageContainer responses={responses || "null"} />
+          {dreamLocalStorage  ? (
+            <ChatMessagesContainer responses={responses || "null"} />
           ) : (
             <div className="w-full flex flex-center justify-center">
               <LoadingComponent />
