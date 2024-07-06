@@ -23,7 +23,7 @@ export const DreamDashboard:  FC<Dashboard> = ({
           <div className=" pb-[2rem] relative">
             <h2>{greeting}</h2>
             <h2>welcome to dream interpeter</h2>
-            <p id="greyText"> synopsis of your astrological energy </p>
+            <p id="greyText"> synopsis of the dream world </p>
           </div>
 
           <div className="color-div text-[#4C35DE]">

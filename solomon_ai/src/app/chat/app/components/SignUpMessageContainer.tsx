@@ -34,15 +34,9 @@ export const SignUpMessageContainer: FC<ChatMessageProps> = ({
   }, []);
 
   useEffect(() => {
-    console.log(
-      "logging the first message in hte isignUPmessage useff",
-      responses
-    );
+ 
 
-    console.log(
-      "Also logging the state of reponses in the SIgnUPMessage container",
-      responses,
-    );
+
   }, [responses]);
 
   //We want to get the latest storage when we swith the platform
