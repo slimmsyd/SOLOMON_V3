@@ -616,7 +616,7 @@ color:rgb(255 255 255 / 0.6)
 .homePopupContainer {
   /* border: 0.5px solid #2f0ffd; */
   width: 500px;
-  background:rgb(20 20 20/1);
+  background:rgb(20 20 20 / 70%);
   height: 700px;
   position: relative;
   border-radius: 10px;
