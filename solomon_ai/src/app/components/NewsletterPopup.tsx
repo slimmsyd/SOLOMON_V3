@@ -2,10 +2,9 @@ import Link from "next/link";
 import axios from "axios";
 import React, { FC, FormEvent, RefObject, useEffect, useState } from "react";
 import Image from "next/image";
-import NewsImage from "../../../public/assets/homePage/NewsLetter_Image.png";
-import SwordIamge from "../../../public/assets/homePage/Sword_Icon.png";
-import ChestImage from "../../../public/assets/homePage/Chest_Icon.png";
-import JoinImage from "../../../public/assets/homePage/JoinList.png";
+
+import PopupImage from '../../../public/assets/homePage/popup_header.png'
+
 import { SuccessPopup } from "./SucessPopup";
 import FaceIcon from "../../../public/faceIconSolomon.png";
 
@@ -75,30 +74,45 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
           </div>
 
           <div className="homePopupFormContainer w-full flex flex-col items-center justify-center">
-            <p className="text-gray font-thin">
-              Solomon AI | Spirtual AI Intergration
-            </p>
 
-            <div className=" homePopupInnerWrapper flex flex-col items-center gap-[5px] mb-[20px] md:mb-[50px] mt-[20px] mx-[20px]">
-              <h2 className="text-gray font-light text-[28px] text-center">
+            <div className = "popupHeader"> 
+              <Image 
+              src = {PopupImage} 
+          
+                alt="popupheader"
+              />
+
+            </div>
+
+       
+
+            <div className=" homePopupInnerWrapper text-left flex flex-col items-start gap-[5px] mb-[20px] md:mb-[50px] mt-[20px] mx-[20px]">
+              <h2 className=" font-light text-[28px] text-left">
                 Join the beta waiting list.
               </h2>
-              <p className="text-gray text-[14px]">
+              <p className="text-gray text-[14px] text-left">
                 There is an undeniable power to having universal guidance at
                 your finger tips.
               </p>
               <h2></h2>
-              <p id="greyText">
+              <p id="greyText" className = "text-left">
                 Wisdom is a forever process, let us aid in the ways{" "}
               </p>
             </div>
 
-            <form onSubmit={joinSubmit} className="flex flex-col  gap-[15px] ">
+            <form onSubmit={joinSubmit} className="flex flex-col w-full  gap-[15px] ">
+        
               <input
                 className="w-full h-[38px] font-thin text-white"
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Enter Email"
+              />
+              <input
+                className="w-full h-[38px] font-thin text-white"
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder="Location (Not Required)"
               />
 
               <button className="joinBeta">Join the waitlist</button>
