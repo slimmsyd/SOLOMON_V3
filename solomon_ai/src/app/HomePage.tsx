@@ -408,6 +408,15 @@ export default function HomePage() {
     setIsPopupVisible(!isPopupVisible);
   };
 
+  useEffect(() => {
+    const isFirstVisit = localStorage.getItem("isFirstVisit");
+    if (!isFirstVisit) {
+      // First time visitor
+      togglePopup();
+      localStorage.setItem("isFirstVisit", "true");
+    }
+  }, []);
+
   const scrollToSection = () => {
     if (refTextTrigger.current) {
       refTextTrigger.current.scrollIntoView({ behavior: "smooth" });
