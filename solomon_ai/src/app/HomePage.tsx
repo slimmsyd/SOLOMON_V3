@@ -27,7 +27,7 @@ export default function HomePage() {
     return (
       <div
         className={` ${
-          isOpen ? "!h-[200px]" : "h-[75px"
+          isOpen ? "!h-[280px]" : "h-[75px"
         } transform duration-200	transition-all	 ease-in-out	  w-full flex items-start justify-start lg:h-[75px] h-[85px] overflow-y-hidden flex-col my-2 border border-[#ffffff4a] rounded`}
       >
         <div
@@ -892,13 +892,7 @@ export default function HomePage() {
                     className="w-full h-[505px]"
                   />
 
-                  {/* <Image
-                          src={info.image}
-                          width={100}
-                          height={100}
-                          alt="Animated ying yang"
-                          className="border border-white/50 w-full h-full rounded"
-                        /> */}
+                
                 </figure>
               </div>
             </div>
@@ -936,13 +930,6 @@ export default function HomePage() {
                     className="w-full h-[505px]"
                   />
 
-                  {/* <Image
-                          src={info.image}
-                          width={100}
-                          height={100}
-                          alt="Animated ying yang"
-                          className="border border-white/50 w-full h-full rounded"
-                        /> */}
                 </figure>
               </div>
             </div>
@@ -980,13 +967,7 @@ export default function HomePage() {
                     className="w-full h-[505px]"
                   />
 
-                  {/* <Image
-                          src={info.image}
-                          width={100}
-                          height={100}
-                          alt="Animated ying yang"
-                          className="border border-white/50 w-full h-full rounded"
-                        /> */}
+           
                 </figure>
               </div>
             </div>
@@ -1014,177 +995,7 @@ export default function HomePage() {
 
           <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
         </section>
-        {/* <section className="w-full h-auto px-6 py-[4rem]">
-        <h2
-                className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]"
-              >
-                Pricing
-              </h2>
-          <p className="w-full py-1 text-left text-white montserrat">
-            No surprise fees. No contracts.
-          </p>
-          <div className="pt-1 flex items-center justify-start flex-col lg:flex-row lg:justify-around">
-            {planData.map(
-              ({
-                id,
-                planTitle,
-                price,
-                planDesc,
-                desc1,
-                desc2,
-                desc3,
-                freeQuote,
-              }) => {
-                return (
-                  <div
-                    key={id}
-                    className="w-full flex items-center justify-center flex-col"
-                  >
-                    {id === 1 || id === 3 ? (
-                      <div className="w-4/5 mt-6 p-8 flex items-center justify-center flex-col gap-[2rem] bg-[#140e1c] border border-white/20 rounded">
-                        <div className="w-full flex items-center justify-center flex-col text-center gap-4">
-                          <p className="text-[1.5rem] fira-sans text-white capitalize">
-                            {planTitle}
-                          </p>
-                          <h3 className="montserrat text-white">
-                            {price}
-                            <span> / Month</span>
-                          </h3>
-                          <p className="montserrat text-white capitalize">
-                            {planDesc}
-                          </p>
-                        </div>
-                        <hr className="w-full h-[1px] bg-white/50" />
-                        <ul className="w-full flex items-center justify-center flex-col gap-4">
-                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            {desc1}
-                          </li>
-                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            {desc2}
-                          </li>
-                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            {desc3}
-                          </li>
-                        </ul>
-                        <button className="text-white montserrat border border-white rounded-sm px-8 py-3 cursor-pointer duration-300 ease-in-out hover:bg-white hover:text-[#1f1f1f]">
-                          Choose Plan
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="w-4/5 mt-6 p-8 flex items-center justify-center flex-col gap-[4rem] bg-[#51307b] border border-[#995de8] rounded">
-                        <div className="w-full flex items-center justify-center flex-col text-center gap-4">
-                          <p className="text-[1.5rem] fira-sans text-white capitalize">
-                            {planTitle}
-                          </p>
-                          <h3 className="montserrat text-white">
-                            {price}
-                            <span> / Month</span>
-                          </h3>
-                          <p className="montserrat text-white capitalize">
-                            {planDesc}
-                          </p>
-                        </div>
-                        <hr className="w-full h-[1px] bg-white/50" />
-                        <ul className="w-full flex items-center justify-center flex-col gap-4">
-                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            {desc1}
-                          </li>
-                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            {desc2}
-                          </li>
-                          <li className="flex items-center justify-center gap-4 montserrat text-white capitalize">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            {desc3}
-                          </li>
-                        </ul>
-                        <button className="text-white montserrat border border-white rounded-sm px-8 py-3 cursor-pointer duration-300 ease-in-out hover:bg-white hover:text-[#51307b]">
-                          Choose Plan
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-            )}
-          </div>
-        </section> */}
+       
         <section className="w-full h-auto px-6 py-[4rem] flex items-center justify-center flex-col">
           <h2 className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]">
             Frequently Ask Questions
