@@ -487,8 +487,8 @@ figure video {
   background-clip: text;
   text-fill-color: transparent;
   font-weight: bolder;
-  font-size: 18px;
-  text-align: center;
+  font-size: 16px;
+  text-align: left;
 }
 
 
@@ -511,14 +511,15 @@ color:rgb(255 255 255 / 0.6)
 .homePopup {
   display: flex;
   position: fixed;
-  align-items: center;
-  justify-content: center;
+  align-items: end;
+  justify-content: end;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 90;
+  padding: 2rem;
   /* display: none; */
 }
 
@@ -600,14 +601,26 @@ color:rgb(255 255 255 / 0.6)
   .homePopupFormContainer > form > button {
   }
 }
+.popupHeader
+{
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 0px 1.2rem;
+}
+.popupHeader  > img  
+{ 
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
 .homePopupContainer {
   /* border: 0.5px solid #2f0ffd; */
-  width: 400px;
+  width: 500px;
   background:rgb(20 20 20/1);
-  height: 505px;
+  height: 700px;
   position: relative;
   border-radius: 10px;
-  padding: 1.5rem 0rem;
+  /* padding: 1.5rem 0rem; */
   display: flex;
   justify-content: start;
   flex-direction: row;
@@ -638,7 +651,8 @@ color:rgb(255 255 255 / 0.6)
 }
 
 .homePopupFormContainer form {
-  width: 60%;
+  /* width: 60%; */
+  padding: 0px 1.2rem;
   display: flex;
 
   /* justify-content: end;
@@ -692,12 +706,14 @@ color:rgb(255 255 255 / 0.6)
   justify-content: center;
   position: absolute;
   top: -15%;
-  right: -8%;
+  left: -8%;
   transform: rotate(0deg);
   width: 32px;
   height: 32px;
   z-index: 95;
 }
+
+
 .zodiacPopup {
   top: 0%;
   right: 0% !important;
