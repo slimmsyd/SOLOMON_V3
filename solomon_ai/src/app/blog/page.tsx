@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import NavComponent from "../navigation/navComponent";
 import Image from "next/image";
+import { Popup } from "../components/NewsletterPopup";
 import Footer from "../components/Footer";
 import solomonHeaderImg from "../../public/assets/chat-guidelines.png";
 import { features } from "process";
@@ -60,6 +61,9 @@ export default function BlogPage() {
 
   return (
     <div>
+
+{isPopupVisible && <Popup togglePopup={togglePopup} />}
+
       <main className="w-full h-auto">
         <NavComponent
           togglePopup={togglePopup}
