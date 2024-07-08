@@ -10,7 +10,9 @@ import FaceIcon from "../../../public/faceIconSolomon.png";
 
 interface PopupProps {
   togglePopup: () => void;
-}
+};
+
+
 
 export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
   const [email, setEmail] = useState<string>("");

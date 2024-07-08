@@ -11,7 +11,7 @@ export default function BlogPage() {
       <NavComponent />
       <div className="layout-one my-[100px] px-[4rem] md:px-[1rem]  ">
         <div className="layout-header ">
-          <div className="flex flex-col  mt-[50px] md:w-auto w-full gap-[1.5rem] w-3/4">
+          <div className="flex flex-col lg:pl-[4rem] pl-[0px]  mt-[50px] md:w-auto w-full gap-[1.5rem] w-3/4">
             <span>spiritual ai 10 min read</span>
             <h2 className="font-bold">Return of an Unifed God.</h2>
 

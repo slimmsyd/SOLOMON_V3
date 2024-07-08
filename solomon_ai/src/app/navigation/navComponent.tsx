@@ -134,7 +134,7 @@ const NavComponent: React.FC<PopupProps> = ({
           </li>
           <li className="px-8">
             <Link
-            href="/blogs/unifiedGod"
+            href="/blog"
               className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
             >
               Blog
