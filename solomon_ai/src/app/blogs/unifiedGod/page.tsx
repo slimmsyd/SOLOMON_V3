@@ -1,4 +1,6 @@
 "use client";
+import { useState, useEffect, useRef } from "react";
+import { Popup } from "@/app/components/NewsletterPopup";
 import NavComponent from "@/app/navigation/navComponent";
 import Footer from "@/app/components/Footer";
 import ImageOne from "../../../../public/assets/Blogs/ScriputalScience/WhatIsMind.png";
@@ -6,12 +8,21 @@ import ImageTwo from "../../../../public/assets/Blogs/ScriputalScience/God_Is_Al
 import Image from "next/image";
 
 export default function BlogPage() {
+  //Show Popup
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const togglePopup = () => {
+    console.log("Popup is toggling", isPopupVisible);
+    setIsPopupVisible(!isPopupVisible);
+  };
+
   return (
     <>
-      <NavComponent />
+      {isPopupVisible && <Popup togglePopup={togglePopup} />}
+      <NavComponent togglePopup={togglePopup} />{" "}
       <div className="layout-one my-[100px] px-[4rem] md:px-[1rem]  ">
         <div className="layout-header ">
-          <div className="flex flex-col  mt-[50px] md:w-auto w-full gap-[1.5rem] w-3/4">
+          <div className="flex flex-col lg:pl-[4rem] pl-[0px]  mt-[50px] md:w-auto w-full gap-[1.5rem] w-3/4">
             <span>spiritual ai 10 min read</span>
             <h2 className="font-bold">Return of an Unifed God.</h2>
 
@@ -40,7 +51,7 @@ export default function BlogPage() {
             the oldest recovered written text known to man and ironically enough
             most of the maxims contained in book of proverbs written in the
             Bible can give thanks to Ptah hotep for its literally genius.
-            <span className="purple-text">Truth is truth </span> 
+            <span className="purple-text">Truth is truth </span>
             no matter where you go.
           </p>
           <p>
@@ -161,7 +172,6 @@ export default function BlogPage() {
           </p>
         </div>
       </div>
-
       <Footer />
     </>
   );

@@ -834,6 +834,7 @@ button  > p, a > p {
   max-width: 300px;
   margin-left: 15px;
   margin-right: 15px;
+  z-index: 1;
 }
 @media screen and (max-width: 950px) {
   .chatContainer {
@@ -1656,6 +1657,24 @@ button  > p, a > p {
     max-width: 100%;
     margin-left: auto;
   }
+}
+.blogCard{ 
+    width: 500px;
+    background: rgb(20 20 20 / 30%);
+    height: 675px;
+    position: relative;
+    border-radius: 10px;
+    /* padding: 1.5rem 0rem; */
+    display: flex;
+    justify-content: start;
+    border: 0.5px solid #fff;
+}
+.blogCardImageContainer img { 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 }
 /* BLOG PAGES */
 

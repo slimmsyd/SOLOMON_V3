@@ -134,7 +134,7 @@ const NavComponent: React.FC<PopupProps> = ({
           </li>
           <li className="px-8">
             <Link
-            href="/blogs/unifiedGod"
+            href="/blog"
               className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
             >
               Blog
@@ -212,7 +212,7 @@ const NavComponent: React.FC<PopupProps> = ({
               </span>
             </Link>
 
-            <Link href="/blogs/unifiedGod" className="mobileNavLink">
+            <Link href="/blog" className="mobileNavLink">
               <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
                 Blog
               </span>

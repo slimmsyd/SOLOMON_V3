@@ -2,13 +2,13 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import React, { FC, RefObject } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import FaceIcon from "../../../../public/faceIconSolomon.png"
 import arrowLeft from "../../../../public/assets/Chat/arrowLeft.png";
 import searchIcon from "../../../../public/assets/Chat/searchIcon.png";
 import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
 import iconChat from "../../../../public/assets/Chat/iconChat.png";
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
 import { Conversation } from "../../../../types";
-import FaceIcon from "../../../../public/faceIconSolomon.png";
 // import { isClient } from "@/utilis/isClient";
 
 interface ChatContainerProps {
@@ -95,9 +95,14 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       const conversationArray: Conversation[] = JSON.parse(
         localStorageConversations
       );
-      setConversations?.(conversationArray); // Safe call with optional chaining
+      setConversations?.(conversationArray); // Safe call with optional chancing
+
+
+
     }
+
   }, [titleUpdated]);
+
 
   const [clientSplitUserName, setClientSplitUserName] =
     useState<string>(splitUserName);
@@ -122,7 +127,14 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     <div ref={chatContainerRef} className="chatContainer flex flex-col flex-1">
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
-        <div className="flex flex-row"></div>
+        <Link href = "/" className="flex flex-row">
+          <Image src = {FaceIcon}  
+            width={24}
+            height={24}
+            alt="Face Icon"
+          />
+
+        </Link>
         <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
           <div className="mainIcon">
             <Image alt="arrowLeft" src={arrowLeft} width={100} height={100} />
