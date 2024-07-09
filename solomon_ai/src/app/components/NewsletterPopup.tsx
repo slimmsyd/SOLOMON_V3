@@ -109,6 +109,7 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Enter Email"
+                required
               />
               <input
                 className="w-full h-[38px] font-thin text-white"

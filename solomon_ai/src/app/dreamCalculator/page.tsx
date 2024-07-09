@@ -4,6 +4,8 @@ import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
+import Image from "next/image";
+import ImageComponent from "./imageComponent";
 
 import ButtonLoadingComponent from "../components/helper/buttonComponentLoading";
 
@@ -28,6 +30,9 @@ import LoadingComponent from "../components/helper/Loading";
 
 //Images to Channel
 const Horoscope: React.FC = () => {
+  const midJourneyAPIToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTY5MjUsImVtYWlsIjoic3NhbmRlcnNzNDQ0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoic3NhbmRlcnNzNDQ0QGdtYWlsLmNvbSIsImlhdCI6MTcyMDQ3NDM1Nn0.1KUfGeAs_0DxeylUNkHExGXpvnmzhloW4tUjo83z9PM";
+
   const formRef = useRef<HTMLFormElement>(null);
 
   const {
@@ -207,8 +212,6 @@ const Horoscope: React.FC = () => {
     e.preventDefault();
     setMessagesIsLoading(true);
 
-
-
     if (isClient()) {
       if (!currentConversationId) {
         console.log("No conversation selected.");
@@ -276,8 +279,7 @@ const Horoscope: React.FC = () => {
           })
         );
 
-
-        console.log("Logging the responses in the handleSubmit", responses)
+        console.log("Logging the responses in the handleSubmit", responses);
 
         //Add the conversations arrawy or update
       } catch (error) {
@@ -285,8 +287,6 @@ const Horoscope: React.FC = () => {
       }
     }
   };
-
-
 
   //This is used for when we add it and update it on first conversation Submit
   useEffect(() => {
@@ -304,7 +304,7 @@ const Horoscope: React.FC = () => {
     }
   }, [dreamLocalStorage]);
 
-  //This just does it on render 
+  //This just does it on render
   useEffect(() => {
     let dreamStorage: string;
     const dreamSessionStorage = sessionStorage.getItem("dreamConversationID");
@@ -376,7 +376,11 @@ const Horoscope: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Logging the responses on Re-render", responses);
+
+      
+
+
+
   }, [responses]);
 
   useEffect(() => {
@@ -384,7 +388,6 @@ const Horoscope: React.FC = () => {
 
     // Fetch messages for the current conversation if needed
     if (currentConversationId === null) {
-      console.log("Logging the fetch convo before", currentConversationId);
       fetchMessagesForConversation(
         (currentConversationId as any) || localStorageConvoId
       );
@@ -392,11 +395,33 @@ const Horoscope: React.FC = () => {
       fetchMessagesForConversation(
         (currentConversationId as any) || localStorageConvoId
       );
-      console.log("Fech is doing good", currentConversationId);
     }
   }, [currentConversationId]);
 
-  //Handling the peroannl year
+  //Handling Image Generation
+
+  const generateImage = async () => {
+    try {
+      const response = await fetch("/api/imageGen", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: "Moorish God",
+        }),
+      });
+
+      const data = await response.json();
+      console.log("Generated Image URL:", data.imageUrl);
+    } catch (error) {
+      console.error("Error generating image:", error);
+    }
+  };
+
+
+
+
 
   return (
     <div className="chatDashboard">
@@ -414,14 +439,18 @@ const Horoscope: React.FC = () => {
 
       <div className="chatDashboardWrapper !h-full w-full text-left">
         {/* Guidelines Hader */}
+        <button onClick={generateImage}>Generate an Image nigga</button>
         <Header handleMobileChatBtnClick={handleMobileChatBtnClick} />
         <DreamDashboard greeting={greeting} />
 
         {/* Dashboard Component  */}
 
         <div className="chatDashBoardContainer">
-          {dreamLocalStorage  ? (
-            <ChatMessagesContainer responses={responses || "null"} />
+          {dreamLocalStorage ? (
+            <>
+              <ChatMessagesContainer responses={responses || "null"} />
+              <ImageComponent />
+            </>
           ) : (
             <div className="w-full flex flex-center justify-center">
               <LoadingComponent />
@@ -492,16 +521,6 @@ const Horoscope: React.FC = () => {
               </div>
             </div>
           </form>
-
-          {/* <ChatMessage
-              shouldAnimate={false}
-              response={{
-                question: "",
-                id: "",
-                response:
-                  "Based on your information provided, Solomon the wise was able to draw more conclusion on your across varies of culture to gain a more wholistic perspective Below or Images generated of your zodiac signs and there personality trains across different cultures. Best choice of action, take this information and ask me more in chat for more guidance on your unique being. You can click on each image to get a more in depth understanding of what they symbolized.",
-              }}
-            /> */}
         </div>
       </div>
     </div>
