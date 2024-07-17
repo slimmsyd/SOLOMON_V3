@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "./ProvidersWrapper";
 import { ConversationProvider } from "./hooks/ConversationContext";
+ import { GoogleTagManager } from '@next/third-parties/google'
 const inter = Inter({ subsets: ["latin"] });
+
 import icon from '../../public/favicon.ico'
 
 export const metadata: Metadata = {
@@ -23,6 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <GoogleTagManager gtmId="G-NQ5849R4JY" />
       <SessionWrapper>
         <ConversationProvider>
           <body className={inter.className}>{children}</body>

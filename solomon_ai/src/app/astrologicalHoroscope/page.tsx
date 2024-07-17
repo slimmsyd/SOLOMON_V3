@@ -7,10 +7,7 @@ import Image from "next/image";
 import arrowLeft from "../../../public/assets/Chat/arrowLeft.png";
 import dynamic from "next/dynamic";
 
-import LoadingComponent from "../components/helper/Loading";
-import ButtonLoadingComponent from "../components/helper/buttonComponentLoading";
 
-import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "../hooks/useSessionStorage";
@@ -20,6 +17,9 @@ import { checkSession } from "@/utilis/CheckSession";
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
 
 import { greetings } from "@/utilis/randomGreeting";
+
+//Helper functions 
+import { cleanText } from "@/utilis/cleanText";
 
 //Images
 import VirgoImage from "../../../public/assets/zodiacIcons/virgopng.png";
@@ -288,9 +288,7 @@ const Horoscope: React.FC = () => {
 
               <div className="flex flex-col gap-[5px]">
                 <h3>Explore your horoscopes</h3>
-                Discover detailed insights into your daily, weekly, monthly, and
-                annual horoscopes. Uncover what the stars have in store for you,
-                from yesterday's reflections to today's guidance and future
+                Discover detailed insights into your daily horoscopes. With unique perspective and insights by our trained Solomon AI Metaphysical
                 predictions.
               </div>
 
@@ -314,7 +312,7 @@ const Horoscope: React.FC = () => {
                   Yesterday
                 </button>
               </div> */}
-              <div className="relative">
+              {/* <div className="relative">
                 <button onClick={(e) => moveTransitionLine(e.target)}>
                   Weekly
                 </button>
@@ -323,7 +321,7 @@ const Horoscope: React.FC = () => {
                 <button onClick={(e) => moveTransitionLine(e.target)}>
                   Monthly
                 </button>
-              </div>
+              </div> */}
               {/* <div className="relative">
                 <button onClick={(e) => moveTransitionLine(e.target)}>
                   Annually
@@ -367,16 +365,14 @@ const Horoscope: React.FC = () => {
             period = {"yesterday"}
             />
           )}
-          {currentDiv === "Weekly" && <WeeklyContainer zodiacSign={zodiac} 
+          {/* {currentDiv === "Weekly" && <WeeklyContainer zodiacSign={zodiac} 
             period = {"week"}
           />}
           {currentDiv === "Monthly" && <MonthlyContainer zodiacSign={zodiac} 
             period = {"month"}
 
-
-          
           />}
-          {currentDiv === "Annually" && <AnnualContainer zodiacSign={zodiac} />}
+          {currentDiv === "Annually" && <AnnualContainer zodiacSign={zodiac} />} */}
         </div>
       </div>
     </div>
