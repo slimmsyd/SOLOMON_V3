@@ -383,7 +383,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         </Link>
 
         
-        {/* <Link
+        <Link
           href="/astrologicalHoroscope"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
         >
@@ -392,7 +392,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           </div>
 
           <p className="hover:text-[#807f7f] whitespace-nowrap ">Daily Horoscope Guidance </p>
-        </Link> */}
+        </Link>
 
         
         <Link
