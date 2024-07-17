@@ -8,6 +8,7 @@ import searchIcon from "../../../../public/assets/Chat/searchIcon.png";
 import chatIcon from "../../../../public/assets/Chat/chatIcon.png";
 import iconChat from "../../../../public/assets/Chat/iconChat.png";
 import settingsIcon from "../../../../public/assets/Chat/settingsIcon.png";
+import LoadingComponent from "@/app/components/helper/Loading";
 import { Conversation } from "../../../../types";
 // import { isClient } from "@/utilis/isClient";
 
@@ -55,6 +56,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     null | string
   >(null);
 
+  const [isLoading, setLoading] = useState<boolean>(false)
+
   const [showDeleteContainer, setShowDeleteContainer] =
     useState<boolean>(false);
   useState<boolean>(false);
@@ -90,18 +93,28 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   useEffect(() => {
     // Retrieve the conversations from local storage
     const localStorageConversations = sessionStorage.getItem("conversations");
-
+    
+    // Set loading to true initially
+    setLoading(true);
+  
     if (localStorageConversations) {
-      const conversationArray: Conversation[] = JSON.parse(
-        localStorageConversations
-      );
-      setConversations?.(conversationArray); // Safe call with optional chancing
-
-
-
+      // Parse the conversations from local storage
+      const conversationArray: Conversation[] = JSON.parse(localStorageConversations);
+      // Set the conversations state
+      setConversations?.(conversationArray);
+      // Set loading to false
+      setLoading(false);
+    } else {
+      // If no conversations found, still set loading to false
+      setLoading(false);
     }
-
+  
+    // Log isLoading after a render cycle
   }, [titleUpdated]);
+  
+  useEffect(() => { 
+    
+  },[isLoading])
 
 
   const [clientSplitUserName, setClientSplitUserName] =
@@ -192,78 +205,88 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           </div>
 
           <div className="flex flex-col gap-[13px] overflow-scroll w-[95%] chatScrollbar ">
-            {conversations?.map((conversation) => (
-              <div key={conversation.conversationId} className="relative">
-                <button
-                  onMouseEnter={() =>
-                    setHoveredConversationId(conversation.conversationId)
-                  }
-                  // onMouseLeave={() => setHoveredConversationId()}
-                  className="flex flex-row pl-[19px] gap-[13px] items-center w-full"
-                >
-                  <div className="mainIcon !w-[18px] !h-[18px]">
-                    <Image
-                      alt="iconChat"
-                      src={iconChat}
-                      width={18}
-                      height={18}
-                    />
-                  </div>
 
-                  {editTitleId === (conversation as any).conversationId &&
-                  editingTitle === true ? (
-                    <form
-                      onSubmit={onChangeConvoTitle}
-                      className="flex flex-row justify-center items-center gap-3"
-                    >
-                      <input
-                        type="text"
-                        value={editedTitle}
-                        onChange={handleTitleChange}
-                        disabled={editTitleId === null}
-                        onKeyDown={handleKeyDown}
-                        // onBlur={handleBlur}
-                      />
-                    </form>
-                  ) : (
-                    <div className="flex flex-row justify-between items-center w-full pr-[5px]">
-                      <p
-                        onClick={() => {
-                          if (!editingTitle) {
-                            onConversationClick &&
-                              onConversationClick(conversation.conversationId);
-                          }
-                        }}
-                        className="hover:text-white  text-left"
-                      >
-                        {conversation.title}
-                      </p>
-                      {hoveredConversationId ===
-                        conversation.conversationId && (
-                        <svg
-                          width={15}
-                          height={15}
-                          aria-hidden="true"
-                          focusable="false"
-                          data-prefix="far"
-                          data-icon="layer-group"
-                          role="img"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 576 512"
-                          className="ml-2"
-                          onMouseDown={() => setShowDeleteContainer(true)}
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M288 0c-8.5 0-17 1.7-24.8 5.1L53.9 94.8C40.6 100.5 32 113.5 32 128s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2L312.8 5.1C305 1.7 296.5 0 288 0zm-5.9 49.2C284 48.4 286 48 288 48s4 .4 5.9 1.2L477.7 128 293.9 206.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 128 282.1 49.2zM53.9 222.8C40.6 228.5 32 241.5 32 256s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 235.5 477.7 256 293.9 334.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 256 146 235.5 85.1 209.4 53.9 222.8zm0 128C40.6 356.5 32 369.5 32 384s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 363.5 477.7 384 293.9 462.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 384 146 363.5 85.1 337.4 53.9 350.8z"
-                          ></path>
-                        </svg>
-                      )}
-                    </div>
-                  )}
-                </button>
-              </div>
-            ))}
+
+          {isLoading ? (
+  <LoadingComponent />
+) : (
+  <>
+    {conversations?.map((conversation) => (
+      <div key={conversation.conversationId} className="relative">
+        <button
+          onMouseEnter={() =>
+            setHoveredConversationId(conversation.conversationId)
+          }
+          className="flex flex-row pl-[19px] gap-[13px] items-center w-full"
+        >
+          <div className="mainIcon !w-[18px] !h-[18px]">
+            <Image
+              alt="iconChat"
+              src={iconChat}
+              width={18}
+              height={18}
+            />
+          </div>
+
+          {editTitleId === (conversation as any).conversationId &&
+          editingTitle === true ? (
+            <form
+              onSubmit={onChangeConvoTitle}
+              className="flex flex-row justify-center items-center gap-3"
+            >
+              <input
+                type="text"
+                value={editedTitle}
+                onChange={handleTitleChange}
+                disabled={editTitleId === null}
+                onKeyDown={handleKeyDown}
+              />
+            </form>
+          ) : (
+            <div className="flex flex-row justify-between items-center w-full pr-[5px]">
+              <p
+                onClick={() => {
+                  if (!editingTitle) {
+                    onConversationClick &&
+                      onConversationClick(conversation.conversationId);
+                  }
+                }}
+                className="hover:text-white text-left"
+              >
+                {conversation.title}
+              </p>
+              {hoveredConversationId === conversation.conversationId && (
+                <svg
+                  width={15}
+                  height={15}
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="far"
+                  data-icon="layer-group"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                  className="ml-2"
+                  onMouseDown={() => setShowDeleteContainer(true)}
+                >
+                  <path
+                    fill="currentColor"
+                    d="M288 0c-8.5 0-17 1.7-24.8 5.1L53.9 94.8C40.6 100.5 32 113.5 32 128s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2L312.8 5.1C305 1.7 296.5 0 288 0zm-5.9 49.2C284 48.4 286 48 288 48s4 .4 5.9 1.2L477.7 128 293.9 206.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 128 282.1 49.2zM53.9 222.8C40.6 228.5 32 241.5 32 256s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 235.5 477.7 256 293.9 334.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 256 146 235.5 85.1 209.4 53.9 222.8zm0 128C40.6 356.5 32 369.5 32 384s8.6 27.5 21.9 33.2l209.3 89.7c7.8 3.4 16.3 5.1 24.8 5.1s17-1.7 24.8-5.1l209.3-89.7c13.3-5.7 21.9-18.8 21.9-33.2s-8.6-27.5-21.9-33.2l-31.2-13.4L430 363.5 477.7 384 293.9 462.8c-1.9 .8-3.9 1.2-5.9 1.2s-4-.4-5.9-1.2L98.3 384 146 363.5 85.1 337.4 53.9 350.8z"
+                  ></path>
+                </svg>
+              )}
+            </div>
+          )}
+        </button>
+      </div>
+    ))}
+  </>
+)}
+
+
+        
+
+
 
             {showDeleteContainer && (
               <div
@@ -360,7 +383,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         </Link>
 
         
-        <Link
+        {/* <Link
           href="/astrologicalHoroscope"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
         >
@@ -368,8 +391,8 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
           </div>
 
-          <p className="hover:text-[#807f7f]">Horoscope Guidance </p>
-        </Link>
+          <p className="hover:text-[#807f7f] whitespace-nowrap ">Daily Horoscope Guidance </p>
+        </Link> */}
 
         
         <Link

@@ -13,7 +13,7 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { userId, message, conversationId, userInfo } = req.body;
+      const { res, conversationId } = req.body;
 
       console.log("Logging the current Converstaion id", conversationId);
 
@@ -23,18 +23,21 @@ export default async function handler(
           content: `Hello ChatGPT, in this conversation, you embody the persona of 'SummarizeAPI'. You take a body of text from another passage and summarize it into 1-2 sentences that is used to generate a Image prompt based on the passage provided
                       Please observe these guidelines:
                       You are to summarize a passage to 1-2 sentences.
-                      The response has to be written optimally for a image prompt
+                      The response has to be written optimally for a image prompt.
+
+                      Remember the reseponse that your provide will need to be summarized and optimize for creating a image based on the response.
+                      Most of the repsonses are centered around spirtuality, so the theme should represent that.
 
 
                       Now, let's begin, Summarizer AI."
                       `,
         },
 
-        { role: "user", content: message },
+        { role: "user", content: res },
       ];
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-3.5",
+        model: "gpt-3.5-turbo	",
         max_tokens: 500,
         messages: messages,
       });

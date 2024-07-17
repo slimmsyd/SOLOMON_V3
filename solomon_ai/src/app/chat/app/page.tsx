@@ -190,10 +190,10 @@ const ChatDashboard: React.FC = () => {
 
   let sessionRef = useRef(0);
   useEffect(() => {
-    console.log(
-      "useEffect: Checking to see if the session ref changed",
-      sessionRef.current
-    );
+    // console.log(
+    //   "useEffect: Checking to see if the session ref changed",
+    //   sessionRef.current
+    // );
   }, [sessionRef]);
 
   //Submit the Inquiry
@@ -459,7 +459,6 @@ const ChatDashboard: React.FC = () => {
 
   // Logging the responses temp
   useEffect(() => {
-    console.log("Logging the responses on Re-render", responses);
   }, [responses]);
 
   // sessionStorage.clear();
@@ -488,7 +487,7 @@ const ChatDashboard: React.FC = () => {
         sessionStorage.setItem("chatResponses", JSON.stringify(chatResponses));
         console.log("First chat response removed");
       } else {
-        console.log("No chat responses to remove");
+        // console.log("No chat responses to remove");
       }
     }
   };

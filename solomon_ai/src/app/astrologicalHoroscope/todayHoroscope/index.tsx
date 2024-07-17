@@ -10,9 +10,12 @@ import LoadingComponent from "@/app/components/helper/Loading";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { v4 as uuidv4 } from "uuid";
+
+//Helper function
+import { cleanText } from "@/utilis/cleanText";
+
 // Import the module
 // import Ephemeris from "https://esm.sh/gh/0xStarcat/Moshier-Ephemeris-JS/src/Ephemeris.js";
-
 
 interface Horoscope {
   zodiacSign: string;
@@ -105,10 +108,15 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
         JSON.stringify(botReply.message)
       );
 
-      console.log(
-        "Logging the Bot Reply Messsage, after the change of function code",
-        botReply.message
-      );
+      const storedHoroscope = localStorage.getItem(`horoscope-${currentDate}`);
+      if (storedHoroscope) {
+        setHoroscope(JSON.parse(storedHoroscope as string));
+      }
+
+      // console.log(
+      //   "Logging the Bot Reply Messsage, after the change of function code",
+      //   botReply.message
+      // );
     } catch (error) {
       console.error("Error sending automated message:", error);
     }
@@ -117,7 +125,6 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
   //Send data for toadys horoscope get response, save response and populate that as the consistent daily horoscope
   let automatedMessageCounter = useRef(0);
   const [hasRunSendGreetings, setHasRunSendGreetings] = useState(false);
-  const [firstConvoState, setFirstConvoState] = useState<null | boolean>(null);
 
   // Clear conversation ID and responses on component mount
   useEffect(() => {
@@ -130,17 +137,19 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
     const storedHoroscope = localStorage.getItem(`horoscope-${currentDate}`);
     setLoading(true);
 
-
     if (storedHoroscope) {
       setHoroscope(JSON.parse(storedHoroscope));
-      setLoading(false)
+      setLoading(false);
     } else {
       const sendGreetings = async () => {
         if (!currentConversationId && session?.user?.id) {
           setHasRunSendGreetings(true);
 
-
-          if (automatedMessageCounter.current < 1 && session?.user?.id && zodiacSign) {
+          if (
+            automatedMessageCounter.current < 1 &&
+            session?.user?.id &&
+            zodiacSign
+          ) {
             await sendAutomatedMessage(
               `Peace unto you Solomon, tell me the daily Horoscope for ${zodiacSign} today's date is ${currentDate}, please just return your best approximate prediction for the horoscope on this day. Return the Date that I sent to ensure that I the user and You the sage are in a coherent clear communication channel. Only give me the horoscope for the zodiac sign that I provided. Provided me what my moon is in aswell.`,
               userId
@@ -155,36 +164,29 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
       };
 
       sendGreetings();
-
-
-
-
     }
-
-
-
   }, [zodiacSign, session?.user?.id, currentConversationId, userId, loading]);
-
-
-
-
-
-
 
   useEffect(() => {
     const currentDate = new Date().toISOString().split("T")[0];
 
-    const storedHoroscope = localStorage.getItem(`horoscope-${currentDate}`);
+    let storedHoroscope = localStorage.getItem(`horoscope-${currentDate}`);
 
-    console.log("Logging the stored horoscope in the useEffect", storedHoroscope)
-    if(storedHoroscope){
-      setHoroscope(storedHoroscope as any)
+    console.log(
+      "Logging the stored horoscope in the useEffect",
+      typeof storedHoroscope
+    );
+
+    if (storedHoroscope) {
+      console.log(
+        "We are logging the horsoocpe Change, in the if statement",
+        horoscope
+      );
     }
 
+    console.log("Logging the Horoscope change", horoscope);
   }, [horoscope]);
 
-
-  
   return (
     <div className="flex md:flex-row flex-col gap-[15px] rounded-[10px] md:gap-[0px border-[0.5px] border-[#737373] justify-between accountDiv">
       <div className="flex flex-col gap-[15px]">
@@ -198,16 +200,11 @@ export const TodaysContainer: FC<Horoscope> = ({ zodiacSign, period }) => {
         </div>
         <p className="text-white">Sun Sign: {zodiacSign}</p>
 
-      {!loading ? (
-      <p className="text-[14px] text-white">{horoscope}</p>
-
-
-      ):  ( 
-
-        <LoadingComponent />
-
-      )
-    }
+        {horoscope ? (
+          <p className="text-[16px] text-white">{horoscope}</p>
+        ) : (
+          <LoadingComponent />
+        )}
       </div>
     </div>
   );

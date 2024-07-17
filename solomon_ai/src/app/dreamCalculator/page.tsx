@@ -189,7 +189,7 @@ const Horoscope: React.FC = () => {
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
     router.push(targetPath, undefined);
-    setCurrentConversationId(convoId);
+    // setCurrentConversationId(convoId);
   };
 
   useEffect(() => {
@@ -234,9 +234,7 @@ const Horoscope: React.FC = () => {
       }
 
       // Ensure that currentConversationId is updated before proceeding
-      const updatedConversationId = sessionStorage.getItem(
-        "currentConversationId"
-      );
+      const updatedConversationId = localStorage.getItem("dreamConversationID");
 
       // 1. Set up the new response without any bot response yet.
       // 1. Set up the new response without any bot response yet.
@@ -278,8 +276,6 @@ const Horoscope: React.FC = () => {
             return resp;
           })
         );
-
-        console.log("Logging the responses in the handleSubmit", responses);
 
         //Add the conversations arrawy or update
       } catch (error) {
@@ -369,6 +365,12 @@ const Horoscope: React.FC = () => {
   let localStorageConvoId: any;
 
   useEffect(() => {
+    console.log("Logging the current conversation ID", currentConversationId);
+
+    console.log(
+      "Logging the dreamConversationId",
+      localStorage.getItem("dreamConversationID")
+    );
     if (localStorage.getItem("dreamConversationID")) {
       localStorageConvoId = localStorage.getItem("dreamConversationID");
       setCurrentConversationId(localStorageConvoId);
@@ -376,17 +378,122 @@ const Horoscope: React.FC = () => {
   }, []);
 
   useEffect(() => {
-
-      
-
-
-
+    console.log("LOgging the Resposne in the Dream calculator", responses);
   }, [responses]);
+
+  //Where we will store the response from the summarize  AI temp
+  const [summarizeAIResponse, setSummarizeAIResponse] = useState("");
+  const [shouldSummarize, setShouldSummarize] = useState(false);
+  useEffect(() => {
+    //This function is to be called randomly to summaraize the latest response, then it then sends a message to generate Image to generate a iamge based on that response
+    console.log(
+      "This is the updateDream response function",
+      summarizeAIResponse
+    );
+
+    async function summarizeDreamResponse(res: string) {
+      console.log(
+        "Logging the REs within the actual summarize Dream Response",
+        res
+      );
+
+      try {
+        const botReply = await fetch("api/summarizerAI", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(res),
+        }).then((res) => res.json());
+
+        setSummarizeAIResponse(botReply.response);
+
+        console.log(
+          "Logging the Bot reply in summarize Dream response",
+          botReply.response
+        );
+
+        console.log(
+          "Logging the Set summarize AI response in the try catch block",
+          summarizeAIResponse
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Function to randomly decide whether to call summarize or not
+    function decideToSummarize() {
+      const random = Math.random();
+      if (random > 0.5) {
+        // 50% chance to call summarize
+        setShouldSummarize(true);
+      } else {
+        setShouldSummarize(false);
+      }
+    }
+
+    if (responses && responses.length > 0) {
+      const latestResponse = responses[responses.length - 1].response;
+
+      summarizeDreamResponse(latestResponse);
+
+      decideToSummarize();
+      // if (shouldSummarize) {
+      // }
+    }
+    // if (responses) {
+    //   const latestResponse = responses[responses.length - 1].response;
+
+    //   console.log(
+    //     console.log("We are logging the latest response", latestResponse)
+    //   );
+
+    //   summarizeDreamResponse(latestResponse);
+    // }
+
+    // if (responses.length > 0) {
+    //   const latestResponse = responses[responses.length - 1].response;
+
+    //   decideToSummarize();
+    //   if (shouldSummarize) {
+    //     summarizeDreamResponse(latestResponse);
+    //   }
+
+    // }
+  }, [responses, shouldSummarize]);
+
+  useEffect(() => {
+    // Function to call image generation endpoint
+    const generateImage = async (summary) => {
+      try {
+        const response = await fetch("/api/imageGen", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: summary,
+          }),
+        });
+
+        const data = await response.json();
+        console.log("Generated Image URL:", data.imageUrl);
+      } catch (error) {
+        console.error("Error generating image:", error);
+      }
+    };
+
+    if (summarizeAIResponse) {
+      generateImage(summarizeAIResponse);
+    }
+  }, [summarizeAIResponse]);
 
   useEffect(() => {
     // setResponses([]); // Clear previous messages
 
     // Fetch messages for the current conversation if needed
+    console.log("Logging the current conversation ID", currentConversationId);
     if (currentConversationId === null) {
       fetchMessagesForConversation(
         (currentConversationId as any) || localStorageConvoId
@@ -400,28 +507,7 @@ const Horoscope: React.FC = () => {
 
   //Handling Image Generation
 
-  const generateImage = async () => {
-    try {
-      const response = await fetch("/api/imageGen", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt: "Moorish God",
-        }),
-      });
-
-      const data = await response.json();
-      console.log("Generated Image URL:", data.imageUrl);
-    } catch (error) {
-      console.error("Error generating image:", error);
-    }
-  };
-
-
-
-
+  //We have to extract random instances for generating the image, adn extract some key components from the text, to then say lets use this as a synopiss to generate an iamge
 
   return (
     <div className="chatDashboard">
@@ -439,7 +525,7 @@ const Horoscope: React.FC = () => {
 
       <div className="chatDashboardWrapper !h-full w-full text-left">
         {/* Guidelines Hader */}
-        <button onClick={generateImage}>Generate an Image nigga</button>
+        {/* <button onClick={generateImage}>Generate an Image nigga</button> */}
         <Header handleMobileChatBtnClick={handleMobileChatBtnClick} />
         <DreamDashboard greeting={greeting} />
 
@@ -449,7 +535,7 @@ const Horoscope: React.FC = () => {
           {dreamLocalStorage ? (
             <>
               <ChatMessagesContainer responses={responses || "null"} />
-              <ImageComponent />
+              {/* <ImageComponent /> */}
             </>
           ) : (
             <div className="w-full flex flex-center justify-center">

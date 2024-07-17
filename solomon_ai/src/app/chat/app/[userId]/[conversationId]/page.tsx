@@ -529,9 +529,8 @@ export default function ConversationPage() {
         const messages = await response.json();
 
 
-        console.log("Loggingthe messages", messages)
  
-        console.log("Add the IDS",messages.map(msgs => msgs.id))
+        // console.log("Add the IDS",messages.map(msgs => msgs.id))
 
 
         // Map API response to expected format in state
@@ -573,7 +572,7 @@ export default function ConversationPage() {
           (currentConversationId as any) || localStorageConvoId
         );
       } else {
-        console.log("Fech is doing good", currentConversationId);
+        // console.log("Fech is doing good", currentConversationId);
       }
     }
   }, [currentConversationId]);
