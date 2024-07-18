@@ -12,8 +12,10 @@ export default async function handler(
     try {
       const { userId, prompt, conversationId, userInfo } = req.body;
 
+      
 
-      console.log("API endpoint reached")
+
+      console.log("API endpoint reached", prompt)
 
       // Create the image generation request
       const response = await openai.images.generate({
@@ -26,6 +28,8 @@ export default async function handler(
 
       // Store the bot's response in the database or perform any other necessary actions
 
+
+      console.log("Logging the Image Url In Backend", imageUrl)
       res.json({ imageUrl: imageUrl });
     } catch (error) {
       console.error("Error occurred while processing the request:", error.message);

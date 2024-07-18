@@ -12,6 +12,7 @@ import ButtonLoadingComponent from "../components/helper/buttonComponentLoading"
 import { DreamDashboard } from "./DreamDashboard";
 import { Header } from "../components/Header";
 import { ChatMessagesContainer } from "../chat/app/ChatMessage";
+import { DreamMessageContainer } from "../chat/app/DreamMessage";
 
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
@@ -352,7 +353,12 @@ const Horoscope: React.FC = () => {
         setResponses([]);
 
         if (response.ok) {
+          console.log("Loggin Resposne Okay how many times", formattedMessages)
           setResponses(formattedMessages);
+
+
+          console.log("LOgging the Fomratting Response in the response okay", response)
+
         }
         setMessagesIsLoading(false);
       } catch (error) {
@@ -377,123 +383,94 @@ const Horoscope: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("LOgging the Resposne in the Dream calculator", responses);
-  }, [responses]);
+
 
   //Where we will store the response from the summarize  AI temp
   const [summarizeAIResponse, setSummarizeAIResponse] = useState("");
   const [shouldSummarize, setShouldSummarize] = useState(false);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
+  const [messageCounter, setMessageCounter] = useState<number>(0);
+
   useEffect(() => {
-    //This function is to be called randomly to summaraize the latest response, then it then sends a message to generate Image to generate a iamge based on that response
-    console.log(
-      "This is the updateDream response function",
-      summarizeAIResponse
-    );
+    console.log("Logging should Summarize Video", responses);
 
-    async function summarizeDreamResponse(res: string) {
-      console.log(
-        "Logging the REs within the actual summarize Dream Response",
-        res
-      );
+    async function summarizeDreamResponse(message: string, responseId: string) {
+      if (currentConversationId) {
+        try {
+          const response = await fetch("/api/summarizerAI", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message,
+              currentConversationId,
+            }),
+          });
 
-      try {
-        const botReply = await fetch("api/summarizerAI", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(res),
-        }).then((res) => res.json());
+          const botReply = await response.json();
 
-        setSummarizeAIResponse(botReply.response);
+          console.log("Logging the Bot Reply Raw", botReply);
 
-        console.log(
-          "Logging the Bot reply in summarize Dream response",
-          botReply.response
-        );
+          setSummarizeAIResponse(botReply.message);
 
-        console.log(
-          "Logging the Set summarize AI response in the try catch block",
-          summarizeAIResponse
-        );
-      } catch (e) {
-        console.error(e);
+          // Generate image based on summarized response
+          const imageResponse = await fetch("/api/imageGen", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: botReply.message,
+            }),
+          });
+
+          const imageData = await imageResponse.json();
+          const imageUrl = imageData.imageUrl;
+
+          // Update the response object with the image URL
+          setResponses((prevResponses) =>
+            prevResponses.map((resp) =>
+              resp.id === responseId ? { ...resp, imageUrl } : resp
+            )
+          );
+
+          setIsImageLoading(false);
+          setShouldSummarize(false);
+        } catch (e) {
+          console.error(e);
+          setIsImageLoading(false);
+        }
       }
     }
 
-    // Function to randomly decide whether to call summarize or not
-    function decideToSummarize() {
+    function decideToGenerateImage() {
       const random = Math.random();
-      if (random > 0.5) {
-        // 50% chance to call summarize
-        setShouldSummarize(true);
-      } else {
-        setShouldSummarize(false);
-      }
+      return random > 0.5; // 50% chance to generate an image
     }
 
     if (responses && responses.length > 0) {
-      const latestResponse = responses[responses.length - 1].response;
+      const latestResponse = responses[responses.length - 1];
+      setMessageCounter((prevCount) => prevCount + 1);
 
-      summarizeDreamResponse(latestResponse);
-
-      decideToSummarize();
-      // if (shouldSummarize) {
-      // }
-    }
-    // if (responses) {
-    //   const latestResponse = responses[responses.length - 1].response;
-
-    //   console.log(
-    //     console.log("We are logging the latest response", latestResponse)
-    //   );
-
-    //   summarizeDreamResponse(latestResponse);
-    // }
-
-    // if (responses.length > 0) {
-    //   const latestResponse = responses[responses.length - 1].response;
-
-    //   decideToSummarize();
-    //   if (shouldSummarize) {
-    //     summarizeDreamResponse(latestResponse);
-    //   }
-
-    // }
-  }, [responses, shouldSummarize]);
-
-  useEffect(() => {
-    // Function to call image generation endpoint
-    const generateImage = async (summary) => {
-      try {
-        const response = await fetch("/api/imageGen", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: summary,
-          }),
-        });
-
-        const data = await response.json();
-        console.log("Generated Image URL:", data.imageUrl);
-      } catch (error) {
-        console.error("Error generating image:", error);
+      if (decideToGenerateImage()) {
+        setShouldSummarize(true);
       }
-    };
 
-    if (summarizeAIResponse) {
-      generateImage(summarizeAIResponse);
+      if (shouldSummarize) {
+        setIsImageLoading(true);
+        summarizeDreamResponse(latestResponse.response, latestResponse.id);
+      }
     }
-  }, [summarizeAIResponse]);
-
+  }, [responses]);
+  useEffect(() => { 
+    console.log("Checking if teh ")
+  },[shouldSummarize])
   useEffect(() => {
     // setResponses([]); // Clear previous messages
 
     // Fetch messages for the current conversation if needed
-    console.log("Logging the current conversation ID", currentConversationId);
     if (currentConversationId === null) {
       fetchMessagesForConversation(
         (currentConversationId as any) || localStorageConvoId
@@ -506,7 +483,6 @@ const Horoscope: React.FC = () => {
   }, [currentConversationId]);
 
   //Handling Image Generation
-
   //We have to extract random instances for generating the image, adn extract some key components from the text, to then say lets use this as a synopiss to generate an iamge
 
   return (
@@ -534,8 +510,11 @@ const Horoscope: React.FC = () => {
         <div className="chatDashBoardContainer">
           {dreamLocalStorage ? (
             <>
-              <ChatMessagesContainer responses={responses || "null"} />
-              {/* <ImageComponent /> */}
+              <DreamMessageContainer 
+             responses={responses || "null"} 
+             imageUrls={imageUrls} 
+              /> 
+         
             </>
           ) : (
             <div className="w-full flex flex-center justify-center">

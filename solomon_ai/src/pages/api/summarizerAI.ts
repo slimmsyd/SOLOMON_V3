@@ -13,10 +13,11 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { res, conversationId } = req.body;
+      const { message, conversationId } = req.body;
 
-      console.log("Logging the current Converstaion id", conversationId);
 
+
+   
       const messages = [
         {
           role: "system",
@@ -28,21 +29,24 @@ export default async function handler(
                       Remember the reseponse that your provide will need to be summarized and optimize for creating a image based on the response.
                       Most of the repsonses are centered around spirtuality, so the theme should represent that.
 
+                      Your response should always start with Image a...
 
                       Now, let's begin, Summarizer AI."
                       `,
         },
 
-        { role: "user", content: res },
+        { role: "user", content: message },
       ];
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo	",
+        model: "gpt-3.5-turbo",
         max_tokens: 500,
         messages: messages,
       });
 
       const response = completion.choices[0].message.content;
+
+      console.log("Logging the Resposne In The Backend", response)
 
       // Store the bot's response in the database
 
