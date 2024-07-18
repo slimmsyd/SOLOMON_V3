@@ -8,6 +8,9 @@ import PopupImage from '../../../public/assets/homePage/popup_header.png'
 import { SuccessPopup } from "./SucessPopup";
 import FaceIcon from "../../../public/faceIconSolomon.png";
 
+
+
+
 interface PopupProps {
   togglePopup: () => void;
 };
