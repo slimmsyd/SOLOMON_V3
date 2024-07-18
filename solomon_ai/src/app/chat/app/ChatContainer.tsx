@@ -371,7 +371,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         </button> */}
         
 
-        <Link
+        {/* <Link
           href="/dreamCalculator"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
         >
@@ -380,7 +380,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           </div>
 
           <p className="hover:text-[#807f7f]">Dream Calculator </p>
-        </Link>
+        </Link> */}
 
         
         {/* <Link
