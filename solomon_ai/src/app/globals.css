@@ -80,7 +80,6 @@
   text-decoration: none;
 }
 
-
 html,
 body,
 section,
@@ -88,7 +87,6 @@ section,
   width: 100%;
   height: auto;
 }
-
 
 @keyframes marquee {
   0% {
@@ -111,7 +109,12 @@ body {
     rgb(24, 14, 36) 37%,
     rgba(12, 12, 12, 1) 100%
   ); */
-  background:-webkit-linear-gradient(145deg, rgba(28, 28, 28, 1) 0%, rgb(15 9 23) 37%, /* rgba(34, 22, 49, 1) 37%, */ rgba(12, 12, 12, 1) 100%);
+  background: -webkit-linear-gradient(
+    145deg,
+    rgba(28, 28, 28, 1) 0%,
+    rgb(15 9 23) 37%,
+    /* rgba(34, 22, 49, 1) 37%, */ rgba(12, 12, 12, 1) 100%
+  );
   /* background: linear-gradient(
     145deg,
     rgba(28, 28, 28, 1) 0%,
@@ -126,8 +129,7 @@ body {
   line-height: 125% !important;
 } */
 
-
-h1{
+h1 {
   color: #fff;
 }
 h2 {
@@ -159,8 +161,7 @@ h6 {
   line-height: 125% !important;
 }
 
-span 
-{
+span {
   color: #fff;
 }
 @media screen and (max-width: 950px) {
@@ -292,9 +293,9 @@ nav button {
   width: 100%;
   height: 55px;
   display: flex;
-  align-items: center; 
-/* margin-bottom: 10px; */
- }
+  align-items: center;
+  /* margin-bottom: 10px; */
+}
 
 .mobileNav {
   transition: opacity 300ms ease-in-out;
@@ -302,12 +303,11 @@ nav button {
   z-index: 80;
 }
 
-@media screen and (min-width: 1080px) 
-{
-  .mobileContainer, .mobileNav{
-  display: none;
-}
-
+@media screen and (min-width: 1080px) {
+  .mobileContainer,
+  .mobileNav {
+    display: none;
+  }
 }
 /* Nav Bar Code */
 
@@ -491,20 +491,17 @@ figure video {
   text-align: left;
 }
 
-
-.descriptionList >  li{
+.descriptionList > li {
   list-style-type: circle;
   margin: 10px;
   font-size: 14px;
   display: flex;
-  flex-direction: column; 
-
+  flex-direction: column;
 }
 
-.highLightPurple{
-/* color: ; */
-color:rgb(255 255 255 / 0.6)
-
+.highLightPurple {
+  /* color: ; */
+  color: rgb(255 255 255 / 0.6);
 }
 
 /* Home page popup code */
@@ -601,14 +598,12 @@ color:rgb(255 255 255 / 0.6)
   .homePopupFormContainer > form > button {
   }
 }
-.popupHeader
-{
+.popupHeader {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   padding: 0px 1.2rem;
 }
-.popupHeader  > img  
-{ 
+.popupHeader > img {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
@@ -616,7 +611,7 @@ color:rgb(255 255 255 / 0.6)
 .homePopupContainer {
   /* border: 0.5px solid #2f0ffd; */
   width: 500px;
-  background:rgb(20 20 20 / 70%);
+  background: rgb(20 20 20 / 70%);
   height: 700px;
   position: relative;
   border-radius: 10px;
@@ -713,7 +708,6 @@ color:rgb(255 255 255 / 0.6)
   z-index: 95;
 }
 
-
 .zodiacPopup {
   top: 0%;
   right: 0% !important;
@@ -794,9 +788,9 @@ color:rgb(255 255 255 / 0.6)
   height: 12px;
   color: #fff;
 }
-button  > p, a > p { 
+button > p,
+a > p {
   color: #fff;
-
 }
 .iconBorder {
   border: 1px solid #807f7f;
@@ -1215,7 +1209,8 @@ button  > p, a > p {
   height: 100% !important;
   object-fit: cover !important;
 }
-.renderCards p, .zodiacCards p { 
+.renderCards p,
+.zodiacCards p {
   color: #fff;
 }
 .renderCards:hover {
@@ -1258,7 +1253,6 @@ button  > p, a > p {
     width: 99% !important;
     padding: 15px 15px !important;
     min-width: auto !important;
-    
   }
 }
 
@@ -1273,13 +1267,11 @@ button  > p, a > p {
   font-size: 14px;
   position: fixed;
 }
-@media screen and (max-width: 1180px)
-{
+@media screen and (max-width: 1180px) {
   .chatFormSubmit {
     padding: 15px 0px;
-    min-width: 650px ;
+    min-width: 650px;
     width: auto;
-
   }
 }
 
@@ -1296,7 +1288,7 @@ button  > p, a > p {
   padding-right: 90px;
   font-size: 14px;
   position: relative;
-  color:#ffff;
+  color: #ffff;
 }
 .textAreaIconWrapper {
   position: absolute;
@@ -1305,7 +1297,7 @@ button  > p, a > p {
 }
 
 .textAreaIcon {
-  color:white;
+  color: white;
   border: 0.5px solid #6e6e6e;
   border-radius: 5px;
   padding: 5px;
@@ -1381,7 +1373,7 @@ button  > p, a > p {
   height: 45px;
   background: rgba(72, 72, 72, 0.44);
 }
-.mobileChatBtn > svg { 
+.mobileChatBtn > svg {
   color: #fff;
   fill: #fff;
 }
@@ -1588,23 +1580,21 @@ button  > p, a > p {
   width: 80px;
   /* border-bottom: 1px solid #fff; */
   text-align: right;
-  color :#fff ;
+  color: #fff;
   outline: none;
 }
 
 /* PROFILE CSS */
 
-
 /* Horscope Page */
-.color-div { 
-  background: #E1DEF6;
+.color-div {
+  background: #e1def6;
   border-radius: 5px;
   padding: 20px;
 }
 
-.zodiacWrapper
-{ 
-  background: #D9D9D9;
+.zodiacWrapper {
+  background: #d9d9d9;
   width: 40px;
   height: 40px;
   display: flex;
@@ -1614,10 +1604,10 @@ button  > p, a > p {
   padding: 5px;
 }
 
-.transitionLine{
+.transitionLine {
   width: 100%;
   height: 2px;
-  background: #4C35DE;
+  background: #4c35de;
   bottom: 0;
   position: absolute;
   transition: transform 250ms ease-in-out;
@@ -1658,18 +1648,18 @@ button  > p, a > p {
     margin-left: auto;
   }
 }
-.blogCard{ 
-    width: 500px;
-    background: rgb(20 20 20 / 30%);
-    height: 675px;
-    position: relative;
-    border-radius: 10px;
-    /* padding: 1.5rem 0rem; */
-    display: flex;
-    justify-content: start;
-    border: 0.5px solid #fff;
+.blogCard {
+  width: 500px;
+  background: rgb(20 20 20 / 30%);
+  height: 675px;
+  position: relative;
+  border-radius: 10px;
+  /* padding: 1.5rem 0rem; */
+  display: flex;
+  justify-content: start;
+  border: 0.5px solid #fff;
 }
-.blogCardImageContainer img { 
+.blogCardImageContainer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1705,9 +1695,52 @@ button  > p, a > p {
   padding: 2rem;
 }
 
-.guideLinesPopUpWrapper > p { 
-
+.guideLinesPopUpWrapper > p {
   color: #fff;
-
 }
 /* GUIELINES POPUP CSS */
+
+/* NEWSLETTER PAGE */
+
+.newsletterCard {
+  width: 708px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 2px 4px 11.8px rgba(0, 0, 0, 0.25);
+}
+@media screen and (max-width: 1080px)
+{ 
+
+  .newsletterCard{
+    width: auto;
+  }
+
+}
+.newsletterCard > img {
+  border-radius: 10px;
+  object-fit: contain;
+}
+.newsLetterPageForm {
+  border-radius: 5px;
+}
+.newsLetterPageForm > div > input {
+    font-family: "Montserrat", sans-serif;
+
+
+}
+.newsLetterPageForm > div {
+  box-shadow: 2px 4px 11.8px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+
+}
+.newsLetterPageForm > div > button{
+  background: #4C35DE;
+  width: 80px;
+  border-radius: 5px;
+  color: white;
+
+
+
+}
+
+/* NEWSLETTER PAGE */
