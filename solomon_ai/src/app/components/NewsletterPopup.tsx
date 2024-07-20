@@ -114,12 +114,12 @@ export const Popup: React.FC<PopupProps> = ({ togglePopup }) => {
                 placeholder="Enter Email"
                 required
               />
-              <input
+              {/* <input
                 className="w-full h-[38px] font-thin text-white"
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Location (Not Required)"
-              />
+              /> */}
 
               <button className="joinBeta">Join the waitlist</button>
 

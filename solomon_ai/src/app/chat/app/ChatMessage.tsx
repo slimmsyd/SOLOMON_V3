@@ -14,6 +14,7 @@ interface ChatMessage {
 interface ResponseObject { 
   question: string;
   response: string;
+  imageUrl?: string;
   id: string;
 }
 
