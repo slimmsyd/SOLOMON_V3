@@ -116,7 +116,7 @@ const ChatDashboard: React.FC = () => {
     setCurrentConversationId
   );
 
-  //This funcitno shifts and shows the mobile Chat ccontainer
+  //This function shifts and shows the mobile Chat ccontainer
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
@@ -135,6 +135,8 @@ const ChatDashboard: React.FC = () => {
       setIsAtZero(!isAtZero); // Toggle the state
     }
   };
+
+
 
   // Effect to handle viewport resize
   useEffect(() => {
@@ -347,6 +349,8 @@ const ChatDashboard: React.FC = () => {
       throw error; // Re-throw to handle it in the UI layer
     }
   }
+
+
   const handleSubmitTitle = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevent form submission
 

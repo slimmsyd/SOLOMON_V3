@@ -353,12 +353,7 @@ const Horoscope: React.FC = () => {
         setResponses([]);
 
         if (response.ok) {
-          console.log("Loggin Resposne Okay how many times", formattedMessages)
           setResponses(formattedMessages);
-
-
-          console.log("LOgging the Fomratting Response in the response okay", response)
-
         }
         setMessagesIsLoading(false);
       } catch (error) {
@@ -382,8 +377,6 @@ const Horoscope: React.FC = () => {
       setCurrentConversationId(localStorageConvoId);
     }
   }, []);
-
-
 
   //Where we will store the response from the summarize  AI temp
   const [summarizeAIResponse, setSummarizeAIResponse] = useState("");
@@ -452,21 +445,28 @@ const Horoscope: React.FC = () => {
 
     if (responses && responses.length > 0) {
       const latestResponse = responses[responses.length - 1];
+      console.log("Logging the Latest Response", latestResponse)
       setMessageCounter((prevCount) => prevCount + 1);
 
-      if (decideToGenerateImage()) {
-        setShouldSummarize(true);
-      }
-
+      // Ensure there is a latestResponse.response before proceeding
+      if (latestResponse.response) {
+        if (decideToGenerateImage()) {
+          setShouldSummarize(true);
+        }
       if (shouldSummarize) {
         setIsImageLoading(true);
         summarizeDreamResponse(latestResponse.response, latestResponse.id);
       }
     }
+    }
   }, [responses]);
-  useEffect(() => { 
-    console.log("Checking if teh ")
-  },[shouldSummarize])
+
+  useEffect(() => {}, [shouldSummarize]);
+
+  useEffect(() => {
+    console.log("Logggin to see if message counter changed", messageCounter);
+  }, [messageCounter]);
+
   useEffect(() => {
     // setResponses([]); // Clear previous messages
 
@@ -510,11 +510,10 @@ const Horoscope: React.FC = () => {
         <div className="chatDashBoardContainer">
           {dreamLocalStorage ? (
             <>
-              <DreamMessageContainer 
-             responses={responses || "null"} 
-             imageUrls={imageUrls} 
-              /> 
-         
+              <DreamMessageContainer
+                responses={responses || "null"}
+                imageUrls={imageUrls}
+              />
             </>
           ) : (
             <div className="w-full flex flex-center justify-center">
