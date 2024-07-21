@@ -87,20 +87,20 @@ export const Footer: any = () => {
           <ul className="flex flex-col gap-[15px]">
             <li className="text-[16px] text-white montserrat">Social</li>
             <Link
-              href="https://www.instagram.com/syddarchitect"
+              href="https://www.instagram.com/solomoncopilot/"
               className="text-[14px] text-white montserrat flex flex-row gap-[15px"
             >
               Instagram
             </Link>
-            <Link
+            {/* <Link
               href="https://www.instagram.com/syddarchitect"
               className="text-[14px] text-white montserrat"
             >
               Creators - Instagram
-            </Link>
-            <Link href="/" className="text-[14px] text-white montserrat">
+            </Link> */}
+            {/* <Link href="/" className="text-[14px] text-white montserrat">
               Tiktok
-            </Link>
+            </Link> */}
             <Link href="/" className="text-[14px] text-white montserrat">
               Blogs
             </Link>
