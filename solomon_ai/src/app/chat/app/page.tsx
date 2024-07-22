@@ -34,13 +34,24 @@ import { Dashboard } from "./Dashboard";
 //Chat Container
 import { ChatContainer } from "./ChatContainer";
 import { ChatMessagesContainer } from "./ChatMessage";
-
-
-
 import { Guidelines } from "./components/Guidelines";
 
 const ChatDashboard: React.FC = () => {
-  //getting the user name
+  //Introduction Guidelines.
+
+  const [showGuidelines, setShowGuidelines] = useState(true);
+
+  useEffect(() => {
+    const hasViewedGuidelines = localStorage.getItem("hasViewedGuidelines");
+    if (hasViewedGuidelines) {
+      setShowGuidelines(false);
+    }
+  }, []);
+
+  const handleGuidelinesComplete = () => {
+    localStorage.setItem("hasViewedGuidelines", "true");
+    setShowGuidelines(false);
+  };
 
   const chatBotUrl =
     "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/solomonAPI";
@@ -139,8 +150,6 @@ const ChatDashboard: React.FC = () => {
       setIsAtZero(!isAtZero); // Toggle the state
     }
   };
-
-
 
   // Effect to handle viewport resize
   useEffect(() => {
@@ -354,7 +363,6 @@ const ChatDashboard: React.FC = () => {
     }
   }
 
-
   const handleSubmitTitle = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevent form submission
 
@@ -466,8 +474,7 @@ const ChatDashboard: React.FC = () => {
   };
 
   // Logging the responses temp
-  useEffect(() => {
-  }, [responses]);
+  useEffect(() => {}, [responses]);
 
   // sessionStorage.clear();
 
@@ -595,12 +602,9 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <MessageProvider>
-              {/* <Guidelines /> */}
-
+      {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
+   
       <div className="chatDashboard">
-
-
-
         {/* Chat Container Componet  */}
 
         <ChatContainer
@@ -626,7 +630,10 @@ const ChatDashboard: React.FC = () => {
         {/* Chat Container Componet  */}
 
         <div className="chatDashboardWrapper w-full text-left">
-          <Header handleMobileChatBtnClick={handleMobileChatBtnClick} />
+          <Header 
+          showGuidelines = {showGuidelines}
+          setShowGuidelines = {setShowGuidelines}
+          handleMobileChatBtnClick={handleMobileChatBtnClick} />
 
           <div className="chatDashBoardContainer">
             {/* Dashboard Component  */}
