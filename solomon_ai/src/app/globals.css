@@ -598,6 +598,13 @@ figure video {
   .homePopupFormContainer > form > button {
   }
 }
+
+@media screen and (max-width: 750px)
+{
+   .closePopupContainer{
+    top:-5% !important;
+   }
+}
 .popupHeader {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -875,6 +882,9 @@ a > p {
     display: inline-block;
     pointer-events: none;
   }
+  .mobileNone{
+    display: none;
+  }
 
   .zodiacCards {
     /* width: 250px !important; */
@@ -883,7 +893,7 @@ a > p {
   }
   .renderCards p,
   .zodiacCards p {
-    white-space: nowrap;
+    /* white-space: nowrap; */
     overflow: hidden;
     text-overflow: ellipsis; /* Truncate text with ellipsis */
   }
@@ -1744,3 +1754,54 @@ a > p {
 }
 
 /* NEWSLETTER PAGE */
+
+
+
+
+/* GUIDLINES OVERLAY PAGE */
+.guidlinesOverlay{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.436);
+  z-index: 2;
+  
+}
+.guideLinesWhiteBox{
+  background: white;
+  width: 427px;
+  height: 145px;
+  position: absolute;
+  display: flex;
+  border-radius: 8px;
+  top: 20%;
+  left: 5%;
+  padding: 13px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
+  0 2px 6px 2px rgba(0, 0, 0, 0.15);
+}
+.guildeLinesBtn
+{ 
+  background: #4C35DE;
+  width: 79px;
+  height: 29px;
+  border-radius: 4px;
+  color:#fff
+}
+.guildeLinesBtn.black { 
+  color: black ;
+  background: #CECECE;
+
+}
+.guideLinesCircle
+{ 
+  background: #D9D9D9;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+}
+/* GUIDLINES OVERLAY PAGE */
