@@ -29,11 +29,24 @@ import { useChatConversation } from "../hooks/ConversationContext";
 import useCreateConversation from "../hooks/createConversation";
 import LoadingComponent from "../components/helper/Loading";
 
+import { Guidelines } from "../chat/app/components/Guidelines";
+
 //Images to Channel
 const Horoscope: React.FC = () => {
-  const midJourneyAPIToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTY5MjUsImVtYWlsIjoic3NhbmRlcnNzNDQ0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoic3NhbmRlcnNzNDQ0QGdtYWlsLmNvbSIsImlhdCI6MTcyMDQ3NDM1Nn0.1KUfGeAs_0DxeylUNkHExGXpvnmzhloW4tUjo83z9PM";
 
+    const [showGuidelines, setShowGuidelines] = useState(true);
+
+    useEffect(() => {
+      const hasViewedGuidelines = localStorage.getItem("hasViewedGuidelines");
+      if (hasViewedGuidelines) {
+        setShowGuidelines(false);
+      }
+    }, []);
+  
+    const handleGuidelinesComplete = () => {
+      localStorage.setItem("hasViewedGuidelines", "true");
+      setShowGuidelines(false);
+    };
   const formRef = useRef<HTMLFormElement>(null);
 
   const {
@@ -445,7 +458,7 @@ const Horoscope: React.FC = () => {
 
     if (responses && responses.length > 0) {
       const latestResponse = responses[responses.length - 1];
-      console.log("Logging the Latest Response", latestResponse)
+      console.log("Logging the Latest Response", latestResponse);
       setMessageCounter((prevCount) => prevCount + 1);
 
       // Ensure there is a latestResponse.response before proceeding
@@ -453,11 +466,11 @@ const Horoscope: React.FC = () => {
         if (decideToGenerateImage()) {
           setShouldSummarize(true);
         }
-      if (shouldSummarize) {
-        setIsImageLoading(true);
-        summarizeDreamResponse(latestResponse.response, latestResponse.id);
+        if (shouldSummarize) {
+          setIsImageLoading(true);
+          summarizeDreamResponse(latestResponse.response, latestResponse.id);
+        }
       }
-    }
     }
   }, [responses]);
 
@@ -486,108 +499,116 @@ const Horoscope: React.FC = () => {
   //We have to extract random instances for generating the image, adn extract some key components from the text, to then say lets use this as a synopiss to generate an iamge
 
   return (
-    <div className="chatDashboard">
-      <ChatContainer
-        setConversations={setConversations}
-        conversations={conversations}
-        splitUserName={splitUserName}
-        userName={userName || ""}
-        email={email || ""}
-        onConversationClick={handleConversationClick}
-        chatContainerRef={chatContainerRef as any}
-        handleMobileChatBtnClick={handleMobileChatBtnClick}
-      />
-      {/* Chat Container Componet  */}
+    <>
+      {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
 
-      <div className="chatDashboardWrapper !h-full w-full text-left">
-        {/* Guidelines Hader */}
-        {/* <button onClick={generateImage}>Generate an Image nigga</button> */}
-        <Header handleMobileChatBtnClick={handleMobileChatBtnClick} />
-        <DreamDashboard greeting={greeting} />
+      
+         <div className="chatDashboard">
+        <ChatContainer
+          setConversations={setConversations}
+          conversations={conversations}
+          splitUserName={splitUserName}
+          userName={userName || ""}
+          email={email || ""}
+          onConversationClick={handleConversationClick}
+          chatContainerRef={chatContainerRef as any}
+          handleMobileChatBtnClick={handleMobileChatBtnClick}
+        />
+        {/* Chat Container Componet  */}
 
-        {/* Dashboard Component  */}
+        <div className="chatDashboardWrapper !h-full w-full text-left">
+          {/* Guidelines Hader */}
+          {/* <button onClick={generateImage}>Generate an Image nigga</button> */}
+          <Header 
+          showGuidelines = {showGuidelines}
+          setShowGuidelines = {setShowGuidelines}
+          handleMobileChatBtnClick={handleMobileChatBtnClick} />
+          <DreamDashboard greeting={greeting} />
 
-        <div className="chatDashBoardContainer">
-          {dreamLocalStorage ? (
-            <>
-              <DreamMessageContainer
-                responses={responses || "null"}
-                imageUrls={imageUrls}
-              />
-            </>
-          ) : (
-            <div className="w-full flex flex-center justify-center">
-              <LoadingComponent />
-            </div>
-          )}
-        </div>
+          {/* Dashboard Component  */}
 
-        <div className="mt-[6rem]">
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            className="chatFormSubmit"
-          >
-            <div className="relative textAreaContainer">
-              <textarea
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    formRef.current?.requestSubmit();
-                  }
-                }}
-                value={message}
-                placeholder="Ask Thou Question..."
-              ></textarea>
+          <div className="chatDashBoardContainer">
+            {dreamLocalStorage ? (
+              <>
+                <DreamMessageContainer
+                  responses={responses || "null"}
+                  imageUrls={imageUrls}
+                />
+              </>
+            ) : (
+              <div className="w-full flex flex-center justify-center">
+                <LoadingComponent />
+              </div>
+            )}
+          </div>
 
-              <div className="textAreaIconWrapper flex flex-row gap-[11px]">
-                <button className="textAreaIcon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      fill-rule="evenodd"
-                      d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
+          <div className="mt-[6rem]">
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="chatFormSubmit"
+            >
+              <div className="relative textAreaContainer">
+                <textarea
+                  onChange={(e) => {
+                    setMessage(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      formRef.current?.requestSubmit();
+                    }
+                  }}
+                  value={message}
+                  placeholder="Ask Thou Question..."
+                ></textarea>
 
-                <button type="submit" className="textAreaIcon">
-                  {messagesIsLoading ? (
-                    <ButtonLoadingComponent />
-                  ) : (
+                <div className="textAreaIconWrapper flex flex-row gap-[11px]">
+                  <button className="textAreaIcon">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="18"
                       height="18"
                       fill="none"
-                      viewBox="0 0 32 32"
-                      className=""
+                      viewBox="0 0 24 24"
                     >
                       <path
                         fill="currentColor"
                         fill-rule="evenodd"
-                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                        d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
                         clip-rule="evenodd"
                       ></path>
                     </svg>
-                  )}
-                </button>
+                  </button>
+
+                  <button type="submit" className="textAreaIcon">
+                    {messagesIsLoading ? (
+                      <ButtonLoadingComponent />
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        viewBox="0 0 32 32"
+                        className=""
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

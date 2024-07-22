@@ -41,9 +41,25 @@ import { ZodiacImages } from "@/utilis/zodiacArray";
 import { getZodiacDescription } from "@/utilis/zodiacArray";
 
 import axios from "axios";
+import { Header } from "../components/Header";
+import { Guidelines } from "../chat/app/components/Guidelines";
 
 //Images to Channel
 const Profile: React.FC = () => {
+  const [showGuidelines, setShowGuidelines] = useState(true);
+
+  useEffect(() => {
+    const hasViewedGuidelines = localStorage.getItem("hasViewedGuidelines");
+    if (hasViewedGuidelines) {
+      setShowGuidelines(false);
+    }
+  }, []);
+
+  const handleGuidelinesComplete = () => {
+    localStorage.setItem("hasViewedGuidelines", "true");
+    setShowGuidelines(false);
+  };
+
   const {
     userName,
     setUserName,
@@ -209,7 +225,6 @@ const Profile: React.FC = () => {
     // Retrieve the conversations from session storage
     const localStorageConversations = sessionStorage.getItem("conversations");
 
-
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
         localStorageConversations
@@ -359,345 +374,317 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="chatDashboard">
-      <ChatContainer
-        setConversations={setConversations}
-        conversations={conversations}
-        splitUserName={splitUserName}
-        userName={userName || ""}
-        email={email || ""}
-        onConversationClick={handleConversationClick}
-        chatContainerRef={chatContainerRef as any}
-        handleMobileChatBtnClick={handleMobileChatBtnClick}
-      />
-      {/* Chat Container Componet  */}
+    <>
+      {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
 
-      <div className="chatDashboardWrapper !h-full w-full text-left">
-        {/* Guidelines Hader */}
+      <div className="chatDashboard">
+        <ChatContainer
+          setConversations={setConversations}
+          conversations={conversations}
+          splitUserName={splitUserName}
+          userName={userName || ""}
+          email={email || ""}
+          onConversationClick={handleConversationClick}
+          chatContainerRef={chatContainerRef as any}
+          handleMobileChatBtnClick={handleMobileChatBtnClick}
+        />
+        {/* Chat Container Componet  */}
 
-        <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
-          <div className=" flex-1   cursor-pointer mobileChatContainer">
-            <div
-              onClick={handleMobileChatBtnClick}
-              className=" mobileChatBtn flex items-center justify-start"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
-              </svg>
-            </div>
-          </div>
-          <div className="flex flex-row gap-[18px] items-center justify-center">
-            <button className="hover:text-[#807f7f]">Tour</button>
+        <div className="chatDashboardWrapper !h-full w-full text-left">
+          {/* Guidelines Hader */}
 
-            <button className="flex flex-row guideLinesBtn gap-[10px] hover:bg-[#4B4B4B]">
-              <svg
-                width="15"
-                height="15"
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="far"
-                data-icon="compass"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="#2F0FFD"
-                  d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm306.7 69.1L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
-                ></path>
-              </svg>
-              Guidlines
-            </button>
-          </div>
-        </header>
+          <Header
+            showGuidelines={showGuidelines}
+            setShowGuidelines={setShowGuidelines}
+            handleMobileChatBtnClick={handleMobileChatBtnClick}
+          />
 
-        <div className="chatDashBoardContainer ">
-          <div className={styles.chat_container}>
-            <div className={styles.chat_box}>
-              <div className={styles.chat_flex}>
-                <div className={styles.chat_Messages}>
-                  <div className={styles.response_Flex}>
-                    <ChatMessage
-                      shouldAnimate={false}
-                      response={{
-                        question: "",
-                        id: "",
-                        response:
-                          "Based on your information provided, Solomon the wise was able to draw more conclusion on your across varies of culture to gain a more wholistic perspective Below or Images generated of your zodiac signs and there personality trains across different cultures. Best choice of action, take this information and ask me more in chat for more guidance on your unique being. You can click on each image to get a more in depth understanding of what they symbolized.",
-                      }}
-                    />
+          <div className="chatDashBoardContainer ">
+            <div className={styles.chat_container}>
+              <div className={styles.chat_box}>
+                <div className={styles.chat_flex}>
+                  <div className={styles.chat_Messages}>
+                    <div className={styles.response_Flex}>
+                      <ChatMessage
+                        shouldAnimate={false}
+                        response={{
+                          question: "",
+                          id: "",
+                          response:
+                            "Based on your information provided, Solomon the wise was able to draw more conclusion on your across varies of culture to gain a more wholistic perspective Below or Images generated of your zodiac signs and there personality trains across different cultures. Best choice of action, take this information and ask me more in chat for more guidance on your unique being. You can click on each image to get a more in depth understanding of what they symbolized.",
+                        }}
+                      />
 
-                    {dataLoading ? (
-                      <div className="w-full flex  justify-center items-center align-middle">
-                        <LoadingComponent />
-                      </div>
-                    ) : (
-                      <>
-                        {isGuidelinesVisible && selectedZodiac && (
-                          <div className="guideLinesPopupContainer">
-                            <div className="guideLinesPopUpWrapper">
-                              <div
-                                onClick={closePopup}
-                                className=" zodiacPopup"
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
+                      {dataLoading ? (
+                        <div className="w-full flex  justify-center items-center align-middle">
+                          <LoadingComponent />
+                        </div>
+                      ) : (
+                        <>
+                          {isGuidelinesVisible && selectedZodiac && (
+                            <div className="guideLinesPopupContainer">
+                              <div className="guideLinesPopUpWrapper">
+                                <div
+                                  onClick={closePopup}
+                                  className=" zodiacPopup"
                                 >
-                                  <path
-                                    fill="black"
-                                    fill-rule="evenodd"
-                                    d="M2.293 2.293a1 1 0 0 1 1.414 0l18 18a1 1 0 0 1-1.414 1.414l-2.514-2.514C16.204 20.24 14.274 21 12 21c-3.154 0-5.64-1.459-7.441-3.12-1.797-1.658-2.974-3.568-3.547-4.624a2.63 2.63 0 0 1 0-2.513c.578-1.065 1.78-3.017 3.624-4.693L2.293 3.707a1 1 0 0 1 0-1.414m3.759 5.173c-1.645 1.473-2.745 3.241-3.281 4.23a.63.63 0 0 0 0 .607c.518.955 1.57 2.656 3.143 4.106C7.482 17.855 9.506 19 12 19c1.65 0 3.09-.5 4.33-1.256l-1.934-1.934A4.502 4.502 0 0 1 8.19 9.604zm3.62 3.62 3.242 3.242a2.5 2.5 0 0 1-3.242-3.242"
-                                    clip-rule="evenodd"
-                                  ></path>
-                                  <path
-                                    fill="black"
-                                    d="M10.223 5.2c.56-.128 1.152-.2 1.777-.2 2.494 0 4.518 1.146 6.086 2.591 1.572 1.45 2.625 3.15 3.144 4.106a.63.63 0 0 1-.002.608 17 17 0 0 1-1.344 2.095 1 1 0 0 0 1.6 1.2 19 19 0 0 0 1.503-2.342 2.63 2.63 0 0 0 0-2.514c-.572-1.056-1.749-2.966-3.546-4.623C17.64 4.459 15.154 3 12 3c-.779 0-1.52.09-2.223.25a1 1 0 0 0 .446 1.95"
-                                  ></path>
-                                </svg>
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      fill="black"
+                                      fill-rule="evenodd"
+                                      d="M2.293 2.293a1 1 0 0 1 1.414 0l18 18a1 1 0 0 1-1.414 1.414l-2.514-2.514C16.204 20.24 14.274 21 12 21c-3.154 0-5.64-1.459-7.441-3.12-1.797-1.658-2.974-3.568-3.547-4.624a2.63 2.63 0 0 1 0-2.513c.578-1.065 1.78-3.017 3.624-4.693L2.293 3.707a1 1 0 0 1 0-1.414m3.759 5.173c-1.645 1.473-2.745 3.241-3.281 4.23a.63.63 0 0 0 0 .607c.518.955 1.57 2.656 3.143 4.106C7.482 17.855 9.506 19 12 19c1.65 0 3.09-.5 4.33-1.256l-1.934-1.934A4.502 4.502 0 0 1 8.19 9.604zm3.62 3.62 3.242 3.242a2.5 2.5 0 0 1-3.242-3.242"
+                                      clip-rule="evenodd"
+                                    ></path>
+                                    <path
+                                      fill="black"
+                                      d="M10.223 5.2c.56-.128 1.152-.2 1.777-.2 2.494 0 4.518 1.146 6.086 2.591 1.572 1.45 2.625 3.15 3.144 4.106a.63.63 0 0 1-.002.608 17 17 0 0 1-1.344 2.095 1 1 0 0 0 1.6 1.2 19 19 0 0 0 1.503-2.342 2.63 2.63 0 0 0 0-2.514c-.572-1.056-1.749-2.966-3.546-4.623C17.64 4.459 15.154 3 12 3c-.779 0-1.52.09-2.223.25a1 1 0 0 0 .446 1.95"
+                                    ></path>
+                                  </svg>
+                                </div>
+
+                                <div>
+                                  <Image
+                                    src={selectedZodiac.link}
+                                    width={300}
+                                    height={300}
+                                    alt={`${selectedZodiac.name} Image`}
+                                  />
+                                </div>
+
+                                <h3 className="text-white">
+                                  {selectedZodiac.category} -{" "}
+                                  {selectedZodiac.name}
+                                </h3>
+                                <p>
+                                  Here are the guidelines for the{" "}
+                                  {selectedZodiac.name}
+                                  ...
+                                </p>
+
+                                <p>{selectedZodiac.description}</p>
                               </div>
-
-                              <div>
-                                <Image
-                                  src={selectedZodiac.link}
-                                  width={300}
-                                  height={300}
-                                  alt={`${selectedZodiac.name} Image`}
-                                />
-                              </div>
-
-                              <h3
-                                className = "text-white"
-                              >
-                                {selectedZodiac.category} -{" "}
-                                {selectedZodiac.name}
-                              </h3>
-                              <p>
-                                Here are the guidelines for the{" "}
-                                {selectedZodiac.name}
-                                ...
-                              </p>
-
-                              <p>{selectedZodiac.description}</p>
                             </div>
-                          </div>
-                        )}
-                      </>
-                    )}
+                          )}
+                        </>
+                      )}
 
-                    {/* Images generated to showcase the informatian about them */}
+                      {/* Images generated to showcase the informatian about them */}
 
-                    <div className=" zodiacCardsWrapper flex-wrap !mt-[0px] !mb-[105px] flex flex-row gap-[23px] justify-start relative">
-                      {egyptianZodiac && (
-                        <div
-                          onClick={() =>
-                            handleZodiacClick({
-                              category: "Egyptian",
-                              name: egyptianZodiac,
-                              link:
-                                getZodiacImage("Egyptian", egyptianZodiac) ||
-                                "",
-                              description: getZodiacDescription(
-                                "Egyptian",
-                                egyptianZodiac
-                              ),
-                            })
-                          }
-                          className="zodiacCards
+                      <div className=" zodiacCardsWrapper flex-wrap !mt-[0px] !mb-[105px] flex flex-row gap-[23px] justify-start relative">
+                        {egyptianZodiac && (
+                          <div
+                            onClick={() =>
+                              handleZodiacClick({
+                                category: "Egyptian",
+                                name: egyptianZodiac,
+                                link:
+                                  getZodiacImage("Egyptian", egyptianZodiac) ||
+                                  "",
+                                description: getZodiacDescription(
+                                  "Egyptian",
+                                  egyptianZodiac
+                                ),
+                              })
+                            }
+                            className="zodiacCards
                         
                         w-full relative !p-0"
-                        >
-                          <div className="zodiacOverlay">
-                            <p className="text-white">{egyptianZodiac}</p>
+                          >
+                            <div className="zodiacOverlay">
+                              <p className="text-white">{egyptianZodiac}</p>
+                            </div>
+                            <Image
+                              src={
+                                getZodiacImage("Egyptian", egyptianZodiac) || ""
+                              }
+                              width={100}
+                              height={100}
+                              alt={`${egyptianZodiac} Image`}
+                            />
                           </div>
-                          <Image
-                            src={
-                              getZodiacImage("Egyptian", egyptianZodiac) || ""
+                        )}
+                        {nativeAmericanZodiacSign && (
+                          <div
+                            onClick={() =>
+                              handleZodiacClick({
+                                category: "Native American",
+                                name: nativeAmericanZodiacSign,
+                                link:
+                                  getZodiacImage(
+                                    "Native American",
+                                    nativeAmericanZodiacSign
+                                  ) || "",
+                                description: getZodiacDescription(
+                                  "Native American",
+                                  nativeAmericanZodiacSign
+                                ),
+                              })
                             }
-                            width={100}
-                            height={100}
-                            alt={`${egyptianZodiac} Image`}
-                          />
-                        </div>
-                      )}
-                      {nativeAmericanZodiacSign && (
-                        <div
-                          onClick={() =>
-                            handleZodiacClick({
-                              category: "Native American",
-                              name: nativeAmericanZodiacSign,
-                              link:
+                            className="zodiacCards relative !p-0"
+                          >
+                            <div className="zodiacOverlay">
+                              <p className="text-white">
+                                {nativeAmericanZodiacSign}
+                              </p>
+                            </div>
+                            <Image
+                              src={
                                 getZodiacImage(
                                   "Native American",
                                   nativeAmericanZodiacSign
-                                ) || "",
-                              description: getZodiacDescription(
-                                "Native American",
-                                nativeAmericanZodiacSign
-                              ),
-                            })
-                          }
-                          className="zodiacCards relative !p-0"
-                        >
-                          <div className="zodiacOverlay">
-                            <p className="text-white">
-                              {nativeAmericanZodiacSign}
-                            </p>
+                                ) || ""
+                              }
+                              width={100}
+                              height={100}
+                              alt={`${nativeAmericanZodiacSign} Image`}
+                            />
                           </div>
-                          <Image
-                            src={
-                              getZodiacImage(
-                                "Native American",
-                                nativeAmericanZodiacSign
-                              ) || ""
-                            }
-                            width={100}
-                            height={100}
-                            alt={`${nativeAmericanZodiacSign} Image`}
-                          />
-                        </div>
-                      )}
+                        )}
 
-                      {celticZodiacSign && (
-                        <div
-                          onClick={() =>
-                            handleZodiacClick({
-                              category: "Celtic",
-                              name: celticZodiacSign,
-                              link:
-                                getZodiacImage("Celtic", celticZodiacSign) ||
-                                "",
-                              description: getZodiacDescription(
-                                "Celtic",
-                                celticZodiacSign
-                              ),
-                            })
-                          }
-                          className="zodiacCards relative !p-0"
-                        >
-                          <div className="zodiacOverlay">
-                            <p className="text-white">{celticZodiacSign}</p>
-                          </div>
-                          <Image
-                            src={
-                              getZodiacImage("Celtic", celticZodiacSign) || ""
+                        {celticZodiacSign && (
+                          <div
+                            onClick={() =>
+                              handleZodiacClick({
+                                category: "Celtic",
+                                name: celticZodiacSign,
+                                link:
+                                  getZodiacImage("Celtic", celticZodiacSign) ||
+                                  "",
+                                description: getZodiacDescription(
+                                  "Celtic",
+                                  celticZodiacSign
+                                ),
+                              })
                             }
-                            width={100}
-                            height={100}
-                            alt={`${celticZodiacSign} Image`}
-                          />
-                        </div>
-                      )}
-                      {chineseZodiac && (
-                        <div
-                          onClick={() =>
-                            handleZodiacClick({
-                              category: "Chinese",
-                              name: chineseZodiac,
-                              link:
-                                getZodiacImage("Chinese", chineseZodiac) || "",
-                              description: getZodiacDescription(
-                                "Chinese",
-                                chineseZodiac
-                              ),
-                            })
-                          }
-                          className="zodiacCards relative !p-0"
-                        >
-                          <div className="zodiacOverlay">
-                            <p className="text-white">{chineseZodiac}</p>
+                            className="zodiacCards relative !p-0"
+                          >
+                            <div className="zodiacOverlay">
+                              <p className="text-white">{celticZodiacSign}</p>
+                            </div>
+                            <Image
+                              src={
+                                getZodiacImage("Celtic", celticZodiacSign) || ""
+                              }
+                              width={100}
+                              height={100}
+                              alt={`${celticZodiacSign} Image`}
+                            />
                           </div>
-                          <Image
-                            src={getZodiacImage("Chinese", chineseZodiac) || ""}
-                            width={100}
-                            height={100}
-                            alt={`${chineseZodiac} Image`}
-                          />
-                        </div>
-                      )}
+                        )}
+                        {chineseZodiac && (
+                          <div
+                            onClick={() =>
+                              handleZodiacClick({
+                                category: "Chinese",
+                                name: chineseZodiac,
+                                link:
+                                  getZodiacImage("Chinese", chineseZodiac) ||
+                                  "",
+                                description: getZodiacDescription(
+                                  "Chinese",
+                                  chineseZodiac
+                                ),
+                              })
+                            }
+                            className="zodiacCards relative !p-0"
+                          >
+                            <div className="zodiacOverlay">
+                              <p className="text-white">{chineseZodiac}</p>
+                            </div>
+                            <Image
+                              src={
+                                getZodiacImage("Chinese", chineseZodiac) || ""
+                              }
+                              width={100}
+                              height={100}
+                              alt={`${chineseZodiac} Image`}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Images generated to showcase the informatian about them */}
+
+                      <ChatMessage
+                        shouldAnimate={false}
+                        response={{
+                          response:
+                            "Based on your Life Path number, we have gave an syntheses on what the expect of the overall energies that will be effecting your unique being each month of the year. Give credit to the great lloyd strayhorn for the valuable knowledge in curating this .",
+
+                          question: "",
+                          id: "",
+                        }}
+                      />
                     </div>
-
-                    {/* Images generated to showcase the informatian about them */}
-
-                    <ChatMessage
-                      shouldAnimate={false}
-                      response={{
-                        response:
-                          "Based on your Life Path number, we have gave an syntheses on what the expect of the overall energies that will be effecting your unique being each month of the year. Give credit to the great lloyd strayhorn for the valuable knowledge in curating this .",
-
-                        question: "",
-                        id: "",
-                      }}
-                    />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-[26px]">
-            {months.map((month, index) => (
-              <div
-                key={index}
-                className={`accountContainer relative ${
-                  expandedIndex === index ? "max-h-[300px]" : "max-h-[82px]"
-                }`}
-              >
-                <div className="flex flex-row  gap-[15px] md:gap-[0px] justify-between accountDiv">
-                  <div className="flex flex-col gap-[8px]">
-                    <p className="text-white">{month}</p>
-                    <p className="text-[12px]" id="greyText">
-                      {dataLoading ? (
-                        <ButtonLoadingComponent />
-                      ) : (
-                        <p>{`Personal Month | ${renderNumberForIndex(
+            <div className="flex flex-col gap-[26px]">
+              {months.map((month, index) => (
+                <div
+                  key={index}
+                  className={`accountContainer relative ${
+                    expandedIndex === index ? "max-h-[300px]" : "max-h-[82px]"
+                  }`}
+                >
+                  <div className="flex flex-row  gap-[15px] md:gap-[0px] justify-between accountDiv">
+                    <div className="flex flex-col gap-[8px]">
+                      <p className="text-white">{month}</p>
+                      <p className="text-[12px]" id="greyText">
+                        {dataLoading ? (
+                          <ButtonLoadingComponent />
+                        ) : (
+                          <p>{`Personal Month | ${renderNumberForIndex(
+                            index,
+                            personalYearNumber as number
+                          )}`}</p>
+                        )}
+                      </p>
+                      <p className="text-[12px] text-white">
+                        {renderTextForIndex(
                           index,
                           personalYearNumber as number
-                        )}`}</p>
-                      )}
-                    </p>
-                    <p className="text-[12px] text-white">
-                      {renderTextForIndex(index, personalYearNumber as number)}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleExpandClick(index)}
-                    className="textAreaIcon max-h-[30px] max-w-[30px] absolute top-[15px] right-[10px] "
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      fill="none"
-                      viewBox="0 0 32 32"
-                      className={`transition-transform duration-300 ease-in-out  ${
-                        expandedIndex === index ? "rotate-0" : "rotate-180"
-                      }`}
+                        )}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleExpandClick(index)}
+                      className="textAreaIcon max-h-[30px] max-w-[30px] absolute top-[15px] right-[10px] "
                     >
-                      <path
-                        fill="currentColor"
-                        fill-rule="evenodd"
-                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        viewBox="0 0 32 32"
+                        className={`transition-transform duration-300 ease-in-out  ${
+                          expandedIndex === index ? "rotate-0" : "rotate-180"
+                        }`}
+                      >
+                        <path
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                          d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

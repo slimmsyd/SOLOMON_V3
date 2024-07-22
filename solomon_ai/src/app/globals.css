@@ -628,6 +628,10 @@ figure video {
   flex-direction: row;
   border: 0.5px solid #fff;
 }
+.homePopupContainer.feedback{
+  background:white;
+
+}
 .homePopupImageContainer {
   position: relative;
   flex-basis: 70%;
@@ -636,6 +640,9 @@ figure video {
   overflow-x: hidden;
   display: flex;
   justify-content: start;
+}
+.homePopupImageContainer.active{
+  
 }
 .homePopupImageContainer img {
   width: 100%;
@@ -651,7 +658,9 @@ figure video {
   justify-content: start;
   margin: 0px 0px;
 }
-
+.homePopupFormContainer.feedBackForm{ 
+  padding-bottom: 5px !important;
+}
 .homePopupFormContainer form {
   /* width: 60%; */
   padding: 0px 1.2rem;
@@ -1594,6 +1603,15 @@ a > p {
   outline: none;
 }
 
+.feedBackTextArea{
+  border: 0.5px solid #404040;
+  border-radius: 5%;
+  height: 200px;
+  outline: none;
+  padding: 15px;
+  resize: none;
+}
+
 /* PROFILE CSS */
 
 /* Horscope Page */
@@ -1771,18 +1789,24 @@ a > p {
   z-index: 2;
   
 }
+.guidlinesOverlay.active
+{
+  display: none;
+}
 .guideLinesWhiteBox{
   background: white;
   width: 427px;
-  height: 145px;
+  height: 165px;
   position: absolute;
   display: flex;
   border-radius: 8px;
-  top: 20%;
+  top: 160px;
   left: 5%;
   padding: 13px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
   0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 .guildeLinesBtn
 { 
@@ -1803,5 +1827,29 @@ a > p {
   border-radius: 50%;
   width: 10px;
   height: 10px;
+}
+.guideLinesCircle.active{ 
+  width: 20px;
+  height: 20px;
+  background: #4C35DE;
+}
+
+
+.guideLinesWhiteBox.second { 
+  top: 525px;
+z-index: 3;
+}
+.guideLinesWhiteBox.third { 
+  top: 570px;
+z-index: 1;
+
+}
+.guideLinesWhiteBox.fourth { 
+  top: 700px;
+  left: 20%;
+
+}
+.guidlinesOverlay .guideLinesWhiteBox.active {
+  opacity: 1;
 }
 /* GUIDLINES OVERLAY PAGE */
