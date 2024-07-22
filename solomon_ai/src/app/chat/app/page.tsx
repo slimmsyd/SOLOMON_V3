@@ -595,7 +595,7 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <MessageProvider>
-              <Guidelines />
+              {/* <Guidelines /> */}
 
       <div className="chatDashboard">
 
