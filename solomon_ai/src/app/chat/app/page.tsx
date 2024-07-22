@@ -35,6 +35,10 @@ import { Dashboard } from "./Dashboard";
 import { ChatContainer } from "./ChatContainer";
 import { ChatMessagesContainer } from "./ChatMessage";
 
+
+
+import { Guidelines } from "./components/Guidelines";
+
 const ChatDashboard: React.FC = () => {
   //getting the user name
 
@@ -591,7 +595,12 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <MessageProvider>
+              {/* <Guidelines /> */}
+
       <div className="chatDashboard">
+
+
+
         {/* Chat Container Componet  */}
 
         <ChatContainer

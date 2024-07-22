@@ -5,13 +5,16 @@ import { greetings } from "@/utilis/randomGreeting";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 import { isClient } from "@/utilis/isClient";
 import { useMessageContext } from "@/utilis/MessageContext";
-
+import { Guidelines } from "./components/Guidelines";
 interface DashboardProps {
   userName: string;
   handleButtonClick?: (event: any) => void;
 }
 
-export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) => {
+export const Dashboard: FC<DashboardProps> = ({
+  handleButtonClick,
+  userName,
+}) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -21,14 +24,9 @@ export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) =
   const { splitUserName, email, setEmail, setSplitUserName } =
     useSessionStorage();
 
-
-
-    
   const { setMessage, message } = useMessageContext();
 
   useEffect(() => {}, [message]);
-
-
 
   const getRandomGreeting = () => {
     return greetings[Math.floor(Math.random() * greetings.length)];
@@ -95,10 +93,8 @@ export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) =
 
   return (
     <>
-      {/* 
 
 
-      {/* Place within a Componnet */}
       <h2>
         {greeting}, {userName}
       </h2>
@@ -154,8 +150,11 @@ export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) =
             </svg>
           </button>
         </div>
-        <div className="renderCards relative">
-          <p>Based on the meaning of my name and its numerical signature, what can you say for guidance on how the universe designed me</p>
+        <div className="renderCards relative mobileNone">
+          <p>
+            Based on the meaning of my name and its numerical signature, what
+            can you say for guidance on how the universe designed me
+          </p>
 
           <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg
@@ -176,7 +175,7 @@ export const Dashboard: FC<DashboardProps> = ({ handleButtonClick, userName }) =
           </button>
         </div>
 
-        <div className="renderCards relative">
+        <div className="renderCards relative mobileNone">
           <p>
             Breakdown “In the beginning was the world” from a Quantum
             perspective
