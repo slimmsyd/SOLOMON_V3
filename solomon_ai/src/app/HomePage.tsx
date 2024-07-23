@@ -575,6 +575,7 @@ export default function HomePage() {
         </section>
         <figure className="w-full h-auto mt-[4rem] p-6 flex items-center justify-center flex-col gap-6">
         <Video
+
               src="https://www.aisolomon.xyz/video_introduction.mp4"
               type="video/mp4"
               width="100%"
@@ -583,6 +584,7 @@ export default function HomePage() {
               autoPlay={true}
               loop={true}
               muted={false}
+              className="pointerEventsYes"
           />
           <p className="text-white/80 montserrat">
             Solomon AI: Harnessing millennia of wisdom
