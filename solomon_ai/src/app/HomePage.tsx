@@ -8,8 +8,9 @@ import solomonHeaderImg from "../../public/assets/chat-guidelines.png";
 import { features } from "process";
 import Link from "next/link";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
 import { gsap } from "gsap";
+gsap.registerPlugin(ScrollTrigger);
+
 
 import { Popup } from "./components/NewsletterPopup";
 import { SuccessPopup } from "./components/SucessPopup";
@@ -573,13 +574,15 @@ export default function HomePage() {
           </div>
         </section>
         <figure className="w-full h-auto mt-[4rem] p-6 flex items-center justify-center flex-col gap-6">
-          <Image
-            src={solomonHeaderImg}
-            layout="responsive"
-            width={1200}
-            height={600}
-            alt="Solomon chatbot"
-            className="w-full max-w-[1200px]  rounded-xl shadow-lg"
+        <Video
+              src="https://www.aisolomon.xyz/video_introduction.mp4"
+              type="video/mp4"
+              width="100%"
+              height="auto" 
+              controls={true}
+              autoPlay={false}
+              loop={true}
+              muted={false}
           />
           <p className="text-white/80 montserrat">
             Solomon AI: Harnessing millennia of wisdom

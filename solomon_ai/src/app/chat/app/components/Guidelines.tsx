@@ -4,10 +4,8 @@ import { useEffect, useRef, useState } from "react";
 export const Guidelines = ({ onComplete }) => {
   const circles = Array.from({ length: 4 });
   const [activeIndex, setActiveIndex] = useState(0);
-  const steps = ["first", "second", "third", "fourth"];
 
   useEffect(() => {
-    console.log("Logging the CUrrent Index", activeIndex);
   }, [activeIndex]);
 
   const handleNext = () => {

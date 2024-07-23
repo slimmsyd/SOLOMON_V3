@@ -634,8 +634,12 @@ figure video {
 }
 .homePopupContainer.feedback{
   background:white;
-height: 900px;
+  height: 900px;
 }
+.homePopupContainer.feedback.deleteForm{
+  height: 600px;
+}
+
 @media screen and (max-width: 750px) 
 { 
   .homePopup.feedback{ 
@@ -1897,4 +1901,16 @@ z-index: 1;
 .guidlinesOverlay .guideLinesWhiteBox.active {
   opacity: 1;
 }
+
+
+
+.guideLinesWhiteBox.profileGuidlines{
+  left: 50%;
+
+}
+.guideLinesWhiteBox.second.profileGuidlines
+{ 
+  
+}
+
 /* GUIDLINES OVERLAY PAGE */

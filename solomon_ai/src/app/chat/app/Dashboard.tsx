@@ -91,6 +91,41 @@ export const Dashboard: FC<DashboardProps> = ({
     }
   }, [userName, splitUserName]);
 
+
+
+  const questions: string[] = [
+    'How does the concept of quantum entanglement resonate with the idea of creation through the Word, where everything is interconnected and originates from a singular point of divine command?',
+    'Considering the numerical signature of your name being 11, how can you align your life\'s purpose with the higher spiritual vibrations and intuitive insights that this master number represents?',
+    'How do our collective beliefs and perceptions shape the reality we experience, and how can changing our thoughts alter the very fabric of our existence?',
+    'How does the understanding of time as a construct in quantum physics intertwine with ancient spiritual teachings of time being an illusion and the experience of the eternal "now"?',
+    'How can we discern our true purpose in life through the lens of karma and dharma, understanding that all actions are interlinked in a vast cosmic tapestry?',
+    'What role do energy fields (known as auras or chakras) play in spiritual and physical healing, and how can we harness this ancient wisdom in modern therapeutic practices?',
+    'How do the principles of sacred geometry, reflected in the cosmos and nature, provide insight into the divine order and creative processes of the universe?',
+    'How can practices such as meditation, prayer, and mindfulness elevate human consciousness to states where we can access deeper truths and connect with the Divine?',
+    'In what ways can the discoveries and theories of modern science, especially in quantum mechanics and astrophysics, be harmonized with ancient spiritual wisdom to provide a more unified understanding of existence?',
+    'How can individuals cultivate and trust their intuitive abilities and spiritual gifts to navigate their life\'s journey and fulfill their higher purpose?'
+  ];
+
+
+
+  const [randomQuestions, setRandomQuestions] = useState<string[]>([]);
+
+  const getRandomQuestion = () => {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    return questions[randomIndex];
+  };
+  
+
+
+  useEffect(() => {
+    // Generate 3 random questions from the list
+    const shuffledQuestions: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      shuffledQuestions.push(getRandomQuestion());
+    }
+    setRandomQuestions(shuffledQuestions);
+  }, []);
+
   return (
     <>
 
@@ -109,7 +144,7 @@ export const Dashboard: FC<DashboardProps> = ({
         className="renderCardsWrapper flex flex-row gap-[23px] justify-start relative"
       >
         <div className="renderCards relative">
-          <p>Get your astrological predictions</p>
+        <p>{randomQuestions[0]}</p>
 
           <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg
@@ -130,7 +165,7 @@ export const Dashboard: FC<DashboardProps> = ({
           </button>
         </div>
         <div className="renderCards relative">
-          <p>Calculate my life path number, and personal months meaning</p>
+        <p>{randomQuestions[1]}</p>
 
           <button onClick={handleButtonClick} className="renderAutoTextBtn">
             <svg
@@ -152,8 +187,8 @@ export const Dashboard: FC<DashboardProps> = ({
         </div>
         <div className="renderCards relative mobileNone">
           <p>
-            Based on the meaning of my name and its numerical signature, what
-            can you say for guidance on how the universe designed me
+          <p>{randomQuestions[2]}</p>
+
           </p>
 
           <button onClick={handleButtonClick} className="renderAutoTextBtn">
@@ -177,8 +212,8 @@ export const Dashboard: FC<DashboardProps> = ({
 
         <div className="renderCards relative mobileNone">
           <p>
-            Breakdown “In the beginning was the world” from a Quantum
-            perspective
+          <p>{randomQuestions[3]}</p>
+
           </p>
 
           <button onClick={handleButtonClick} className="renderAutoTextBtn">
