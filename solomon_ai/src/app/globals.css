@@ -129,6 +129,10 @@ body {
   line-height: 125% !important;
 } */
 
+.pointerEventsYes{
+  pointer-events: all !important;
+}
+
 h1 {
   color: #fff;
 }
