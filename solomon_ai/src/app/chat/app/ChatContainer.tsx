@@ -415,7 +415,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           <p>Upgrade to pro</p>
         </button>
         <p id="greyText" className="text-[14px]">
-          Upgrade for image upload, smarter AI, and more Pro Search.
+          Upgrade To Chat More With Our Sage
         </p>
         <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] mt-[12px]">
           <div className="mainIcon">

@@ -519,6 +519,9 @@ figure video {
   padding: 2rem;
   /* display: none; */
 }
+.homePopup.feedback{
+  padding: 0px !important;
+}
 
 .displayShow {
   display: flex;
@@ -528,6 +531,7 @@ figure video {
     width: 330px !important;
     justify-content: center;
   }
+
 }
 @media screen and (max-width: 1050px) {
   .homePopupContainer {
@@ -630,7 +634,22 @@ figure video {
 }
 .homePopupContainer.feedback{
   background:white;
-
+height: 900px;
+}
+@media screen and (max-width: 750px) 
+{ 
+  .homePopup.feedback{ 
+    justify-content: center;
+    align-items: center;
+  }
+  .homePopupContainer.feedback{
+    height: 500px;
+    padding-bottom: 1rem;
+  }
+  .popupHeader.feedback{ 
+    display: none;
+  }
+  
 }
 .homePopupImageContainer {
   position: relative;
@@ -660,6 +679,7 @@ figure video {
 }
 .homePopupFormContainer.feedBackForm{ 
   padding-bottom: 5px !important;
+
 }
 .homePopupFormContainer form {
   /* width: 60%; */
@@ -722,6 +742,19 @@ figure video {
   width: 32px;
   height: 32px;
   z-index: 95;
+}
+.closePopupContainer.feedBack{
+  top: 0%;
+  left: -15%;
+}
+@media screen and (max-width: 750px) 
+{ 
+  .closePopupContainer.feedBack{
+    top: -8% !important;
+    left: 0%;
+
+
+  } 
 }
 
 .zodiacPopup {
@@ -1611,6 +1644,18 @@ a > p {
   padding: 15px;
   resize: none;
 }
+.feedBackBtn { 
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background: rgba(200, 200, 200, 0.387);
+  cursor: pointer;
+  transition: transform 250ms ease-in-out;
+}
+.feedBackBtn.active{ 
+  transform: scale(140%);
+}
+
 
 /* PROFILE CSS */
 
