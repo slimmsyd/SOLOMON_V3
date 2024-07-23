@@ -97,10 +97,7 @@ const Profile: React.FC = () => {
   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
   const handleMobileChatBtnClick = () => {
-    console.log(
-      "Logging the chat container Ref current state",
-      chatContainerRef.current
-    );
+
 
     if (chatContainerRef.current) {
       if (isAtZero) {
@@ -141,7 +138,6 @@ const Profile: React.FC = () => {
     const getUserInfo = async () => {
       const userInfo = await fetchUserInfo(userId);
 
-      console.log("Just loggigng the user Info Here", userInfo);
 
       if (userInfo) {
         const {
@@ -251,14 +247,12 @@ const Profile: React.FC = () => {
   }, [userName, splitUserName]);
 
   const handleConversationClick = (convoId: string) => {
-    console.log("Activating conversation with ID:", convoId);
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
     router.push(targetPath, undefined);
     setCurrentConversationId(convoId);
 
-    console.log("Logging hte current conversation ID", currentConversationId);
-    console.log("Logging hte current The ConvoID", convoId);
+ 
   };
 
   const handleSignOut = async () => {
@@ -276,7 +270,6 @@ const Profile: React.FC = () => {
     // Retrieve the conversations from session storage
     const localStorageConversations = sessionStorage.getItem("conversations");
 
-    console.log("Logging the localStorage Convos", localStorageConversations);
 
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
@@ -284,7 +277,6 @@ const Profile: React.FC = () => {
       );
       if (conversationArray.length > 0) {
         setConversations?.(conversationArray); // Safe call with optional chaining
-        console.log("Logging the conversations array", conversationArray);
       }
     }
   }, [setConversations]);
@@ -292,11 +284,7 @@ const Profile: React.FC = () => {
   //Run a function that updates all the Character Traits right on reload
 
   useEffect(() => {
-    console.log(
-      "Logging the change of the Myles brider number",
-      mylesBridgeType
-    );
-    console.log("Logging the name numerical sig", nameNumerologyNumber);
+
   }, [
     lifePath,
     ennealogy,
@@ -306,11 +294,15 @@ const Profile: React.FC = () => {
     nameNumerologyNumber,
   ]);
 
+
+
   return (
     <>
       {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
 
       {showPopup && <Feedbackform togglePopup={togglePopup} />}
+  
+
       <div className="chatDashboard">
         <ChatContainer
           setConversations={setConversations}

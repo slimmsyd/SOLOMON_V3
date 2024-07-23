@@ -1,61 +1,92 @@
 import Link from "next/link";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import React, { FC, FormEvent, RefObject, useEffect, useState } from "react";
 import Image from "next/image";
 
 import PopupImage from "../../../public/assets/homePage/popup_header.png";
+import { SuccessPopup } from "../components/SucessPopup";
 
 import FaceIcon from "../../../public/faceIconSolomon.png";
 
 interface PopupProps {
-  togglePopup?: () => void;
+  togglePopup: () => void;
 }
 
 export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
   const [email, setEmail] = useState<string>("");
   const [submissionState, setSubmissionState] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<string>("");
+  const { data: session, status } = useSession();
+  const [sessionEmail, setSessionEmail] = useState<string>("");
+  const [sessionName, setSessionName] = useState<string>("");
 
-  const joinSubmit = async (e: FormEvent) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [ratingValue, setRatingValue] = useState<Number>(0);
+
+  const handleRatingClick = (index: number, rating: number) => {
+    setActiveIndex(index);
+    setRatingValue(rating);
+  };
+  //Keep track of the updating index
+  useEffect(() => {
+ 
+  }, [activeIndex, ratingValue]);
+
+  useEffect(() => {
+    setSessionEmail(session?.user.email);
+    setSessionName(session?.user.name);
+  }, []);
+
+  const joinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    //Log the current date of submisison
+    const date = new Date()
+    let day = date.getDate();
+    let month = date.getMonth() + 1 
+    let year = date.getFullYear() 
+
+    let currentDate = `${day}--${month}--${year}`;
+
 
     const data = {
-      email: email,
+      email: sessionEmail,
+      feedback: feedback,
+      ratingValue: ratingValue,
+      currentDate: currentDate
     };
 
     try {
+      const response = await axios.post(
+        "https://hook.us1.make.com/6bx3xklj81i4eg1z4ppqf8irjwztdttx",
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log("Success:", response.data);
+      console.log("Logging the Data that wwas send", data)
 
-
-    //   const response = await axios.post(
-    //     "https://hook.us1.make.com/l99169ajyoh8dcxhaqnay3d3zqxe0on4 ",
-    //     data,
-    //     {
-    //       headers: { "Content-Type": "application/json" },
-    //     }
-    //   );
-    //   console.log("Success:", response.data);
-
-
+      // Simulate successful submission
       setSubmissionState(true);
-      console.log("Logging submissionstae", submissionState);
-      //   togglePopup();
-      // You might want to clear the form or give user feedback here
+      console.log("Logging submission state", submissionState);
+      // Call togglePopup to close the popup after successful submission
+      togglePopup();
     } catch (error) {
       console.error("Error:", error);
-      // Handle the error, e.g., display an error message to the user
     }
   };
 
   useEffect(() => {
-    console.log("Loggin submission stae in the useEffect", submissionState);
   }, [submissionState]);
 
   return (
-    <div className="homePopup">
+    <div className="homePopup feedback">
       {submissionState ? (
-        <p>Form submitted</p>
-      ) : (
+        <SuccessPopup togglePopup={togglePopup} />
+    ) : (
         <div className="homePopupContainer feedback">
-          <div onClick={togglePopup} className="closePopupContainer">
+          <div onClick={togglePopup} className="closePopupContainer feedBack">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -76,47 +107,80 @@ export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
             </svg>
           </div>
 
-          <div className="homePopupFormContainer feedBackForm w-full flex flex-col items-center justify-center">
-            <div className="popupHeader">
-
+          <div className="homePopupFormContainer gap-[5px] feedBackForm w-full flex flex-col items-center !justify-evenly">
+            <div className="popupHeader feedback">
               <Image src={PopupImage} alt="popupheader" />
             </div>
 
             <div className=" homePopupInnerWrapper text-left flex flex-col items-start gap-[5px] mb-[5px] md:mb-[50px] mt-[20px] mx-[20px]">
-            <h2 className=" font-med text-[28px] text-center text-black">
-                
-            Much Appreciate Feedback For User Best Possible Experience In This Realm           
-               </h2>
+              <h2 className=" font-med text-[28px] text-center text-black">
+                Much Appreciate Feedback For User Best Possible Experience In
+                This Realm
+              </h2>
             </div>
 
             <form
-            //   onSubmit={joinSubmit}
+              onSubmit={joinSubmit}
               className="flex flex-col w-full  gap-[15px] "
             >
-                <textarea
+              {/* <input placeholder="Enter Name Optional" /> */}
+              <textarea
                 placeholder="How is the app? What could we do better?"
-                    className = "feedBackTextArea"
+                className="feedBackTextArea"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+              >
+                {" "}
+              </textarea>
+
+              <p className="text-[14px]">
+                We value your insights, could you tell us your experience with
+                the products performance
+              </p>
+
+              <div className="flex flex-row gap-[15px] flex-1 w-full justify-evenly">
+                <span
+                  onClick={() => handleRatingClick(0, 0)}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 0 ? " active": ""}`}
                 >
+                  🥺
+                </span>
+                <span
+                  onClick={() => handleRatingClick(1, 1)}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 1 ? "active" : ""}`}
+                >
+                  🙁
+                </span>
+                <span
+                  onClick={() => handleRatingClick(2, 2)}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 2 ? "active" : ""}`}
+                >
+                  😑
+                </span>
+                <span
+                  onClick={() => handleRatingClick(3, 3)}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 3 ? "active" : ""} `}
+                >
+                  🙂
+                </span>
+                <span
+                  onClick={() => handleRatingClick(4, 4)}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 4 ? "active" : ""} `}
+                >
+                  😍
+                </span>
+              </div>
 
-
-                </textarea>
-
-         
-              <button type = "submit" className="joinBeta !bg-black !text-white">Submit</button>
+              <button type="submit" className="joinBeta !bg-black !text-white   ">
+                Submit
+              </button>
 
               {/* 
     <button type="submit" className="w-[32px] h-[32px] formImage">
       <Image src={ChestImage} alt="Waiting List Image" />
     </button> */}
 
-              <div className="flex w-full mt-[20px] items-center justify-center">
-                <Image
-                  src={FaceIcon}
-                  alt="Solomon Logo"
-                  width={24}
-                  height={24}
-                />
-              </div>
+
             </form>
           </div>
         </div>
