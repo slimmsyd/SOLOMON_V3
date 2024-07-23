@@ -21,8 +21,11 @@ import { getYearFromDateString } from "@/utilis/textExtractor";
 import { Header } from "../components/Header";
 import { Guidelines } from "../chat/app/components/Guidelines";
 import { Feedbackform } from "./FeedbackForm";
+import { UserDeleteAlert } from "./deleteUserAlert";
+import { ProfileGuidelines } from "./profileGuidelines";
 
 import axios from "axios";
+import Link from "next/link";
 
 const Profile: React.FC = () => {
   const [showGuidelines, setShowGuidelines] = useState(true);
@@ -31,7 +34,6 @@ const Profile: React.FC = () => {
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
-
 
   useEffect(() => {
     const hasViewedGuidelines = localStorage.getItem("hasViewedGuidelines");
@@ -90,15 +92,13 @@ const Profile: React.FC = () => {
       userName: "",
       splitUserName,
     });
-  }, [status]);
+  }, []);
 
   //This funcitno shifts and shows the mobile Chat ccontainer
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
   const handleMobileChatBtnClick = () => {
-
-
     if (chatContainerRef.current) {
       if (isAtZero) {
         chatContainerRef.current.style.transform = "translateX(-100%)";
@@ -137,7 +137,6 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       const userInfo = await fetchUserInfo(userId);
-
 
       if (userInfo) {
         const {
@@ -229,6 +228,62 @@ const Profile: React.FC = () => {
     }
   };
 
+  //Remove user form the data
+  const [deletingUser, setDeleteUser] = useState<boolean>(false);
+  const [deleteUserFinal, setDeleteUserFinal] = useState<boolean>(false);
+  const beginDeletingUser = async () => {
+    setDeleteUser(true);
+
+    if (deletingUser) {
+      console.log("THe Deleting Users is True");
+    }
+
+    // try {
+    //   const response = await axios.post("/api/deleteUser", {
+    //     userId
+    //   });
+
+    //   console.log("The delete has been successfully updated", response.data)
+
+    // }catch(e) {
+    //   console.error(e)
+
+    // }
+  };
+  useEffect(() => {
+    console.log("Logging the Delete UserFinal", deleteUserFinal);
+    if (deleteUserFinal) {
+      window.alert("User is being deleted");
+
+      const deleteUserPerm = async () => {
+        try {
+          const response = await axios.delete("/api/deleteUser", {
+            data: {
+              userId,
+            },
+          });
+
+          console.log(
+            "The delete has been successfully updated",
+            response.data
+          );
+
+          if (isClient()) {
+            sessionStorage.clear();
+
+            // Sign out and redirect
+            await signOut({ redirect: true });
+            window.location.href = "/login"; // Or any other page you want to redirect to
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      deleteUserPerm();
+    }
+  }, [deleteUserFinal, deletingUser]);
+
   // Update session storage whenever userName or splitUserName changes
   useEffect(() => {
     if (isClient()) {
@@ -246,13 +301,18 @@ const Profile: React.FC = () => {
     }
   }, [userName, splitUserName]);
 
+  useEffect(() => {
+    console.log("LOgging the session router", session);
+    if (!session?.user) {
+      router.push("/");
+    }
+  }, []);
+
   const handleConversationClick = (convoId: string) => {
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
     router.push(targetPath, undefined);
     setCurrentConversationId(convoId);
-
- 
   };
 
   const handleSignOut = async () => {
@@ -270,7 +330,6 @@ const Profile: React.FC = () => {
     // Retrieve the conversations from session storage
     const localStorageConversations = sessionStorage.getItem("conversations");
 
-
     if (localStorageConversations) {
       const conversationArray: Conversation[] = JSON.parse(
         localStorageConversations
@@ -283,9 +342,7 @@ const Profile: React.FC = () => {
 
   //Run a function that updates all the Character Traits right on reload
 
-  useEffect(() => {
-
-  }, [
+  useEffect(() => {}, [
     lifePath,
     ennealogy,
     mylesBridgeType,
@@ -294,14 +351,22 @@ const Profile: React.FC = () => {
     nameNumerologyNumber,
   ]);
 
-
-
   return (
     <>
-      {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
+      {showGuidelines && (
+        <ProfileGuidelines onComplete={handleGuidelinesComplete} />
+      )}
 
       {showPopup && <Feedbackform togglePopup={togglePopup} />}
-  
+      {deletingUser && (
+        <UserDeleteAlert
+          toggleDelete={togglePopup}
+          deletingUser={deletingUser}
+          setDeleteUser={setDeleteUser}
+          deleteUserFinal={deleteUserFinal}
+          setDeleteUserFinal={setDeleteUserFinal}
+        />
+      )}
 
       <div className="chatDashboard">
         <ChatContainer
@@ -432,7 +497,9 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div className="flex flex-row w-full justify-between">
-                  <p id="greyText">Cardology Number</p>
+                  <Link href="https://www.aquariusmaximus.com/" target="_blank" id="greyText">
+                    Cardology Number
+                  </Link>
                   {isEditing ? (
                     <input
                       className="profileInput outline-none"
@@ -460,7 +527,9 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div className="flex flex-row w-full justify-between">
-                  <p id="greyText">Myles Bridge Personality Type</p>
+                  <Link href="https://www.16personalities.com/" target="_blank" id="greyText">
+                    Myles Bridge Personality Type
+                  </Link>
                   {isEditing ? (
                     <input
                       className="profileInput"
@@ -612,7 +681,10 @@ const Profile: React.FC = () => {
                       Permanently delete your account and data
                     </p>
                   </div>
-                  <button className=" text-[14px] newChat !flex flex-row items-center justify-center gap-[13px] ">
+                  <button
+                    onClick={beginDeletingUser}
+                    className=" text-[14px] newChat !flex flex-row items-center justify-center gap-[13px] "
+                  >
                     <div className="mainIcon">
                       <Image
                         alt="chatIcon"
@@ -621,7 +693,7 @@ const Profile: React.FC = () => {
                         height={100}
                       />
                     </div>
-                    <p>Learn more</p>
+                    <p>Delete Account</p>
                   </button>{" "}
                 </div>
               </div>
@@ -650,8 +722,9 @@ const Profile: React.FC = () => {
                       </svg>
                     </div>
                     <p
-                    onClick={togglePopup} 
-                    className="hover:text-[#807f7f] text-[12px]">
+                      onClick={togglePopup}
+                      className="hover:text-[#807f7f] text-[12px]"
+                    >
                       Give us Feedback
                     </p>
                   </button>

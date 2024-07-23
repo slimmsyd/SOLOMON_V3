@@ -224,6 +224,12 @@ const Horoscope: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!message.trim()) {
+      console.error("Message is empty. Please enter a message.");
+      return;
+    }
+
     setMessagesIsLoading(true);
 
     if (isClient()) {

@@ -29,9 +29,7 @@ export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
     setRatingValue(rating);
   };
   //Keep track of the updating index
-  useEffect(() => {
- 
-  }, [activeIndex, ratingValue]);
+  useEffect(() => {}, [activeIndex, ratingValue]);
 
   useEffect(() => {
     setSessionEmail(session?.user.email);
@@ -41,19 +39,18 @@ export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
   const joinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     //Log the current date of submisison
-    const date = new Date()
+    const date = new Date();
     let day = date.getDate();
-    let month = date.getMonth() + 1 
-    let year = date.getFullYear() 
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
 
     let currentDate = `${day}--${month}--${year}`;
-
 
     const data = {
       email: sessionEmail,
       feedback: feedback,
       ratingValue: ratingValue,
-      currentDate: currentDate
+      currentDate: currentDate,
     };
 
     try {
@@ -65,7 +62,7 @@ export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
         }
       );
       console.log("Success:", response.data);
-      console.log("Logging the Data that wwas send", data)
+      console.log("Logging the Data that wwas send", data);
 
       // Simulate successful submission
       setSubmissionState(true);
@@ -77,14 +74,13 @@ export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
     }
   };
 
-  useEffect(() => {
-  }, [submissionState]);
+  useEffect(() => {}, [submissionState]);
 
   return (
     <div className="homePopup feedback">
       {submissionState ? (
         <SuccessPopup togglePopup={togglePopup} />
-    ) : (
+      ) : (
         <div className="homePopupContainer feedback">
           <div onClick={togglePopup} className="closePopupContainer feedBack">
             <svg
@@ -141,37 +137,50 @@ export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
               <div className="flex flex-row gap-[15px] flex-1 w-full justify-evenly">
                 <span
                   onClick={() => handleRatingClick(0, 0)}
-                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 0 ? " active": ""}`}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${
+                    activeIndex === 0 ? " active" : ""
+                  }`}
                 >
                   🥺
                 </span>
                 <span
                   onClick={() => handleRatingClick(1, 1)}
-                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 1 ? "active" : ""}`}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${
+                    activeIndex === 1 ? "active" : ""
+                  }`}
                 >
                   🙁
                 </span>
                 <span
                   onClick={() => handleRatingClick(2, 2)}
-                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 2 ? "active" : ""}`}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${
+                    activeIndex === 2 ? "active" : ""
+                  }`}
                 >
                   😑
                 </span>
                 <span
                   onClick={() => handleRatingClick(3, 3)}
-                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 3 ? "active" : ""} `}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${
+                    activeIndex === 3 ? "active" : ""
+                  } `}
                 >
                   🙂
                 </span>
                 <span
                   onClick={() => handleRatingClick(4, 4)}
-                  className={`feedBackBtn text-[25px] flex items-center justify-center ${activeIndex === 4 ? "active" : ""} `}
+                  className={`feedBackBtn text-[25px] flex items-center justify-center ${
+                    activeIndex === 4 ? "active" : ""
+                  } `}
                 >
                   😍
                 </span>
               </div>
 
-              <button type="submit" className="joinBeta !bg-black !text-white   ">
+              <button
+                type="submit"
+                className="joinBeta !bg-black !text-white   "
+              >
                 Submit
               </button>
 
@@ -179,8 +188,6 @@ export const Feedbackform: React.FC<PopupProps> = ({ togglePopup }) => {
     <button type="submit" className="w-[32px] h-[32px] formImage">
       <Image src={ChestImage} alt="Waiting List Image" />
     </button> */}
-
-
             </form>
           </div>
         </div>

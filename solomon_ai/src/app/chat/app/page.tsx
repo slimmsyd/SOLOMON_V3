@@ -214,6 +214,12 @@ const ChatDashboard: React.FC = () => {
   //Submit the Inquiry
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!message.trim()) {
+      console.error("Message is empty. Please enter a message.");
+      return;
+    }
+
     setMessagesIsLoading(true);
     console.log("Logging Conversation Id in the Submit", currentConversationId);
     if (isClient()) {
@@ -584,10 +590,8 @@ const ChatDashboard: React.FC = () => {
   const handleButtonClick = (event: any) => {
     const buttonElement = event.target as HTMLElement;
     const cardElement = buttonElement.closest("div");
-    const text = cardElement?.querySelector("p")?.innerHTML || "";
+    const text = cardElement?.querySelector("p")?.textContent || "";
     handleCardClick(text);
-
-    console.log("click on this joint", text);
   };
 
   useEffect(() => {
@@ -603,7 +607,7 @@ const ChatDashboard: React.FC = () => {
   return (
     <MessageProvider>
       {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
-   
+
       <div className="chatDashboard">
         {/* Chat Container Componet  */}
 
@@ -630,10 +634,11 @@ const ChatDashboard: React.FC = () => {
         {/* Chat Container Componet  */}
 
         <div className="chatDashboardWrapper w-full text-left">
-          <Header 
-          showGuidelines = {showGuidelines}
-          setShowGuidelines = {setShowGuidelines}
-          handleMobileChatBtnClick={handleMobileChatBtnClick} />
+          <Header
+            showGuidelines={showGuidelines}
+            setShowGuidelines={setShowGuidelines}
+            handleMobileChatBtnClick={handleMobileChatBtnClick}
+          />
 
           <div className="chatDashBoardContainer">
             {/* Dashboard Component  */}

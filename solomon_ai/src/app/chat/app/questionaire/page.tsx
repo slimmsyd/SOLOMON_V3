@@ -338,13 +338,10 @@ const ChatDashboard: React.FC = () => {
 
       const isTextComplete = checkCompletionText(response.response);
 
-      console.log("Logging the Birthday before ISO conversion:", birthday);
       let isoBirthday;
       if (!isoBirthday && birthday) {
         isoBirthday = parseDateString(birthday as string);
-        console.log("Logging isBOrither in if statemnt", isoBirthday);
       }
-      console.log("Logging the ISO birthday:", isoBirthday);
       let finalEnnealogyNumber;
       let finalLifePathNumber;
       if (!finalLifePathNumber && isoBirthday) {
