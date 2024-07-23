@@ -580,7 +580,7 @@ export default function HomePage() {
               width="100%"
               height="auto" 
               controls={true}
-              autoPlay={false}
+              autoPlay={true}
               loop={true}
               muted={false}
           />
