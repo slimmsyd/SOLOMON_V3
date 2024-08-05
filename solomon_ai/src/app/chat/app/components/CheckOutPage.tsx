@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useSession, getSession } from "next-auth/react";
 import {
   useStripe,
   useElements,
@@ -13,28 +14,41 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [clientSecret, setClientSecret] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  //Get the user Id and session information aswell
+  const { data: session, status } = useSession();
+  const [sessionStatus, setSessionStatus] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
+    //We are going to check if userId is avaible to be sending out now
 
-    console.log("Logging the amount before we fetch and or post it ", amount)
+    console.log("Logging the Status anyways", status)
+
+    if (status === "authenticated") {
+      setUserId(session?.user.id);
+    }
+  }, [session]);
+
+  //Load to ensrue hte userId has been updated
+  useEffect(() => {}, [userId]);
+
+  useEffect(() => {
+    console.log("Logging the amount before we fetch and or post it ", amount);
 
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //sending some JSON information
       },
-      body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
+      body: JSON.stringify({ amount: convertToSubcurrency(amount) , userId: userId }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
-
   }, [amount]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-
-
 
     if (!stripe || !elements) {
       return;
@@ -47,12 +61,13 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       setLoading(false);
       return;
     }
+    let returnURL = "/chat/app/questionaire'"
 
     const { error } = await stripe.confirmPayment({
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://www.localhost:3000/payment-success?amount=${amount}`,
+        return_url: returnURL,
       },
     });
 
@@ -60,7 +75,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       // This point is only reached if there's an immediate error when
       // confirming the payment. Show the error to your customer (for example, payment details incomplete)off_sessionoff_session
       setErrorMessage(error.message);
-      console.log("Loggign the error message here", error.message)
+      console.log("Loggign the error message here", error.message);
     } else {
       // The payment UI automatically closes with a success animation.
       // Your customer is redirected to your `return_url`.

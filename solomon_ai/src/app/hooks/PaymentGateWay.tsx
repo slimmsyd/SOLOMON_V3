@@ -21,9 +21,9 @@ export default function PayementGatway() {
 
   return (
     <div className="text-white">
-      <div>Sydney</div>
+      {/* <div>Sydney</div>
 
-      <div>Is requesting this amount of bread {amount}</div>
+      <div>Is requesting this amount of bread {amount}</div> */}
 
       <Elements
         options={{
@@ -34,9 +34,9 @@ export default function PayementGatway() {
         }}
         stripe={stripePromise}
       >
-        <CheckoutPage amount={amount} />
+        <CheckoutPage amount={amount}  />
 
-        <Link target = "_blank" href = "https://buy.stripe.com/test_dR6cQb0S52nB2ti7ss">Dummy Paymentlink </Link>
+        {/* <Link target = "_blank" href = "https://buy.stripe.com/test_dR6cQb0S52nB2ti7ss">Dummy Paymentlink </Link> */}
       </Elements>
     </div>
   );

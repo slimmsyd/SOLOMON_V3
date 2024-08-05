@@ -924,19 +924,19 @@ export default function HomePage() {
                   </li>
                 </ul>
 
-                <button
+                <Link
+                  href = "/login"
                   className="pricingBtn text-black text-[14px]   text-left"
-                  type="submit"
                 >
                   Join Application
-                </button>
+                </Link>
               </div>
             </div>
           </form>
 
 
 
-          {/* <PayementGatway /> */}
+          <PayementGatway />
 
           <hr className="vidDivider"></hr>
 

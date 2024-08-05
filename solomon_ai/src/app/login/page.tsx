@@ -109,7 +109,9 @@ const Login = () => {
         console.log("Logging completed form", completedForm);
         router.push('/chat/app');
       } else if (status === 'authenticated' && completedForm === false) {
-        router.push('/chat/app/questionaire');
+        // router.push('/chat/app/questionaire'); // Previous redirect
+        router.push('/chat/signup');
+
       }
     }
   }, [completedForm, status, router]);

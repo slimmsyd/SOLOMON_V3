@@ -1,24 +1,27 @@
-import { NextRequest } from "next/server";
 import { NextApiRequest, NextApiResponse } from "next";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const amount = req.body;
-      const amountInt = amount.amount;
+      const { amount, userId } = req.body;
+
+      console.log("Logging the amoutn and user Id", amount, userId)
+
+      return;
+
+      const amountInt = parseInt(amount, 10);
+      
 
       console.log("Logging the amount in the backend", amountInt);
 
-      //Logic goes here
+      // Create a payment intent with user metadata
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amountInt,
         currency: "usd",
         automatic_payment_methods: { enabled: true },
-        setup_future_usage: "off_session", // Add setup_future_usage parameter
+        setup_future_usage: "off_session",
+        metadata: { userId }, // Include userId in metadata
       });
 
       res.status(200).json({ clientSecret: paymentIntent.client_secret });

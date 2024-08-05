@@ -16,9 +16,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const sig = req.headers['stripe-signature'];
       let event;
 
+
       // Verify the signature
       try {
         event = stripe.webhooks.constructEvent(buf.toString(), sig, process.env.STRIPE_WEBHOOK_SECRET);
+
+        console.log("Event", event?.type)
+
+        //charge.succeded 
+        //payment_intent.succeded
+        //payment_intnet_created 
+
+        if (event.type === 'payment_intent.succeeded') {
+            const paymentIntent = event.data.object;
+            console.log(`Payment intent for ${paymentIntent.amount} was success`)
+            console.log("LOgging the object to return aswell", paymentIntent)
+
+        }
+
+
+
+
       } catch (err) {
         console.error(`Webhook signature verification failed.`, err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
