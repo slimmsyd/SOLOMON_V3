@@ -432,6 +432,9 @@ export default function HomePage() {
     }
   };
 
+
+  //Handling the pricing configuration 
+
   return (
     <div>
       {isPopupVisible && <Popup togglePopup={togglePopup} />}

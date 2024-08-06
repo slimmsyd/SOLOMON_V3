@@ -129,6 +129,29 @@ body {
   line-height: 125% !important;
 } */
 
+.imageContainer img{
+  border-radius: 8px;
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
+} 
+
+.floatingDiv{
+  position: fixed;
+  bottom: 100%;
+  top: 50%; left: 50%; transform: translate(-50%, 190%);
+  color: white;
+  background: rgba(64, 64, 64, 0.648);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0.5px solid white;
+}
+.floatingDiv button{
+
+}
 .pointerEventsYes {
   pointer-events: all !important;
 }

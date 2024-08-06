@@ -546,9 +546,9 @@ const Horoscope: React.FC = () => {
                 <LoadingComponent />
               </div>
             )}
-          </div>
 
-          <div className="mt-[6rem]">
+
+<div className="mt-[6rem]">
             <form
               ref={formRef}
               onSubmit={handleSubmit}
@@ -612,6 +612,9 @@ const Horoscope: React.FC = () => {
               </div>
             </form>
           </div>
+          </div>
+
+      
         </div>
       </div>
     </>

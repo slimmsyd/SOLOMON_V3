@@ -16,11 +16,10 @@ import useConversations from "../../../../hooks/useConversations";
 import useCreateConversation from "../../../../hooks/createConversation";
 import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
-
+import FloatingScrollButton from "@/app/components/ScrollToBottomButton";
 //Utilis
 import { checkSession } from "@/utilis/CheckSession";
 import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoading";
-
 
 import { isClient } from "@/utilis/isClient";
 import { debug } from "console";
@@ -105,8 +104,6 @@ export default function ConversationPage() {
   const [isAtZero, setIsAtZero] = useState<boolean>(false); // State to track the position
 
   const handleMobileChatBtnClick = () => {
-
-
     if (chatContainerRef.current) {
       if (isAtZero) {
         chatContainerRef.current.style.transform = "translateX(-100%)";
@@ -175,7 +172,6 @@ export default function ConversationPage() {
   };
 
   async function getConversation(conversationId: any) {
-
     try {
       const response = await fetch(`/api/${conversationId}`);
       if (!response.ok) {
@@ -205,7 +201,6 @@ export default function ConversationPage() {
 
   async function deleteConversation(conversationId: string | number) {
     const currentConversations = conversations;
-
 
     // Optimistically remove the conversation from UI
     const updatedConversations = currentConversations.filter(
@@ -285,7 +280,6 @@ export default function ConversationPage() {
           );
 
           sessionStorage.setItem("conversations", JSON.stringify(updatedCache));
-
         } else {
           console.error("Parsed cached conversations is not an array");
         }
@@ -325,8 +319,6 @@ export default function ConversationPage() {
         setEditTitleId(null); // Exit edit mode
         setEditedTitle(""); // Clear the edited title state
         setEditingTitle(false);
-
- 
       }
     }
 
@@ -378,7 +370,6 @@ export default function ConversationPage() {
       return;
     }
 
-
     setResponseLoading(true);
     if (isClient()) {
       if (!currentConversationId) {
@@ -407,12 +398,11 @@ export default function ConversationPage() {
       const newResponse = {
         question: message,
         response: "",
-        id: "temp"
-       };
-      
+        id: "temp",
+      };
+
       // Use functional update for state
       setResponses((responses) => [...responses, newResponse]);
-
 
       setMessage("");
 
@@ -431,8 +421,6 @@ export default function ConversationPage() {
         }).then((res) => res.json());
         setResponseLoading(false);
 
-
-
         // 3. Update the responses array with the bot's reply
         setResponses((prevResponses) =>
           prevResponses.map((resp) => {
@@ -443,8 +431,7 @@ export default function ConversationPage() {
           })
         );
 
-        console.log("Logging the new Responses", responses)
-        
+        console.log("Logging the new Responses", responses);
 
         // 4. Send the user question and bot response to the database
 
@@ -461,7 +448,6 @@ export default function ConversationPage() {
           }),
         });
 
-  
         //Add the conversations arrawy or update
       } catch (error) {
         console.error("Error handling submission:", error);
@@ -490,7 +476,6 @@ export default function ConversationPage() {
 
   //Another Hook Check for the local storage
   useEffect(() => {
-   
     if (currentConversationId) {
       handleConversationClick(currentConversationId as string);
     }
@@ -505,9 +490,7 @@ export default function ConversationPage() {
 
   //Fetch Message for this converations
   const messagesRefCounter = useRef(0);
-  useEffect(() => {
-
-  }, [messagesRefCounter]);
+  useEffect(() => {}, [messagesRefCounter]);
   const fetchMessagesForConversation = async (conversationId: string) => {
     messagesRefCounter.current += 1;
     if (messagesRefCounter.current > 1) {
@@ -525,7 +508,6 @@ export default function ConversationPage() {
       return;
     } else {
       try {
-   
         const response = await fetch(
           `/api/storedMessages?authorId=${session?.user.id}&conversationId=${conversationId}`
         );
@@ -534,10 +516,7 @@ export default function ConversationPage() {
         }
         const messages = await response.json();
 
-
- 
         // console.log("Add the IDS",messages.map(msgs => msgs.id))
-
 
         // Map API response to expected format in state
         //Naming conventions matter
@@ -547,7 +526,6 @@ export default function ConversationPage() {
           id: msg.id,
         }));
 
-    
         setResponses([]);
 
         if (response.ok) {
@@ -561,12 +539,7 @@ export default function ConversationPage() {
     }
   };
 
-  useEffect(() => {
-
-
-
-  }, [responses]);
-
+  useEffect(() => {}, [responses]);
 
   useEffect(() => {
     setResponses([]); // Clear previous messages
@@ -586,6 +559,8 @@ export default function ConversationPage() {
   if (!conversations) {
     return <p>No conversation found.</p>;
   }
+
+  //Function takes you to the bottom of the div by clicking the floating button.
 
   return (
     <div className="chatDashboard">
@@ -618,17 +593,13 @@ export default function ConversationPage() {
       >
         {/* Guidelines Hader */}
 
-        <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
-        
-        </header>
+        <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]"></header>
 
         <div className={`chatDashBoardContainer `}>
           {/* Dashboard Component  */}
 
           {responses.length > 0 ? (
-            <ChatMessagesContainer responses={responses as any || []}
-            
-            />
+            <ChatMessagesContainer responses={(responses as any) || []} />
           ) : (
             <div className="w-full flex items-center justify-center">
               <LoadingComponent />
@@ -636,66 +607,73 @@ export default function ConversationPage() {
             // <Dashboard userName={userName || ""} />
           )}
 
+          <FloatingScrollButton chatDashBoardRef={chatDashBoardRef} />
+
           {/* Dashboard Component  */}
-        </div>
-        <form ref={formRef} onSubmit={handleSubmit} className="chatFormSubmit">
-          <div className="relative textAreaContainer">
-            <textarea
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  formRef.current?.requestSubmit();
-                }
-              }}
-              value={message}
-              placeholder="Ask Thou Question..."
-            ></textarea>
 
-            <div className="textAreaIconWrapper flex flex-row gap-[11px]">
-              <button className="textAreaIcon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </button>
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            className="chatFormSubmit"
+          >
+            <div className="relative textAreaContainer">
+              <textarea
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    formRef.current?.requestSubmit();
+                  }
+                }}
+                value={message}
+                placeholder="Ask Thou Question..."
+              ></textarea>
 
-              <button type="submit" className="textAreaIcon">
-                {isReponseLoading ? (
-                  <ButtonLoadingComponent />
-                ) : (
+              <div className="textAreaIconWrapper flex flex-row gap-[11px]">
+                <button className="textAreaIcon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
                     height="18"
                     fill="none"
-                    viewBox="0 0 32 32"
-                    className=""
+                    viewBox="0 0 24 24"
                   >
                     <path
                       fill="currentColor"
                       fill-rule="evenodd"
-                      d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                      d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
                       clip-rule="evenodd"
                     ></path>
                   </svg>
-                )}
-              </button>
+                </button>
+
+                <button type="submit" className="textAreaIcon">
+                  {isReponseLoading ? (
+                    <ButtonLoadingComponent />
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 32 32"
+                      className=""
+                    >
+                      <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

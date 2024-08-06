@@ -142,7 +142,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         <Link href="/" className="flex flex-row">
           <Image src={FaceIcon} width={24} height={24} alt="Face Icon" />
         </Link>
-        <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
+        {/* <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
           <div className="mainIcon">
             <Image alt="arrowLeft" src={arrowLeft} width={100} height={100} />
           </div>
@@ -150,7 +150,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           <Link href="/chat/app">
             <p>New Chat</p>
           </Link>
-        </button>
+        </button> */}
         <div
           onClick={handleMobileChatBtnClick}
           className=" mobileChatBtn !relative flex items-center justify-start"
@@ -396,21 +396,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
       {/* Settings  Container */}
 
-      <div className="flex flex-col gap-[4px] pt-[25px]">
-        {" "}
-        <button className=" text-[16px] flex flex-row items-center justify-start gap-[13px] w-full ">
-          <p>Upgrade to pro</p>
-        </button>
-        <p id="greyText" className="text-[14px]">
-          Upgrade To Chat More With Our Sage
-        </p>
-        <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] mt-[12px]">
-          <div className="mainIcon">
-            <Image alt="chatIcon" src={arrowLeft} width={100} height={100} />
-          </div>
-          <p>Learn more</p>
-        </button>
-      </div>
 
       {/* Profile  Container */}
       <div className="flex flex-row gap-[4px]  settingsContainer ">

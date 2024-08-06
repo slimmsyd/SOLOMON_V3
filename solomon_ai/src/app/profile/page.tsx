@@ -7,7 +7,6 @@ import Image from "next/image";
 import arrowLeft from "../../../public/assets/Chat/arrowLeft.png";
 import dynamic from "next/dynamic";
 
-import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "../hooks/useSessionStorage";

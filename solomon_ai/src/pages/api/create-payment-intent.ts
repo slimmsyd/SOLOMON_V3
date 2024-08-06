@@ -8,7 +8,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       console.log("Logging the amoutn and user Id", amount, userId)
 
-      return;
 
       const amountInt = parseInt(amount, 10);
       

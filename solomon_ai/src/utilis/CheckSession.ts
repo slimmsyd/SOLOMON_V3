@@ -36,9 +36,8 @@ export async function checkSession(
     splitUserName,
   } = options;
 
-  //   const router = useRouter();
-
   if (status === "loading") {
+    console.log("LOADING LOADING");
     return;
   }
 
@@ -46,10 +45,10 @@ export async function checkSession(
     console.log("No session found, redirecting...");
     router.push("/");
   } else if (!session?.user) {
-
-    console.log("Logging the session in check sessION", session)
+    console.log("Logging the session in check sessION", session);
     router.push("/");
   } else if (status === "authenticated") {
+    console.log("Status is authenticated");
     setUserId(session?.user.id);
     setSessionStatus(status);
     setUserName(session?.user.name);
@@ -74,6 +73,28 @@ export async function checkSession(
       }
 
       setSplitUserName(currentSession?.user.email[0].toUpperCase());
+
+      // Check if the user has an active subscription
+      try {
+        const res = await fetch("/api/get-subscription-id", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: session?.user.id }),
+        });
+        const data = await res.json();
+
+        if (!data.paymentIntentId) {
+          console.log("User does not have an active subscription, redirecting...");
+          router.push("/");
+        } else {
+          console.log("User has an active subscription");
+        }
+      } catch (error) {
+        console.error("Error fetching subscription ID:", error);
+        router.push("/"); // Redirect to home if there is an error fetching subscription ID
+      }
     }
   }
 }

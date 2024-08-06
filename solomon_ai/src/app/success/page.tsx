@@ -1,0 +1,161 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useSession, getSession } from "next-auth/react";
+import { checkSession } from "@/utilis/CheckSession";
+import { useSessionStorage } from "../hooks/useSessionStorage";
+import { isClient } from "@/utilis/isClient";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import HeroImage from "../../../public/assets/subImage.png";
+import LoadingComponent from "../components/helper/Loading";
+import Link from "next/link";
+
+const SuccessPage = () => {
+  const searchParams = useSearchParams();
+  const session_id = searchParams!.get("session_id");
+  const [subscription, setSubscription] = useState(null);
+  const router = useRouter();
+
+  const [userId, setUserId] = useState<string>("");
+  const { data: session, status } = useSession();
+  const [sessionStatus, setSessionStatus] = useState<string>("");
+  const [currentConversationId, setCurrentConversationId] = useState<
+    string | null
+  >(null);
+
+  const {
+    userName,
+    setUserName,
+    splitUserName,
+    email,
+    setEmail,
+    setSplitUserName,
+  } = useSessionStorage();
+
+  useEffect(() => {
+    checkSession(status, {
+      setUserId,
+      setUserName,
+      setSessionStatus,
+      setEmail,
+      setSplitUserName,
+      isClient,
+      session,
+      router,
+      email,
+      userName: "",
+      splitUserName,
+    });
+  }, []);
+
+  useEffect(() => {
+    async function returnUserId() {
+      const getSesh = await getSession();
+      console.log("Loggin getSesH", getSesh);
+
+      setUserId(getSesh?.user.id || "");
+    }
+
+    returnUserId();
+  }, [userId]);
+
+  useEffect(() => {
+    if (session_id) {
+      fetch("/api/retrieve-subscription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ session_id }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setSubscription(data.subscription);
+
+          // After fetching the subscription, update the user profile
+          if (userId) {
+            updateSubscriptionInUserProfile(data.subscription.id);
+          }
+        })
+        .catch((error) =>
+          console.error("Error fetching subscription details:", error)
+        );
+    }
+  }, [session_id, userId]);
+
+  useEffect(() => {
+    console.log("Logging hte current USERD ID in the success page", userId);
+  }, [userId]);
+
+  const updateSubscriptionInUserProfile = async (subscriptionId) => {
+    try {
+      console.log("Logging the userID before we send", userId);
+      const response = await fetch("/api/update-subscription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, subscriptionId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("User profile updated with subscription ID:", data);
+      } else {
+        console.error("Failed to update user profile with subscription ID");
+      }
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("THe subscriptoin has changed", subscription);
+  }, [subscription]);
+
+    useEffect(() => {
+      if (subscription) {
+        const timer = setTimeout(() => {
+          router.push('/chat/app/questionaire');
+        }, 5000); // 5000 milliseconds = 5 seconds
+
+        return () => clearTimeout(timer); // Clear timeout if component unmounts
+      }
+    }, [subscription, router]);
+
+  return (
+    <div className="bg-white h-[100vh] p-[2rem]">
+      <div className="flex flex-col gap-[10px] justify-center items-center">
+        <div className="text-black">
+          {subscription ? (
+            <div className="text-center flex flex-col gap-[10px]">
+              <h2 className="text-black">
+                Thank You For Willing To Better Thyself
+              </h2>
+              <p>You Will Be Redirected Toward the App Dashboard Shortly</p>
+              <p>If not, click on the image below </p>
+
+              <Link 
+                href = "/chat/app/questionaire"
+              className="imageContainer">
+                <Image 
+                alt = "HeroImage"
+                    width={200}
+                    height={500}
+                src={HeroImage} />
+              </Link>
+
+              {/* <pre>{JSON.stringify(subscription, null, 2)}</pre> */}
+            </div>
+          ) : (
+            <LoadingComponent />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SuccessPage;

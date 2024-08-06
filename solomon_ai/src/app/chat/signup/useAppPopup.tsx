@@ -1,12 +1,9 @@
 import Link from "next/link";
-import axios from "axios";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
 import React, { FC, FormEvent, RefObject, useEffect, useState } from "react";
-import Image from "next/image";
-
-import PopupImage from "../../../../public/assets/homePage/popup_header.png";
-
-import FaceIcon from "../../../public/faceIconSolomon.png";
 
 interface PopupProps {
   toggleDelete?: () => void;
@@ -19,6 +16,41 @@ interface PopupProps {
 export const PayForAppPopup = ({}) => {
   const { data: session, status } = useSession();
   const [userId, setUserId] = useState<string>("");
+  const [isYearly, setIsYearly] = useState<boolean>(false);
+  const togglePricingPeriod = (value: string) =>
+    setIsYearly(parseInt(value) === 1);
+  const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
+
+  useEffect(() => {
+    setStripePromise(loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!));
+  }, []);
+
+  const handleCheckout = async (priceId: string, subscription: boolean) => {
+    try {
+      const { data } = await axios.post(
+        `/api/create-checkout-session`,
+        { userId: "ssanders444", email: "ssanderss444@gmail.com", priceId, subscription });
+
+
+      if (data.sessionId) {
+        const stripe = await stripePromise;
+
+        const response = await stripe?.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
+
+        return response;
+      } else {
+        console.error("Failed to create checkout session");
+        toast("Failed to create checkout session");
+        return;
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      toast("Error during checkout");
+      return;
+    }
+  };
 
   return (
     <div className="homePopup feedback !items-center !justify-center">
@@ -28,7 +60,6 @@ export const PayForAppPopup = ({}) => {
             <div className="popupLinearGradient flex flex-col gap-[15px]">
               <h3 className="text-black font-medium">Peace Unto You</h3>
 
-
               <span className="!text-center !text-[#717171]">
                 To join the spirtual evolution of Mankind, please send your
                 support to keep the platform running
@@ -36,18 +67,19 @@ export const PayForAppPopup = ({}) => {
 
               <h5>Thank You For Willing To Improve Thyself</h5>
 
-              <span className = "montlyLabel">Monthly</span>
-           
+              <span className="montlyLabel">Monthly</span>
             </div>
           </div>
 
           <div className="flex flex-col gap-[5px]">
-            <Link
-              href="http://localhost:3000/payment-link"
+            <button
+              onClick={() =>
+                handleCheckout( "24.99", true)
+              }
               className="joinBeta w-full flex items-center justify-center !bg-[#4D36DF] !text-white mx-[1rem]   "
             >
               Upgrade Plan
-            </Link>
+            </button>
           </div>
         </div>
       </div>
