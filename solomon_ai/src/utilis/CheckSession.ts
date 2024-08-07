@@ -43,8 +43,11 @@ export async function checkSession(
 
   if (status === "unauthenticated") {
     console.log("No session found, redirecting...");
+    window.alert("No session found")
     router.push("/");
   } else if (!session?.user) {
+    window.alert("No session User")
+
     console.log("Logging the session in check sessION", session);
     router.push("/");
   } else if (status === "authenticated") {

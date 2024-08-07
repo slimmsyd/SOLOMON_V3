@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/app/api/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  
+  
   if (req.method === 'POST') {
     try {
       const { userId } = req.body;

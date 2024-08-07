@@ -207,7 +207,7 @@ const Profile: React.FC = () => {
   };
 
   const handleSave = () => {
-    // Update state
+    // Update state ter
     updateUserProgress(
       userId,
       cardologyNumber,
@@ -249,6 +249,138 @@ const Profile: React.FC = () => {
 
     // }
   };
+
+  const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
+  const [subcriptionSessionID, setSubscriptionSessionID] = useState<string>("");
+  const [activeSubscription, setActiveSubscription] = useState<boolean>(false);
+  const [canceledSubscription, setCanceledSubscription] =
+    useState<boolean>(false);
+
+  const getSubscriptionID = async (userId: string) => {
+    try {
+      const res = await fetch("/api/get-subscription-id", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userId }),
+      });
+      const data = await res.json();
+
+      setSubscriptionSessionID(data.paymentIntentId);
+      console.log("Logging the data.paymentID", data.paymentIntentId);
+    } catch (error) {
+      console.error("Error fetching subscription ID:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (subcriptionSessionID) {
+      setActiveSubscription(true);
+      console.log("Logging the active subscriptin", activeSubscription);
+    }
+  }, [subcriptionSessionID, activeSubscription, canceledSubscription]);
+
+  const cancelUserSubscription = async (subscriptionID: string) => {
+    console.log("Logging the ID in console Function", subscriptionID);
+
+    try {
+      const response = await axios.post("/api/cancel-stripe-subscription", {
+        subscriptionID: subscriptionID,
+      });
+
+      if (response.data.cancel_at_period_end === true) {
+        //Keeping Tabs if User is Still being active in this joint
+        setCanceledSubscription(true);
+      } else {
+        setCanceledSubscription(false);
+      }
+
+      console.log("Logging the Data on return", response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const renewUserSubscription = async (subscriptionID: string) => {
+    console.log("Renewing the subscription with ID:", subscriptionID);
+  
+    try {
+      const response = await axios.post("/api/renew-subscription", {
+        subscriptionID: subscriptionID,
+      });
+  
+      const data = response.data;
+
+
+      if (response.data.cancel_at_period_end === false) {
+        //Keeping Tabs if User is Still being active in this joint
+        setCanceledSubscription(false);
+      } else {
+        setCanceledSubscription(true);
+      }
+
+  
+      console.log("Subscription Details After Renewal:", data);
+    } catch (e) {
+      console.error("Error renewing subscription:", e);
+    }
+  };
+
+  //Combines the above two functions, if renew or cancel
+  const handleSubscriptionAction = async (subscriptionID: string) => {
+    if (canceledSubscription) {
+      await renewUserSubscription(subscriptionID);
+    } else {
+      await cancelUserSubscription(subscriptionID);
+    }
+    // Toggle the subscription state after the action
+    setCanceledSubscription(!canceledSubscription);
+  };
+
+
+  const getSubscriptionDetails = async (subscriptionID: string) => {
+    console.log("Logging the SUbscription ID in the request", subscriptionID);
+
+    try {
+      const response = await axios.post("/api/get-subscription-details", {
+        subscriptionID: subscriptionID,
+      });
+
+      const data = response.data;
+
+      console.log("Logging the From Get Subscription details", data);
+
+      if (response.data.cancel_at_period_end === true) {
+        //Keeping Tabs if User is Still being active in this joint
+        setCanceledSubscription(true);
+      } else {
+        setCanceledSubscription(false);
+      }
+
+      console.log("Subscription Details:", data);
+    } catch (e) {
+      console.error("Error retrieving subscription details:", e);
+    }
+  };
+
+  //W
+  useEffect(() => {
+    //Logging to see if user is cancleing there subscription
+    console.log(
+      "Logging the current status of the cancled subscirption",
+      canceledSubscription
+    );
+  }, [canceledSubscription]);
+
+  useEffect(() => {
+    console.log("Is this joint running");
+    if (subcriptionSessionID) {
+      console.log("Is the joint running in here?");
+      getSubscriptionDetails(subcriptionSessionID as string);
+    }
+  }, [subcriptionSessionID]);
+
   useEffect(() => {
     console.log("Logging the Delete UserFinal", deleteUserFinal);
     if (deleteUserFinal) {
@@ -301,9 +433,10 @@ const Profile: React.FC = () => {
   }, [userName, splitUserName]);
 
   useEffect(() => {
-    console.log("LOgging the session router", session);
     if (!session?.user) {
       router.push("/");
+    } else {
+      getSubscriptionID(session.user.id as string);
     }
   }, []);
 
@@ -496,7 +629,11 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div className="flex flex-row w-full justify-between">
-                  <Link href="https://www.aquariusmaximus.com/" target="_blank" id="greyText">
+                  <Link
+                    href="https://www.aquariusmaximus.com/"
+                    target="_blank"
+                    id="greyText"
+                  >
                     Cardology Number
                   </Link>
                   {isEditing ? (
@@ -526,7 +663,11 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div className="flex flex-row w-full justify-between">
-                  <Link href="https://www.16personalities.com/" target="_blank" id="greyText">
+                  <Link
+                    href="https://www.16personalities.com/"
+                    target="_blank"
+                    id="greyText"
+                  >
                     Myles Bridge Personality Type
                   </Link>
                   {isEditing ? (
@@ -609,8 +750,8 @@ const Profile: React.FC = () => {
 
               <div className="flex flex-col gap-[15px] w-[310px] ">
                 <div className="flex flex-row w-full justify-between items-center">
-                  <p id="greyText">Subscription plan</p>
-                  <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] ">
+                  <p id="greyText">Subscription Status</p>
+                  <button className=" pointer-events-none text-[14px] newChat flex flex-row items-center justify-center gap-[13px] ">
                     <div className="mainIcon">
                       <Image
                         alt="chatIcon"
@@ -619,11 +760,11 @@ const Profile: React.FC = () => {
                         height={100}
                       />
                     </div>
-                    <p>Learn more</p>
+                    <p>{`${activeSubscription ? "True" : "False"}`}</p>
                   </button>{" "}
                 </div>
                 <div className="flex flex-row w-full justify-between">
-                  <p id="greyText">Limits</p>
+                  {/* <p id="greyText">Limits</p> */}
                   {/* <p>Unselected</p> */}
                 </div>
               </div>
@@ -672,6 +813,37 @@ const Profile: React.FC = () => {
                   </button>{" "}
                 </div>
                 <hr className="greyDivider"></hr>
+
+                <div className="flex flex-col   md:flex-row gap-[15px] md:gap-[0px justify-between accountDiv">
+                  <div className="flex flex-col ">
+                    <p className="text-white">{`${
+                      canceledSubscription
+                        ? "Renew Subscription"
+                        : "Cancel Subscription"
+                    }`}</p>
+                    <p className="text-[12px]" id="greyText">
+                      You haved learnt all you need. Leave This quest.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleSubscriptionAction(subcriptionSessionID)}
+                    className=" text-[14px] newChat large !flex flex-row items-center justify-center gap-[13px] "
+                  >
+                    <div className="mainIcon">
+                      <Image
+                        alt="chatIcon"
+                        src={arrowLeft}
+                        width={100}
+                        height={100}
+                      />
+                    </div>
+                    <p className="text-white">{`${
+                      canceledSubscription
+                        ? "Renew Subscription"
+                        : "Cancel Subscription"
+                    }`}</p>{" "}
+                  </button>{" "}
+                </div>
 
                 <div className="flex flex-col   md:flex-row gap-[15px] md:gap-[0px justify-between accountDiv">
                   <div className="flex flex-col ">

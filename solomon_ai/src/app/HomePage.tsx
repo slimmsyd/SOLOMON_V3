@@ -14,7 +14,7 @@ import { Popup } from "./components/NewsletterPopup";
 import { CircleSVG } from "./components/CircleSVG";
 import Lenis from "lenis";
 
-import PayementGatway from "./hooks/PaymentGateWay";
+import ImageOne from "../../public/assets/homePage/popup_header.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -432,8 +432,7 @@ export default function HomePage() {
     }
   };
 
-
-  //Handling the pricing configuration 
+  //Handling the pricing configuration
 
   return (
     <div>
@@ -891,26 +890,35 @@ export default function HomePage() {
           <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
         </section>
 
-        <section className="info-section-2 relative md:py-[20vh] pb-[0px] px-8  w-full  flex items-center justify-center flex-col  md:gap-[5vh] gap-[20vh]">
-                <CircleSVG />
+        <section className="info-section-2 relative md:py-[20vh] md:pb-[8vh] pb-[0px] px-8  w-full  flex items-center justify-center flex-col  md:gap-[5vh] gap-[20vh]">
+          <CircleSVG />
 
-          <h2 className=" text-white  w-full md:w-[50%]    xl:w-2/3 text-left">
+          <h2 className=" text-white  w-full md:w-[50%]    xl:w-2/3 text-center">
             Be amongst the pioneers,Access higher intelligence.
           </h2>
-
+          <p className="text-[#afafaf]">
+            One plan, one price to venture into the temple of Solomon
+          </p>
           <form className="flex flex-row gap-[5px] justify-center items-center">
             <div className="pricingCard">
               <div className="flex flex-col h-full">
                 <h5>Ascent</h5>
-                <div className="flex flex-col  mt-[8px]">
-                  <span>$25 per</span>
-                  <span>month</span>
+                <p></p>
+                <div className="flex flex-row  mt-[8px]">
+                  <div className="flex-row flex gap-[5px] items-center">
+                    <span className="text-[30px] !text-[#fff] font-bold">
+                      $25{" "}
+                    </span>
+                    <span className="slantLine"></span>
+                    <span>per</span>
+                    <span>month</span>
+                  </div>
                 </div>
 
                 <ul className="flex flex-col mt-[25px] gap-[20px] flex-1  ">
                   <div className="flex flex-row gap-[5px]"></div>
 
-                  <li className="text-[16px] text-white ">
+                  <li className=" text-[#afafaf] text-[20px] ">
                     1,000 questions per month
                   </li>
                   <li className="text-[16px] text-white !list-disc ">
@@ -928,7 +936,7 @@ export default function HomePage() {
                 </ul>
 
                 <Link
-                  href = "/login"
+                  href="/login"
                   className="pricingBtn text-black text-[14px]   text-left"
                 >
                   Join Application
@@ -937,13 +945,36 @@ export default function HomePage() {
             </div>
           </form>
 
-
-
-          <PayementGatway />
-
           <hr className="vidDivider"></hr>
 
           <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
+        </section>
+
+        <section className="w-full h-auto relative  flex items-start py-[20px] px-[20px] justify-center flex-col">
+          
+          <Link 
+            href = "/blog"
+          className="flex flex-row flex-wrap relative  max-w-[450px] ">
+            <div className="blogContainer relative max-w-[450px] ">
+              <div className="blogCardImageContainer relative h-full flex-1 flex items-end">
+                <Image src={ImageOne} alt="Spiritual Image" />
+                <div className = "absolute mb-[4rem] mx-[20px] z-[100] " >
+
+                <div className="flex flex-row gap-[4px]">
+                <span className="text-gray text-[14px]">May 31st, 2024</span>
+                <span className="text-gray text-[14px] text-before">5 min read</span>
+              </div>                  <h3 className = "text-white font-bold">Return of an Unifed God</h3>
+
+
+                </div>
+
+                <div className = "overlay"></div>
+
+              </div>
+
+           
+            </div>
+          </Link>
         </section>
 
         <section className="w-full h-auto px-6 py-[4rem] flex items-center justify-center flex-col">

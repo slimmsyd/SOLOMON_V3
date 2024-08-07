@@ -149,8 +149,12 @@ body {
   height: 40px;
   border: 0.5px solid white;
 }
-.floatingDiv button{
-
+.slantLine{
+ background: white;
+ height: 100%;
+ width: 2px;
+ transform: rotate(15deg);
+ margin:  0px 2px;
 }
 .pointerEventsYes {
   pointer-events: all !important;
@@ -854,12 +858,23 @@ figure video {
 }
 .pricingBtn {
   background: white;
-  width: 123px;
-  height: 35px;
+  width: 100%;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  font-weight: bolder;
+}
+.text-before::before{
+  margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    content: '•';
+    display: inline-block;
+    vertical-align: middle;
+    font-size: .8em;
+    margin-top: -2px;
+    color: #dc2828;
 }
 /* PRICING CSS */
 
@@ -902,6 +917,9 @@ a > p {
   height: 40px;
   background: linear-gradient(180deg, #2f0ffd30, #291d7850);
   border-radius: 5px;
+}
+.newChat.large{
+  width: 200px;
 }
 @media screen and (max-width: 950px) {
   .newChat {

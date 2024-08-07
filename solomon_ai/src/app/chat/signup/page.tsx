@@ -90,22 +90,6 @@ const SignupDashboard: React.FC = () => {
     null
   );
 
-  // Update session storage whenever userName or splitUserName changes
-  // useEffect(() => {
-  //   checkSession(status, {
-  //     setUserId,
-  //     setUserName,
-  //     setSessionStatus,
-  //     setEmail,
-  //     setSplitUserName,
-  //     isClient,
-  //     session,
-  //     router,
-  //     email,
-  //     userName: "",
-  //     splitUserName,
-  //   });
-  // }, [status]);
 
   //Stores the Chat
   const {

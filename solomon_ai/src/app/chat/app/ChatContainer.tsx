@@ -142,15 +142,15 @@ export const ChatContainer: FC<ChatContainerProps> = ({
         <Link href="/" className="flex flex-row">
           <Image src={FaceIcon} width={24} height={24} alt="Face Icon" />
         </Link>
-        {/* <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
+        <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px]">
           <div className="mainIcon">
             <Image alt="arrowLeft" src={arrowLeft} width={100} height={100} />
           </div>
 
           <Link href="/chat/app">
-            <p>New Chat</p>
+            <p>Close Chat</p>
           </Link>
-        </button> */}
+        </button>
         <div
           onClick={handleMobileChatBtnClick}
           className=" mobileChatBtn !relative flex items-center justify-start"
@@ -396,6 +396,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
       {/* Settings  Container */}
 
+    
 
       {/* Profile  Container */}
       <div className="flex flex-row gap-[4px]  settingsContainer ">
@@ -409,7 +410,9 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           <p>{clientEmail}</p>
         </Link>
 
-        <Link href="/profile" className="mainIcon !w-[20px] !h-[20px]">
+        <Link 
+        href="/profile"
+        className="mainIcon !w-[20px] !h-[20px]">
           <Image alt="chatIcon" src={settingsIcon} width={100} height={100} />
         </Link>
       </div>
