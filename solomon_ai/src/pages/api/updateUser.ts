@@ -44,38 +44,54 @@ export default async function handler(
       console.log(`Processing progress relgion for user ${religion}`);
       console.log(`Processing progress Birthday for user ${birthday}`);
 
-  
+      // Ensure birthday is correctly processed
+      const isoBirthday = parseDateString(birthday as string);
+      console.log("Logging the ISO birthday", isoBirthday);
 
-    // Ensure birthday is correctly processed
-    const isoBirthday = parseDateString(birthday as string);
-    console.log("Logging the ISO birthday", isoBirthday);
+      // Calculate life path number if not provided and birthday is available
+      let finalLifePathNumber = lifePathNumber;
+      if (!finalLifePathNumber) {
+        finalLifePathNumber = calculateLifePathNumber(
+          isoBirthday as string
+        ) as number;
+      }
 
-    // Calculate life path number if not provided and birthday is available
-    let finalLifePathNumber = lifePathNumber;
-    if (!finalLifePathNumber) {
-      finalLifePathNumber = calculateLifePathNumber(isoBirthday as string) as number;
-    }
-
-    // Calculate ennealogy number if not provided and birthday is available
-    let finalEnnealogyNumber = enealogyNumber;
-    if (!finalEnnealogyNumber) {
-      finalEnnealogyNumber = calculateEnnealogyNumber(isoBirthday as string) as number;
-    }
-    console.log("Logging the lifePathNumber in update user", finalLifePathNumber);
-    console.log("Logging the enneagram number in update user", finalEnnealogyNumber);
-    console.log("Logging the lifePathNumber again in update user", enealogyNumber);
-    console.log("Logging the enneagram number again in update user", lifePathNumber);
+      // Calculate ennealogy number if not provided and birthday is available
+      let finalEnnealogyNumber = enealogyNumber;
+      if (!finalEnnealogyNumber) {
+        finalEnnealogyNumber = calculateEnnealogyNumber(
+          isoBirthday as string
+        ) as number;
+      }
+      console.log(
+        "Logging the lifePathNumber in update user",
+        finalLifePathNumber
+      );
+      console.log(
+        "Logging the enneagram number in update user",
+        finalEnnealogyNumber
+      );
+      console.log(
+        "Logging the ennegarm again in update user",
+        enealogyNumber
+      );
+      console.log(
+        "Logging the LifePathNumber number again in update user",
+        lifePathNumber
+      );
 
       // Build the update object conditionally
       const updateData: any = {};
       if (isoBirthday) updateData.birthday = isoBirthday;
       if (zodiacSign) updateData.zodiacSign = zodiacSign;
       // Use lifePathNumber if available, otherwise use finalLifePathNumber
-        updateData.lifePathNumber = lifePathNumber
-   
+      if (lifePathNumber) updateData.lifePathNumber = lifePathNumber;
+      if(finalLifePathNumber) updateData.lifePathNumber = finalLifePathNumber
+
       // Use enealogyNumber if available, otherwise use finalEnnealogyNumber
-        updateData.ennealogy = enealogyNumber
-    
+     if (enealogyNumber) updateData.ennealogy = enealogyNumber;
+     if(finalEnnealogyNumber) updateData.ennealogy = finalEnnealogyNumber
+
       if (religion) updateData.religion = religion;
       if (cardologyNumber) updateData.cardologyNumber = cardologyNumber;
       if (mylesBridgeType) updateData.mylesBridgeType = mylesBridgeType;

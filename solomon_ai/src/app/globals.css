@@ -1652,7 +1652,76 @@ a > p {
   border-radius: 5px;
 }
 
+
 /* PROFILE CSS */
+
+.editProfileSettingsWrapper{ 
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  border-radius: 8px;
+  width: 100%;
+  display: none;
+
+}
+.editProfileSettingsWrapper.show{
+  display: flex;
+}
+.editProfileSettingsContainer{
+  height: 100%;
+  width: 750px;
+  border: 0.5px solid #b4b4b4;
+  border-radius: 8px;
+  background: white
+
+
+}
+@media screen and (max-width:1100px ) {
+  .editProfileSettingsContainer{
+    width: 500px !important;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width:800px ) {
+  .editProfileSettingsContainer{
+    width: 370px;
+    margin: 0 auto;
+  }
+}
+@media screen and (max-width:600px ) {
+  .editProfileSettingsContainer{
+    width: auto;
+    margin-right: auto;
+    background: transparent !important;
+    border: 0px;
+  }
+  .editProfileSettingsWrapper{
+    height: 500px;
+    overflow: scroll;
+    background: white;
+    width: 80%;
+  }
+
+}
+
+
+
+.editInput{
+  border: 0.5px solid #b4b4b4;
+  border-radius: 8px;
+  height: 45px;
+  background: transparent;
+  padding: 5px;
+}
+
+.settingsDiv button { 
+  background: #2f0ffd;
+  color: white;
+  border-radius: 8px;
+  height: 50px;
+}
+
 
 .zodiacOverlay {
   position: absolute;

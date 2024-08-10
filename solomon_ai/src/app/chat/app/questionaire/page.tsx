@@ -199,7 +199,6 @@ const ChatDashboard: React.FC = () => {
         console.error("Error saving progress:", error);
       }
     } else if (readyToRedirect) {
-      // router.push("/chat/app/");
     }
   };
 

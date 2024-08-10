@@ -14,14 +14,15 @@ import { Conversation } from "../../../types";
 
 import { checkSession } from "@/utilis/CheckSession";
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
-import { getChineseZodiac } from "@/utilis/textExtractor";
-import { getYearFromDateString } from "@/utilis/textExtractor";
+
 
 import { Header } from "../components/Header";
-import { Guidelines } from "../chat/app/components/Guidelines";
 import { Feedbackform } from "./FeedbackForm";
 import { UserDeleteAlert } from "./deleteUserAlert";
 import { ProfileGuidelines } from "./profileGuidelines";
+
+import EditProfileSettings from "./editProfile";
+import EditProfileSettingsBtn from "./editProfileSettingsButton";
 
 import axios from "axios";
 import Link from "next/link";
@@ -155,9 +156,16 @@ const Profile: React.FC = () => {
         setNameNumerolgyNumber(nameNumerolgyNumber);
         setBirthDay(formatDate(birthday));
       }
+
+      console.log("Logging the User INfo In The git", userInfo)
     };
+    
+
+
 
     getUserInfo();
+
+    
   }, [userId]);
 
   function formatDate(isoString: string) {
@@ -175,29 +183,48 @@ const Profile: React.FC = () => {
   }
 
   // Update user progress with the extracted vales
+  //Keep track of the updating the backend process
+  const [profileProgresLoading, setProileProgressLoading] =
+    useState<boolean>(false);
   const updateUserProgress = async (
     userId,
+    zodiacSign: string,
     cardologyNumber: string,
     mylesBridgeType: string,
     nameNumerolgyNumber: string,
+    ennealogy: string,
+    lifePath: string,
     birthday: string
   ): Promise<void> => {
     try {
+      setProileProgressLoading(true);
+
       const response = await axios.post("/api/updateUser", {
         userId,
+        zodiacSign: zodiacSign ?? undefined,
         cardologyNumber: cardologyNumber ?? undefined,
         mylesBridgeType: mylesBridgeType ?? undefined,
         nameNumerolgyNumber: nameNumerolgyNumber ?? undefined,
+        ennealogy: ennealogy ?? undefined,
+        lifePath: lifePath,
         birthday: birthday ?? undefined,
       });
 
       //Going to save into Session to prevent the asynh loading issues
       if (isClient()) {
         sessionStorage.setItem("cardologyNumber", cardologyNumber);
-
         sessionStorage.setItem("mylesBridgeType", mylesBridgeType);
-        sessionStorage.setItem("mylesBridgeType", nameNumerolgyNumber);
+        sessionStorage.setItem("nameNumerolgyNumber", nameNumerolgyNumber);
+        sessionStorage.setItem("ennealogy", ennealogy);
+        sessionStorage.setItem("lifePathNumber", lifePath)
+
         // Sign out and redirect
+      }
+
+
+      console.log("Logging the Response")
+      if (response.status === 201) {
+        setProileProgressLoading(false);
       }
 
       console.log("User progress updated successfully:", response.data);
@@ -210,22 +237,47 @@ const Profile: React.FC = () => {
     // Update state ter
     updateUserProgress(
       userId,
+      zodiac,
       cardologyNumber,
       mylesBridgeType,
       nameNumerologyNumber,
+      ennealogy,
+      lifePath,
       birthday
     );
 
     window.alert("Profile Update");
+    if(zodiac !== ""){ 
+      setZodiac(zodiac)
+    }
+    if(cardologyNumber !== ""){ 
+      setCardologyNumber(cardologyNumber)
+    }
+    if(mylesBridgeType !== ""){ 
+      setMylesBridgeType(mylesBridgeType)
+    }
+    if(nameNumerologyNumber !== ""){ 
+      setNameNumerolgyNumber(nameNumerologyNumber)
+    }
+    if(ennealogy !== ""){ 
+      setEnnealogyNumber(ennealogy)
+    }
+    if(lifePath !== ""){ 
+      setLifePathNumber(ennealogy)
+    }
     // Optionally, stop editing mode
     setIsEditing(false);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+  useEffect(() => {
+    console.log("Did the state of loading change? ", profileProgresLoading);
+  }, [profileProgresLoading]);
+  const handleKeyDown= (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent the form from submitting and causing a page reload
+    console.log("Submission has been made");
       handleSave();
-    }
   };
+
 
   //Remove user form the data
   const [deletingUser, setDeleteUser] = useState<boolean>(false);
@@ -304,14 +356,13 @@ const Profile: React.FC = () => {
 
   const renewUserSubscription = async (subscriptionID: string) => {
     console.log("Renewing the subscription with ID:", subscriptionID);
-  
+
     try {
       const response = await axios.post("/api/renew-subscription", {
         subscriptionID: subscriptionID,
       });
-  
-      const data = response.data;
 
+      const data = response.data;
 
       if (response.data.cancel_at_period_end === false) {
         //Keeping Tabs if User is Still being active in this joint
@@ -320,7 +371,6 @@ const Profile: React.FC = () => {
         setCanceledSubscription(true);
       }
 
-  
       console.log("Subscription Details After Renewal:", data);
     } catch (e) {
       console.error("Error renewing subscription:", e);
@@ -337,7 +387,6 @@ const Profile: React.FC = () => {
     // Toggle the subscription state after the action
     setCanceledSubscription(!canceledSubscription);
   };
-
 
   const getSubscriptionDetails = async (subscriptionID: string) => {
     console.log("Logging the SUbscription ID in the request", subscriptionID);
@@ -483,6 +532,42 @@ const Profile: React.FC = () => {
     nameNumerologyNumber,
   ]);
 
+  //Handing the Settinss to show up
+  const [showEditSettings, setShowEditSettings] = useState<boolean>(false);
+  const showEditSettingsDiv = () => {
+    setShowEditSettings(!showEditSettings);
+
+    // console.log("This is logging the the click button", showEditSettings)
+  };
+  useEffect(() => {
+    console.log("Logging the new state of edit settings", showEditSettings);
+  }, [showEditSettings]);
+  
+
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[zodiac])
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[lifePath])
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[mylesBridgeType])
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[cardologyNumber])
+  useEffect(() => { 
+  },[birthday])
+  useEffect(() => {
+
+  },[nameNumerologyNumber])
+  useEffect(() => {
+  },[ennealogy])
+  useEffect(() => {
+  },[birthday])
+
+
+
   return (
     <>
       {showGuidelines && (
@@ -511,8 +596,7 @@ const Profile: React.FC = () => {
           chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
         />
-        {/* Chat Container Componet  */}
-
+        f{/* Chat Container Componet  */}
         <div className="chatDashboardWrapper !h-full w-full text-left">
           {/* Guidelines Hader */}
 
@@ -533,6 +617,24 @@ const Profile: React.FC = () => {
                   <p>{userName}</p>
                   <p>{email}</p>
                 </div>
+
+                <EditProfileSettingsBtn
+                  showEditSettingsDiv={showEditSettingsDiv}
+                />
+
+                <EditProfileSettings
+                  showEditSettings={showEditSettings}
+                  showEditSettingsDiv={showEditSettingsDiv}
+                  handleKeyDown={handleKeyDown}
+                  setZodiac={setZodiac}
+                  setLifePathNumber={setLifePathNumber}
+                  setEnnealogyNumber={setEnnealogyNumber}
+                  setCardologyNumber={setCardologyNumber}
+                  setMylesBridgeType={setMylesBridgeType}
+                  setNameNumerolgyNumber = {setNameNumerolgyNumber}
+                  setBirthDay={setBirthDay}
+                  profileProgresLoading={profileProgresLoading}
+                />
               </div>
 
               <div className="flex flex-col gap-[5px] w-[310px]">
@@ -587,7 +689,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={nameNumerologyNumber as any}
                       onChange={(e) => setNameNumerolgyNumber(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -642,7 +743,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={cardologyNumber as any}
                       onChange={(e) => setCardologyNumber(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -676,7 +776,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={mylesBridgeType as any}
                       onChange={(e) => setMylesBridgeType(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -703,7 +802,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={birthday as any}
                       onChange={(e) => setBirthDay(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -826,7 +924,9 @@ const Profile: React.FC = () => {
                     </p>
                   </div>
                   <button
-                    onClick={() => handleSubscriptionAction(subcriptionSessionID)}
+                    onClick={() =>
+                      handleSubscriptionAction(subcriptionSessionID)
+                    }
                     className=" text-[14px] newChat large !flex flex-row items-center justify-center gap-[13px] "
                   >
                     <div className="mainIcon">
