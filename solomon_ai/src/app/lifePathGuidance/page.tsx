@@ -372,7 +372,24 @@ const Profile: React.FC = () => {
   const handleExpandClick = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the click is outside the element (in this case, outside the Zodiac guidelines popup)
+      if (isGuidelinesVisible) {
+        setIsGuidelinesVisible(false);
+      }
+    };
 
+    if (isGuidelinesVisible) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isGuidelinesVisible]);
   return (
     <>
       {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
@@ -642,10 +659,13 @@ const Profile: React.FC = () => {
                         {dataLoading ? (
                           <ButtonLoadingComponent />
                         ) : (
-                          <p>{`Personal Month | ${renderNumberForIndex(
-                            index,
-                            personalYearNumber as number
-                          )}`}</p>
+                          <p>
+                            {index > 1 && "Personal Month | "}
+                            {renderNumberForIndex(
+                              index,
+                              personalYearNumber as number
+                            )}
+                          </p>
                         )}
                       </p>
                       <p className="text-[12px] text-white">

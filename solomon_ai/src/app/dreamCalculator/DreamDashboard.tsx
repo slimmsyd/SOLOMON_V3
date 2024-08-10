@@ -42,7 +42,10 @@ export const DreamDashboard:  FC<Dashboard> = ({
               </svg>
 
               <div className="flex flex-col gap-[5px]">
+                <div className =" flex flex-row gap-[10px] items-center ">
                 <h3>Dive into the meaning of dreams </h3>
+                  <span className = "text-[10px] text-[#7c7c7ca5]">**note somtimes messages do not save**</span>
+                </div>
                 Discover some insights on the ether realm of where the dream
                 resides. What is your subconsicous mind symbolizing? Why and
                 what is this undiscoverd world.

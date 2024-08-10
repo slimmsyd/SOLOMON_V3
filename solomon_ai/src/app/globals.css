@@ -129,17 +129,19 @@ body {
   line-height: 125% !important;
 } */
 
-.imageContainer img{
+.imageContainer img {
   border-radius: 8px;
   height: 400px;
   width: 100%;
   object-fit: cover;
-} 
+}
 
-.floatingDiv{
+.floatingDiv {
   position: fixed;
   bottom: 100%;
-  top: 50%; left: 50%; transform: translate(-50%, 190%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 190%);
   color: white;
   background: rgba(64, 64, 64, 0.648);
   display: flex;
@@ -149,12 +151,12 @@ body {
   height: 40px;
   border: 0.5px solid white;
 }
-.slantLine{
- background: white;
- height: 100%;
- width: 2px;
- transform: rotate(15deg);
- margin:  0px 2px;
+.slantLine {
+  background: white;
+  height: 100%;
+  width: 2px;
+  transform: rotate(15deg);
+  margin: 0px 2px;
 }
 .pointerEventsYes {
   pointer-events: all !important;
@@ -866,15 +868,15 @@ figure video {
   border-radius: 10px;
   font-weight: bolder;
 }
-.text-before::before{
+.text-before::before {
   margin-left: 0.25rem;
-    margin-right: 0.25rem;
-    content: '•';
-    display: inline-block;
-    vertical-align: middle;
-    font-size: .8em;
-    margin-top: -2px;
-    color: #dc2828;
+  margin-right: 0.25rem;
+  content: "•";
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 0.8em;
+  margin-top: -2px;
+  color: #dc2828;
 }
 /* PRICING CSS */
 
@@ -918,7 +920,7 @@ a > p {
   background: linear-gradient(180deg, #2f0ffd30, #291d7850);
   border-radius: 5px;
 }
-.newChat.large{
+.newChat.large {
   width: 200px;
 }
 @media screen and (max-width: 950px) {
@@ -1652,62 +1654,55 @@ a > p {
   border-radius: 5px;
 }
 
-
 /* PROFILE CSS */
 
-.editProfileSettingsWrapper{ 
+.editProfileSettingsWrapper {
   display: flex;
   align-items: center;
   justify-content: left;
   border-radius: 8px;
   width: 100%;
   display: none;
-
 }
-.editProfileSettingsWrapper.show{
+.editProfileSettingsWrapper.show {
   display: flex;
 }
-.editProfileSettingsContainer{
+.editProfileSettingsContainer {
   height: 100%;
   width: 750px;
   border: 0.5px solid #b4b4b4;
   border-radius: 8px;
-  background: white
-
-
+  background: white;
 }
-@media screen and (max-width:1100px ) {
-  .editProfileSettingsContainer{
+@media screen and (max-width: 1100px) {
+  .editProfileSettingsContainer {
     width: 500px !important;
     margin-right: auto;
   }
 }
 
-@media screen and (max-width:800px ) {
-  .editProfileSettingsContainer{
+@media screen and (max-width: 800px) {
+  .editProfileSettingsContainer {
     width: 370px;
     margin: 0 auto;
   }
 }
-@media screen and (max-width:600px ) {
-  .editProfileSettingsContainer{
+@media screen and (max-width: 600px) {
+  .editProfileSettingsContainer {
     width: auto;
     margin-right: auto;
     background: transparent !important;
     border: 0px;
   }
-  .editProfileSettingsWrapper{
+  .editProfileSettingsWrapper {
     height: 500px;
     overflow: scroll;
     background: white;
     width: 80%;
   }
-
 }
 
-
-
-.editInput{
+.editInput {
   border: 0.5px solid #b4b4b4;
   border-radius: 8px;
   height: 45px;
@@ -1715,13 +1710,12 @@ a > p {
   padding: 5px;
 }
 
-.settingsDiv button { 
+.settingsDiv button {
   background: #2f0ffd;
   color: white;
   border-radius: 8px;
   height: 50px;
 }
-
 
 .zodiacOverlay {
   position: absolute;
@@ -2008,12 +2002,23 @@ a > p {
   top: 700px;
   left: 20%;
 }
+@media screen and (max-width: 750px) {
+  .guideLinesWhiteBox.fourth {
+    top: 600px;
+    left: 10%;
+  }
+}
 .guidlinesOverlay .guideLinesWhiteBox.active {
   opacity: 1;
 }
 
 .guideLinesWhiteBox.profileGuidlines {
   left: 50%;
+}
+@media screen and (max-width: 750px) {
+  .guideLinesWhiteBox.profileGuidlines {
+    left: 5%;
+  }
 }
 .guideLinesWhiteBox.second.profileGuidlines {
 }
@@ -2039,22 +2044,20 @@ a > p {
   width: 100%;
   z-index: 10;
   background: rgba(0, 0, 0, 0.473);
-
 }
 .overlay.blur {
   filter: blur(20px);
   background: #0000003e;
 }
-.homePopupContainer.flexStartImportant{
+.homePopupContainer.flexStartImportant {
   justify-content: start !important;
   border: none;
 }
 
-.popupLinearGradient{
-  background: linear-gradient(180deg, #2f0ffd51, #FFFFFF);
+.popupLinearGradient {
+  background: linear-gradient(180deg, #2f0ffd51, #ffffff);
   border-radius: 8px;
   padding: 86px 20px;
-
 }
 
 /* Signup redirect page  */

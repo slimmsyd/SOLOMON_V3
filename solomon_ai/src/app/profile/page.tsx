@@ -481,13 +481,13 @@ const Profile: React.FC = () => {
     }
   }, [userName, splitUserName]);
 
-  useEffect(() => {
-    if (!session?.user) {
-      router.push("/");
-    } else {
-      getSubscriptionID(session.user.id as string);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!session?.user) {
+  //     router.push("/");
+  //   } else {
+  //     getSubscriptionID(session.user.id as string);
+  //   }
+  // }, []);
 
   const handleConversationClick = (convoId: string) => {
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
@@ -653,9 +653,9 @@ const Profile: React.FC = () => {
                     <p className="profileInput">
                       {sessionStorage.getItem("zodiacSign")
                         ? sessionStorage.getItem("zodiacSign")
-                        : "Enter..." || (zodiac as any)
+                        : "Loading..." || (zodiac as any)
                         ? (zodiac as any)
-                        : "Enter..."}
+                        : "Loading..."}
                     </p>
                   )}
                 </div>
@@ -675,9 +675,9 @@ const Profile: React.FC = () => {
                     <p className="profileInput">
                       {sessionStorage.getItem("lifePathNumber")
                         ? sessionStorage.getItem("lifePathNumber")
-                        : "Enter..." || lifePath
+                        : "Loading..." || lifePath
                         ? lifePath
-                        : "Enter..."}
+                        : "Loading..."}
                     </p>
                   )}
                 </div>
@@ -722,9 +722,9 @@ const Profile: React.FC = () => {
                     <p className="profileInput">
                       {sessionStorage.getItem("ennealogy")
                         ? sessionStorage.getItem("ennealogy")
-                        : "Enter..." || ennealogy
+                        : "Loading..." || ennealogy
                         ? ennealogy
-                        : "Enter..."}
+                        : "Loading..."}
                     </p>
                   )}
                 </div>
@@ -809,7 +809,7 @@ const Profile: React.FC = () => {
                       className="profileInput"
                       type="text"
                       placeholder="Add"
-                      value={birthday ? birthday : "Enter..."}
+                      value={birthday ? birthday : "Loading..."}
                     />
                   )}
                 </div>

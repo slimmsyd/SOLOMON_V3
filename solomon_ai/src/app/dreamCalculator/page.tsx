@@ -1,17 +1,14 @@
 "use client";
 import React, { useState, useEffect, useRef, FormEvent } from "react";
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
-import Image from "next/image";
-import ImageComponent from "./imageComponent";
 
 import ButtonLoadingComponent from "../components/helper/buttonComponentLoading";
 
 import { DreamDashboard } from "./DreamDashboard";
 import { Header } from "../components/Header";
-import { ChatMessagesContainer } from "../chat/app/ChatMessage";
 import { DreamMessageContainer } from "../chat/app/DreamMessage";
 
 import { ChatContainer } from "../chat/app/ChatContainer";

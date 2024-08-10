@@ -113,7 +113,7 @@ const EditProfileSettings: FC<Props> = ({
               <input
                 onChange={(e) => setBirthDay(e.target.value)}
                 className="editInput"
-                placeholder="Enter Your Date Of Birth"
+                placeholder="DD/MM/YYYY"
               ></input>
             </div>
 
