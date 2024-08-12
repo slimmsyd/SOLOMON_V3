@@ -1393,6 +1393,7 @@ a > p {
     padding: 15px 0px;
     min-width: 650px;
     width: auto;
+    width: -webkit-fill-available;
   }
 }
 
