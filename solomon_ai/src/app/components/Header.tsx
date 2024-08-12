@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import MobileChatBTNComponent from "./helper/mobileChatBtn";
 
 interface HeaderProps {
   handleMobileChatBtnClick: () => void;
@@ -20,22 +21,10 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
-      <div className=" flex-1   cursor-pointer mobileChatContainer">
-        <div
-          onClick={handleMobileChatBtnClick}
-          className=" mobileChatBtn flex items-center justify-start"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            viewBox="0 0 256 256"
-          >
-            <path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"></path>
-          </svg>
-        </div>
-      </div>
+      <MobileChatBTNComponent 
+      handleMobileChatBtnClick = {handleMobileChatBtnClick}
+      
+      />
       <div className="flex flex-row gap-[18px] items-center justify-center">
         <button
           onClick={toggleGuidelines}

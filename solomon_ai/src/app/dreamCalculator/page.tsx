@@ -467,6 +467,7 @@ const Horoscope: React.FC = () => {
       // Ensure there is a latestResponse.response before proceeding
       if (latestResponse.response) {
         if (decideToGenerateImage()) {
+          console.log("Decided to Generate the Image")
           setShouldSummarize(true);
         }
         if (shouldSummarize) {

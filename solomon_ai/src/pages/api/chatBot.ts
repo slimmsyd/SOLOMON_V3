@@ -572,7 +572,8 @@ export default async function handler(
         model: "gpt-4",
         max_tokens: 500,
         messages: messages,
-      });
+        temperature: 1,
+     });
 
       const response = completion.choices[0].message.content;
 

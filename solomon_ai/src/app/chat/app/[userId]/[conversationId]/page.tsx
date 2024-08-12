@@ -7,9 +7,10 @@ import { Session } from "next-auth";
 
 import { Message } from "../../../../../../types";
 
+import { Header } from "@/app/components/Header";
+
 import { ChatContainer } from "../../ChatContainer";
 import { ChatMessagesContainer } from "../../ChatMessage";
-import { Dashboard } from "../../Dashboard";
 import LoadingComponent from "../../../../components/helper/Loading";
 
 import useConversations from "../../../../hooks/useConversations";
@@ -29,12 +30,13 @@ export default function ConversationPage() {
     "https://biewq9aeo5.execute-api.us-east-1.amazonaws.com/dev/solomonAPI";
 
   const router = useRouter();
-  const pathName = usePathname();
   const formRef = useRef<HTMLFormElement>(null);
   //Should wrap these in a bigger function since being used multiple times?
 
   const [sessionStatus, setSessionStatus] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
+  const [showGuidelines, setShowGuidelines] = useState(true);
+
 
   const {
     userName,
@@ -144,7 +146,6 @@ export default function ConversationPage() {
     }
   }, [userName, splitUserName]);
 
-  const [showTitleInput, setShowTitleInput] = useState(false);
   const [editTitleId, setEditTitleId] = useState<null>(null);
   const [editedTitle, setEditedTitle] = useState<string>("");
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
@@ -593,7 +594,11 @@ export default function ConversationPage() {
       >
         {/* Guidelines Hader */}
 
-        <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]"></header>
+           {/* <button onClick={generateImage}>Generate an Image nigga</button> */}
+           <Header 
+          showGuidelines = {showGuidelines}
+          setShowGuidelines = {setShowGuidelines}
+          handleMobileChatBtnClick={handleMobileChatBtnClick} />
 
         <div className={`chatDashBoardContainer `}>
           {/* Dashboard Component  */}
