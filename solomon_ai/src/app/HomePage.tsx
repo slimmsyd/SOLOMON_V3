@@ -432,6 +432,42 @@ export default function HomePage() {
     }
   };
 
+  //Handling the Countodwn Timer function
+  const calculateTimeLeft = () => {
+    const now = new Date();
+    const targetDate = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000); // 5 days from now
+
+    const difference = targetDate.getTime() - now.getTime();
+
+    let timeLeft = {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+
+    return timeLeft;
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, []);
+
   //Handling the pricing configuration
 
   return (
@@ -464,7 +500,7 @@ export default function HomePage() {
               onClick={togglePopup}
               className="px-4 justify-start py-2 border border-white flex self-start	 lg:self-center items-center  text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white"
             >
-              Join The Waitlist
+              Join Beta Waitlist
             </button>
           </div>
         </section>
@@ -935,12 +971,11 @@ export default function HomePage() {
                   </li>
                 </ul>
 
-                <Link
-                  href="/login"
+                <button
                   className="pricingBtn text-black text-[14px]   text-left"
                 >
-                  Join Application
-                </Link>
+                  {`${timeLeft.days}d ${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s until beta .`}
+                </button>
               </div>
             </div>
           </form>
@@ -951,28 +986,29 @@ export default function HomePage() {
         </section>
 
         <section className="w-full h-auto relative  flex items-start py-[20px] px-[20px] justify-center flex-col">
-          
-          <Link 
-            href = "/blog"
-          className="flex flex-row flex-wrap relative  max-w-[450px] ">
+          <Link
+            href="/blog"
+            className="flex flex-row flex-wrap relative  max-w-[450px] "
+          >
             <div className="blogContainer relative max-w-[450px] ">
               <div className="blogCardImageContainer relative h-full flex-1 flex items-end">
                 <Image src={ImageOne} alt="Spiritual Image" />
-                <div className = "absolute mb-[4rem] mx-[20px] z-[100] " >
-
-                <div className="flex flex-row gap-[4px]">
-                <span className="text-gray text-[14px]">May 31st, 2024</span>
-                <span className="text-gray text-[14px] text-before">5 min read</span>
-              </div>                  <h3 className = "text-white font-bold">Return of an Unifed God</h3>
-
-
+                <div className="absolute mb-[4rem] mx-[20px] z-[100] ">
+                  <div className="flex flex-row gap-[4px]">
+                    <span className="text-gray text-[14px]">
+                      May 31st, 2024
+                    </span>
+                    <span className="text-gray text-[14px] text-before">
+                      5 min read
+                    </span>
+                  </div>{" "}
+                  <h3 className="text-white font-bold">
+                    Return of an Unifed God
+                  </h3>
                 </div>
 
-                <div className = "overlay"></div>
-
+                <div className="overlay"></div>
               </div>
-
-           
             </div>
           </Link>
         </section>

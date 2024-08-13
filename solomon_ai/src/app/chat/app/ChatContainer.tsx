@@ -101,6 +101,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
     // Set loading to true initially
     setLoading(true);
+    console.log("is This joint evne running in the useEffect " ,isLoading)
 
     if (localStorageConversations) {
       // Parse the conversations from local storage
@@ -117,9 +118,13 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     }
 
     // Log isLoading after a render cycle
-  }, [titleUpdated]);
+  }, [titleUpdated, isLoading]);
 
-  useEffect(() => {}, [isLoading]);
+  useEffect(() => {
+
+
+
+  }, [isLoading]);
 
   const [clientSplitUserName, setClientSplitUserName] =
     useState<string>(splitUserName);
