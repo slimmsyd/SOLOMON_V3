@@ -36,6 +36,7 @@ import { ChatContainer } from "./ChatContainer";
 import { ChatMessagesContainer } from "./ChatMessage";
 import { Guidelines } from "./components/Guidelines";
 import FloatingScrollButton from "@/app/components/ScrollToBottomButton";
+import OpenChatContainer from "@/app/components/helper/openChatContainerComponent";
 
 const ChatDashboard: React.FC = () => {
   //Introduction Guidelines.
@@ -75,7 +76,7 @@ const ChatDashboard: React.FC = () => {
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
   const chatDashBoardRef = useRef<HTMLDivElement>(null);
-  
+
   const [editTitleId, setEditTitleId] = useState<null>(null);
   const [editedTitle, setEditedTitle] = useState<string>("");
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
@@ -606,6 +607,17 @@ const ChatDashboard: React.FC = () => {
     // console.log("Loggin the conversations in the app useEffect", conversations);
   }, [conversations]);
 
+
+    //This handles the closing of the chat function 
+    const [chatContainerShown, setChatContainerShown] = useState<boolean>(false); 
+    const chatContainerToggle = () => 
+    { 
+
+      console.log("IS this being clicked??? Showon yes or no")
+      setChatContainerShown(!chatContainerShown);
+    }
+  
+
   return (
     <MessageProvider>
       {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
@@ -631,6 +643,8 @@ const ChatDashboard: React.FC = () => {
           handleKeyDown={handleKeyDown}
           chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
+          chatContainerToggle = {chatContainerToggle}
+          chatContainerShown = {chatContainerShown}
         />
 
         {/* Chat Container Componet  */}
@@ -639,6 +653,12 @@ const ChatDashboard: React.FC = () => {
           ref={chatDashBoardRef}
           className="chatDashboardWrapper w-full text-left"
         >
+          <OpenChatContainer 
+            chatContainerToggle = {chatContainerToggle}
+            chatContainerShown = {chatContainerShown}
+
+          />
+
           <Header
             showGuidelines={showGuidelines}
             setShowGuidelines={setShowGuidelines}

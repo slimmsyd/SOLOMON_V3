@@ -1,8 +1,8 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef, FormEvent } from "react";
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 
 import { Message } from "../../../../../../types";
@@ -18,6 +18,10 @@ import useCreateConversation from "../../../../hooks/createConversation";
 import { useChatConversation } from "@/app/hooks/ConversationContext";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
 import FloatingScrollButton from "@/app/components/ScrollToBottomButton";
+
+import OpenChatContainer from "@/app/components/helper/openChatContainerComponent";
+
+
 //Utilis
 import { checkSession } from "@/utilis/CheckSession";
 import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoading";
@@ -561,6 +565,15 @@ export default function ConversationPage() {
     return <p>No conversation found.</p>;
   }
 
+  const [chatContainerShown, setChatContainerShown] = useState<boolean>(false); 
+  const chatContainerToggle = () => 
+  { 
+
+    console.log("IS this being clicked??? Showon yes or no")
+    setChatContainerShown(!chatContainerShown);
+  }
+
+
   //Function takes you to the bottom of the div by clicking the floating button.
 
   return (
@@ -592,6 +605,12 @@ export default function ConversationPage() {
         ref={chatDashBoardRef}
         className="chatDashboardWrapper w-full text-left"
       >
+         
+          <OpenChatContainer 
+            chatContainerToggle = {chatContainerToggle}
+            chatContainerShown = {chatContainerShown}
+
+          />
         {/* Guidelines Hader */}
 
            {/* <button onClick={generateImage}>Generate an Image nigga</button> */}

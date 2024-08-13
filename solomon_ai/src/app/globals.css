@@ -948,6 +948,9 @@ a > p {
   margin-right: 15px;
   z-index: 1;
 }
+.none {
+  display: none;
+}
 @media screen and (max-width: 950px) {
   .chatContainer {
     transform: translateX(-100%);
@@ -1011,9 +1014,19 @@ a > p {
   .chatDashboard {
     padding: 0px !important;
   }
+  .closeContainerBtn {
+    display: none;
+  }
 }
 .chatContainer > button {
   font-size: 14px;
+}
+
+.closeContainerBtn {
+  display: none;
+}
+.closeContainerBtn.show {
+  display: block;
 }
 
 .chatDashboard {
@@ -1393,7 +1406,7 @@ a > p {
     padding: 15px 0px;
     min-width: 650px;
     width: auto;
-    width: -webkit-fill-available;
+    /* width: -webkit-fill-available; */
   }
 }
 

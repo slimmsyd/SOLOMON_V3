@@ -30,6 +30,8 @@ interface ChatContainerProps {
   handleKeyDown?: (event: any) => void;
   chatContainerRef?: React.Ref<HTMLDivElement>;
   handleMobileChatBtnClick?: () => void;
+  chatContainerToggle?: () => void;
+  chatContainerShown? : boolean
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
@@ -50,6 +52,9 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   handleKeyDown,
   chatContainerRef,
   handleMobileChatBtnClick,
+  chatContainerToggle,
+  chatContainerShown
+
 }) => {
   //Controlling hte hover state of the Delete SVG
   const [hoveredConversationId, setHoveredConversationId] = useState<
@@ -135,8 +140,18 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     setClientEmail(getSessionStorageItem("email", email as any));
   }, [splitUserName, email]);
 
+
+
+  useEffect(() => { 
+
+    
+  },[chatContainerShown])
+
+
+
+
   return (
-    <div ref={chatContainerRef} className="chatContainer flex flex-col flex-1">
+    <div ref={chatContainerRef} className={`chatContainer flex flex-col flex-1 ${chatContainerShown ? "none" : ""}`}>
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <Link href="/" className="flex flex-row">
@@ -147,9 +162,11 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             <Image alt="arrowLeft" src={arrowLeft} width={100} height={100} />
           </div>
 
-          <Link href="/chat/app">
+          <button 
+          onClick={chatContainerToggle}
+          >
             <p>Close Chat</p>
-          </Link>
+          </button>
         </button>
         <div
           onClick={handleMobileChatBtnClick}
@@ -345,21 +362,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       {/* Bottom Container */}
 
       <div className="flex flex-col gap-[22px]">
-        {" "}
-        {/* <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
-          <div className="mainIcon !w-[20px] !h-[20px]">
-            <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
-          </div>
-
-          <p className="hover:text-[#807f7f]">About Me</p>
-        </button> */}
-        {/* <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
-          <div className="mainIcon !w-[20px] !h-[20px]">
-            <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
-          </div>
-
-          <p className="hover:text-[#807f7f]">Numerology Guidance</p>
-        </button> */}
+ 
         <Link
           href="/dreamCalculator"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
