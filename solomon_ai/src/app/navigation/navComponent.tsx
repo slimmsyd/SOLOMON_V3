@@ -13,7 +13,7 @@ interface PopupProps {
 const NavComponent: React.FC<PopupProps> = ({
   togglePopup,
   scrollToSection,
-  scrollToFeatures
+  scrollToFeatures,
 }) => {
   const [animate, setAnimate] = useState(false);
   const [navState, setNavState] = useState(false);
@@ -32,20 +32,14 @@ const NavComponent: React.FC<PopupProps> = ({
     setNavState(!navState);
   };
 
-  const scrollToFeaturesClose = () => { 
+  const scrollToFeaturesClose = () => {
     if (scrollToFeatures) {
       scrollToFeatures();
     }
     setNavState(!navState);
   };
 
-
-
-  useEffect(() => {
- 
-    
-    
-  }, [navState]);
+  useEffect(() => {}, [navState]);
 
   useEffect(() => {
     if (navState) {
@@ -94,7 +88,6 @@ const NavComponent: React.FC<PopupProps> = ({
   }, []);
 
   return (
-
     <header className="w-full px-4 py-6 absolute left-0 top-0 right-0 lg:px-[2rem] xl:px-[4rem]">
       <nav className="w-full pb-4 flex items-center justify-between border-b border-white/20">
         <Link
@@ -126,6 +119,7 @@ const NavComponent: React.FC<PopupProps> = ({
           </li> */}
           <li className="px-8">
             <Link
+              onClick={scrollToFeaturesClose}
               href="/"
               className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
             >
@@ -134,7 +128,7 @@ const NavComponent: React.FC<PopupProps> = ({
           </li>
           <li className="px-8">
             <Link
-            href="/blog"
+              href="/blog"
               className="text-white montserrat ease-out duration-200		 hover:text-[#4c35de]"
             >
               Blog
@@ -184,7 +178,6 @@ const NavComponent: React.FC<PopupProps> = ({
               </span>
             </Link>
 
-
             {/* <Link        href="/" className="mobileNavLink">
 
           <span
@@ -195,7 +188,11 @@ const NavComponent: React.FC<PopupProps> = ({
 
           </Link> */}
 
-            <Link onClick={scrollToFeaturesClose} href="/" className="mobileNavLink">
+            <Link
+              onClick={scrollToFeaturesClose}
+              href="/"
+              className="mobileNavLink"
+            >
               <span className=" text-gray  capitalize duration-300 ease-in-out hover:text-white">
                 Features
               </span>
