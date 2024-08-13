@@ -993,8 +993,8 @@ export default function HomePage() {
             href="/blog"
             className="flex flex-row flex-wrap relative  max-w-[450px] "
           >
-            <div className="blogContainer relative max-w-[450px] ">
-              <div className="blogCardImageContainer relative h-full flex-1 flex items-end">
+            <div className="blogContainer relative max-w-[450px] max-h-[500px] ">
+            <div className="blogCardImageContainer relative h-full flex-1 flex items-end">
                 <Image src={ImageOne} alt="Spiritual Image" />
                 <div className="absolute mb-[4rem] mx-[20px] z-[100] ">
                   <div className="flex flex-row gap-[4px]">
@@ -1018,7 +1018,7 @@ export default function HomePage() {
             href="/blog"
             className="flex flex-row flex-wrap relative  max-w-[450px] "
           >
-            <div className="blogContainer relative max-w-[450px] ">
+            <div className="blogContainer relative max-w-[450px] max-h-[500px] ">
               <div className="blogCardImageContainer relative h-full flex-1 flex items-end">
                 <Image src={ImageTwo} alt="Spiritual Image" />
                 <div className="absolute mb-[4rem] mx-[20px] z-[100] ">
