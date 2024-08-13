@@ -1,17 +1,14 @@
 "use client";
 import React, { useState, useEffect, useRef, FormEvent } from "react";
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
-import Image from "next/image";
-import ImageComponent from "./imageComponent";
 
 import ButtonLoadingComponent from "../components/helper/buttonComponentLoading";
 
 import { DreamDashboard } from "./DreamDashboard";
 import { Header } from "../components/Header";
-import { ChatMessagesContainer } from "../chat/app/ChatMessage";
 import { DreamMessageContainer } from "../chat/app/DreamMessage";
 
 import { ChatContainer } from "../chat/app/ChatContainer";
@@ -470,6 +467,7 @@ const Horoscope: React.FC = () => {
       // Ensure there is a latestResponse.response before proceeding
       if (latestResponse.response) {
         if (decideToGenerateImage()) {
+          console.log("Decided to Generate the Image")
           setShouldSummarize(true);
         }
         if (shouldSummarize) {
@@ -546,9 +544,9 @@ const Horoscope: React.FC = () => {
                 <LoadingComponent />
               </div>
             )}
-          </div>
 
-          <div className="mt-[6rem]">
+
+<div className="mt-[6rem]">
             <form
               ref={formRef}
               onSubmit={handleSubmit}
@@ -612,6 +610,9 @@ const Horoscope: React.FC = () => {
               </div>
             </form>
           </div>
+          </div>
+
+      
         </div>
       </div>
     </>

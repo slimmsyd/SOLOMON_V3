@@ -30,6 +30,8 @@ interface ChatContainerProps {
   handleKeyDown?: (event: any) => void;
   chatContainerRef?: React.Ref<HTMLDivElement>;
   handleMobileChatBtnClick?: () => void;
+  chatContainerToggle?: () => void;
+  chatContainerShown? : boolean
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
@@ -50,6 +52,9 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   handleKeyDown,
   chatContainerRef,
   handleMobileChatBtnClick,
+  chatContainerToggle,
+  chatContainerShown
+
 }) => {
   //Controlling hte hover state of the Delete SVG
   const [hoveredConversationId, setHoveredConversationId] = useState<
@@ -96,6 +101,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
     // Set loading to true initially
     setLoading(true);
+    console.log("is This joint evne running in the useEffect " ,isLoading)
 
     if (localStorageConversations) {
       // Parse the conversations from local storage
@@ -112,9 +118,13 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     }
 
     // Log isLoading after a render cycle
-  }, [titleUpdated]);
+  }, [titleUpdated, isLoading]);
 
-  useEffect(() => {}, [isLoading]);
+  useEffect(() => {
+
+
+
+  }, [isLoading]);
 
   const [clientSplitUserName, setClientSplitUserName] =
     useState<string>(splitUserName);
@@ -135,8 +145,18 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     setClientEmail(getSessionStorageItem("email", email as any));
   }, [splitUserName, email]);
 
+
+
+  useEffect(() => { 
+
+    
+  },[chatContainerShown])
+
+
+
+
   return (
-    <div ref={chatContainerRef} className="chatContainer flex flex-col flex-1">
+    <div ref={chatContainerRef} className={`chatContainer flex flex-col flex-1 ${chatContainerShown ? "none" : ""}`}>
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <Link href="/" className="flex flex-row">
@@ -147,9 +167,11 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             <Image alt="arrowLeft" src={arrowLeft} width={100} height={100} />
           </div>
 
-          <Link href="/chat/app">
-            <p>New Chat</p>
-          </Link>
+          <button 
+          onClick={chatContainerToggle}
+          >
+            <p>Close Chat</p>
+          </button>
         </button>
         <div
           onClick={handleMobileChatBtnClick}
@@ -345,21 +367,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       {/* Bottom Container */}
 
       <div className="flex flex-col gap-[22px]">
-        {" "}
-        {/* <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
-          <div className="mainIcon !w-[20px] !h-[20px]">
-            <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
-          </div>
-
-          <p className="hover:text-[#807f7f]">About Me</p>
-        </button> */}
-        {/* <button className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] ">
-          <div className="mainIcon !w-[20px] !h-[20px]">
-            <Image alt="chatIcon" src={chatIcon} width={100} height={100} />
-          </div>
-
-          <p className="hover:text-[#807f7f]">Numerology Guidance</p>
-        </button> */}
+ 
         <Link
           href="/dreamCalculator"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
@@ -396,21 +404,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
       {/* Settings  Container */}
 
-      <div className="flex flex-col gap-[4px] pt-[25px]">
-        {" "}
-        <button className=" text-[16px] flex flex-row items-center justify-start gap-[13px] w-full ">
-          <p>Upgrade to pro</p>
-        </button>
-        <p id="greyText" className="text-[14px]">
-          Upgrade To Chat More With Our Sage
-        </p>
-        <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] mt-[12px]">
-          <div className="mainIcon">
-            <Image alt="chatIcon" src={arrowLeft} width={100} height={100} />
-          </div>
-          <p>Learn more</p>
-        </button>
-      </div>
+    
 
       {/* Profile  Container */}
       <div className="flex flex-row gap-[4px]  settingsContainer ">
@@ -424,7 +418,9 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           <p>{clientEmail}</p>
         </Link>
 
-        <Link href="/profile" className="mainIcon !w-[20px] !h-[20px]">
+        <Link 
+        href="/profile"
+        className="mainIcon !w-[20px] !h-[20px]">
           <Image alt="chatIcon" src={settingsIcon} width={100} height={100} />
         </Link>
       </div>

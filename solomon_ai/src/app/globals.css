@@ -129,7 +129,36 @@ body {
   line-height: 125% !important;
 } */
 
-.pointerEventsYes{
+.imageContainer img {
+  border-radius: 8px;
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.floatingDiv {
+  position: fixed;
+  bottom: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 190%);
+  color: white;
+  background: rgba(64, 64, 64, 0.648);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0.5px solid white;
+}
+.slantLine {
+  background: white;
+  height: 100%;
+  width: 2px;
+  transform: rotate(15deg);
+  margin: 0px 2px;
+}
+.pointerEventsYes {
   pointer-events: all !important;
 }
 
@@ -523,7 +552,7 @@ figure video {
   padding: 2rem;
   /* display: none; */
 }
-.homePopup.feedback{
+.homePopup.feedback {
   padding: 0px !important;
 }
 
@@ -535,7 +564,6 @@ figure video {
     width: 330px !important;
     justify-content: center;
   }
-
 }
 @media screen and (max-width: 1050px) {
   .homePopupContainer {
@@ -607,11 +635,10 @@ figure video {
   }
 }
 
-@media screen and (max-width: 750px)
-{
-   .closePopupContainer{
-    top:-5% !important;
-   }
+@media screen and (max-width: 750px) {
+  .closePopupContainer {
+    top: -5% !important;
+  }
 }
 .popupHeader {
   border-bottom-left-radius: 5px;
@@ -636,28 +663,26 @@ figure video {
   flex-direction: row;
   border: 0.5px solid #fff;
 }
-.homePopupContainer.feedback{
-  background:white;
+.homePopupContainer.feedback {
+  background: white;
   height: 900px;
 }
-.homePopupContainer.feedback.deleteForm{
+.homePopupContainer.feedback.deleteForm {
   height: 600px;
 }
 
-@media screen and (max-width: 750px) 
-{ 
-  .homePopup.feedback{ 
+@media screen and (max-width: 750px) {
+  .homePopup.feedback {
     justify-content: center;
     align-items: center;
   }
-  .homePopupContainer.feedback{
+  .homePopupContainer.feedback {
     height: 500px;
     padding-bottom: 1rem;
   }
-  .popupHeader.feedback{ 
+  .popupHeader.feedback {
     display: none;
   }
-  
 }
 .homePopupImageContainer {
   position: relative;
@@ -668,8 +693,7 @@ figure video {
   display: flex;
   justify-content: start;
 }
-.homePopupImageContainer.active{
-  
+.homePopupImageContainer.active {
 }
 .homePopupImageContainer img {
   width: 100%;
@@ -685,9 +709,8 @@ figure video {
   justify-content: start;
   margin: 0px 0px;
 }
-.homePopupFormContainer.feedBackForm{ 
+.homePopupFormContainer.feedBackForm {
   padding-bottom: 5px !important;
-
 }
 .homePopupFormContainer form {
   /* width: 60%; */
@@ -751,18 +774,15 @@ figure video {
   height: 32px;
   z-index: 95;
 }
-.closePopupContainer.feedBack{
+.closePopupContainer.feedBack {
   top: 0%;
   left: -15%;
 }
-@media screen and (max-width: 750px) 
-{ 
-  .closePopupContainer.feedBack{
+@media screen and (max-width: 750px) {
+  .closePopupContainer.feedBack {
     top: -8% !important;
     left: 0%;
-
-
-  } 
+  }
 }
 
 .zodiacPopup {
@@ -822,6 +842,44 @@ figure video {
 }
 
 /* Home page popup code */
+
+/* PRICING CSS */
+.pricingCard {
+  width: 395px;
+  height: 476px;
+  border: 0.5px solid #807f7f;
+  border-radius: 8px;
+  padding: 27px;
+}
+.pricingCard h5 {
+  color: white;
+  font-size: 28px;
+}
+.pricingCard span {
+  color: #807f7f;
+}
+.pricingBtn {
+  background: white;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-weight: bolder;
+}
+.text-before::before {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  content: "•";
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 0.8em;
+  margin-top: -2px;
+  color: #dc2828;
+}
+/* PRICING CSS */
+
 /* HOME CODE */
 /* BODY WRAPPER CODE  */
 .bodyWrapper {
@@ -862,6 +920,9 @@ a > p {
   background: linear-gradient(180deg, #2f0ffd30, #291d7850);
   border-radius: 5px;
 }
+.newChat.large {
+  width: 200px;
+}
 @media screen and (max-width: 950px) {
   .newChat {
     display: none;
@@ -886,6 +947,9 @@ a > p {
   margin-left: 15px;
   margin-right: 15px;
   z-index: 1;
+}
+.none {
+  display: none;
 }
 @media screen and (max-width: 950px) {
   .chatContainer {
@@ -932,7 +996,7 @@ a > p {
     display: inline-block;
     pointer-events: none;
   }
-  .mobileNone{
+  .mobileNone {
     display: none;
   }
 
@@ -950,9 +1014,19 @@ a > p {
   .chatDashboard {
     padding: 0px !important;
   }
+  .closeContainerBtn {
+    display: none;
+  }
 }
 .chatContainer > button {
   font-size: 14px;
+}
+
+.closeContainerBtn {
+  display: none;
+}
+.closeContainerBtn.show {
+  display: block;
 }
 
 .chatDashboard {
@@ -1332,6 +1406,7 @@ a > p {
     padding: 15px 0px;
     min-width: 650px;
     width: auto;
+    /* width: -webkit-fill-available; */
   }
 }
 
@@ -1595,6 +1670,67 @@ a > p {
 
 /* PROFILE CSS */
 
+.editProfileSettingsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  border-radius: 8px;
+  width: 100%;
+  display: none;
+}
+.editProfileSettingsWrapper.show {
+  display: flex;
+}
+.editProfileSettingsContainer {
+  height: 100%;
+  width: 750px;
+  border: 0.5px solid #b4b4b4;
+  border-radius: 8px;
+  background: white;
+}
+@media screen and (max-width: 1100px) {
+  .editProfileSettingsContainer {
+    width: 500px !important;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .editProfileSettingsContainer {
+    width: 370px;
+    margin: 0 auto;
+  }
+}
+@media screen and (max-width: 600px) {
+  .editProfileSettingsContainer {
+    width: auto;
+    margin-right: auto;
+    background: transparent !important;
+    border: 0px;
+  }
+  .editProfileSettingsWrapper {
+    height: 500px;
+    overflow: scroll;
+    background: white;
+    width: 80%;
+  }
+}
+
+.editInput {
+  border: 0.5px solid #b4b4b4;
+  border-radius: 8px;
+  height: 45px;
+  background: transparent;
+  padding: 5px;
+}
+
+.settingsDiv button {
+  background: #2f0ffd;
+  color: white;
+  border-radius: 8px;
+  height: 50px;
+}
+
 .zodiacOverlay {
   position: absolute;
   display: flex;
@@ -1644,7 +1780,7 @@ a > p {
   outline: none;
 }
 
-.feedBackTextArea{
+.feedBackTextArea {
   border: 0.5px solid #404040;
   border-radius: 5%;
   height: 200px;
@@ -1652,7 +1788,7 @@ a > p {
   padding: 15px;
   resize: none;
 }
-.feedBackBtn { 
+.feedBackBtn {
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -1660,10 +1796,9 @@ a > p {
   cursor: pointer;
   transition: transform 250ms ease-in-out;
 }
-.feedBackBtn.active{ 
+.feedBackBtn.active {
   transform: scale(140%);
 }
-
 
 /* PROFILE CSS */
 
@@ -1789,13 +1924,10 @@ a > p {
   border-radius: 10px;
   box-shadow: 2px 4px 11.8px rgba(0, 0, 0, 0.25);
 }
-@media screen and (max-width: 1080px)
-{ 
-
-  .newsletterCard{
+@media screen and (max-width: 1080px) {
+  .newsletterCard {
     width: auto;
   }
-
 }
 .newsletterCard > img {
   border-radius: 10px;
@@ -1805,32 +1937,23 @@ a > p {
   border-radius: 5px;
 }
 .newsLetterPageForm > div > input {
-    font-family: "Montserrat", sans-serif;
-
-
+  font-family: "Montserrat", sans-serif;
 }
 .newsLetterPageForm > div {
   box-shadow: 2px 4px 11.8px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-
 }
-.newsLetterPageForm > div > button{
-  background: #4C35DE;
+.newsLetterPageForm > div > button {
+  background: #4c35de;
   width: 80px;
   border-radius: 5px;
   color: white;
-
-
-
 }
 
 /* NEWSLETTER PAGE */
 
-
-
-
 /* GUIDLINES OVERLAY PAGE */
-.guidlinesOverlay{
+.guidlinesOverlay {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -1840,13 +1963,11 @@ a > p {
   left: 0;
   background: rgba(0, 0, 0, 0.436);
   z-index: 2;
-  
 }
-.guidlinesOverlay.active
-{
+.guidlinesOverlay.active {
   display: none;
 }
-.guideLinesWhiteBox{
+.guideLinesWhiteBox {
   background: white;
   width: 427px;
   height: 165px;
@@ -1856,65 +1977,101 @@ a > p {
   top: 160px;
   left: 5%;
   padding: 13px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3),
-  0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
   opacity: 0;
   transition: opacity 0.5s ease;
 }
-.guildeLinesBtn
-{ 
-  background: #4C35DE;
+.guildeLinesBtn {
+  background: #4c35de;
   width: 79px;
   height: 29px;
   border-radius: 4px;
-  color:#fff
+  color: #fff;
 }
-.guildeLinesBtn.black { 
-  color: black ;
-  background: #CECECE;
-
+.guildeLinesBtn.black {
+  color: black;
+  background: #cecece;
 }
-.guideLinesCircle
-{ 
-  background: #D9D9D9;
+.guideLinesCircle {
+  background: #d9d9d9;
   border-radius: 50%;
   width: 10px;
   height: 10px;
 }
-.guideLinesCircle.active{ 
+.guideLinesCircle.active {
   width: 20px;
   height: 20px;
-  background: #4C35DE;
+  background: #4c35de;
 }
 
-
-.guideLinesWhiteBox.second { 
+.guideLinesWhiteBox.second {
   top: 525px;
-z-index: 3;
+  z-index: 3;
 }
-.guideLinesWhiteBox.third { 
+.guideLinesWhiteBox.third {
   top: 570px;
-z-index: 1;
-
+  z-index: 1;
 }
-.guideLinesWhiteBox.fourth { 
+.guideLinesWhiteBox.fourth {
   top: 700px;
   left: 20%;
-
+}
+@media screen and (max-width: 750px) {
+  .guideLinesWhiteBox.fourth {
+    top: 600px;
+    left: 10%;
+  }
 }
 .guidlinesOverlay .guideLinesWhiteBox.active {
   opacity: 1;
 }
 
-
-
-.guideLinesWhiteBox.profileGuidlines{
+.guideLinesWhiteBox.profileGuidlines {
   left: 50%;
-
 }
-.guideLinesWhiteBox.second.profileGuidlines
-{ 
-  
+@media screen and (max-width: 750px) {
+  .guideLinesWhiteBox.profileGuidlines {
+    left: 5%;
+  }
+}
+.guideLinesWhiteBox.second.profileGuidlines {
 }
 
 /* GUIDLINES OVERLAY PAGE */
+
+/* PAYMENT PAGE */
+/* .paymentDiv 
+{ 
+  width: ;
+} */
+
+/* PAYMENT PAGE */
+
+/* Signup redirect page  */
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.473);
+}
+.overlay.blur {
+  filter: blur(20px);
+  background: #0000003e;
+}
+.homePopupContainer.flexStartImportant {
+  justify-content: start !important;
+  border: none;
+}
+
+.popupLinearGradient {
+  background: linear-gradient(180deg, #2f0ffd51, #ffffff);
+  border-radius: 8px;
+  padding: 86px 20px;
+}
+
+/* Signup redirect page  */

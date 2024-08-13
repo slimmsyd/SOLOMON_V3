@@ -5,6 +5,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "target": "es2018", // Update this to es2018 or later
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,

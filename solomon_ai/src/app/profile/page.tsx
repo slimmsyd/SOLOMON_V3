@@ -7,7 +7,6 @@ import Image from "next/image";
 import arrowLeft from "../../../public/assets/Chat/arrowLeft.png";
 import dynamic from "next/dynamic";
 
-import { Dashboard } from "../chat/app/Dashboard";
 import { ChatContainer } from "../chat/app/ChatContainer";
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "../hooks/useSessionStorage";
@@ -15,14 +14,15 @@ import { Conversation } from "../../../types";
 
 import { checkSession } from "@/utilis/CheckSession";
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
-import { getChineseZodiac } from "@/utilis/textExtractor";
-import { getYearFromDateString } from "@/utilis/textExtractor";
+
 
 import { Header } from "../components/Header";
-import { Guidelines } from "../chat/app/components/Guidelines";
 import { Feedbackform } from "./FeedbackForm";
 import { UserDeleteAlert } from "./deleteUserAlert";
 import { ProfileGuidelines } from "./profileGuidelines";
+
+import EditProfileSettings from "./editProfile";
+import EditProfileSettingsBtn from "./editProfileSettingsButton";
 
 import axios from "axios";
 import Link from "next/link";
@@ -156,9 +156,16 @@ const Profile: React.FC = () => {
         setNameNumerolgyNumber(nameNumerolgyNumber);
         setBirthDay(formatDate(birthday));
       }
+
+      console.log("Logging the User INfo In The git", userInfo)
     };
+    
+
+
 
     getUserInfo();
+
+    
   }, [userId]);
 
   function formatDate(isoString: string) {
@@ -176,29 +183,48 @@ const Profile: React.FC = () => {
   }
 
   // Update user progress with the extracted vales
+  //Keep track of the updating the backend process
+  const [profileProgresLoading, setProileProgressLoading] =
+    useState<boolean>(false);
   const updateUserProgress = async (
     userId,
+    zodiacSign: string,
     cardologyNumber: string,
     mylesBridgeType: string,
     nameNumerolgyNumber: string,
+    ennealogy: string,
+    lifePath: string,
     birthday: string
   ): Promise<void> => {
     try {
+      setProileProgressLoading(true);
+
       const response = await axios.post("/api/updateUser", {
         userId,
+        zodiacSign: zodiacSign ?? undefined,
         cardologyNumber: cardologyNumber ?? undefined,
         mylesBridgeType: mylesBridgeType ?? undefined,
         nameNumerolgyNumber: nameNumerolgyNumber ?? undefined,
+        ennealogy: ennealogy ?? undefined,
+        lifePath: lifePath,
         birthday: birthday ?? undefined,
       });
 
       //Going to save into Session to prevent the asynh loading issues
       if (isClient()) {
         sessionStorage.setItem("cardologyNumber", cardologyNumber);
-
         sessionStorage.setItem("mylesBridgeType", mylesBridgeType);
-        sessionStorage.setItem("mylesBridgeType", nameNumerolgyNumber);
+        sessionStorage.setItem("nameNumerolgyNumber", nameNumerolgyNumber);
+        sessionStorage.setItem("ennealogy", ennealogy);
+        sessionStorage.setItem("lifePathNumber", lifePath)
+
         // Sign out and redirect
+      }
+
+
+      console.log("Logging the Response")
+      if (response.status === 201) {
+        setProileProgressLoading(false);
       }
 
       console.log("User progress updated successfully:", response.data);
@@ -208,25 +234,50 @@ const Profile: React.FC = () => {
   };
 
   const handleSave = () => {
-    // Update state
+    // Update state ter
     updateUserProgress(
       userId,
+      zodiac,
       cardologyNumber,
       mylesBridgeType,
       nameNumerologyNumber,
+      ennealogy,
+      lifePath,
       birthday
     );
 
     window.alert("Profile Update");
+    if(zodiac !== ""){ 
+      setZodiac(zodiac)
+    }
+    if(cardologyNumber !== ""){ 
+      setCardologyNumber(cardologyNumber)
+    }
+    if(mylesBridgeType !== ""){ 
+      setMylesBridgeType(mylesBridgeType)
+    }
+    if(nameNumerologyNumber !== ""){ 
+      setNameNumerolgyNumber(nameNumerologyNumber)
+    }
+    if(ennealogy !== ""){ 
+      setEnnealogyNumber(ennealogy)
+    }
+    if(lifePath !== ""){ 
+      setLifePathNumber(ennealogy)
+    }
     // Optionally, stop editing mode
     setIsEditing(false);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+  useEffect(() => {
+    console.log("Did the state of loading change? ", profileProgresLoading);
+  }, [profileProgresLoading]);
+  const handleKeyDown= (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent the form from submitting and causing a page reload
+    console.log("Submission has been made");
       handleSave();
-    }
   };
+
 
   //Remove user form the data
   const [deletingUser, setDeleteUser] = useState<boolean>(false);
@@ -250,6 +301,135 @@ const Profile: React.FC = () => {
 
     // }
   };
+
+  const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
+  const [subcriptionSessionID, setSubscriptionSessionID] = useState<string>("");
+  const [activeSubscription, setActiveSubscription] = useState<boolean>(false);
+  const [canceledSubscription, setCanceledSubscription] =
+    useState<boolean>(false);
+
+  const getSubscriptionID = async (userId: string) => {
+    try {
+      const res = await fetch("/api/get-subscription-id", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userId }),
+      });
+      const data = await res.json();
+
+      setSubscriptionSessionID(data.paymentIntentId);
+      console.log("Logging the data.paymentID", data.paymentIntentId);
+    } catch (error) {
+      console.error("Error fetching subscription ID:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (subcriptionSessionID) {
+      setActiveSubscription(true);
+      console.log("Logging the active subscriptin", activeSubscription);
+    }
+  }, [subcriptionSessionID, activeSubscription, canceledSubscription]);
+
+  const cancelUserSubscription = async (subscriptionID: string) => {
+    console.log("Logging the ID in console Function", subscriptionID);
+
+    try {
+      const response = await axios.post("/api/cancel-stripe-subscription", {
+        subscriptionID: subscriptionID,
+      });
+
+      if (response.data.cancel_at_period_end === true) {
+        //Keeping Tabs if User is Still being active in this joint
+        setCanceledSubscription(true);
+      } else {
+        setCanceledSubscription(false);
+      }
+
+      console.log("Logging the Data on return", response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const renewUserSubscription = async (subscriptionID: string) => {
+    console.log("Renewing the subscription with ID:", subscriptionID);
+
+    try {
+      const response = await axios.post("/api/renew-subscription", {
+        subscriptionID: subscriptionID,
+      });
+
+      const data = response.data;
+
+      if (response.data.cancel_at_period_end === false) {
+        //Keeping Tabs if User is Still being active in this joint
+        setCanceledSubscription(false);
+      } else {
+        setCanceledSubscription(true);
+      }
+
+      console.log("Subscription Details After Renewal:", data);
+    } catch (e) {
+      console.error("Error renewing subscription:", e);
+    }
+  };
+
+  //Combines the above two functions, if renew or cancel
+  const handleSubscriptionAction = async (subscriptionID: string) => {
+    if (canceledSubscription) {
+      await renewUserSubscription(subscriptionID);
+    } else {
+      await cancelUserSubscription(subscriptionID);
+    }
+    // Toggle the subscription state after the action
+    setCanceledSubscription(!canceledSubscription);
+  };
+
+  const getSubscriptionDetails = async (subscriptionID: string) => {
+    console.log("Logging the SUbscription ID in the request", subscriptionID);
+
+    try {
+      const response = await axios.post("/api/get-subscription-details", {
+        subscriptionID: subscriptionID,
+      });
+
+      const data = response.data;
+
+      console.log("Logging the From Get Subscription details", data);
+
+      if (response.data.cancel_at_period_end === true) {
+        //Keeping Tabs if User is Still being active in this joint
+        setCanceledSubscription(true);
+      } else {
+        setCanceledSubscription(false);
+      }
+
+      console.log("Subscription Details:", data);
+    } catch (e) {
+      console.error("Error retrieving subscription details:", e);
+    }
+  };
+
+  //W
+  useEffect(() => {
+    //Logging to see if user is cancleing there subscription
+    console.log(
+      "Logging the current status of the cancled subscirption",
+      canceledSubscription
+    );
+  }, [canceledSubscription]);
+
+  useEffect(() => {
+    console.log("Is this joint running");
+    if (subcriptionSessionID) {
+      console.log("Is the joint running in here?");
+      getSubscriptionDetails(subcriptionSessionID as string);
+    }
+  }, [subcriptionSessionID]);
+
   useEffect(() => {
     console.log("Logging the Delete UserFinal", deleteUserFinal);
     if (deleteUserFinal) {
@@ -301,12 +481,6 @@ const Profile: React.FC = () => {
     }
   }, [userName, splitUserName]);
 
-  useEffect(() => {
-    console.log("LOgging the session router", session);
-    if (!session?.user) {
-      router.push("/");
-    }
-  }, []);
 
   const handleConversationClick = (convoId: string) => {
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
@@ -325,6 +499,228 @@ const Profile: React.FC = () => {
       window.location.href = "/login"; // Or any other page you want to redirect to
     }
   };
+
+
+  async function deleteConversation(conversationId: string | number) {
+    const currentConversations = conversations;
+
+    // Optimistically remove the conversation from UI
+    const updatedConversations = currentConversations.filter(
+      (convo) => (convo as any).conversationId !== conversationId
+    );
+
+    setConversations(updatedConversations);
+    sessionStorage.setItem(
+      "conversations",
+      JSON.stringify(updatedConversations)
+    );
+
+    try {
+      const response = await fetch(`/api/${conversationId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete the conversation");
+      }
+
+      // Filter out the deleted conversation
+      const updatedConversations = conversations.filter(
+        (convo) => (convo as any).converatoinID !== conversationId
+      );
+      console.log("Logging out the Conversation Filter", conversations);
+
+      // Update state and local storage
+      setConversations(updatedConversations); // Update React state
+      sessionStorage.setItem(
+        "conversations",
+        JSON.stringify(updatedConversations)
+      ); // Update local storage
+
+      console.log("Conversations after deletion:", updatedConversations);
+      console.log(
+        "Local storage after deletion:",
+        sessionStorage.getItem("conversations")
+      );
+
+      if (response.ok) {
+        // Update the conversations state
+        const updatedConversations = conversations.filter(
+          (convo) => (convo as any).conversationId !== conversationId
+        );
+        setConversations(updatedConversations);
+
+        // Update the session storage
+        sessionStorage.setItem(
+          "conversations",
+          JSON.stringify(updatedConversations)
+        );
+        router.push(`/chat/app`);
+      }
+    } catch (error) {
+      console.error("Error deleting conversation:", error.message);
+      alert("Could not delete the conversation. Please try again.");
+    }
+  }
+
+
+
+  const [showTitleInput, setShowTitleInput] = useState(false);
+  const [editTitleId, setEditTitleId] = useState<null>(null);
+  const [editedTitle, setEditedTitle] = useState<string>("");
+  const [editingTitle, setEditingTitle] = useState<boolean>(false);
+  const [titleUpdated, setTitleUpdated] = useState<boolean>(false); // New state for title updates
+  useEffect(() => {}, [editTitleId, editedTitle]);
+
+  const handleTitleChange = (event) => {
+    setEditedTitle(event.target.value);
+  };
+
+  function updateLocalStorage(
+    updatedConversation: any,
+    conversationId: number
+  ) {
+    let cachedConversations = sessionStorage.getItem("conversations");
+
+    if (cachedConversations) {
+      try {
+        // Parse the cached conversations
+        const parsedConversations = JSON.parse(cachedConversations);
+
+        // Ensure that parsedConversations is an array
+        if (Array.isArray(parsedConversations)) {
+          const updatedCache = parsedConversations.map((convo) =>
+            convo.conversationId === conversationId
+              ? { ...convo, title: updatedConversation.title }
+              : convo
+          );
+
+          sessionStorage.setItem("conversations", JSON.stringify(updatedCache));
+        } else {
+          console.error("Parsed cached conversations is not an array");
+        }
+      } catch (e) {
+        console.error("Error parsing cached conversations:", e);
+      }
+    }
+  }
+  async function getConversation(conversationId: any) {
+    try {
+      const response = await fetch(`/api/${conversationId}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch conversation");
+      }
+
+      const updatedConversation = await response.json();
+      console.log(
+        "Logging the converations before errorw",
+        updatedConversation
+      );
+      // Update local state
+      setConversations((prevConversations) => {
+        return prevConversations.map((convo) =>
+          convo === conversationId
+            ? { ...convo, title: updatedConversation.title }
+            : convo
+        );
+      });
+
+      updateLocalStorage(updatedConversation, conversationId);
+    } catch (error) {
+      console.error("Error fetching conversation:", error);
+      throw error; // Re-throw to handle it in the UI layer
+    }
+  }
+
+
+  const handleSubmitTitle = async (event: any) => {
+    event.preventDefault(); // Prevent form submission
+    let titleChange: string = "";
+
+    if (event.key === "Enter") {
+      console.log("seeing if the function worked!!! ");
+
+      event.preventDefault(); // Prevent form submission
+      const newTitle = editedTitle; // Capture the title at the time of submission
+      titleChange = editTitleId ?? "";
+      console.log("New title to be set:", newTitle);
+      console.log("New title Id being logged", editTitleId);
+
+      if (editTitleId !== null && editTitleId !== "") {
+        const updatedConversations = conversations.map((convo) =>
+          (convo as any).conversationId === editTitleId
+            ? { ...convo, title: newTitle }
+            : convo
+        );
+        setConversations(updatedConversations);
+        console.log("Updated conversations:", updatedConversations);
+
+        sessionStorage.setItem(
+          "conversations",
+          JSON.stringify(updatedConversations)
+        );
+
+        setEditTitleId(null); // Exit edit mode
+        setEditedTitle(""); // Clear the edited title state
+        setEditingTitle(false);
+      }
+    }
+
+    try {
+      const response = await fetch(`/api/${editTitleId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
+      });
+
+      console.log("Are you sending the new Title", editedTitle);
+
+      if (response.ok) {
+        await getConversation(editTitleId);
+        setEditingTitle(false);
+        setTitleUpdated((prev) => !prev); // Toggle the titleUpdated state
+      }
+
+      if (!response.ok) {
+        throw new Error("Failed to update title");
+      }
+    } catch (error) {
+      console.error("Error updating title:", error);
+
+      // If the update fails, revert the change in the UI and alert the user
+      const originalConversations = conversations.map((convo) =>
+        convo.conversationId === editTitleId
+          ? { ...convo, title: (convo as any).title }
+          : convo
+      );
+
+      setConversations(originalConversations);
+      sessionStorage.setItem(
+        "conversations",
+        JSON.stringify(originalConversations)
+      );
+
+      alert("Failed to update title, please try again."); // Inform the user
+    }
+  };
+
+
+    //Editing the ability to change the existing title.
+    const handleTitleClick = (convoId: string | number) => {
+      const conversation = conversations.find(
+        (convo) => (convo as any).conversationId === convoId
+      );
+  
+      if (conversation) {
+        setEditTitleId((conversation as any).conversationId);
+        console.log("Logging the converatsion", conversation);
+        setEditedTitle((conversation as any).title);
+        setEditingTitle(true as boolean);
+      } else {
+        console.log(`Conversation with ID ${convoId} not found`);
+      }
+    };
 
   useEffect(() => {
     // Retrieve the conversations from session storage
@@ -351,6 +747,42 @@ const Profile: React.FC = () => {
     nameNumerologyNumber,
   ]);
 
+  //Handing the Settinss to show up
+  const [showEditSettings, setShowEditSettings] = useState<boolean>(false);
+  const showEditSettingsDiv = () => {
+    setShowEditSettings(!showEditSettings);
+
+    // console.log("This is logging the the click button", showEditSettings)
+  };
+  useEffect(() => {
+    console.log("Logging the new state of edit settings", showEditSettings);
+  }, [showEditSettings]);
+  
+
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[zodiac])
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[lifePath])
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[mylesBridgeType])
+  //Enusring The Loading of all settings 
+  useEffect(() => { 
+  },[cardologyNumber])
+  useEffect(() => { 
+  },[birthday])
+  useEffect(() => {
+
+  },[nameNumerologyNumber])
+  useEffect(() => {
+  },[ennealogy])
+  useEffect(() => {
+  },[birthday])
+
+
+
   return (
     <>
       {showGuidelines && (
@@ -376,11 +808,17 @@ const Profile: React.FC = () => {
           userName={userName || ""}
           email={email || ""}
           onConversationClick={handleConversationClick}
-          chatContainerRef={chatContainerRef as any}
+          onDeleteConvo={deleteConversation}
+          onChangeConvoTitle={handleSubmitTitle}
+          handleTitleClick={handleTitleClick}
+          editTitleId={editTitleId}
+          editedTitle={editedTitle}
+          handleTitleChange={handleTitleChange}
+          editingTitle={editingTitle}
+          titleUpdated={titleUpdated}          chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
         />
-        {/* Chat Container Componet  */}
-
+        f{/* Chat Container Componet  */}
         <div className="chatDashboardWrapper !h-full w-full text-left">
           {/* Guidelines Hader */}
 
@@ -401,6 +839,24 @@ const Profile: React.FC = () => {
                   <p>{userName}</p>
                   <p>{email}</p>
                 </div>
+
+                <EditProfileSettingsBtn
+                  showEditSettingsDiv={showEditSettingsDiv}
+                />
+
+                <EditProfileSettings
+                  showEditSettings={showEditSettings}
+                  showEditSettingsDiv={showEditSettingsDiv}
+                  handleKeyDown={handleKeyDown}
+                  setZodiac={setZodiac}
+                  setLifePathNumber={setLifePathNumber}
+                  setEnnealogyNumber={setEnnealogyNumber}
+                  setCardologyNumber={setCardologyNumber}
+                  setMylesBridgeType={setMylesBridgeType}
+                  setNameNumerolgyNumber = {setNameNumerolgyNumber}
+                  setBirthDay={setBirthDay}
+                  profileProgresLoading={profileProgresLoading}
+                />
               </div>
 
               <div className="flex flex-col gap-[5px] w-[310px]">
@@ -419,9 +875,9 @@ const Profile: React.FC = () => {
                     <p className="profileInput">
                       {sessionStorage.getItem("zodiacSign")
                         ? sessionStorage.getItem("zodiacSign")
-                        : "Enter..." || (zodiac as any)
+                        : "Loading..." || (zodiac as any)
                         ? (zodiac as any)
-                        : "Enter..."}
+                        : "Loading..."}
                     </p>
                   )}
                 </div>
@@ -441,9 +897,9 @@ const Profile: React.FC = () => {
                     <p className="profileInput">
                       {sessionStorage.getItem("lifePathNumber")
                         ? sessionStorage.getItem("lifePathNumber")
-                        : "Enter..." || lifePath
+                        : "Loading..." || lifePath
                         ? lifePath
-                        : "Enter..."}
+                        : "Loading..."}
                     </p>
                   )}
                 </div>
@@ -455,7 +911,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={nameNumerologyNumber as any}
                       onChange={(e) => setNameNumerolgyNumber(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -489,15 +944,19 @@ const Profile: React.FC = () => {
                     <p className="profileInput">
                       {sessionStorage.getItem("ennealogy")
                         ? sessionStorage.getItem("ennealogy")
-                        : "Enter..." || ennealogy
+                        : "Loading..." || ennealogy
                         ? ennealogy
-                        : "Enter..."}
+                        : "Loading..."}
                     </p>
                   )}
                 </div>
 
                 <div className="flex flex-row w-full justify-between">
-                  <Link href="https://www.aquariusmaximus.com/" target="_blank" id="greyText">
+                  <Link
+                    href="https://www.aquariusmaximus.com/"
+                    target="_blank"
+                    id="greyText"
+                  >
                     Cardology Number
                   </Link>
                   {isEditing ? (
@@ -506,7 +965,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={cardologyNumber as any}
                       onChange={(e) => setCardologyNumber(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -527,7 +985,11 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div className="flex flex-row w-full justify-between">
-                  <Link href="https://www.16personalities.com/" target="_blank" id="greyText">
+                  <Link
+                    href="https://www.16personalities.com/"
+                    target="_blank"
+                    id="greyText"
+                  >
                     Myles Bridge Personality Type
                   </Link>
                   {isEditing ? (
@@ -536,7 +998,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={mylesBridgeType as any}
                       onChange={(e) => setMylesBridgeType(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -563,7 +1024,6 @@ const Profile: React.FC = () => {
                       type="text"
                       value={birthday as any}
                       onChange={(e) => setBirthDay(e.target.value)}
-                      onKeyDown={handleKeyDown}
                     />
                   ) : (
                     <input
@@ -571,7 +1031,7 @@ const Profile: React.FC = () => {
                       className="profileInput"
                       type="text"
                       placeholder="Add"
-                      value={birthday ? birthday : "Enter..."}
+                      value={birthday ? birthday : "Loading..."}
                     />
                   )}
                 </div>
@@ -610,8 +1070,8 @@ const Profile: React.FC = () => {
 
               <div className="flex flex-col gap-[15px] w-[310px] ">
                 <div className="flex flex-row w-full justify-between items-center">
-                  <p id="greyText">Subscription plan</p>
-                  <button className=" text-[14px] newChat flex flex-row items-center justify-center gap-[13px] ">
+                  <p id="greyText">Subscription Status</p>
+                  <button className=" pointer-events-none text-[14px] newChat flex flex-row items-center justify-center gap-[13px] ">
                     <div className="mainIcon">
                       <Image
                         alt="chatIcon"
@@ -620,11 +1080,11 @@ const Profile: React.FC = () => {
                         height={100}
                       />
                     </div>
-                    <p>Learn more</p>
+                    <p>{`${activeSubscription ? "True" : "False"}`}</p>
                   </button>{" "}
                 </div>
                 <div className="flex flex-row w-full justify-between">
-                  <p id="greyText">Limits</p>
+                  {/* <p id="greyText">Limits</p> */}
                   {/* <p>Unselected</p> */}
                 </div>
               </div>
@@ -673,6 +1133,39 @@ const Profile: React.FC = () => {
                   </button>{" "}
                 </div>
                 <hr className="greyDivider"></hr>
+
+                <div className="flex flex-col   md:flex-row gap-[15px] md:gap-[0px justify-between accountDiv">
+                  <div className="flex flex-col ">
+                    <p className="text-white">{`${
+                      canceledSubscription
+                        ? "Renew Subscription"
+                        : "Cancel Subscription"
+                    }`}</p>
+                    <p className="text-[12px]" id="greyText">
+                      You haved learnt all you need. Leave This quest.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      handleSubscriptionAction(subcriptionSessionID)
+                    }
+                    className=" text-[14px] newChat large !flex flex-row items-center justify-center gap-[13px] "
+                  >
+                    <div className="mainIcon">
+                      <Image
+                        alt="chatIcon"
+                        src={arrowLeft}
+                        width={100}
+                        height={100}
+                      />
+                    </div>
+                    <p className="text-white">{`${
+                      canceledSubscription
+                        ? "Renew Subscription"
+                        : "Cancel Subscription"
+                    }`}</p>{" "}
+                  </button>{" "}
+                </div>
 
                 <div className="flex flex-col   md:flex-row gap-[15px] md:gap-[0px justify-between accountDiv">
                   <div className="flex flex-col ">

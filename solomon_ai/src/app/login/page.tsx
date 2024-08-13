@@ -1,18 +1,17 @@
 "use client";
 import { useForm } from "react-hook-form";
-import Image from "next/image";
 
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import NavComponent from "../navigation/navComponent";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import ChatDashboard from "../chat/app/page";
+import { checkSession } from "@/utilis/CheckSession";
+
 import axios from "axios";
-import { Session } from "next-auth";
+
 import LoadingComponent from "../components/helper/Loading";
 const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
@@ -33,8 +32,6 @@ const Login = () => {
 
   const { register, handleSubmit } = form;
 
-  
-
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const signInData = await signIn("credentials", {
       email: values.email,
@@ -51,7 +48,6 @@ const Login = () => {
 
     console.log(values);
   };
-
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -70,82 +66,98 @@ const Login = () => {
           if (response.data.onComplete) {
             console.log("Logging the response data", response.data);
             setCompletedForm(true);
-            router.push('/chat/app');
-
+            router.push("/chat/app");
           } else {
             setCompletedForm(false);
-
           }
         } else {
           setCompletedForm(false);
-
         }
       } catch (error) {
-        console.error('Error fetching progress:', error);
+        console.error("Error fetching progress:", error);
         setCompletedForm(false);
       }
     };
 
-    if (status === 'authenticated' && session?.user?.id) {
+    if (status === "authenticated" && session?.user?.id) {
       const userId = session.user.id;
       fetchProgress(userId);
-    } else if (status === 'unauthenticated') {
+      getSubscriptionID();
+    } else if (status === "unauthenticated") {
       setIsLoggingIn(false); // Reset logging in state if authentication fails
     }
   }, [session, completedForm]);
 
-
-
   //We are goging to fetch the userProgess on the rendering of this
   //If user Progres is True we are going to switch the redirect of the page
 
+  const [subcriptionSessionID, setSubscriptionSessionID] = useState<string>("");
 
+  const getSubscriptionID = async () => {
+    try {
+   
+      const res = await fetch("/api/get-subscription-id", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: session?.user.id }),
+      });
+      const data = await res.json();
 
+      setSubscriptionSessionID(data.paymentIntentId);
+
+ 
+    } catch (error) {
+      console.error("Error fetching subscription ID:", error);
+    }
+  };
+  useEffect(() => {}, [subcriptionSessionID]);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (completedForm !== null) {
       setIsLoading(true);
-      if (status === 'authenticated' && completedForm) {
-        console.log("Logging completed form", completedForm);
-        router.push('/chat/app');
-      } else if (status === 'authenticated' && completedForm === false) {
-        router.push('/chat/app/questionaire');
+      if (status === "authenticated" && completedForm) {
+;
+        router.push("/chat/app");
+      } else if (subcriptionSessionID !== null) {
+        router.push("/chat/app");
+      } else if (status === "authenticated" && completedForm === false) {
+        // router.push('/chat/app/questionaire'); // Previous redirect
+        router.push("/chat/signup");
       }
     }
   }, [completedForm, status, router]);
 
+  useEffect(() => {}, [isLoggingIn]);
 
-useEffect(() => {
+  const handleSignIn = () => {
+    setIsLoggingIn(true); // Set logging in state to true when login is initiated
 
-
-},[isLoggingIn])
-
-
-const handleSignIn = () => {
-  setIsLoggingIn(true); // Set logging in state to true when login is initiated
-  console.log("Logging the completed form in the Sign in joint ", completedForm);
-  if (completedForm) {
-    signIn('google', {
-      callbackUrl: '/redirect',
-    });
-  } else {
-    signIn('google', {
-      callbackUrl: '/redirect',
-    });
-  }
-};
+    if (completedForm) {
+      signIn("google", {
+        callbackUrl: "/redirect",
+      });
+    } else {
+      signIn("google", {
+        callbackUrl: "/redirect",
+      });
+    }
+  };
   useEffect(() => {
     if (completedForm !== null) {
-      if (status === 'authenticated' && completedForm) {
+      if (status === "authenticated" && completedForm) {
         console.log("Logging completed form", completedForm);
-        router.push('/chat/app');
-        
-      } else if (status === 'authenticated' && completedForm === false) {
-        router.push('/chat/app/questionaire');
+        router.push("/chat/app");
+      } else if (subcriptionSessionID !== null) {
+        router.push("/chat/app");
+      } else if (status === "authenticated" && completedForm === false) {
+        router.push("/chat/signup");
       }
     }
   }, [completedForm, status, router]);
-
 
   if (isLoading) {
     return <LoadingComponent />; // Show loading spinner if logging in or redirecting
@@ -172,11 +184,11 @@ const handleSignIn = () => {
 
                 <h3>Create Your Free Account</h3>
 
-                {status === "authenticated"   && completedForm ? (
+                {status === "authenticated" && completedForm ? (
                   <button
                     onClick={() => {
                       console.log("Completed Form: On Click", completedForm);
-                      handleSignIn()
+                      handleSignIn();
                     }}
                     className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                   >
@@ -217,7 +229,7 @@ const handleSignIn = () => {
                   <button
                     onClick={() => {
                       console.log("Completed Form: On Click", completedForm);
-                      handleSignIn()
+                      handleSignIn();
                     }}
                     className="googleForm w-full p-4 secondary-font bg-transparent border border-[rgba(0,0,0,.5)] rounded-lg outline-none flex items-center justify-center gap-3 my-6"
                   >
@@ -255,7 +267,7 @@ const handleSignIn = () => {
                     Sign in with google
                   </button>
                 )}
-{/* 
+                {/* 
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   style={{ color: "black" }}

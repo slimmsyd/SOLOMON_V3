@@ -30,7 +30,7 @@ model User {
   mylesBridgeType String? 
   cardologyNumber String?
   nameNumerolgyNumber String?
-
+  paymentIntentId String?          @unique//This line stores the paymentID for user 
   messages       Messages[]
   conversations  UserConversations[]
   accounts       Account[]

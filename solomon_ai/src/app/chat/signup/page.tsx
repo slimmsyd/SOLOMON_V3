@@ -15,8 +15,8 @@ import { useSession, getSession } from "next-auth/react";
 import { Session } from "next-auth";
 
 import dynamic from "next/dynamic";
-import { MessageProvider } from "../../../utilis/MessageContext";
 
+import { MessageProvider } from "@/utilis/MessageContext";
 //Utilis and helper functions
 import { isClient } from "@/utilis/isClient";
 import { useSessionStorage } from "@/app/hooks/useSessionStorage";
@@ -30,15 +30,16 @@ import { Header } from "@/app/components/Header";
 import { useChatConversation } from "@/app/hooks/ConversationContext";
 import useCreateConversation from "@/app/hooks/createConversation";
 import useConversations from "@/app/hooks/useConversations";
-import { Dashboard } from "./Dashboard";
-//Chat Container
-import { ChatContainer } from "./ChatContainer";
-import { ChatMessagesContainer } from "./ChatMessage";
-import { Guidelines } from "./components/Guidelines";
-import FloatingScrollButton from "@/app/components/ScrollToBottomButton";
-import OpenChatContainer from "@/app/components/helper/openChatContainerComponent";
+import { Dashboard } from "../app/Dashboard";
 
-const ChatDashboard: React.FC = () => {
+//Chat Container
+import { ChatContainer } from "../app/ChatContainer";
+import { ChatMessagesContainer } from "../app/ChatMessage";
+import { Guidelines } from "../app/components/Guidelines";
+
+import { PayForAppPopup } from "./useAppPopup";
+
+const SignupDashboard: React.FC = () => {
   //Introduction Guidelines.
 
   const [showGuidelines, setShowGuidelines] = useState(true);
@@ -75,7 +76,6 @@ const ChatDashboard: React.FC = () => {
   const [userId, setUserId] = useState<string>("");
   // Form Ref
   const formRef = useRef<HTMLFormElement>(null);
-  const chatDashBoardRef = useRef<HTMLDivElement>(null);
 
   const [editTitleId, setEditTitleId] = useState<null>(null);
   const [editedTitle, setEditedTitle] = useState<string>("");
@@ -90,22 +90,6 @@ const ChatDashboard: React.FC = () => {
     null
   );
 
-  // Update session storage whenever userName or splitUserName changes
-  useEffect(() => {
-    checkSession(status, {
-      setUserId,
-      setUserName,
-      setSessionStatus,
-      setEmail,
-      setSplitUserName,
-      isClient,
-      session,
-      router,
-      email,
-      userName: "",
-      splitUserName,
-    });
-  }, [status]);
 
   //Stores the Chat
   const {
@@ -208,10 +192,7 @@ const ChatDashboard: React.FC = () => {
 
   let sessionRef = useRef(0);
   useEffect(() => {
-    // console.log(
-    //   "useEffect: Checking to see if the session ref changed",
-    //   sessionRef.current
-    // );
+   
   }, [sessionRef]);
 
   //Submit the Inquiry
@@ -298,7 +279,6 @@ const ChatDashboard: React.FC = () => {
     }
   };
 
-  useEffect(() => {}, [messagesIsLoading]);
 
   // Where we are going to send the Chat Data Request
 
@@ -563,7 +543,7 @@ const ChatDashboard: React.FC = () => {
           sessionStorage.getItem("conversations")
         );
 
-        if (response.ok) {
+        if (response.ok) { 
           // Update the conversations state
           const updatedConversations = conversations.filter(
             (convo) => (convo as any).conversationId !== conversationId
@@ -607,19 +587,18 @@ const ChatDashboard: React.FC = () => {
     // console.log("Loggin the conversations in the app useEffect", conversations);
   }, [conversations]);
 
-
-    //This handles the closing of the chat function 
-    const [chatContainerShown, setChatContainerShown] = useState<boolean>(false); 
-    const chatContainerToggle = () => 
-    { 
-
-      console.log("IS this being clicked??? Showon yes or no")
-      setChatContainerShown(!chatContainerShown);
-    }
-  
-
   return (
     <MessageProvider>
+
+      <div className = "overlay flex items-center ">
+          <div className = "overlay blur">
+            
+          </div>
+
+            <PayForAppPopup />
+      </div>
+
+
       {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}
 
       <div className="chatDashboard">
@@ -643,22 +622,11 @@ const ChatDashboard: React.FC = () => {
           handleKeyDown={handleKeyDown}
           chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
-          chatContainerToggle = {chatContainerToggle}
-          chatContainerShown = {chatContainerShown}
         />
 
         {/* Chat Container Componet  */}
 
-        <div
-          ref={chatDashBoardRef}
-          className="chatDashboardWrapper w-full text-left"
-        >
-          <OpenChatContainer 
-            chatContainerToggle = {chatContainerToggle}
-            chatContainerShown = {chatContainerShown}
-
-          />
-
+        <div className="chatDashboardWrapper w-full text-left">
           <Header
             showGuidelines={showGuidelines}
             setShowGuidelines={setShowGuidelines}
@@ -675,76 +643,75 @@ const ChatDashboard: React.FC = () => {
                 handleButtonClick={handleButtonClick}
               />
             )}
+          </div>
 
-            <FloatingScrollButton chatDashBoardRef={chatDashBoardRef} />
+          <form
+            ref={formRef}
+            aria-disabled
+            onSubmit={handleSubmit}
+            className="chatFormSubmit"
+          >
+            <div className="relative textAreaContainer">
+              <textarea
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    formRef.current?.requestSubmit();
+                  }
+                }}
+                value={message}
+                placeholder="Ask Thou Question..."
+              ></textarea>
 
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="chatFormSubmit"
-            >
-              <div className="relative textAreaContainer">
-                <textarea
-                  onChange={(e) => {
-                    setMessage(e.target.value);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      formRef.current?.requestSubmit();
-                    }
-                  }}
-                  value={message}
-                  placeholder="Ask Thou Question..."
-                ></textarea>
+              <div className="textAreaIconWrapper flex flex-row gap-[11px]">
+                <button className="textAreaIcon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
 
-                <div className="textAreaIconWrapper flex flex-row gap-[11px]">
-                  <button className="textAreaIcon">
+                <button type="submit" className="textAreaIcon">
+                  {messagesIsLoading ? (
+                    <ButtonLoadingComponent />
+                  ) : (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="18"
                       height="18"
                       fill="none"
-                      viewBox="0 0 24 24"
+                      viewBox="0 0 32 32"
+                      className=""
                     >
                       <path
                         fill="currentColor"
                         fill-rule="evenodd"
-                        d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
+                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
                         clip-rule="evenodd"
                       ></path>
                     </svg>
-                  </button>
-
-                  <button type="submit" className="textAreaIcon">
-                    {messagesIsLoading ? (
-                      <ButtonLoadingComponent />
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        fill="none"
-                        viewBox="0 0 32 32"
-                        className=""
-                      >
-                        <path
-                          fill="currentColor"
-                          fill-rule="evenodd"
-                          d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    )}
-                  </button>
-                </div>
+                  )}
+                </button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </MessageProvider>
   );
 };
 
-export default dynamic(() => Promise.resolve(ChatDashboard), { ssr: false });
+export default dynamic(() => Promise.resolve(SignupDashboard), { ssr: false });

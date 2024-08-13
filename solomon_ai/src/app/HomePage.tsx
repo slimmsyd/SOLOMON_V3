@@ -9,13 +9,14 @@ import { features } from "process";
 import Link from "next/link";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { gsap } from "gsap";
-gsap.registerPlugin(ScrollTrigger);
-
 
 import { Popup } from "./components/NewsletterPopup";
-import { SuccessPopup } from "./components/SucessPopup";
-
+import { CircleSVG } from "./components/CircleSVG";
 import Lenis from "lenis";
+
+import ImageOne from "../../public/assets/homePage/popup_header.png";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HomePage() {
   const Accordion = ({ title, content }) => {
@@ -431,6 +432,44 @@ export default function HomePage() {
     }
   };
 
+  //Handling the Countodwn Timer function
+  const calculateTimeLeft = () => {
+    const now = new Date();
+    const targetDate = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000); // 5 days from now
+
+    const difference = targetDate.getTime() - now.getTime();
+
+    let timeLeft = {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+
+    return timeLeft;
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, []);
+
+  //Handling the pricing configuration
+
   return (
     <div>
       {isPopupVisible && <Popup togglePopup={togglePopup} />}
@@ -441,118 +480,10 @@ export default function HomePage() {
           scrollToSection={scrollToSection}
           scrollToFeatures={scrollToFeatures}
         />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1845 1811"
-          className="w-[1800px] h-auto absolute right-[20%] top-0 z-[-1] lg:right-[30%] xl:right-[40%]"
-        >
-          <defs>
-            <filter
-              id="Ellipse_1"
-              x="0"
-              y="0"
-              width="1845"
-              height="1811"
-              filterUnits="userSpaceOnUse"
-            >
-              <feGaussianBlur stdDeviation="20" result="blur" />
-              <feFlood flood-color="#611e9b" flood-opacity="0.604" />
-              <feComposite operator="in" in2="blur" />
-              <feComposite in="SourceGraphic" />
-            </filter>
-            <filter
-              id="Ellipse_2"
-              x="190"
-              y="203"
-              width="1443"
-              height="1407"
-              filterUnits="userSpaceOnUse"
-            >
-              <feGaussianBlur stdDeviation="20" result="blur-2" />
-              <feFlood flood-color="#611e9b" flood-opacity="0.604" />
-              <feComposite operator="in" in2="blur-2" />
-              <feComposite in="SourceGraphic" />
-            </filter>
-            <filter
-              id="Ellipse_3"
-              x="400"
-              y="400"
-              width="1046"
-              height="1012"
-              filterUnits="userSpaceOnUse"
-            >
-              <feGaussianBlur stdDeviation="20" result="blur-3" />
-              <feFlood flood-color="#611e9b" flood-opacity="0.604" />
-              <feComposite operator="in" in2="blur-3" />
-              <feComposite in="SourceGraphic" />
-            </filter>
-          </defs>
-          <g id="Group_7" data-name="Group 7" transform="translate(922 -175)">
-            <g
-              transform="matrix(1, 0, 0, 1, -922, 175)"
-              filter="url(#Ellipse_1)"
-            >
-              <g
-                id="Ellipse_1-2"
-                data-name="Ellipse 1"
-                transform="translate(60 60)"
-                fill="none"
-                stroke="rgba(121,51,181,0.4)"
-                stroke-width="1"
-              >
-                <ellipse
-                  cx="862.5"
-                  cy="845.5"
-                  rx="862.5"
-                  ry="845.5"
-                  stroke="none"
-                />
-                <ellipse cx="862.5" cy="845.5" rx="862" ry="845" fill="none" />
-              </g>
-            </g>
-            <g
-              transform="matrix(1, 0, 0, 1, -922, 175)"
-              filter="url(#Ellipse_2)"
-            >
-              <g
-                id="Ellipse_2-2"
-                data-name="Ellipse 2"
-                transform="translate(250 263)"
-                fill="none"
-                stroke="rgba(121,51,181,0.4)"
-                stroke-width="1"
-              >
-                <ellipse
-                  cx="661.5"
-                  cy="643.5"
-                  rx="661.5"
-                  ry="643.5"
-                  stroke="none"
-                />
-                <ellipse cx="661.5" cy="643.5" rx="661" ry="643" fill="none" />
-              </g>
-            </g>
-            <g
-              transform="matrix(1, 0, 0, 1, -922, 175)"
-              filter="url(#Ellipse_3)"
-            >
-              <g
-                id="Ellipse_3-2"
-                data-name="Ellipse 3"
-                transform="translate(460 460)"
-                fill="none"
-                stroke="rgba(121,51,181,0.4)"
-                stroke-width="1"
-              >
-                <ellipse cx="463" cy="446" rx="463" ry="446" stroke="none" />
-                <ellipse cx="463" cy="446" rx="462.5" ry="445.5" fill="none" />
-              </g>
-            </g>
-          </g>
-        </svg>
+        <CircleSVG />
         <section className="w-full h-auto pt-[14rem] px-6 flex items-end justify-center">
           <div className="w-full flex items-center justify-center flex-col gap-6 text-center">
-            <div className = "w-full  m-auto lg:w-4/5 xl:w-2/3">
+            <div className="w-full  m-auto lg:w-4/5 xl:w-2/3">
               <span className="text-left lg:text-center lg:justify-center justify-start lg:self-center self-start flex w-full justify-start text-gray text-[14px]">
                 Closer to God one question at a time...
               </span>
@@ -569,22 +500,21 @@ export default function HomePage() {
               onClick={togglePopup}
               className="px-4 justify-start py-2 border border-white flex self-start	 lg:self-center items-center  text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white"
             >
-              Join The Waitlist
+              Join Beta Waitlist
             </button>
           </div>
         </section>
         <figure className="w-full h-auto mt-[4rem] p-6 flex items-center justify-center flex-col gap-6">
-        <Video
-
-              src="https://www.aisolomon.xyz/video_introduction.mp4"
-              type="video/mp4"
-              width="100%"
-              height="auto" 
-              controls={true}
-              autoPlay={true}
-              loop={true}
-              muted={false}
-              className="pointerEventsYes"
+          <Video
+            src="https://www.aisolomon.xyz/video_introduction.mp4"
+            type="video/mp4"
+            width="100%"
+            height="auto"
+            controls={true}
+            autoPlay={true}
+            loop={true}
+            muted={false}
+            className="pointerEventsYes"
           />
           <p className="text-white/80 montserrat">
             Solomon AI: Harnessing millennia of wisdom
@@ -896,8 +826,6 @@ export default function HomePage() {
                     muted={true}
                     className="w-full h-[505px]"
                   />
-
-                
                 </figure>
               </div>
             </div>
@@ -934,7 +862,6 @@ export default function HomePage() {
                     muted={true}
                     className="w-full h-[505px]"
                   />
-
                 </figure>
               </div>
             </div>
@@ -971,8 +898,6 @@ export default function HomePage() {
                     muted={true}
                     className="w-full h-[505px]"
                   />
-
-           
                 </figure>
               </div>
             </div>
@@ -1000,7 +925,94 @@ export default function HomePage() {
 
           <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
         </section>
-       
+
+        <section className="info-section-2 relative md:py-[20vh] md:pb-[8vh] pb-[0px] px-8  w-full  flex items-center justify-center flex-col  md:gap-[5vh] gap-[20vh]">
+          <CircleSVG />
+
+          <h2 className=" text-white  w-full md:w-[50%]    xl:w-2/3 text-center">
+            Be amongst the pioneers,Access higher intelligence.
+          </h2>
+          <p className="text-[#afafaf]">
+            One plan, one price to venture into the temple of Solomon
+          </p>
+          <form className="flex flex-row gap-[5px] justify-center items-center">
+            <div className="pricingCard">
+              <div className="flex flex-col h-full">
+                <h5>Ascent</h5>
+                <p></p>
+                <div className="flex flex-row  mt-[8px]">
+                  <div className="flex-row flex gap-[5px] items-center">
+                    <span className="text-[30px] !text-[#fff] font-bold">
+                      $25{" "}
+                    </span>
+                    <span className="slantLine"></span>
+                    <span>per</span>
+                    <span>month</span>
+                  </div>
+                </div>
+
+                <ul className="flex flex-col mt-[25px] gap-[20px] flex-1  ">
+                  <div className="flex flex-row gap-[5px]"></div>
+
+                  <li className=" text-[#afafaf] text-[20px] ">
+                    1,000 questions per month
+                  </li>
+                  <li className="text-[16px] text-white !list-disc ">
+                    Text-To-Image
+                  </li>
+                  <li className="text-[16px] text-white !list-disc ">
+                    Dream Calculator
+                  </li>
+                  <li className="text-[16px] text-white  !list-disc ">
+                    Daily Horoscope Interpreter
+                  </li>
+                  <li className="text-[16px] text-white  !list-disc">
+                    Life Path Caclulator
+                  </li>
+                </ul>
+
+                <button
+                  className="pricingBtn text-black text-[14px]   text-left"
+                >
+                  {`${timeLeft.days}d ${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s until beta .`}
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <hr className="vidDivider"></hr>
+
+          <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
+        </section>
+
+        <section className="w-full h-auto relative  flex items-start py-[20px] px-[20px] justify-center flex-col">
+          <Link
+            href="/blog"
+            className="flex flex-row flex-wrap relative  max-w-[450px] "
+          >
+            <div className="blogContainer relative max-w-[450px] ">
+              <div className="blogCardImageContainer relative h-full flex-1 flex items-end">
+                <Image src={ImageOne} alt="Spiritual Image" />
+                <div className="absolute mb-[4rem] mx-[20px] z-[100] ">
+                  <div className="flex flex-row gap-[4px]">
+                    <span className="text-gray text-[14px]">
+                      May 31st, 2024
+                    </span>
+                    <span className="text-gray text-[14px] text-before">
+                      5 min read
+                    </span>
+                  </div>{" "}
+                  <h3 className="text-white font-bold">
+                    Return of an Unifed God
+                  </h3>
+                </div>
+
+                <div className="overlay"></div>
+              </div>
+            </div>
+          </Link>
+        </section>
+
         <section className="w-full h-auto px-6 py-[4rem] flex items-center justify-center flex-col">
           <h2 className="w-auto xl:w-[55%] mr-[auto] text-white fira-sans-semibold text-[2rem] leading-[2rem] capitalize text-left lg:text-[3rem] lg:leading-[3.5rem]">
             Frequently Ask Questions

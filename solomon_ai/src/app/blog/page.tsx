@@ -8,8 +8,8 @@ import solomonHeaderImg from "../../public/assets/chat-guidelines.png";
 import { features } from "process";
 import Link from "next/link";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
 import { gsap } from "gsap";
+gsap.registerPlugin(ScrollTrigger);
 
 //Think about better way to funnnel images
 import ImageOne from "../../../public/assets/homePage/popup_header.png";
@@ -84,8 +84,7 @@ export default function BlogPage() {
             <div className="blogCardContents flex flex-col gap-[10px] h-[250px] p-[1.1rem]">
               <div className="flex flex-row gap-[4px]">
                 <span className="text-gray text-[14px]">May 31st, 2024</span>
-                <span>*</span>
-                <span className="text-gray text-[14px]">5 min read</span>
+                <span className="text-gray text-[14px] text-before">5 min read</span>
               </div>
 
               <h3 className="text-white">Return of an Unifed God.</h3>
