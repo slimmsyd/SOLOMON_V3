@@ -15,6 +15,8 @@ import { CircleSVG } from "./components/CircleSVG";
 import Lenis from "lenis";
 
 import ImageOne from "../../public/assets/homePage/popup_header.png";
+import ImageTwo from "../../public/assets/homePage/ImageTwo.png";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -985,7 +987,8 @@ export default function HomePage() {
           <hr className="w-full h-[1px] mt-[20vh] bg-white opacity-[.10]" />
         </section>
 
-        <section className="w-full h-auto relative  flex items-start py-[20px] px-[20px] justify-center flex-col">
+        <section className="w-full h-auto relative  flex items-start py-[20px] px-[20px] justify-start gap-[20px]  flex-col md:flex-row">
+
           <Link
             href="/blog"
             className="flex flex-row flex-wrap relative  max-w-[450px] "
@@ -1004,6 +1007,31 @@ export default function HomePage() {
                   </div>{" "}
                   <h3 className="text-white font-bold">
                     Return of an Unifed God
+                  </h3>
+                </div>
+
+                <div className="overlay"></div>
+              </div>
+            </div>
+          </Link>
+          <Link
+            href="/blog"
+            className="flex flex-row flex-wrap relative  max-w-[450px] "
+          >
+            <div className="blogContainer relative max-w-[450px] ">
+              <div className="blogCardImageContainer relative h-full flex-1 flex items-end">
+                <Image src={ImageTwo} alt="Spiritual Image" />
+                <div className="absolute mb-[4rem] mx-[20px] z-[100] ">
+                  <div className="flex flex-row gap-[4px]">
+                    <span className="text-gray text-[14px]">
+                      Aug 11th, 2024
+                    </span>
+                    <span className="text-gray text-[14px] text-before">
+                      2 min read
+                    </span>
+                  </div>{" "}
+                  <h3 className="text-white font-bold">
+                    Faith as an Frequency
                   </h3>
                 </div>
 

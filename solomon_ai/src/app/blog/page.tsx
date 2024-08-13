@@ -13,8 +13,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 //Think about better way to funnnel images
 import ImageOne from "../../../public/assets/homePage/popup_header.png";
+import ImageTwo from "../../../public/assets/homePage/ImageTwo.png";
 
-import Lenis from "lenis";
+
 
 export default function BlogPage() {
   const heroSectionRef = useRef<HTMLDivElement>(null);
@@ -71,7 +72,7 @@ export default function BlogPage() {
           scrollToFeatures={scrollToFeatures}
         />
 
-        <section className="w-full h-auto pt-[14rem] pb-[14rem] gap-[25px]  px-6 flex items-center justify-center ">
+        <section className="w-full h-auto pt-[14rem] pb-[14rem] gap-[25px]  px-6 flex items-center justify-center md:flex-row flex-col">
 
         <Link
             href="/blogs/unifiedGod"
@@ -93,6 +94,29 @@ export default function BlogPage() {
                 The instructions of Ptah Hotep of 5 dynasty Egypt and or
                 formally known as Ancient Kemit. Scholars argue this these text
                 are some of the oldest recovered written text known to man
+              </p>
+            </div>
+          </Link>
+        <Link
+            href="/blogs/faith"
+            className="blogCard flex-col flex items-start justify-start"
+          >
+            <div className="blogCardImageContainer h-full flex-1">
+              <Image src={ImageTwo} alt="Spiritual Image" />
+            </div>
+
+            <div className="blogCardContents flex flex-col gap-[10px] h-[250px] p-[1.1rem]">
+              <div className="flex flex-row gap-[4px]">
+                <span className="text-gray text-[14px]">Aug 11th, 2024</span>
+                <span className="text-gray text-[14px] text-before">2 min read</span>
+              </div>
+
+              <h3 className="text-white">Faith as a Frequency.</h3>
+
+              <p className="text-gray font-light">
+              The Japanese have a saying. “If a man has not been seen for three days, his friends should take a good look at him to see what changes have befall him”.
+
+
               </p>
             </div>
           </Link>
