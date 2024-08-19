@@ -435,10 +435,11 @@ export default function HomePage() {
   };
 
   //Handling the Countodwn Timer function
+  const targetDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+
+  // Function to calculate the remaining time
   const calculateTimeLeft = () => {
     const now = new Date();
-    const targetDate = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000); // 5 days from now
-
     const difference = targetDate.getTime() - now.getTime();
 
     let timeLeft = {
@@ -465,11 +466,10 @@ export default function HomePage() {
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 60000); // Update every minute
+    }, 1000); // Update every second for better accuracy
 
     return () => clearInterval(timer); // Cleanup on unmount
   }, []);
-
   //Handling the pricing configuration
 
   return (
