@@ -47,8 +47,7 @@ export const DreamDashboard:  FC<Dashboard> = ({
                   <span className = "text-[10px] text-[#7c7c7ca5]">**note somtimes images do not save**</span>
                 </div>
                 Discover some insights on the ether realm of where the dream
-                resides. What is your subconsicous mind symbolizing? Why and
-                what is this undiscoverd world.
+                resides. What is your subconsicous mind symbolizing? Dream Chat Doesn't delete to keep track of all entries
               </div>
 
               <p></p>
