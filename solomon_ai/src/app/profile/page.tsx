@@ -67,16 +67,16 @@ const Profile: React.FC = () => {
   >(null);
 
   const [birthday, setBirthDay] = useState<string>("");
-  const [zodiac, setZodiac] = useState<string>("Enter");
-  const [lifePath, setLifePathNumber] = useState<string>("Enter");
+  const [zodiac, setZodiac] = useState<string>("Loading...");
+  const [lifePath, setLifePathNumber] = useState<string>("Loading...");
   const [nameNumerologyNumber, setNameNumerolgyNumber] =
-    useState<string>("Enter");
+    useState<string>("Loading...");
   // const [practice, setPractice] = useState<null>(null);
-  const [ennealogy, setEnnealogyNumber] = useState<string>("Enter");
+  const [ennealogy, setEnnealogyNumber] = useState<string>("Loading...");
   // const [birthday, setBirthDay] = useState<string>("Enter");
   // const [chineseZodiac, setChineseZodiac] = useState<string>("Enter");
-  const [cardologyNumber, setCardologyNumber] = useState("Enter");
-  const [mylesBridgeType, setMylesBridgeType] = useState("Enter");
+  const [cardologyNumber, setCardologyNumber] = useState("Loading...");
+  const [mylesBridgeType, setMylesBridgeType] = useState("Loading...");
 
   useEffect(() => {
     checkSession(status, {

@@ -639,6 +639,7 @@ const ChatDashboard: React.FC = () => {
           editedTitle={editedTitle}
           handleTitleChange={handleTitleChange}
           editingTitle={editingTitle}
+          setEditingTitle = {setEditingTitle}
           titleUpdated={titleUpdated}
           handleKeyDown={handleKeyDown}
           chatContainerRef={chatContainerRef as any}

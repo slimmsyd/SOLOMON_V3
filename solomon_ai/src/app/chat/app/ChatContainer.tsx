@@ -26,6 +26,7 @@ interface ChatContainerProps {
   editTitleId?: null;
   editedTitle?: string;
   editingTitle?: boolean;
+  setEditingTitle?: React.Dispatch<React.SetStateAction<boolean>>;
   titleUpdated?: boolean;
   handleKeyDown?: (event: any) => void;
   chatContainerRef?: React.Ref<HTMLDivElement>;
@@ -48,6 +49,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   editedTitle,
   handleTitleChange,
   editingTitle,
+  setEditingTitle,
   titleUpdated,
   handleKeyDown,
   chatContainerRef,
@@ -67,6 +69,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     useState<boolean>(false);
   useState<boolean>(false);
   const deleteContainerRef = useRef<HTMLDivElement>(null);
+  const editingTitleRef = useRef<HTMLButtonElement>(null);
 
   const handleOutsideClick = (event: MouseEvent) => {
     if (
@@ -74,6 +77,14 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       !deleteContainerRef.current.contains(event.target as Node)
     ) {
       setShowDeleteContainer(false);
+    }
+  };
+  const handleOutsideClickTitleBtn = (event: MouseEvent) => {
+    if (
+      editingTitleRef.current &&
+      !editingTitleRef.current.contains(event.target as Node)
+    ) {
+      setEditingTitle?.(false);
     }
   };
 
@@ -90,6 +101,20 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [showDeleteContainer]);
+
+
+
+  useEffect(() => {
+    if (editingTitleRef) {
+      document.addEventListener("mousedown", handleOutsideClickTitleBtn);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClickTitleBtn);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClickTitleBtn);
+    };
+  }, [editingTitleRef]);
 
   //Checking hte hover VOneration ID
   useEffect(() => {}, [hoveredConversationId]);
@@ -231,6 +256,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                 {conversations?.map((conversation) => (
                   <div key={conversation.conversationId} className="relative">
                     <button
+                     ref = {editingTitleRef}
                       onMouseEnter={() =>
                         setHoveredConversationId(conversation.conversationId)
                       }
