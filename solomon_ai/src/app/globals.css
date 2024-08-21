@@ -139,8 +139,8 @@ body {
 .floatingDiv {
   position: fixed;
   bottom: 100%;
-  top: 50%;
-  left: 50%;
+  top: 75%;
+  left: 75%;
   transform: translate(-50%, 190%);
   color: white;
   background: rgba(64, 64, 64, 0.648);
@@ -1515,6 +1515,13 @@ a > p {
 
 /* DashBoard code  */
 
+
+.chatMessageContainer[type="text"]:focus{
+    outline: none; /* Removes default outline */
+    border-color: blue; /* Changes border color */
+    box-shadow: 0 0 5px blue; 
+    
+}
 /* Navigation CSS and Chat  */
 
 .openChatMobile {

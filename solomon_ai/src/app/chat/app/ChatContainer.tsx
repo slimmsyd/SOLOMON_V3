@@ -278,6 +278,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                           className="flex flex-row justify-center items-center gap-3"
                         >
                           <input
+                            className = "chatMessageContainer"
                             type="text"
                             value={editedTitle}
                             onChange={handleTitleChange}

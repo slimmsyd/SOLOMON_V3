@@ -609,6 +609,7 @@
   max-width: 75%;
   border: 1px solid #807f7f;
   color: #ffff !important;
+  position: fixed;
 
 }
 /* Loading Container */

@@ -15,7 +15,7 @@ export default function OpenChatContainer({ chatContainerToggle, chatContainerSh
 
 
   return (
-    <div className={`absolute left-5 top-5 closeContainerBtn ${chatContainerShown ? "show" : ""}`}>
+    <div className={`fixed left-5 top-5 closeContainerBtn ${chatContainerShown ? "show" : ""}`}>
       <button 
         onClick={chatContainerToggle}
       className="textAreaIcon rotate-[270deg]">

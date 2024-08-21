@@ -607,16 +607,12 @@ const ChatDashboard: React.FC = () => {
     // console.log("Loggin the conversations in the app useEffect", conversations);
   }, [conversations]);
 
-
-    //This handles the closing of the chat function 
-    const [chatContainerShown, setChatContainerShown] = useState<boolean>(false); 
-    const chatContainerToggle = () => 
-    { 
-
-      console.log("IS this being clicked??? Showon yes or no")
-      setChatContainerShown(!chatContainerShown);
-    }
-  
+  //This handles the closing of the chat function
+  const [chatContainerShown, setChatContainerShown] = useState<boolean>(false);
+  const chatContainerToggle = () => {
+    console.log("IS this being clicked??? Showon yes or no");
+    setChatContainerShown(!chatContainerShown);
+  };
 
   return (
     <MessageProvider>
@@ -639,13 +635,13 @@ const ChatDashboard: React.FC = () => {
           editedTitle={editedTitle}
           handleTitleChange={handleTitleChange}
           editingTitle={editingTitle}
-          setEditingTitle = {setEditingTitle}
+          setEditingTitle={setEditingTitle}
           titleUpdated={titleUpdated}
           handleKeyDown={handleKeyDown}
           chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
-          chatContainerToggle = {chatContainerToggle}
-          chatContainerShown = {chatContainerShown}
+          chatContainerToggle={chatContainerToggle}
+          chatContainerShown={chatContainerShown}
         />
 
         {/* Chat Container Componet  */}
@@ -654,10 +650,9 @@ const ChatDashboard: React.FC = () => {
           ref={chatDashBoardRef}
           className="chatDashboardWrapper w-full text-left"
         >
-          <OpenChatContainer 
-            chatContainerToggle = {chatContainerToggle}
-            chatContainerShown = {chatContainerShown}
-
+          <OpenChatContainer
+            chatContainerToggle={chatContainerToggle}
+            chatContainerShown={chatContainerShown}
           />
 
           <Header
@@ -677,13 +672,13 @@ const ChatDashboard: React.FC = () => {
               />
             )}
 
-            <FloatingScrollButton chatDashBoardRef={chatDashBoardRef} />
-
             <form
               ref={formRef}
               onSubmit={handleSubmit}
               className="chatFormSubmit"
             >
+              <FloatingScrollButton chatDashBoardRef={chatDashBoardRef} />
+
               <div className="relative textAreaContainer">
                 <textarea
                   onChange={(e) => {

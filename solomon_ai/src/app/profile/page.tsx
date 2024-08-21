@@ -15,7 +15,6 @@ import { Conversation } from "../../../types";
 import { checkSession } from "@/utilis/CheckSession";
 import { fetchUserInfo } from "@/utilis/fetchUserInfo";
 
-
 import { Header } from "../components/Header";
 import { Feedbackform } from "./FeedbackForm";
 import { UserDeleteAlert } from "./deleteUserAlert";
@@ -157,15 +156,10 @@ const Profile: React.FC = () => {
         setBirthDay(formatDate(birthday));
       }
 
-      console.log("Logging the User INfo In The git", userInfo)
+      console.log("Logging the User INfo In The git", userInfo);
     };
-    
-
-
 
     getUserInfo();
-
-    
   }, [userId]);
 
   function formatDate(isoString: string) {
@@ -216,13 +210,12 @@ const Profile: React.FC = () => {
         sessionStorage.setItem("mylesBridgeType", mylesBridgeType);
         sessionStorage.setItem("nameNumerolgyNumber", nameNumerolgyNumber);
         sessionStorage.setItem("ennealogy", ennealogy);
-        sessionStorage.setItem("lifePathNumber", lifePath)
+        sessionStorage.setItem("lifePathNumber", lifePath);
 
         // Sign out and redirect
       }
 
-
-      console.log("Logging the Response")
+      console.log("Logging the Response");
       if (response.status === 201) {
         setProileProgressLoading(false);
       }
@@ -247,23 +240,23 @@ const Profile: React.FC = () => {
     );
 
     window.alert("Profile Update");
-    if(zodiac !== ""){ 
-      setZodiac(zodiac)
+    if (zodiac !== "") {
+      setZodiac(zodiac);
     }
-    if(cardologyNumber !== ""){ 
-      setCardologyNumber(cardologyNumber)
+    if (cardologyNumber !== "") {
+      setCardologyNumber(cardologyNumber);
     }
-    if(mylesBridgeType !== ""){ 
-      setMylesBridgeType(mylesBridgeType)
+    if (mylesBridgeType !== "") {
+      setMylesBridgeType(mylesBridgeType);
     }
-    if(nameNumerologyNumber !== ""){ 
-      setNameNumerolgyNumber(nameNumerologyNumber)
+    if (nameNumerologyNumber !== "") {
+      setNameNumerolgyNumber(nameNumerologyNumber);
     }
-    if(ennealogy !== ""){ 
-      setEnnealogyNumber(ennealogy)
+    if (ennealogy !== "") {
+      setEnnealogyNumber(ennealogy);
     }
-    if(lifePath !== ""){ 
-      setLifePathNumber(ennealogy)
+    if (lifePath !== "") {
+      setLifePathNumber(ennealogy);
     }
     // Optionally, stop editing mode
     setIsEditing(false);
@@ -272,12 +265,11 @@ const Profile: React.FC = () => {
   useEffect(() => {
     console.log("Did the state of loading change? ", profileProgresLoading);
   }, [profileProgresLoading]);
-  const handleKeyDown= (e: React.FormEvent<HTMLFormElement>) => {
+  const handleKeyDown = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the form from submitting and causing a page reload
     console.log("Submission has been made");
-      handleSave();
+    handleSave();
   };
-
 
   //Remove user form the data
   const [deletingUser, setDeleteUser] = useState<boolean>(false);
@@ -307,8 +299,11 @@ const Profile: React.FC = () => {
   const [activeSubscription, setActiveSubscription] = useState<boolean>(false);
   const [canceledSubscription, setCanceledSubscription] =
     useState<boolean>(false);
+  const [isSubLoading, setSubLoading] = useState<boolean>(false);
 
   const getSubscriptionID = async (userId: string) => {
+    setSubLoading(true);
+
     try {
       const res = await fetch("/api/get-subscription-id", {
         method: "POST",
@@ -320,11 +315,24 @@ const Profile: React.FC = () => {
       const data = await res.json();
 
       setSubscriptionSessionID(data.paymentIntentId);
+      setSubLoading(false);
+
       console.log("Logging the data.paymentID", data.paymentIntentId);
     } catch (error) {
       console.error("Error fetching subscription ID:", error);
     }
   };
+
+  //ENsure we see if user contains an active susbcription
+  useEffect(() => {
+    getSubscriptionID(session?.user.id as string);
+  }, []);
+
+  //Adding loading guard rail
+  useEffect(() => {
+    console.log("Logging to seee if the Subscriptoin is still loading", isSubLoading)
+
+  }, [isSubLoading]);
 
   useEffect(() => {
     if (subcriptionSessionID) {
@@ -481,7 +489,6 @@ const Profile: React.FC = () => {
     }
   }, [userName, splitUserName]);
 
-
   const handleConversationClick = (convoId: string) => {
     const targetPath = `/chat/app/${session?.user.id}/${convoId}`;
 
@@ -499,7 +506,6 @@ const Profile: React.FC = () => {
       window.location.href = "/login"; // Or any other page you want to redirect to
     }
   };
-
 
   async function deleteConversation(conversationId: string | number) {
     const currentConversations = conversations;
@@ -561,8 +567,6 @@ const Profile: React.FC = () => {
       alert("Could not delete the conversation. Please try again.");
     }
   }
-
-
 
   const [showTitleInput, setShowTitleInput] = useState(false);
   const [editTitleId, setEditTitleId] = useState<null>(null);
@@ -630,7 +634,6 @@ const Profile: React.FC = () => {
       throw error; // Re-throw to handle it in the UI layer
     }
   }
-
 
   const handleSubmitTitle = async (event: any) => {
     event.preventDefault(); // Prevent form submission
@@ -705,22 +708,21 @@ const Profile: React.FC = () => {
     }
   };
 
+  //Editing the ability to change the existing title.
+  const handleTitleClick = (convoId: string | number) => {
+    const conversation = conversations.find(
+      (convo) => (convo as any).conversationId === convoId
+    );
 
-    //Editing the ability to change the existing title.
-    const handleTitleClick = (convoId: string | number) => {
-      const conversation = conversations.find(
-        (convo) => (convo as any).conversationId === convoId
-      );
-  
-      if (conversation) {
-        setEditTitleId((conversation as any).conversationId);
-        console.log("Logging the converatsion", conversation);
-        setEditedTitle((conversation as any).title);
-        setEditingTitle(true as boolean);
-      } else {
-        console.log(`Conversation with ID ${convoId} not found`);
-      }
-    };
+    if (conversation) {
+      setEditTitleId((conversation as any).conversationId);
+      console.log("Logging the converatsion", conversation);
+      setEditedTitle((conversation as any).title);
+      setEditingTitle(true as boolean);
+    } else {
+      console.log(`Conversation with ID ${convoId} not found`);
+    }
+  };
 
   useEffect(() => {
     // Retrieve the conversations from session storage
@@ -757,31 +759,19 @@ const Profile: React.FC = () => {
   useEffect(() => {
     console.log("Logging the new state of edit settings", showEditSettings);
   }, [showEditSettings]);
-  
 
-  //Enusring The Loading of all settings 
-  useEffect(() => { 
-  },[zodiac])
-  //Enusring The Loading of all settings 
-  useEffect(() => { 
-  },[lifePath])
-  //Enusring The Loading of all settings 
-  useEffect(() => { 
-  },[mylesBridgeType])
-  //Enusring The Loading of all settings 
-  useEffect(() => { 
-  },[cardologyNumber])
-  useEffect(() => { 
-  },[birthday])
-  useEffect(() => {
-
-  },[nameNumerologyNumber])
-  useEffect(() => {
-  },[ennealogy])
-  useEffect(() => {
-  },[birthday])
-
-
+  //Enusring The Loading of all settings
+  useEffect(() => {}, [zodiac]);
+  //Enusring The Loading of all settings
+  useEffect(() => {}, [lifePath]);
+  //Enusring The Loading of all settings
+  useEffect(() => {}, [mylesBridgeType]);
+  //Enusring The Loading of all settings
+  useEffect(() => {}, [cardologyNumber]);
+  useEffect(() => {}, [birthday]);
+  useEffect(() => {}, [nameNumerologyNumber]);
+  useEffect(() => {}, [ennealogy]);
+  useEffect(() => {}, [birthday]);
 
   return (
     <>
@@ -815,7 +805,8 @@ const Profile: React.FC = () => {
           editedTitle={editedTitle}
           handleTitleChange={handleTitleChange}
           editingTitle={editingTitle}
-          titleUpdated={titleUpdated}          chatContainerRef={chatContainerRef as any}
+          titleUpdated={titleUpdated}
+          chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
         />
         f{/* Chat Container Componet  */}
@@ -853,7 +844,7 @@ const Profile: React.FC = () => {
                   setEnnealogyNumber={setEnnealogyNumber}
                   setCardologyNumber={setCardologyNumber}
                   setMylesBridgeType={setMylesBridgeType}
-                  setNameNumerolgyNumber = {setNameNumerolgyNumber}
+                  setNameNumerolgyNumber={setNameNumerolgyNumber}
                   setBirthDay={setBirthDay}
                   profileProgresLoading={profileProgresLoading}
                 />
@@ -1035,35 +1026,6 @@ const Profile: React.FC = () => {
                     />
                   )}
                 </div>
-                {/* <div className="flex flex-row w-full justify-between">
-        <p id="greyText">Spiritual Practice</p>
-        {isEditing ? (
-          <input
-            type="text"
-            value={religion}
-            onChange={(e) => setReligion(e.target.value)}
-          />
-        ) : (
-          <p>{religion}</p>
-        )}
-      </div> */}
-                {/* <div className="flex flex-row w-full justify-between mt-[5px]">
-                {isEditing ? (
-                  <button
-                    className="text-[14px] newChat flex flex-row items-center justify-center gap-[13px]"
-                    onClick={handleSave}
-                  >
-                    <p>Save</p>
-                  </button>
-                ) : (
-                  <button
-                    className="text-[14px] newChat flex flex-row items-center justify-center gap-[13px]"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    <p>Edit Profile</p>
-                  </button>
-                )}
-              </div> */}
               </div>
 
               <hr className="greyDivider"></hr>
@@ -1080,7 +1042,11 @@ const Profile: React.FC = () => {
                         height={100}
                       />
                     </div>
-                    <p>{`${activeSubscription ? "True" : "False"}`}</p>
+                    {isSubLoading ? (
+                      <p>Loading...</p>
+                    ) : (
+                      <p>{`${activeSubscription ? "True" : "False"}`}</p>
+                    )}
                   </button>{" "}
                 </div>
                 <div className="flex flex-row w-full justify-between">
