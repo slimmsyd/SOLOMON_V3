@@ -215,7 +215,7 @@ const ChatDashboard: React.FC = () => {
         if (response.data) {
           setCurrentQuestion(response.data.currentQuestion);
           setCompleteForm(response.data.onComplete);
-          console.log("Logging hte response of setComplte", response.data);
+          console.log("Logging the Get Progress in the joint", response.data);
           // Update borderClasses based on the responses length
           const newBorderClasses = borderClasses.map((cls, index) =>
             index < response.data.currentQuestion
@@ -229,10 +229,8 @@ const ChatDashboard: React.FC = () => {
       }
     };
 
-    if (currentQuestion >= 2) {
       console.log("Fetch Progress is being called");
       fetchProgress();
-    }
   }, [userId]);
 
   const handleQuestionaireResponse = async (e: any) => {
@@ -255,10 +253,10 @@ const ChatDashboard: React.FC = () => {
         await createConversation(); // Make sure there is a conversation ID
       }
 
-    // 1. Set up the new response without any bot response yet.
-    const newResponse = { question: message, response: "" ,  id : ""};
+      // 1. Set up the new response without any bot response yet.
+      const newResponse = { question: message, response: "", id: "" };
 
-    setResponses((responses) => [...responses, newResponse]); // Use functional update for state
+      setResponses((responses) => [...responses, newResponse]); // Use functional update for state
 
       setMessage("");
 
@@ -433,6 +431,12 @@ const ChatDashboard: React.FC = () => {
 
     automatedMessageCounter.current += 1;
 
+    console.log(
+      "Logging to see if send Automated Message was sent at beginning",
+      convoId,
+      userId,
+      messageContent
+    );
     // Inline ternary operation to set the message content
     const randomGreeting = getRandomGreeting();
 
@@ -470,6 +474,14 @@ const ChatDashboard: React.FC = () => {
           return resp;
         })
       );
+      console.log(
+        "Logging to see if send Automated Message was sent at ENd",
+        convoId,
+        userId,
+        messageContent
+      );
+
+
     } catch (error) {
       console.error("Error sending automated message:", error);
     }
@@ -765,33 +777,5 @@ const ChatDashboard: React.FC = () => {
     </>
   );
 };
-function Header() {
-  return (
-    <header className=" text-[14px] guideLinesContainer gap-[8px] h-[70px] flex flex-row items-center justify-end w-full px-[22px] mb-[50px]">
-      <div className="flex flex-row gap-[18px] items-center justify-center">
-        <button className="hover:text-[#807f7f]">Tour</button>
 
-        <button className="flex flex-row guideLinesBtn gap-[10px] hover:bg-[#4B4B4B]">
-          <svg
-            width="15"
-            height="15"
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="far"
-            data-icon="compass"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <path
-              fill="#2F0FFD"
-              d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm306.7 69.1L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
-            ></path>
-          </svg>
-          Guidlines
-        </button>
-      </div>
-    </header>
-  );
-}
 export default dynamic(() => Promise.resolve(ChatDashboard), { ssr: false });

@@ -13,6 +13,7 @@ import { checkSession } from "@/utilis/CheckSession";
 import axios from "axios";
 
 import LoadingComponent from "../components/helper/Loading";
+import { debug } from "console";
 const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
   password: z
@@ -86,12 +87,17 @@ const Login = () => {
     } else if (status === "unauthenticated") {
       setIsLoggingIn(false); // Reset logging in state if authentication fails
     }
+
+
+    
   }, [session, completedForm]);
 
   //We are goging to fetch the userProgess on the rendering of this
   //If user Progres is True we are going to switch the redirect of the page
 
   const [subcriptionSessionID, setSubscriptionSessionID] = useState<string>("");
+
+  
 
   const getSubscriptionID = async () => {
     try {
@@ -114,18 +120,19 @@ const Login = () => {
   };
   useEffect(() => {}, [subcriptionSessionID]);
 
-  useEffect(() => {}, []);
 
   useEffect(() => {
     if (completedForm !== null) {
       setIsLoading(true);
       if (status === "authenticated" && completedForm) {
-;
         router.push("/chat/app");
-      } else if (subcriptionSessionID !== null) {
+      } else if (subcriptionSessionID ) {
+    
         router.push("/chat/app");
       } else if (status === "authenticated" && completedForm === false) {
         // router.push('/chat/app/questionaire'); // Previous redirect
+
+     
         router.push("/chat/signup");
       }
     }
@@ -150,9 +157,10 @@ const Login = () => {
     if (completedForm !== null) {
       if (status === "authenticated" && completedForm) {
         console.log("Logging completed form", completedForm);
-        router.push("/chat/app");
+        debugger
+        // router.push("/chat/app");
       } else if (subcriptionSessionID !== null) {
-        router.push("/chat/app");
+        // router.push("/chat/app");
       } else if (status === "authenticated" && completedForm === false) {
         router.push("/chat/signup");
       }

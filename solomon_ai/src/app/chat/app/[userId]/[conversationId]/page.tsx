@@ -21,7 +21,6 @@ import FloatingScrollButton from "@/app/components/ScrollToBottomButton";
 
 import OpenChatContainer from "@/app/components/helper/openChatContainerComponent";
 
-
 //Utilis
 import { checkSession } from "@/utilis/CheckSession";
 import ButtonLoadingComponent from "@/app/components/helper/buttonComponentLoading";
@@ -40,7 +39,6 @@ export default function ConversationPage() {
   const [sessionStatus, setSessionStatus] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
   const [showGuidelines, setShowGuidelines] = useState(true);
-
 
   const {
     userName,
@@ -565,14 +563,11 @@ export default function ConversationPage() {
     return <p>No conversation found.</p>;
   }
 
-  const [chatContainerShown, setChatContainerShown] = useState<boolean>(false); 
-  const chatContainerToggle = () => 
-  { 
-
-    console.log("IS this being clicked??? Showon yes or no")
+  const [chatContainerShown, setChatContainerShown] = useState<boolean>(false);
+  const chatContainerToggle = () => {
+    console.log("IS this being clicked??? Showon yes or no");
     setChatContainerShown(!chatContainerShown);
-  }
-
+  };
 
   //Function takes you to the bottom of the div by clicking the floating button.
 
@@ -605,19 +600,18 @@ export default function ConversationPage() {
         ref={chatDashBoardRef}
         className="chatDashboardWrapper w-full text-left"
       >
-         
-          <OpenChatContainer 
-            chatContainerToggle = {chatContainerToggle}
-            chatContainerShown = {chatContainerShown}
-
-          />
+        <OpenChatContainer
+          chatContainerToggle={chatContainerToggle}
+          chatContainerShown={chatContainerShown}
+        />
         {/* Guidelines Hader */}
 
-           {/* <button onClick={generateImage}>Generate an Image nigga</button> */}
-           <Header 
-          showGuidelines = {showGuidelines}
-          setShowGuidelines = {setShowGuidelines}
-          handleMobileChatBtnClick={handleMobileChatBtnClick} />
+  
+        <Header
+          showGuidelines={showGuidelines}
+          setShowGuidelines={setShowGuidelines}
+          handleMobileChatBtnClick={handleMobileChatBtnClick}
+        />
 
         <div className={`chatDashBoardContainer `}>
           {/* Dashboard Component  */}
@@ -631,7 +625,6 @@ export default function ConversationPage() {
             // <Dashboard userName={userName || ""} />
           )}
 
-          <FloatingScrollButton chatDashBoardRef={chatDashBoardRef} />
 
           {/* Dashboard Component  */}
 
@@ -640,6 +633,9 @@ export default function ConversationPage() {
             onSubmit={handleSubmit}
             className="chatFormSubmit"
           >
+              <FloatingScrollButton chatDashBoardRef={chatDashBoardRef} />
+
+
             <div className="relative textAreaContainer">
               <textarea
                 onChange={(e) => {
