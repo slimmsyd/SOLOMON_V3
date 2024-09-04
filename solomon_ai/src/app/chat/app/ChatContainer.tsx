@@ -15,6 +15,7 @@ import { Conversation } from "../../../../types";
 interface ChatContainerProps {
   setConversations?: React.Dispatch<React.SetStateAction<Conversation[]>>;
   conversations?: Conversation[];
+  currentConversationId: string | null | number;
   splitUserName: string;
   userName: string;
   email?: string;
@@ -38,6 +39,7 @@ interface ChatContainerProps {
 export const ChatContainer: FC<ChatContainerProps> = ({
   setConversations,
   conversations,
+  currentConversationId,
   splitUserName,
   userName,
   email,
@@ -126,7 +128,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
     // Set loading to true initially
     setLoading(true);
-    console.log("is This joint evne running in the useEffect " ,isLoading)
 
     if (localStorageConversations) {
       // Parse the conversations from local storage
@@ -150,7 +151,15 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
 
   }, [isLoading]);
+  
 
+
+  useEffect(() => { 
+
+    console.log("Logging the current convesration ID", conversations)
+    console.log("Logging the current conversation ID", currentConversationId)
+
+  },[conversations])
   const [clientSplitUserName, setClientSplitUserName] =
     useState<string>(splitUserName);
   const [clientEmail, setClientEmail] = useState<string>(email as any);
@@ -297,7 +306,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                                   );
                               }
                             }}
-                            className="hover:text-white text-left"
+                            className={`hover:text-white text-left ${ conversation.conversationId === currentConversationId ? "text-[#4c35de]" : ""}`}
                           >
                             {conversation.title}
                           </p>
