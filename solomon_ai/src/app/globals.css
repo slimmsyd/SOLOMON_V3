@@ -919,6 +919,11 @@ a > p {
   height: 40px;
   background: linear-gradient(180deg, #2f0ffd30, #291d7850);
   border-radius: 5px;
+  transition: background 250ms ease-in-out;
+}
+.newChat:hover {
+  background: linear-gradient(180deg, #2f0ffd30, #291d78ed);
+  transition: background 250ms ease-in-out;
 }
 .newChat.large {
   width: 200px;
@@ -935,6 +940,12 @@ a > p {
   height: 40px;
   padding-left: 17px;
   color: #4c35de;
+  transition: background 250ms ease-in-out;
+
+}
+.chatSearchIcon:hover{
+  background: #6354c327;
+  transition: background 250ms ease-in-out;
 }
 
 .tempOverlay {
@@ -1090,6 +1101,7 @@ a > p {
   height: auto;
   width: 100%;
   flex-direction: column;
+  position: relative;
 }
 
 .guideLinesContainer {
@@ -1515,12 +1527,10 @@ a > p {
 
 /* DashBoard code  */
 
-
-.chatMessageContainer[type="text"]:focus{
-    outline: none; /* Removes default outline */
-    border-color: blue; /* Changes border color */
-    box-shadow: 0 0 5px blue; 
-    
+.chatMessageContainer[type="text"]:focus {
+  outline: none; /* Removes default outline */
+  border-color: blue; /* Changes border color */
+  box-shadow: 0 0 5px blue;
 }
 /* Navigation CSS and Chat  */
 
@@ -1694,16 +1704,38 @@ a > p {
   border: 0.5px solid #b4b4b4;
   border-radius: 8px;
   background: white;
+  position: relative;
+  z-index: 10;
+  
+}
+.avatarSettings{
+  height: 100%;
+  width: 750px;
+  border: 0.5px solid #b4b4b4;
+  border-radius: 8px;
+  background: white;
+  position: relative;
+  z-index: 10;
+}
+.avatarImage
+ {
+  transition: opacity 250ms ease-in-out;
+
+ }
+.avatarImage:hover{
+  opacity: 40%;
+  transition: opacity 250ms ease-in-out;
 }
 @media screen and (max-width: 1100px) {
-  .editProfileSettingsContainer {
-    width: 500px !important;
+  .editProfileSettingsContainer, .avatarSettings {
+    width: 500px ;
     margin-right: auto;
+
   }
 }
 
 @media screen and (max-width: 800px) {
-  .editProfileSettingsContainer {
+  .editProfileSettingsContainer, .avatarSettings {
     width: 370px;
     margin: 0 auto;
   }
@@ -1712,7 +1744,7 @@ a > p {
   .editProfileSettingsContainer {
     width: auto;
     margin-right: auto;
-    background: transparent !important;
+    background: transparent ;
     border: 0px;
   }
   .editProfileSettingsWrapper {
@@ -1721,7 +1753,10 @@ a > p {
     background: white;
     width: 80%;
   }
+
 }
+
+
 
 .editInput {
   border: 0.5px solid #b4b4b4;

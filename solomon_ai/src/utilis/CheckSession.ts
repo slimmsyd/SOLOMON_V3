@@ -42,7 +42,7 @@ export async function checkSession(
   let loading = true;
 
   if (status === "loading") {
-    console.log("LOADING LOADING");
+    // console.log("LOADING LOADING");
     return;
   }
 

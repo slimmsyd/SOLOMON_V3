@@ -26,6 +26,10 @@ import EditProfileSettingsBtn from "./editProfileSettingsButton";
 import axios from "axios";
 import Link from "next/link";
 
+//Images
+import SolomonImage from "../../../public/assets/Chat/SolomonImage.png";
+import UserAvatar from "./editUserSettings";
+
 const Profile: React.FC = () => {
   const [showGuidelines, setShowGuidelines] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
@@ -156,7 +160,7 @@ const Profile: React.FC = () => {
         setBirthDay(formatDate(birthday));
       }
 
-      console.log("Logging the User INfo In The git", userInfo);
+      console.log("Logging the user Info", userInfo);
     };
 
     getUserInfo();
@@ -204,6 +208,9 @@ const Profile: React.FC = () => {
         birthday: birthday ?? undefined,
       });
 
+      // console.log("Logging the Virgo on update", zodiacSign)
+      // console.log("Logging the life path on update user", lifePath)
+
       //Going to save into Session to prevent the asynh loading issues
       if (isClient()) {
         sessionStorage.setItem("cardologyNumber", cardologyNumber);
@@ -215,12 +222,11 @@ const Profile: React.FC = () => {
         // Sign out and redirect
       }
 
-      console.log("Logging the Response");
       if (response.status === 201) {
         setProileProgressLoading(false);
       }
 
-      console.log("User progress updated successfully:", response.data);
+      // console.log("User progress updated successfully:", response.data);
     } catch (error) {
       console.error("Error updating user progress:", error);
     }
@@ -240,6 +246,7 @@ const Profile: React.FC = () => {
     );
 
     window.alert("Profile Update");
+
     if (zodiac !== "") {
       setZodiac(zodiac);
     }
@@ -262,12 +269,9 @@ const Profile: React.FC = () => {
     setIsEditing(false);
   };
 
-  useEffect(() => {
-    console.log("Did the state of loading change? ", profileProgresLoading);
-  }, [profileProgresLoading]);
+  useEffect(() => {}, [profileProgresLoading]);
   const handleKeyDown = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the form from submitting and causing a page reload
-    console.log("Submission has been made");
     handleSave();
   };
 
@@ -278,7 +282,7 @@ const Profile: React.FC = () => {
     setDeleteUser(true);
 
     if (deletingUser) {
-      console.log("THe Deleting Users is True");
+      // console.log("THe Deleting Users is True");
     }
 
     // try {
@@ -329,10 +333,7 @@ const Profile: React.FC = () => {
   }, []);
 
   //Adding loading guard rail
-  useEffect(() => {
-    console.log("Logging to seee if the Subscriptoin is still loading", isSubLoading)
-
-  }, [isSubLoading]);
+  useEffect(() => {}, [isSubLoading]);
 
   useEffect(() => {
     if (subcriptionSessionID) {
@@ -356,14 +357,14 @@ const Profile: React.FC = () => {
         setCanceledSubscription(false);
       }
 
-      console.log("Logging the Data on return", response.data);
+      // console.log("Logging the Data on return", response.data);
     } catch (e) {
       console.error(e);
     }
   };
 
   const renewUserSubscription = async (subscriptionID: string) => {
-    console.log("Renewing the subscription with ID:", subscriptionID);
+    // console.log("Renewing the subscription with ID:", subscriptionID);
 
     try {
       const response = await axios.post("/api/renew-subscription", {
@@ -379,7 +380,7 @@ const Profile: React.FC = () => {
         setCanceledSubscription(true);
       }
 
-      console.log("Subscription Details After Renewal:", data);
+      // console.log("Subscription Details After Renewal:", data);
     } catch (e) {
       console.error("Error renewing subscription:", e);
     }
@@ -756,9 +757,7 @@ const Profile: React.FC = () => {
 
     // console.log("This is logging the the click button", showEditSettings)
   };
-  useEffect(() => {
-    console.log("Logging the new state of edit settings", showEditSettings);
-  }, [showEditSettings]);
+  useEffect(() => {}, [showEditSettings]);
 
   //Enusring The Loading of all settings
   useEffect(() => {}, [zodiac]);
@@ -772,6 +771,23 @@ const Profile: React.FC = () => {
   useEffect(() => {}, [nameNumerologyNumber]);
   useEffect(() => {}, [ennealogy]);
   useEffect(() => {}, [birthday]);
+
+  //Function to change the Profile User settings
+  const [showAvatarSettings, setShowAvatarSettings] = useState<boolean>(false);
+  const [currentAvatarImage, setAvatarImage] = useState<string>("/assets/Chat/Solomon1.png")
+  function changeProfileImage(newImageUrl: string) {
+    // Update the CSS variable or directly change the style
+    console.log("this buttoin was clicked");
+    document.documentElement.style.setProperty(
+      "--user-profile-image",
+      `url(${newImageUrl})`
+    );
+    setShowAvatarSettings(!showAvatarSettings)
+    setAvatarImage(newImageUrl)
+  }
+
+
+
 
   return (
     <>
@@ -794,6 +810,7 @@ const Profile: React.FC = () => {
         <ChatContainer
           setConversations={setConversations}
           conversations={conversations}
+          currentConversationId={currentConversationId}
           splitUserName={splitUserName}
           userName={userName || ""}
           email={email || ""}
@@ -809,7 +826,7 @@ const Profile: React.FC = () => {
           chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
         />
-        f{/* Chat Container Componet  */}
+        {/* Chat Container Componet  */}
         <div className="chatDashboardWrapper !h-full w-full text-left">
           {/* Guidelines Hader */}
 
@@ -1026,6 +1043,25 @@ const Profile: React.FC = () => {
                     />
                   )}
                 </div>
+
+                <div className="flex flex-row w-full justify-between">
+                  <div className="mt-2 cursor-pointer w-[100px] h-[100px] relative z-1 hover:opacity-[60%] ">
+                    <img
+                      onClick={() => setShowAvatarSettings(!showAvatarSettings)}
+                      src={currentAvatarImage}
+                      alt="Connect wallet button"
+                      className="absolute h-[100%] w-[100%]"
+                    />
+                  </div>
+                </div>
+
+                {showAvatarSettings ? <UserAvatar 
+                setShowAvatarSettings = {setShowAvatarSettings}
+                showAvatarSettings = {showAvatarSettings}
+                changeProfileImage = {changeProfileImage}
+                setAvatarImage = {setAvatarImage}
+
+                /> : null}
               </div>
 
               <hr className="greyDivider"></hr>
