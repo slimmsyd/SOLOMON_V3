@@ -41,7 +41,7 @@ export const ProfileGuidelines = ({ onComplete }) => {
           <div className="flex flex-row gap-[5px] flex-1 items-center">
             {circles.map((_, index) => (
               <div
-                key={index}
+
                 className={`guideLinesCircle ${
                   index === activeIndex ? "active" : ""
                 }`}
