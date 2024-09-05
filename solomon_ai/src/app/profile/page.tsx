@@ -1227,51 +1227,7 @@ const Profile: React.FC = () => {
               </div>
             </div>
 
-            {/* <form className="chatFormSubmit">
-              <div className="relative textAreaContainer">
-                <textarea placeholder="Ask Thou Question..."></textarea>
-
-                <div className="textAreaIconWrapper flex flex-row gap-[11px]">
-                  <button className="textAreaIcon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill="currentColor"
-                        fill-rule="evenodd"
-                        d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-
-                  <button 
-                  
-                  type ="submit"
-                  className="textAreaIcon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      fill="none"
-                      viewBox="0 0 32 32"
-                      className=""
-                    >
-                      <path
-                        fill="currentColor"
-                        fill-rule="evenodd"
-                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </form> */}
+      
           </div>
         </div>
       </div>

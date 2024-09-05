@@ -20,6 +20,8 @@ const UserAvatar: FC<Props> = ({
     "/assets/Chat/Solomon2.png",
     "/assets/Chat/Solomon3.png",
     "/assets/Chat/Solomon4.png",
+    "/assets/Chat/Solomon5.png",
+    "/assets/Chat/Solomon6.png",
   ]);
 
   const handleNextClick = () => {
