@@ -629,6 +629,13 @@ export default function ConversationPage() {
 
           {/* Dashboard Component  */}
 
+
+          <div className = "fixed bottom-[20px] right-[30px] w-[25px] h-[25px] bg-white">
+              
+
+
+            </div> 
+
           <form
             ref={formRef}
             onSubmit={handleSubmit}

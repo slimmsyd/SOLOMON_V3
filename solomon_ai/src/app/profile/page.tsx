@@ -95,6 +95,8 @@ const Profile: React.FC = () => {
       userName: "",
       splitUserName,
     });
+
+    console.log("DId you run?")
   }, []);
 
   //This funcitno shifts and shows the mobile Chat ccontainer
@@ -158,9 +160,12 @@ const Profile: React.FC = () => {
         setMylesBridgeType(mylesBridgeType);
         setNameNumerolgyNumber(nameNumerolgyNumber);
         setBirthDay(formatDate(birthday));
+
+
+        // console.log("Logging the user Info", userInfo);
+
       }
 
-      console.log("Logging the user Info", userInfo);
     };
 
     getUserInfo();
@@ -321,7 +326,6 @@ const Profile: React.FC = () => {
       setSubscriptionSessionID(data.paymentIntentId);
       setSubLoading(false);
 
-      console.log("Logging the data.paymentID", data.paymentIntentId);
     } catch (error) {
       console.error("Error fetching subscription ID:", error);
     }
@@ -336,14 +340,15 @@ const Profile: React.FC = () => {
   useEffect(() => {}, [isSubLoading]);
 
   useEffect(() => {
-    if (subcriptionSessionID) {
-      setActiveSubscription(true);
-      console.log("Logging the active subscriptin", activeSubscription);
+    // console.log("Logging the cancle Subscripton state", canceledSubscription)
+    if (canceledSubscription) {
+      setActiveSubscription(false);
+    }else { 
+      setActiveSubscription(true)
     }
   }, [subcriptionSessionID, activeSubscription, canceledSubscription]);
 
   const cancelUserSubscription = async (subscriptionID: string) => {
-    console.log("Logging the ID in console Function", subscriptionID);
 
     try {
       const response = await axios.post("/api/cancel-stripe-subscription", {
@@ -398,7 +403,6 @@ const Profile: React.FC = () => {
   };
 
   const getSubscriptionDetails = async (subscriptionID: string) => {
-    console.log("Logging the SUbscription ID in the request", subscriptionID);
 
     try {
       const response = await axios.post("/api/get-subscription-details", {
@@ -407,7 +411,6 @@ const Profile: React.FC = () => {
 
       const data = response.data;
 
-      console.log("Logging the From Get Subscription details", data);
 
       if (response.data.cancel_at_period_end === true) {
         //Keeping Tabs if User is Still being active in this joint
@@ -416,7 +419,6 @@ const Profile: React.FC = () => {
         setCanceledSubscription(false);
       }
 
-      console.log("Subscription Details:", data);
     } catch (e) {
       console.error("Error retrieving subscription details:", e);
     }
@@ -424,23 +426,15 @@ const Profile: React.FC = () => {
 
   //W
   useEffect(() => {
-    //Logging to see if user is cancleing there subscription
-    console.log(
-      "Logging the current status of the cancled subscirption",
-      canceledSubscription
-    );
   }, [canceledSubscription]);
 
   useEffect(() => {
-    console.log("Is this joint running");
     if (subcriptionSessionID) {
-      console.log("Is the joint running in here?");
       getSubscriptionDetails(subcriptionSessionID as string);
     }
   }, [subcriptionSessionID]);
 
   useEffect(() => {
-    console.log("Logging the Delete UserFinal", deleteUserFinal);
     if (deleteUserFinal) {
       window.alert("User is being deleted");
 
@@ -452,10 +446,10 @@ const Profile: React.FC = () => {
             },
           });
 
-          console.log(
-            "The delete has been successfully updated",
-            response.data
-          );
+          // console.log(
+          //   "The delete has been successfully updated",
+          //   response.data
+          // );
 
           if (isClient()) {
             sessionStorage.clear();
@@ -1039,18 +1033,19 @@ const Profile: React.FC = () => {
                       className="profileInput"
                       type="text"
                       placeholder="Add"
+                      disabled
                       value={birthday ? birthday : "Loading..."}
                     />
                   )}
                 </div>
 
-                <div className="flex flex-row w-full justify-between">
-                  <div className="mt-2 cursor-pointer w-[100px] h-[100px] relative z-1 hover:opacity-[60%] ">
+                <div className="flex flex-row w-full  justify-between">
+                  <div className="mt-2 cursor-pointer w-[100px] h-[100px] relative z-[0] hover:opacity-[60%] ">
                     <img
                       onClick={() => setShowAvatarSettings(!showAvatarSettings)}
                       src={currentAvatarImage}
                       alt="Connect wallet button"
-                      className="absolute h-[100%] w-[100%]"
+                      className="absolute h-[100%] w-[100%] z-[-1]"
                     />
                   </div>
                 </div>

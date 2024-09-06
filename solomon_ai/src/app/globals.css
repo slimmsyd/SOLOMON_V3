@@ -135,6 +135,12 @@ body {
   width: 100%;
   object-fit: cover;
 }
+.imageContainer > .customImage{
+  border-radius: 0px !important;
+}
+.redirect{
+  border-radius: 8px;
+}
 
 .floatingDiv {
   position: fixed;
@@ -561,13 +567,13 @@ figure video {
 }
 @media screen and (max-width: 375px) {
   .homePopupContainer {
-    width: 330px !important;
+    width: 330px;
     justify-content: center;
   }
 }
 @media screen and (max-width: 1050px) {
   .homePopupContainer {
-    width: 400px !important;
+    width: 400px ;
     justify-content: center !important;
     height: 505px;
 
@@ -654,7 +660,7 @@ figure video {
   /* border: 0.5px solid #2f0ffd; */
   width: 500px;
   background: rgb(20 20 20 / 70%);
-  height: 600px !important;
+  height: 600px ;
   position: relative;
   border-radius: 10px;
   /* padding: 1.5rem 0rem; */
@@ -662,6 +668,15 @@ figure video {
   justify-content: start;
   flex-direction: row;
   border: 0.5px solid #fff;
+}
+@media screen and (max-height: 890px) { 
+  .homePopup {
+    /* border: 0.5px solid #2f0ffd; */
+    align-items: center !important;
+   
+  }
+
+
 }
 .homePopupContainer.feedback {
   background: white;
@@ -1705,7 +1720,7 @@ a > p {
   border-radius: 8px;
   background: white;
   position: relative;
-  z-index: 10;
+  z-index: 15;
   
 }
 .avatarSettings{

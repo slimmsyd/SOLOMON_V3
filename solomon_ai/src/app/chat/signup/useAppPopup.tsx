@@ -21,6 +21,20 @@ export const PayForAppPopup = ({}) => {
     setIsYearly(parseInt(value) === 1);
   const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
 
+
+  //Check this session in the userEffect 
+
+  useEffect(() => { 
+
+    console.log("Logging hte session date", session)
+
+
+
+  },[session])
+
+
+
+
   useEffect(() => {
     setStripePromise(loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!));
   }, []);
@@ -29,7 +43,7 @@ export const PayForAppPopup = ({}) => {
     try {
       const { data } = await axios.post(
         `/api/create-checkout-session`,
-        { userId: "ssanders444", email: "ssanderss444@gmail.com", priceId, subscription });
+        { userId: session?.user?.id, email: session?.user?.email, priceId, subscription });
 
 
       if (data.sessionId) {

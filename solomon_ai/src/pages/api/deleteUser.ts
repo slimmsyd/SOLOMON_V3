@@ -22,11 +22,32 @@ export default async function handler(
       const { userId } = deleteUserSchema.parse(req.body);
       console.log(`Processing delete request for user ${userId}`);
 
+      const userConversations = await db.userConversations.findMany({
+        where: { userId },
+        select: { conversationId: true }
 
+
+      });
       // Delete the user from the database
+      const conversationIds = userConversations.map(
+        (convo) => convo.conversationId
+      );
+
+      // Delete all messages associated with the conversations the user participated in
+      await db.messages.deleteMany({
+        where: { conversationId: { in: conversationIds } },
+      });
+
+      // Delete all conversations the user was part of
+      await db.conversation.deleteMany({
+        where: { id: { in: conversationIds } },
+      });
+
+      // Finally, delete the user -> This was the original code 
       const deletedUser = await db.user.delete({
         where: { id: userId },
       });
+
 
       res
         .status(200)

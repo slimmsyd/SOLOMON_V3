@@ -607,6 +607,7 @@ const SignupDashboard: React.FC = () => {
         <ChatContainer
           setConversations={setConversations}
           conversations={conversations}
+          currentConversationId={currentConversationId}
           splitUserName={splitUserName}
           userName={userName || ""}
           email={email || ""}
