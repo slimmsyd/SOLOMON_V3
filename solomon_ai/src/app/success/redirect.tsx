@@ -148,7 +148,7 @@ const SuccessPage = () => {
 
               <div className="flex flex-col items-left text-left pl-[10px] justify-center pb-[5rem]">
                 <div className="flex flex-row gap-[15px]">
-                  <span className="bg-black rounded-[50%] p-[5px] ">
+                  <span className="bg-black rounded-[50%] flex items-center justify-center p-[5px] w-[40px] h-[40px] ">
                     <Image
                       alt="Solomon Logo"
                       src={Logo}
