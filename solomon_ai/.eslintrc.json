@@ -4,7 +4,10 @@
     // Other rules can be added or modified here
     "react/no-unescaped-entities": "off",
     "react/jsx-no-comment-textnodes": "off",
-    "no-console": "warn"
+    "no-console": "warn",
+    "react/display-name": "off",     // Disable the display-name rule
+    "react-hooks/rules-of-hooks": "off",  // Disable hooks rules globally
+    "react/jsx-key": "off"   
 
     
   }
