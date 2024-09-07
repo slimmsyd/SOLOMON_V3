@@ -12,6 +12,8 @@ export const useSessionGate = () => {
   let retryCount = 0;
 
   useEffect(() => {
+
+    
     const checkSubscriptionStatus = async () => {
       if (status === "loading") return; // Wait until the session is ready
 
