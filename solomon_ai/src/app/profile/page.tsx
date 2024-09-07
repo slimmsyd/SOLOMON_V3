@@ -30,6 +30,10 @@ import Link from "next/link";
 import SolomonImage from "../../../public/assets/Chat/SolomonImage.png";
 import UserAvatar from "./editUserSettings";
 
+//Session gate Code 
+import { useSessionGate } from "./_middlewhere";
+import LoadingComponent from "../components/helper/Loading";
+
 const Profile: React.FC = () => {
   const [showGuidelines, setShowGuidelines] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
@@ -780,6 +784,15 @@ const Profile: React.FC = () => {
     setAvatarImage(newImageUrl)
   }
 
+
+
+
+  //Session Gate function 
+  const { loading } = useSessionGate();
+
+  if(loading) { 
+    return <LoadingComponent />
+  }
 
 
 

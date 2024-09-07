@@ -131,8 +131,11 @@ const Login = () => {
         router.push("/chat/app");
       } else if (status === "authenticated" && completedForm === false) {
         // router.push('/chat/app/questionaire'); // Previous redirect
-
-     
+        
+        console.log("Logging the session ", session)
+        console.log("Logging the current state of status", status)
+        console.log("Logging the compelte form", completedForm)
+        debugger
         router.push("/chat/signup");
       }
     }
@@ -157,7 +160,6 @@ const Login = () => {
     if (completedForm !== null) {
       if (status === "authenticated" && completedForm) {
         console.log("Logging completed form", completedForm);
-        debugger
         // router.push("/chat/app");
       } else if (subcriptionSessionID !== null) {
         // router.push("/chat/app");
