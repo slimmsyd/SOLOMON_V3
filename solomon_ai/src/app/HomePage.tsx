@@ -820,11 +820,16 @@ export default function HomePage() {
                   </li>
                 </ul>
                 {/*    */}
-                <Link href="/login">
+                <button className="pricingBtn text-black text-[14px]   text-left">
+                {`$${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s until beta .`}
+
+
+                </button>
+                {/* <Link href="/login">
                   <button className="pricingBtn text-black text-[14px]   text-left">
                     Join Temple
                   </button>
-                </Link>
+                </Link> */}
               </div>
             </div>
           </form>
