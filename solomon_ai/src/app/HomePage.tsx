@@ -792,7 +792,7 @@ export default function HomePage() {
                 <div className="flex flex-row  mt-[8px]">
                   <div className="flex-row flex gap-[5px] items-center">
                     <span className="text-[30px] !text-[#fff] font-bold">
-                      $25{" "}
+                      $28.88{" "}
                     </span>
                     <span className="slantLine"></span>
                     <span>per</span>
