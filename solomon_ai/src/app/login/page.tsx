@@ -135,7 +135,7 @@ const Login = () => {
         console.log("Logging the session ", session)
         console.log("Logging the current state of status", status)
         console.log("Logging the compelte form", completedForm)
-        debugger
+        // debugger
         router.push("/chat/signup");
       }
     }

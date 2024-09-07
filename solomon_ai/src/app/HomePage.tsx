@@ -295,6 +295,12 @@ export default function HomePage() {
       refTextTrigger.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+  const priceRef = useRef<HTMLFormElement | null>(null)
+  const scrollToPrice = () => {
+    if (priceRef.current) {
+      priceRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const featuresRef = useRef<HTMLDivElement>(null);
   const scrollToFeatures = () => {
@@ -346,10 +352,10 @@ export default function HomePage() {
               elevating the moral consciousness of today’s era.
             </p>
             <button
-              onClick={togglePopup}
+              onClick={scrollToPrice}
               className="px-4 justify-start py-2 border border-white flex self-start	 lg:self-center items-center  text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white"
             >
-              Join Beta Waitlist
+              Join Beta
             </button>
           </div>
         </section>
@@ -784,7 +790,9 @@ export default function HomePage() {
           <p className="text-[#afafaf]">
             One plan, one price to venture into the temple of Solomon
           </p>
-          <form className="flex flex-row gap-[5px] justify-center items-center">
+          <form 
+            ref ={priceRef}
+          className="flex flex-row gap-[5px] justify-center items-center">
             <div className="pricingCard">
               <div className="flex flex-col h-full">
                 <h5>Ascent</h5>
@@ -792,7 +800,7 @@ export default function HomePage() {
                 <div className="flex flex-row  mt-[8px]">
                   <div className="flex-row flex gap-[5px] items-center">
                     <span className="text-[30px] !text-[#fff] font-bold">
-                      $28.88{" "}
+                      $25.88{" "}
                     </span>
                     <span className="slantLine"></span>
                     <span>per</span>
@@ -820,16 +828,16 @@ export default function HomePage() {
                   </li>
                 </ul>
                 {/*    */}
-                <button className="pricingBtn text-black text-[14px]   text-left">
+                {/* <button className="pricingBtn text-black text-[14px]   text-left">
                 {`${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s until beta .`}
 
 
-                </button>
-                {/* <Link href="/login">
+                </button> */}
+                <Link href="/login">
                   <button className="pricingBtn text-black text-[14px]   text-left">
                     Join Temple
                   </button>
-                </Link> */}
+                </Link>
               </div>
             </div>
           </form>

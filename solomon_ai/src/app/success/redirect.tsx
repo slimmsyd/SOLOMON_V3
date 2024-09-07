@@ -120,7 +120,7 @@ const SuccessPage = () => {
   useEffect(() => {
     if (subscription) {
       const timer = setTimeout(() => {
-        router.push('/chat/app/questionaire');
+        router.push("/chat/app/questionaire");
       }, 5000); // 5000 milliseconds = 5 seconds
 
       return () => clearTimeout(timer); // Clear timeout if component unmounts
@@ -172,20 +172,21 @@ const SuccessPage = () => {
                   <span>Click Here To Redirect</span>
                 </Link>
 
-              <div className = "self-end pt-[20px]"> 
-
-                <p>Perhaps the coming together of our insights about the world around us and the world inside us is a satisfying feature of the recent evolution in science</p>
-
-
-              </div>
-
-
+                <div className="self-end pt-[20px]">
+                  <p>
+                    Perhaps the coming together of our insights about the world
+                    around us and the world inside us is a satisfying feature of
+                    the recent evolution in science
+                  </p>
+                </div>
               </div>
 
               {/* <pre>{JSON.stringify(subscription, null, 2)}</pre> */}
             </div>
           ) : (
-            <LoadingComponent />
+            <div className="h-[100vh] flex items-center justify-center ">
+              <LoadingComponent />˝
+            </div>
           )}
         </div>
       </div>

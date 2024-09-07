@@ -796,7 +796,8 @@ const Profile: React.FC = () => {
         <ProfileGuidelines onComplete={handleGuidelinesComplete} />
       )}
 
-      {showPopup && <Feedbackform togglePopup={togglePopup} />}
+      {showPopup && <Feedbackform
+       togglePopup={togglePopup} />}
       {deletingUser && (
         <UserDeleteAlert
           toggleDelete={togglePopup}

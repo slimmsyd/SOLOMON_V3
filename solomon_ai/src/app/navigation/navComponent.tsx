@@ -148,7 +148,7 @@ const NavComponent: React.FC<PopupProps> = ({
             onClick={togglePopup}
             className="px-4 py-2 border border-white flex items-center justify-center text-white montserrat rounded-sm duration-300 ease-in-out hover:text-[rgb(28,28,28)] hover:bg-white"
           >
-            Join Beta
+            Join Newsletter
           </button>
 
           <div className="flex flex-row xl:hidden gap-[3rem] items-center ">
