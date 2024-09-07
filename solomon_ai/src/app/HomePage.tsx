@@ -821,7 +821,7 @@ export default function HomePage() {
                 </ul>
                 {/*    */}
                 <button className="pricingBtn text-black text-[14px]   text-left">
-                {`$${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s until beta .`}
+                {`${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s until beta .`}
 
 
                 </button>
