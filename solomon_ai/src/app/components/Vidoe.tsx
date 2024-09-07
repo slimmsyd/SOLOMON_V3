@@ -32,6 +32,7 @@ const Video: React.FC<VideoProps> = ({
       autoPlay={autoPlay}
       loop={loop}
       muted={muted}
+      playsInline
     >
       <source src={src} type={type} />
       Your browser does not support the video tag.

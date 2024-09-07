@@ -26,7 +26,7 @@ export const ProfileGuidelines = ({ onComplete }) => {
   return (
 
 
-    <div className={`guidlinesOverlay ${activeIndex === 4 ? "active" : ""}`}>
+    <div className={`guidlinesOverlay ${activeIndex === 4 ? "" : "active"}`}>
       <div
         className={`guideLinesWhiteBox profileGuidlines flex flex-col gap-[5px] first ${
           activeIndex === 0 ? "active" : ""

@@ -117,15 +117,15 @@ const SuccessPage = () => {
     console.log("THe subscriptoin has changed", subscription);
   }, [subscription]);
 
-  // useEffect(() => {
-  //   if (subscription) {
-  //     const timer = setTimeout(() => {
-  //       router.push('/chat/app/questionaire');
-  //     }, 5000); // 5000 milliseconds = 5 seconds
+  useEffect(() => {
+    if (subscription) {
+      const timer = setTimeout(() => {
+        router.push('/chat/app/questionaire');
+      }, 5000); // 5000 milliseconds = 5 seconds
 
-  //     return () => clearTimeout(timer); // Clear timeout if component unmounts
-  //   }
-  // }, [subscription, router]);
+      return () => clearTimeout(timer); // Clear timeout if component unmounts
+    }
+  }, [subscription, router]);
 
   return (
     <div className="bg-white h-[100vh] flex flex-row relative ">
@@ -171,6 +171,15 @@ const SuccessPage = () => {
                 >
                   <span>Click Here To Redirect</span>
                 </Link>
+
+              <div className = "self-end pt-[20px]"> 
+
+                <p>Perhaps the coming together of our insights about the world around us and the world inside us is a satisfying feature of the recent evolution in science</p>
+
+
+              </div>
+
+
               </div>
 
               {/* <pre>{JSON.stringify(subscription, null, 2)}</pre> */}

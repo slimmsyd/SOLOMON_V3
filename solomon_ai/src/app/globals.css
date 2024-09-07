@@ -100,6 +100,18 @@ section,
 .marquee > * {
   animation: marquee 15s linear infinite;
 }
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 3s linear infinite; /* 3 seconds for one full rotation */
+}
 
 body {
   background: rgb(28, 28, 28);
@@ -528,6 +540,10 @@ figure video {
   font-weight: bolder;
   font-size: 16px;
   text-align: left;
+}
+.homePopupContainer.signUpForm { 
+  background: #0F0F0F !important;
+  border: 1px solid  #ADADAD !important;
 }
 
 .descriptionList > li {
@@ -1709,6 +1725,7 @@ a > p {
   border-radius: 8px;
   width: 100%;
   display: none;
+  z-index: 1;
 }
 .editProfileSettingsWrapper.show {
   display: flex;
@@ -2020,9 +2037,11 @@ a > p {
   left: 0;
   background: rgba(0, 0, 0, 0.436);
   z-index: 2;
+  display: none;
 }
 .guidlinesOverlay.active {
-  display: none;
+  display: block;
+
 }
 .guideLinesWhiteBox {
   background: white;
@@ -2126,9 +2145,9 @@ a > p {
 }
 
 .popupLinearGradient {
-  background: linear-gradient(180deg, #2f0ffd51, #ffffff);
+  /* background: linear-gradient(180deg, #2f0ffd51, #ffffff); */
   border-radius: 8px;
-  padding: 86px 20px;
+  /* padding: 86px 20px; */
 }
 
 /* Signup redirect page  */
