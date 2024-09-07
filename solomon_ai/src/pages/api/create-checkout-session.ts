@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items: [{ price: "price_1PwCXoLLJdDUyWvS4cmqkCK3", quantity: 1 }],
+        line_items: [{ price: "price_1PwCUyLLJdDUyWvSqYB7Vw93", quantity: 1 }],
         metadata: { userId, email, subscription },
         mode: 'subscription',
         success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,

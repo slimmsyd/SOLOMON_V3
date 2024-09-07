@@ -30,7 +30,7 @@ import Link from "next/link";
 import SolomonImage from "../../../public/assets/Chat/SolomonImage.png";
 import UserAvatar from "./editUserSettings";
 
-//Session gate Code 
+//Session gate Code
 import { useSessionGate } from "./_middlewhere";
 import LoadingComponent from "../components/helper/Loading";
 
@@ -100,7 +100,7 @@ const Profile: React.FC = () => {
       splitUserName,
     });
 
-    console.log("DId you run?")
+    console.log("DId you run?");
   }, []);
 
   //This funcitno shifts and shows the mobile Chat ccontainer
@@ -165,11 +165,8 @@ const Profile: React.FC = () => {
         setNameNumerolgyNumber(nameNumerolgyNumber);
         setBirthDay(formatDate(birthday));
 
-
         // console.log("Logging the user Info", userInfo);
-
       }
-
     };
 
     getUserInfo();
@@ -329,7 +326,6 @@ const Profile: React.FC = () => {
 
       setSubscriptionSessionID(data.paymentIntentId);
       setSubLoading(false);
-
     } catch (error) {
       console.error("Error fetching subscription ID:", error);
     }
@@ -347,13 +343,12 @@ const Profile: React.FC = () => {
     // console.log("Logging the cancle Subscripton state", canceledSubscription)
     if (canceledSubscription) {
       setActiveSubscription(false);
-    }else { 
-      setActiveSubscription(true)
+    } else {
+      setActiveSubscription(true);
     }
   }, [subcriptionSessionID, activeSubscription, canceledSubscription]);
 
   const cancelUserSubscription = async (subscriptionID: string) => {
-
     try {
       const response = await axios.post("/api/cancel-stripe-subscription", {
         subscriptionID: subscriptionID,
@@ -407,7 +402,6 @@ const Profile: React.FC = () => {
   };
 
   const getSubscriptionDetails = async (subscriptionID: string) => {
-
     try {
       const response = await axios.post("/api/get-subscription-details", {
         subscriptionID: subscriptionID,
@@ -415,22 +409,19 @@ const Profile: React.FC = () => {
 
       const data = response.data;
 
-
       if (response.data.cancel_at_period_end === true) {
         //Keeping Tabs if User is Still being active in this joint
         setCanceledSubscription(true);
       } else {
         setCanceledSubscription(false);
       }
-
     } catch (e) {
       console.error("Error retrieving subscription details:", e);
     }
   };
 
   //W
-  useEffect(() => {
-  }, [canceledSubscription]);
+  useEffect(() => {}, [canceledSubscription]);
 
   useEffect(() => {
     if (subcriptionSessionID) {
@@ -772,7 +763,9 @@ const Profile: React.FC = () => {
 
   //Function to change the Profile User settings
   const [showAvatarSettings, setShowAvatarSettings] = useState<boolean>(false);
-  const [currentAvatarImage, setAvatarImage] = useState<string>("/assets/Chat/Solomon1.png")
+  const [currentAvatarImage, setAvatarImage] = useState<string>(
+    "/assets/Chat/Solomon1.png"
+  );
   function changeProfileImage(newImageUrl: string) {
     // Update the CSS variable or directly change the style
     console.log("this buttoin was clicked");
@@ -780,21 +773,22 @@ const Profile: React.FC = () => {
       "--user-profile-image",
       `url(${newImageUrl})`
     );
-    setShowAvatarSettings(!showAvatarSettings)
-    setAvatarImage(newImageUrl)
+    setShowAvatarSettings(!showAvatarSettings);
+    setAvatarImage(newImageUrl);
   }
 
-
-
-
-  //Session Gate function 
+  //Session Gate function
   const { loading } = useSessionGate();
 
-  if(loading) { 
-    return <LoadingComponent />
+  if (loading) {
+    return (
+      <div className="h-[100vh] w-full flex items-center justify-center">
+
+          <LoadingComponent />
+
+      </div>
+    );
   }
-
-
 
   return (
     <>
@@ -1063,13 +1057,14 @@ const Profile: React.FC = () => {
                   </div>
                 </div>
 
-                {showAvatarSettings ? <UserAvatar 
-                setShowAvatarSettings = {setShowAvatarSettings}
-                showAvatarSettings = {showAvatarSettings}
-                changeProfileImage = {changeProfileImage}
-                setAvatarImage = {setAvatarImage}
-
-                /> : null}
+                {showAvatarSettings ? (
+                  <UserAvatar
+                    setShowAvatarSettings={setShowAvatarSettings}
+                    showAvatarSettings={showAvatarSettings}
+                    changeProfileImage={changeProfileImage}
+                    setAvatarImage={setAvatarImage}
+                  />
+                ) : null}
               </div>
 
               <hr className="greyDivider"></hr>
@@ -1234,8 +1229,6 @@ const Profile: React.FC = () => {
                 </div>
               </div>
             </div>
-
-      
           </div>
         </div>
       </div>
