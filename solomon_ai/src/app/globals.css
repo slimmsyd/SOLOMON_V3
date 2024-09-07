@@ -100,6 +100,18 @@ section,
 .marquee > * {
   animation: marquee 15s linear infinite;
 }
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 3s linear infinite; /* 3 seconds for one full rotation */
+}
 
 body {
   background: rgb(28, 28, 28);
@@ -134,6 +146,12 @@ body {
   height: 400px;
   width: 100%;
   object-fit: cover;
+}
+.imageContainer > .customImage{
+  border-radius: 0px !important;
+}
+.redirect{
+  border-radius: 8px;
 }
 
 .floatingDiv {
@@ -523,6 +541,10 @@ figure video {
   font-size: 16px;
   text-align: left;
 }
+.homePopupContainer.signUpForm { 
+  background: #0F0F0F !important;
+  border: 1px solid  #ADADAD !important;
+}
 
 .descriptionList > li {
   list-style-type: circle;
@@ -561,13 +583,13 @@ figure video {
 }
 @media screen and (max-width: 375px) {
   .homePopupContainer {
-    width: 330px !important;
+    width: 330px;
     justify-content: center;
   }
 }
 @media screen and (max-width: 1050px) {
   .homePopupContainer {
-    width: 400px !important;
+    width: 400px ;
     justify-content: center !important;
     height: 505px;
 
@@ -654,7 +676,7 @@ figure video {
   /* border: 0.5px solid #2f0ffd; */
   width: 500px;
   background: rgb(20 20 20 / 70%);
-  height: 600px !important;
+  height: 600px ;
   position: relative;
   border-radius: 10px;
   /* padding: 1.5rem 0rem; */
@@ -662,6 +684,15 @@ figure video {
   justify-content: start;
   flex-direction: row;
   border: 0.5px solid #fff;
+}
+@media screen and (max-height: 890px) { 
+  .homePopup {
+    /* border: 0.5px solid #2f0ffd; */
+    align-items: center !important;
+   
+  }
+
+
 }
 .homePopupContainer.feedback {
   background: white;
@@ -919,6 +950,11 @@ a > p {
   height: 40px;
   background: linear-gradient(180deg, #2f0ffd30, #291d7850);
   border-radius: 5px;
+  transition: background 250ms ease-in-out;
+}
+.newChat:hover {
+  background: linear-gradient(180deg, #2f0ffd30, #291d78ed);
+  transition: background 250ms ease-in-out;
 }
 .newChat.large {
   width: 200px;
@@ -935,6 +971,12 @@ a > p {
   height: 40px;
   padding-left: 17px;
   color: #4c35de;
+  transition: background 250ms ease-in-out;
+
+}
+.chatSearchIcon:hover{
+  background: #6354c327;
+  transition: background 250ms ease-in-out;
 }
 
 .tempOverlay {
@@ -1090,6 +1132,7 @@ a > p {
   height: auto;
   width: 100%;
   flex-direction: column;
+  position: relative;
 }
 
 .guideLinesContainer {
@@ -1515,12 +1558,10 @@ a > p {
 
 /* DashBoard code  */
 
-
-.chatMessageContainer[type="text"]:focus{
-    outline: none; /* Removes default outline */
-    border-color: blue; /* Changes border color */
-    box-shadow: 0 0 5px blue; 
-    
+.chatMessageContainer[type="text"]:focus {
+  outline: none; /* Removes default outline */
+  border-color: blue; /* Changes border color */
+  box-shadow: 0 0 5px blue;
 }
 /* Navigation CSS and Chat  */
 
@@ -1684,6 +1725,7 @@ a > p {
   border-radius: 8px;
   width: 100%;
   display: none;
+  z-index: 1;
 }
 .editProfileSettingsWrapper.show {
   display: flex;
@@ -1694,16 +1736,38 @@ a > p {
   border: 0.5px solid #b4b4b4;
   border-radius: 8px;
   background: white;
+  position: relative;
+  z-index: 15;
+  
+}
+.avatarSettings{
+  height: 100%;
+  width: 750px;
+  border: 0.5px solid #b4b4b4;
+  border-radius: 8px;
+  background: white;
+  position: relative;
+  z-index: 10;
+}
+.avatarImage
+ {
+  transition: opacity 250ms ease-in-out;
+
+ }
+.avatarImage:hover{
+  opacity: 40%;
+  transition: opacity 250ms ease-in-out;
 }
 @media screen and (max-width: 1100px) {
-  .editProfileSettingsContainer {
-    width: 500px !important;
+  .editProfileSettingsContainer, .avatarSettings {
+    width: 500px ;
     margin-right: auto;
+
   }
 }
 
 @media screen and (max-width: 800px) {
-  .editProfileSettingsContainer {
+  .editProfileSettingsContainer, .avatarSettings {
     width: 370px;
     margin: 0 auto;
   }
@@ -1712,7 +1776,7 @@ a > p {
   .editProfileSettingsContainer {
     width: auto;
     margin-right: auto;
-    background: transparent !important;
+    background: transparent ;
     border: 0px;
   }
   .editProfileSettingsWrapper {
@@ -1721,7 +1785,10 @@ a > p {
     background: white;
     width: 80%;
   }
+
 }
+
+
 
 .editInput {
   border: 0.5px solid #b4b4b4;
@@ -1780,7 +1847,7 @@ a > p {
 
 .profileInput {
   background: transparent;
-  width: 80px;
+  width: 90px;
   /* border-bottom: 1px solid #fff; */
   text-align: right;
   color: #fff;
@@ -1970,9 +2037,11 @@ a > p {
   left: 0;
   background: rgba(0, 0, 0, 0.436);
   z-index: 2;
+  display: none;
 }
 .guidlinesOverlay.active {
-  display: none;
+  display: block;
+
 }
 .guideLinesWhiteBox {
   background: white;
@@ -2076,9 +2145,9 @@ a > p {
 }
 
 .popupLinearGradient {
-  background: linear-gradient(180deg, #2f0ffd51, #ffffff);
+  /* background: linear-gradient(180deg, #2f0ffd51, #ffffff); */
   border-radius: 8px;
-  padding: 86px 20px;
+  /* padding: 86px 20px; */
 }
 
 /* Signup redirect page  */

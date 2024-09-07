@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import MobileChatBTNComponent from "./helper/mobileChatBtn";
 
+
+
+
 interface HeaderProps {
   handleMobileChatBtnClick: () => void;
   showGuidelines?: boolean;

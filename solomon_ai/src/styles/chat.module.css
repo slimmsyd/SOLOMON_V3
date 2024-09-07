@@ -554,7 +554,7 @@
   justify-content: center;
 }
 .user_Messages::before{
-  content: url("../../public/assets/Chat/SolomonImage.png");
+  content: var(--user-profile-image, url("../../public/assets/Chat/Solomon1.png"));
   width: 30px;
   height: 30px;
   top: -80px;

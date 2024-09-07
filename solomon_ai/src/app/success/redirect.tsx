@@ -8,7 +8,8 @@ import { useSessionStorage } from "../hooks/useSessionStorage";
 import { isClient } from "@/utilis/isClient";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import HeroImage from "../../../public/assets/subImage.png";
+import HeroImage from "../../../public/assets/Light_Being.png";
+import Logo from "../../../public/faceIconSolomon.png";
 import LoadingComponent from "../components/helper/Loading";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -116,37 +117,70 @@ const SuccessPage = () => {
     console.log("THe subscriptoin has changed", subscription);
   }, [subscription]);
 
-    useEffect(() => {
-      if (subscription) {
-        const timer = setTimeout(() => {
-          router.push('/chat/app/questionaire');
-        }, 5000); // 5000 milliseconds = 5 seconds
+  useEffect(() => {
+    if (subscription) {
+      const timer = setTimeout(() => {
+        router.push('/chat/app/questionaire');
+      }, 5000); // 5000 milliseconds = 5 seconds
 
-        return () => clearTimeout(timer); // Clear timeout if component unmounts
-      }
-    }, [subscription, router]);
+      return () => clearTimeout(timer); // Clear timeout if component unmounts
+    }
+  }, [subscription, router]);
 
   return (
-    <div className="bg-white h-[100vh] p-[2rem]">
-      <div className="flex flex-col gap-[10px] justify-center items-center">
-        <div className="text-black">
+    <div className="bg-white h-[100vh] flex flex-row relative ">
+      <div className="flex flex-row gap-[10px] justify-center items-center">
+        <div className="text-black h-full">
           {subscription ? (
-            <div className="text-center flex flex-col gap-[10px]">
-              <h2 className="text-black">
-                Thank You For Willing To Better Thyself
-              </h2>
-              <p>You Will Be Redirected Toward the App Dashboard Shortly</p>
-              <p>If not, click on the image below </p>
+            <div className="text-center flex flex-row gap-[10px] h-full">
+              <span className="imageContainer w-[80%]  ">
+                <Image
+                  alt="HeroImage"
+                  width={200}
+                  height={500}
+                  className="!h-full customImage"
+                  src={HeroImage}
+                  layout="responsive"
+                  objectFit="cover" // Ensures the image covers the container without distortion
+                  quality={100}
+                />
+              </span>
 
-              <Link 
-                href = "/chat/app/questionaire"
-              className="imageContainer">
-                <Image 
-                alt = "HeroImage"
-                    width={200}
-                    height={500}
-                src={HeroImage} />
-              </Link>
+              <div className="flex flex-col items-left text-left pl-[10px] justify-center pb-[5rem]">
+                <div className="flex flex-row gap-[15px]">
+                  <span className="bg-black rounded-[50%] flex items-center justify-center p-[5px] w-[40px] h-[40px] ">
+                    <Image
+                      alt="Solomon Logo"
+                      src={Logo}
+                      width={20}
+                      height={20}
+                    />
+                  </span>
+                </div>
+                <h2 className="text-black text-[38px] ">
+                  Thank You For Willing To Better Thyself
+                </h2>
+                <p className="!text-left">
+                  You Will Be Redirected Toward the App Dashboard Shortly
+                </p>
+                <p className="!text-left">If not, click on the image below </p>
+
+                <Link
+                  href="/chat/app/questionaire"
+                  className="redirect bg-black w-[200px] h-[45px] text-white flex items-center justify-center mt-[15px] "
+                >
+                  <span>Click Here To Redirect</span>
+                </Link>
+
+              <div className = "self-end pt-[20px]"> 
+
+                <p>Perhaps the coming together of our insights about the world around us and the world inside us is a satisfying feature of the recent evolution in science</p>
+
+
+              </div>
+
+
+              </div>
 
               {/* <pre>{JSON.stringify(subscription, null, 2)}</pre> */}
             </div>

@@ -15,6 +15,7 @@ import { Conversation } from "../../../../types";
 interface ChatContainerProps {
   setConversations?: React.Dispatch<React.SetStateAction<Conversation[]>>;
   conversations?: Conversation[];
+  currentConversationId: string | null | number;
   splitUserName: string;
   userName: string;
   email?: string;
@@ -32,12 +33,13 @@ interface ChatContainerProps {
   chatContainerRef?: React.Ref<HTMLDivElement>;
   handleMobileChatBtnClick?: () => void;
   chatContainerToggle?: () => void;
-  chatContainerShown? : boolean
+  chatContainerShown?: boolean;
 }
 
 export const ChatContainer: FC<ChatContainerProps> = ({
   setConversations,
   conversations,
+  currentConversationId,
   splitUserName,
   userName,
   email,
@@ -55,8 +57,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
   chatContainerRef,
   handleMobileChatBtnClick,
   chatContainerToggle,
-  chatContainerShown
-
+  chatContainerShown,
 }) => {
   //Controlling hte hover state of the Delete SVG
   const [hoveredConversationId, setHoveredConversationId] = useState<
@@ -102,8 +103,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     };
   }, [showDeleteContainer]);
 
-
-
   useEffect(() => {
     if (editingTitleRef) {
       document.addEventListener("mousedown", handleOutsideClickTitleBtn);
@@ -126,7 +125,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
     // Set loading to true initially
     setLoading(true);
-    console.log("is This joint evne running in the useEffect " ,isLoading)
 
     if (localStorageConversations) {
       // Parse the conversations from local storage
@@ -145,11 +143,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     // Log isLoading after a render cycle
   }, [titleUpdated, isLoading]);
 
-  useEffect(() => {
-
-
-
-  }, [isLoading]);
+  useEffect(() => {}, [isLoading]);
 
   const [clientSplitUserName, setClientSplitUserName] =
     useState<string>(splitUserName);
@@ -170,18 +164,15 @@ export const ChatContainer: FC<ChatContainerProps> = ({
     setClientEmail(getSessionStorageItem("email", email as any));
   }, [splitUserName, email]);
 
-
-
-  useEffect(() => { 
-
-    
-  },[chatContainerShown])
-
-
-
+  useEffect(() => {}, [chatContainerShown]);
 
   return (
-    <div ref={chatContainerRef} className={`chatContainer flex flex-col flex-1 ${chatContainerShown ? "none" : ""}`}>
+    <div
+      ref={chatContainerRef}
+      className={`chatContainer flex flex-col flex-1 ${
+        chatContainerShown ? "none" : ""
+      }`}
+    >
       <div className="flex flex-col gap-[22px]  h-full">
         {" "}
         <Link href="/" className="flex flex-row">
@@ -192,9 +183,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
             <Image alt="arrowLeft" src={arrowLeft} width={100} height={100} />
           </div>
 
-          <button 
-          onClick={chatContainerToggle}
-          >
+          <button onClick={chatContainerToggle}>
             <p>Close Chat</p>
           </button>
         </button>
@@ -256,7 +245,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                 {conversations?.map((conversation) => (
                   <div key={conversation.conversationId} className="relative">
                     <button
-                     ref = {editingTitleRef}
+                      ref={editingTitleRef}
                       onMouseEnter={() =>
                         setHoveredConversationId(conversation.conversationId)
                       }
@@ -278,7 +267,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                           className="flex flex-row justify-center items-center gap-3"
                         >
                           <input
-                            className = "chatMessageContainer"
+                            className="chatMessageContainer"
                             type="text"
                             value={editedTitle}
                             onChange={handleTitleChange}
@@ -297,7 +286,12 @@ export const ChatContainer: FC<ChatContainerProps> = ({
                                   );
                               }
                             }}
-                            className="hover:text-white text-left"
+                            className={`hover:text-white text-left ${
+                              conversation.conversationId ===
+                              currentConversationId
+                                ? "text-[#4c35de]"
+                                : ""
+                            }`}
                           >
                             {conversation.title}
                           </p>
@@ -394,7 +388,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
       {/* Bottom Container */}
 
       <div className="flex flex-col gap-[22px]">
- 
         <Link
           href="/dreamCalculator"
           className=" text-[14px] flex flex-row items-center justify-start gap-[13px] w-full pl-[17px] "
@@ -431,8 +424,6 @@ export const ChatContainer: FC<ChatContainerProps> = ({
 
       {/* Settings  Container */}
 
-    
-
       {/* Profile  Container */}
       <div className="flex flex-row gap-[4px]  settingsContainer ">
         <Link
@@ -445,9 +436,7 @@ export const ChatContainer: FC<ChatContainerProps> = ({
           <p>{clientEmail}</p>
         </Link>
 
-        <Link 
-        href="/profile"
-        className="mainIcon !w-[20px] !h-[20px]">
+        <Link href="/profile" className="mainIcon !w-[20px] !h-[20px]">
           <Image alt="chatIcon" src={settingsIcon} width={100} height={100} />
         </Link>
       </div>

@@ -26,6 +26,10 @@ import EditProfileSettingsBtn from "./editProfileSettingsButton";
 import axios from "axios";
 import Link from "next/link";
 
+//Images
+import SolomonImage from "../../../public/assets/Chat/SolomonImage.png";
+import UserAvatar from "./editUserSettings";
+
 const Profile: React.FC = () => {
   const [showGuidelines, setShowGuidelines] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
@@ -91,6 +95,8 @@ const Profile: React.FC = () => {
       userName: "",
       splitUserName,
     });
+
+    console.log("DId you run?")
   }, []);
 
   //This funcitno shifts and shows the mobile Chat ccontainer
@@ -154,9 +160,12 @@ const Profile: React.FC = () => {
         setMylesBridgeType(mylesBridgeType);
         setNameNumerolgyNumber(nameNumerolgyNumber);
         setBirthDay(formatDate(birthday));
+
+
+        // console.log("Logging the user Info", userInfo);
+
       }
 
-      console.log("Logging the User INfo In The git", userInfo);
     };
 
     getUserInfo();
@@ -204,6 +213,9 @@ const Profile: React.FC = () => {
         birthday: birthday ?? undefined,
       });
 
+      // console.log("Logging the Virgo on update", zodiacSign)
+      // console.log("Logging the life path on update user", lifePath)
+
       //Going to save into Session to prevent the asynh loading issues
       if (isClient()) {
         sessionStorage.setItem("cardologyNumber", cardologyNumber);
@@ -215,12 +227,11 @@ const Profile: React.FC = () => {
         // Sign out and redirect
       }
 
-      console.log("Logging the Response");
       if (response.status === 201) {
         setProileProgressLoading(false);
       }
 
-      console.log("User progress updated successfully:", response.data);
+      // console.log("User progress updated successfully:", response.data);
     } catch (error) {
       console.error("Error updating user progress:", error);
     }
@@ -240,6 +251,7 @@ const Profile: React.FC = () => {
     );
 
     window.alert("Profile Update");
+
     if (zodiac !== "") {
       setZodiac(zodiac);
     }
@@ -262,12 +274,9 @@ const Profile: React.FC = () => {
     setIsEditing(false);
   };
 
-  useEffect(() => {
-    console.log("Did the state of loading change? ", profileProgresLoading);
-  }, [profileProgresLoading]);
+  useEffect(() => {}, [profileProgresLoading]);
   const handleKeyDown = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the form from submitting and causing a page reload
-    console.log("Submission has been made");
     handleSave();
   };
 
@@ -278,7 +287,7 @@ const Profile: React.FC = () => {
     setDeleteUser(true);
 
     if (deletingUser) {
-      console.log("THe Deleting Users is True");
+      // console.log("THe Deleting Users is True");
     }
 
     // try {
@@ -317,7 +326,6 @@ const Profile: React.FC = () => {
       setSubscriptionSessionID(data.paymentIntentId);
       setSubLoading(false);
 
-      console.log("Logging the data.paymentID", data.paymentIntentId);
     } catch (error) {
       console.error("Error fetching subscription ID:", error);
     }
@@ -329,20 +337,18 @@ const Profile: React.FC = () => {
   }, []);
 
   //Adding loading guard rail
-  useEffect(() => {
-    console.log("Logging to seee if the Subscriptoin is still loading", isSubLoading)
-
-  }, [isSubLoading]);
+  useEffect(() => {}, [isSubLoading]);
 
   useEffect(() => {
-    if (subcriptionSessionID) {
-      setActiveSubscription(true);
-      console.log("Logging the active subscriptin", activeSubscription);
+    // console.log("Logging the cancle Subscripton state", canceledSubscription)
+    if (canceledSubscription) {
+      setActiveSubscription(false);
+    }else { 
+      setActiveSubscription(true)
     }
   }, [subcriptionSessionID, activeSubscription, canceledSubscription]);
 
   const cancelUserSubscription = async (subscriptionID: string) => {
-    console.log("Logging the ID in console Function", subscriptionID);
 
     try {
       const response = await axios.post("/api/cancel-stripe-subscription", {
@@ -356,14 +362,14 @@ const Profile: React.FC = () => {
         setCanceledSubscription(false);
       }
 
-      console.log("Logging the Data on return", response.data);
+      // console.log("Logging the Data on return", response.data);
     } catch (e) {
       console.error(e);
     }
   };
 
   const renewUserSubscription = async (subscriptionID: string) => {
-    console.log("Renewing the subscription with ID:", subscriptionID);
+    // console.log("Renewing the subscription with ID:", subscriptionID);
 
     try {
       const response = await axios.post("/api/renew-subscription", {
@@ -379,7 +385,7 @@ const Profile: React.FC = () => {
         setCanceledSubscription(true);
       }
 
-      console.log("Subscription Details After Renewal:", data);
+      // console.log("Subscription Details After Renewal:", data);
     } catch (e) {
       console.error("Error renewing subscription:", e);
     }
@@ -397,7 +403,6 @@ const Profile: React.FC = () => {
   };
 
   const getSubscriptionDetails = async (subscriptionID: string) => {
-    console.log("Logging the SUbscription ID in the request", subscriptionID);
 
     try {
       const response = await axios.post("/api/get-subscription-details", {
@@ -406,7 +411,6 @@ const Profile: React.FC = () => {
 
       const data = response.data;
 
-      console.log("Logging the From Get Subscription details", data);
 
       if (response.data.cancel_at_period_end === true) {
         //Keeping Tabs if User is Still being active in this joint
@@ -415,7 +419,6 @@ const Profile: React.FC = () => {
         setCanceledSubscription(false);
       }
 
-      console.log("Subscription Details:", data);
     } catch (e) {
       console.error("Error retrieving subscription details:", e);
     }
@@ -423,23 +426,15 @@ const Profile: React.FC = () => {
 
   //W
   useEffect(() => {
-    //Logging to see if user is cancleing there subscription
-    console.log(
-      "Logging the current status of the cancled subscirption",
-      canceledSubscription
-    );
   }, [canceledSubscription]);
 
   useEffect(() => {
-    console.log("Is this joint running");
     if (subcriptionSessionID) {
-      console.log("Is the joint running in here?");
       getSubscriptionDetails(subcriptionSessionID as string);
     }
   }, [subcriptionSessionID]);
 
   useEffect(() => {
-    console.log("Logging the Delete UserFinal", deleteUserFinal);
     if (deleteUserFinal) {
       window.alert("User is being deleted");
 
@@ -451,10 +446,10 @@ const Profile: React.FC = () => {
             },
           });
 
-          console.log(
-            "The delete has been successfully updated",
-            response.data
-          );
+          // console.log(
+          //   "The delete has been successfully updated",
+          //   response.data
+          // );
 
           if (isClient()) {
             sessionStorage.clear();
@@ -756,9 +751,7 @@ const Profile: React.FC = () => {
 
     // console.log("This is logging the the click button", showEditSettings)
   };
-  useEffect(() => {
-    console.log("Logging the new state of edit settings", showEditSettings);
-  }, [showEditSettings]);
+  useEffect(() => {}, [showEditSettings]);
 
   //Enusring The Loading of all settings
   useEffect(() => {}, [zodiac]);
@@ -772,6 +765,23 @@ const Profile: React.FC = () => {
   useEffect(() => {}, [nameNumerologyNumber]);
   useEffect(() => {}, [ennealogy]);
   useEffect(() => {}, [birthday]);
+
+  //Function to change the Profile User settings
+  const [showAvatarSettings, setShowAvatarSettings] = useState<boolean>(false);
+  const [currentAvatarImage, setAvatarImage] = useState<string>("/assets/Chat/Solomon1.png")
+  function changeProfileImage(newImageUrl: string) {
+    // Update the CSS variable or directly change the style
+    console.log("this buttoin was clicked");
+    document.documentElement.style.setProperty(
+      "--user-profile-image",
+      `url(${newImageUrl})`
+    );
+    setShowAvatarSettings(!showAvatarSettings)
+    setAvatarImage(newImageUrl)
+  }
+
+
+
 
   return (
     <>
@@ -794,6 +804,7 @@ const Profile: React.FC = () => {
         <ChatContainer
           setConversations={setConversations}
           conversations={conversations}
+          currentConversationId={currentConversationId}
           splitUserName={splitUserName}
           userName={userName || ""}
           email={email || ""}
@@ -809,7 +820,7 @@ const Profile: React.FC = () => {
           chatContainerRef={chatContainerRef as any}
           handleMobileChatBtnClick={handleMobileChatBtnClick}
         />
-        f{/* Chat Container Componet  */}
+        {/* Chat Container Componet  */}
         <div className="chatDashboardWrapper !h-full w-full text-left">
           {/* Guidelines Hader */}
 
@@ -1022,10 +1033,30 @@ const Profile: React.FC = () => {
                       className="profileInput"
                       type="text"
                       placeholder="Add"
+                      disabled
                       value={birthday ? birthday : "Loading..."}
                     />
                   )}
                 </div>
+
+                <div className="flex flex-row w-full  justify-between">
+                  <div className="mt-2 cursor-pointer w-[100px] h-[100px] relative z-[0] hover:opacity-[60%] ">
+                    <img
+                      onClick={() => setShowAvatarSettings(!showAvatarSettings)}
+                      src={currentAvatarImage}
+                      alt="Connect wallet button"
+                      className="absolute h-[100%] w-[100%] z-[-1]"
+                    />
+                  </div>
+                </div>
+
+                {showAvatarSettings ? <UserAvatar 
+                setShowAvatarSettings = {setShowAvatarSettings}
+                showAvatarSettings = {showAvatarSettings}
+                changeProfileImage = {changeProfileImage}
+                setAvatarImage = {setAvatarImage}
+
+                /> : null}
               </div>
 
               <hr className="greyDivider"></hr>
@@ -1191,51 +1222,7 @@ const Profile: React.FC = () => {
               </div>
             </div>
 
-            {/* <form className="chatFormSubmit">
-              <div className="relative textAreaContainer">
-                <textarea placeholder="Ask Thou Question..."></textarea>
-
-                <div className="textAreaIconWrapper flex flex-row gap-[11px]">
-                  <button className="textAreaIcon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill="currentColor"
-                        fill-rule="evenodd"
-                        d="M9 7a5 5 0 0 1 10 0v8a7 7 0 1 1-14 0V9a1 1 0 0 1 2 0v6a5 5 0 0 0 10 0V7a3 3 0 1 0-6 0v8a1 1 0 1 0 2 0V9a1 1 0 1 1 2 0v6a3 3 0 1 1-6 0z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-
-                  <button 
-                  
-                  type ="submit"
-                  className="textAreaIcon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      fill="none"
-                      viewBox="0 0 32 32"
-                      className=""
-                    >
-                      <path
-                        fill="currentColor"
-                        fill-rule="evenodd"
-                        d="M15.192 8.906a1.143 1.143 0 0 1 1.616 0l5.143 5.143a1.143 1.143 0 0 1-1.616 1.616l-3.192-3.192v9.813a1.143 1.143 0 0 1-2.286 0v-9.813l-3.192 3.192a1.143 1.143 0 1 1-1.616-1.616z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </form> */}
+      
           </div>
         </div>
       </div>

@@ -43,6 +43,7 @@ import { getZodiacDescription } from "@/utilis/zodiacArray";
 import axios from "axios";
 import { Header } from "../components/Header";
 import { Guidelines } from "../chat/app/components/Guidelines";
+import Link from "next/link";
 
 //Images to Channel
 const Profile: React.FC = () => {
@@ -398,6 +399,7 @@ const Profile: React.FC = () => {
         <ChatContainer
           setConversations={setConversations}
           conversations={conversations}
+          currentConversationId={currentConversationId}
           splitUserName={splitUserName}
           userName={userName || ""}
           email={email || ""}
@@ -638,6 +640,39 @@ const Profile: React.FC = () => {
                           id: "",
                         }}
                       />
+
+                      <div className="flex flex-col gap-[20px] mb-[4rem]">
+                        <h2>Books To Read To Improve Solomon Experience</h2>
+
+                        <div className="flex flex-row gap-[10px]">
+                          <div className="w-[200px] h-[300px] hover:opacity-[60%]">
+                            <Link href="https://www.youtube.com/watch?v=5HCXALhOs9Y">
+                              <img
+                                src="/assets/LifePathGuidance/Books/CorpusHermes.png"
+                                alt="Book Cover"
+                              />
+                            </Link>
+                          </div>
+
+                          <div className="w-[200px] h-[300px] hover:opacity-[60%]">
+                            <Link href="https://www.youtube.com/watch?v=VeBX4WjhhXs">
+                              <img
+                                src="/assets/LifePathGuidance/Books/AsMan.png"
+                                alt="Book Cover"
+                              />
+                            </Link>
+                          </div>
+                          <div className="w-[200px] h-[300px] hover:opacity-[60%]">
+                            <Link href="https://www.youtube.com/watch?v=dIgz7DKWx5s&t=3042s">
+                              <img
+                                className="h-[100%] w-[100%] object-cover"
+                                src="/assets/LifePathGuidance/Books/ThinkAndGrow.png"
+                                alt="Book Cover"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
