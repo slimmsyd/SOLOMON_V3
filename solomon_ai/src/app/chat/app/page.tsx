@@ -37,6 +37,8 @@ import { ChatMessagesContainer } from "./ChatMessage";
 import { Guidelines } from "./components/Guidelines";
 import FloatingScrollButton from "@/app/components/ScrollToBottomButton";
 import OpenChatContainer from "@/app/components/helper/openChatContainerComponent";
+import { useSessionGate } from "@/app/profile/_middlewhere";
+import LoadingComponent from "@/app/components/helper/Loading";
 
 const ChatDashboard: React.FC = () => {
   //Introduction Guidelines.
@@ -219,18 +221,18 @@ const ChatDashboard: React.FC = () => {
     e.preventDefault();
 
     if (!message.trim()) {
-      console.error("Message is empty. Please enter a message.");
+      // console.error("Message is empty. Please enter a message.");
       return;
     }
 
     setMessagesIsLoading(true);
-    console.log("Logging Conversation Id in the Submit", currentConversationId);
+    // console.log("Logging Conversation Id in the Submit", currentConversationId);
     if (isClient()) {
       if (!currentConversationId) {
-        console.log("No conversation selected.");
+        // console.log("No conversation selected.");
 
         await createConversation().then((convoID) => {
-          console.log("Logging the CONVO ID", convoID);
+          // console.log("Logging the CONVO ID", convoID);
 
           setCurrentConversationId(convoID); // Store the convo ID if needed
           sessionStorage.setItem("currentConversationId", convoID);
@@ -327,7 +329,7 @@ const ChatDashboard: React.FC = () => {
               JSON.stringify(updatedCache)
             );
 
-            console.log("Logging the updated Cache", updatedCache);
+            // console.log("Logging the updated Cache", updatedCache);
           } else {
             console.error("Parsed cached conversations is not an array");
           }
@@ -341,10 +343,10 @@ const ChatDashboard: React.FC = () => {
   useEffect(() => {});
 
   async function getConversation(conversationId: any) {
-    console.log(
-      "Logging the converatation ID in the getConversation",
-      conversationId
-    );
+    // console.log(
+    //   "Logging the converatation ID in the getConversation",
+    //   conversationId
+    // );
     try {
       const response = await fetch(`/api/${conversationId}`);
       if (!response.ok) {
@@ -378,13 +380,13 @@ const ChatDashboard: React.FC = () => {
     let titleChange: string = "";
 
     if (isClient()) {
-      console.log("seeing if the function worked!!! ");
+      // console.log("seeing if the function worked!!! ");
 
       event.preventDefault(); // Prevent form submission
       const newTitle = editedTitle; // Capture the title at the time of submission
-      titleChange = editTitleId ?? "";
-      console.log("New title to be set:", newTitle);
-      console.log("New title Id being logged", editTitleId);
+      // titleChange = editTitleId ?? "";
+      // console.log("New title to be set:", newTitle);
+      // console.log("New title Id being logged", editTitleId);
 
       if (editTitleId !== null && editTitleId !== "") {
         const updatedConversations = conversations.map((convo) =>
@@ -404,16 +406,9 @@ const ChatDashboard: React.FC = () => {
         setEditedTitle(""); // Clear the edited title state
         setEditingTitle(false);
 
-        console.log(
-          "logging the title change within the thing before ",
-          titleChange
-        );
+      
       }
-      console.log(
-        "logging the title change within the after before ",
-        titleChange
-      );
-
+  
       try {
         const response = await fetch(`/api/${editTitleId}`, {
           method: "PUT",
@@ -423,7 +418,6 @@ const ChatDashboard: React.FC = () => {
           body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
         });
 
-        console.log("Are you sending the new Title", editedTitle);
 
         if (response.ok) {
           await getConversation(editTitleId);
@@ -469,11 +463,9 @@ const ChatDashboard: React.FC = () => {
 
     if (conversation) {
       setEditTitleId((conversation as any).conversationId);
-      console.log("Logging the converatsion", conversation);
       setEditedTitle((conversation as any).title);
       setEditingTitle(true as boolean);
     } else {
-      console.log(`Conversation with ID ${convoId} not found`);
     }
   };
   useEffect(() => {}, [editTitleId, editedTitle]);
@@ -488,7 +480,7 @@ const ChatDashboard: React.FC = () => {
   // sessionStorage.clear();
 
   const handleConversationClick = (convoId: string) => {
-    console.log("Activating conversation with ID:", convoId);
+    // console.log("Activating conversation with ID:", convoId);
     localStorage.setItem("currentConversationId", convoId);
     sessionStorage.setItem("currentConversationId", convoId);
 
@@ -548,7 +540,7 @@ const ChatDashboard: React.FC = () => {
         const updatedConversations = conversations.filter(
           (convo) => (convo as any).converatoinID !== conversationId
         );
-        console.log("Logging out the Conversation Filter", conversations);
+        // console.log("Logging out the Conversation Filter", conversations);
 
         // Update state and local storage
         setConversations(updatedConversations); // Update React state
@@ -557,7 +549,6 @@ const ChatDashboard: React.FC = () => {
           JSON.stringify(updatedConversations)
         ); // Update local storage
 
-        console.log("Conversations after deletion:", updatedConversations);
         console.log(
           "Local storage after deletion:",
           sessionStorage.getItem("conversations")
@@ -610,10 +601,26 @@ const ChatDashboard: React.FC = () => {
   //This handles the closing of the chat function
   const [chatContainerShown, setChatContainerShown] = useState<boolean>(false);
   const chatContainerToggle = () => {
-    console.log("IS this being clicked??? Showon yes or no");
+    // console.log("IS this being clicked??? Showon yes or no");
     setChatContainerShown(!chatContainerShown);
   };
 
+
+
+  const { loading } = useSessionGate();
+
+
+  if (loading) {
+    return (
+      <div className="h-[100vh] w-full flex items-center justify-center">
+
+          <LoadingComponent />
+
+      </div>
+    );
+
+
+  }
   return (
     <MessageProvider>
       {showGuidelines && <Guidelines onComplete={handleGuidelinesComplete} />}

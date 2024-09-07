@@ -101,7 +101,7 @@ export async function checkSession(
         console.log(
           "User does not have an active subscription, redirecting..."
         );
-        window.alert("Error grabbing the payment ID ");
+        // window.alert("Error grabbing the payment ID ");
 
         router.push("/");
         break;

@@ -26,9 +26,7 @@ export default function HomePage() {
   //React Memo prevents unnecessary re-renders if props remains the same
   //
 
-  useEffect(() => {
-    console.log("Are you just re-rendering for some reason?");
-  }, []);
+
 
   const accordionData = [
     {
@@ -94,7 +92,6 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    console.log("Logging a new video srouce", videoSrc);
   }, [videoSrc]);
 
   const heroSectionRef = useRef<HTMLDivElement>(null);
@@ -924,7 +921,7 @@ const Accordion: React.FC<AccordionProps> = React.memo(({ title, content }) => {
   };
 
   useEffect(() => {
-    console.log("Logging the isOpen State", isOpen);
+    // console.log("Logging the isOpen State", isOpen);
   }, [isOpen]);
 
   return (

@@ -70,7 +70,6 @@ const NavComponent: React.FC<PopupProps> = ({
   }, [navState]);
 
   useEffect(() => {
-    console.log("Loggin animate state", animate);
 
     const handleScroll = () => {
       if (window.scrollY === 10) {
@@ -79,7 +78,6 @@ const NavComponent: React.FC<PopupProps> = ({
         setAnimate(!animate);
       }
 
-      console.log("Loggin animate state", animate);
     };
 
     window.addEventListener("scroll", handleScroll);

@@ -184,7 +184,7 @@ const SuccessPage = () => {
               {/* <pre>{JSON.stringify(subscription, null, 2)}</pre> */}
             </div>
           ) : (
-            <div className="h-[100vh] flex items-center justify-center ">
+            <div className="h-[100vh] w-full flex items-center justify-center ">
               <LoadingComponent />˝
             </div>
           )}

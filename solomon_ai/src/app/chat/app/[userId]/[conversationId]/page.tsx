@@ -161,11 +161,10 @@ export default function ConversationPage() {
 
     if (conversation) {
       setEditTitleId((conversation as any).conversationId);
-      console.log("Logging the converatsion", conversation);
       setEditedTitle((conversation as any).title);
       setEditingTitle(true as boolean);
     } else {
-      console.log(`Conversation with ID ${convoId} not found`);
+      // console.log(`Conversation with ID ${convoId} not found`);
     }
   };
   useEffect(() => {}, [editTitleId, editedTitle]);
@@ -182,10 +181,10 @@ export default function ConversationPage() {
       }
 
       const updatedConversation = await response.json();
-      console.log(
-        "Logging the converations before errorw",
-        updatedConversation
-      );
+      // console.log(
+      //   "Logging the converations before errorw",
+      //   updatedConversation
+      // );
       // Update local state
       setConversations((prevConversations) => {
         return prevConversations.map((convo) =>
@@ -228,7 +227,7 @@ export default function ConversationPage() {
       const updatedConversations = conversations.filter(
         (convo) => (convo as any).converatoinID !== conversationId
       );
-      console.log("Logging out the Conversation Filter", conversations);
+      // console.log("Logging out the Conversation Filter", conversations);
 
       // Update state and local storage
       setConversations(updatedConversations); // Update React state
@@ -237,11 +236,11 @@ export default function ConversationPage() {
         JSON.stringify(updatedConversations)
       ); // Update local storage
 
-      console.log("Conversations after deletion:", updatedConversations);
-      console.log(
-        "Local storage after deletion:",
-        sessionStorage.getItem("conversations")
-      );
+      // console.log("Conversations after deletion:", updatedConversations);
+      // console.log(
+      //   "Local storage after deletion:",
+      //   sessionStorage.getItem("conversations")
+      // );
 
       if (response.ok) {
         // Update the conversations state
@@ -297,13 +296,12 @@ export default function ConversationPage() {
     let titleChange: string = "";
 
     if (event.key === "Enter") {
-      console.log("seeing if the function worked!!! ");
 
       event.preventDefault(); // Prevent form submission
       const newTitle = editedTitle; // Capture the title at the time of submission
       titleChange = editTitleId ?? "";
-      console.log("New title to be set:", newTitle);
-      console.log("New title Id being logged", editTitleId);
+      // console.log("New title to be set:", newTitle);
+      // console.log("New title Id being logged", editTitleId);
 
       if (editTitleId !== null && editTitleId !== "") {
         const updatedConversations = conversations.map((convo) =>
@@ -334,7 +332,7 @@ export default function ConversationPage() {
         body: JSON.stringify({ title: editedTitle }), // Send editedTitle directly
       });
 
-      console.log("Are you sending the new Title", editedTitle);
+      // console.log("Are you sending the new Title", editedTitle);
 
       if (response.ok) {
         await getConversation(editTitleId);
@@ -376,7 +374,7 @@ export default function ConversationPage() {
     setResponseLoading(true);
     if (isClient()) {
       if (!currentConversationId) {
-        console.log("No conversation selected.");
+        // console.log("No conversation selected.");
 
         await createConversation().then((convoID) => {
           console.log("Logging the CONVO ID", convoID);
@@ -434,7 +432,7 @@ export default function ConversationPage() {
           })
         );
 
-        console.log("Logging the new Responses", responses);
+        // console.log("Logging the new Responses", responses);
 
         // 4. Send the user question and bot response to the database
 

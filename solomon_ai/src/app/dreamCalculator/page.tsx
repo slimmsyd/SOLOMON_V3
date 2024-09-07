@@ -223,7 +223,7 @@ const Horoscope: React.FC = () => {
     e.preventDefault();
 
     if (!message.trim()) {
-      console.error("Message is empty. Please enter a message.");
+      // console.error("Message is empty. Please enter a message.");
       return;
     }
 
@@ -231,7 +231,7 @@ const Horoscope: React.FC = () => {
 
     if (isClient()) {
       if (!currentConversationId) {
-        console.log("No conversation selected.");
+        // console.log("No conversation selected.");
 
         await createConversation().then((convoID) => {
           setCurrentConversationId(convoID); // Store the convo ID if needed
@@ -382,12 +382,7 @@ const Horoscope: React.FC = () => {
   let localStorageConvoId: any;
 
   useEffect(() => {
-    console.log("Logging the current conversation ID", currentConversationId);
 
-    console.log(
-      "Logging the dreamConversationId",
-      localStorage.getItem("dreamConversationID")
-    );
     if (localStorage.getItem("dreamConversationID")) {
       localStorageConvoId = localStorage.getItem("dreamConversationID");
       setCurrentConversationId(localStorageConvoId);
@@ -402,7 +397,6 @@ const Horoscope: React.FC = () => {
   const [messageCounter, setMessageCounter] = useState<number>(0);
 
   useEffect(() => {
-    console.log("Logging should Summarize Video", responses);
 
     async function summarizeDreamResponse(message: string, responseId: string) {
       if (currentConversationId) {
@@ -420,7 +414,7 @@ const Horoscope: React.FC = () => {
 
           const botReply = await response.json();
 
-          console.log("Logging the Bot Reply Raw", botReply);
+          // console.log("Logging the Bot Reply Raw", botReply);
 
           setSummarizeAIResponse(botReply.message);
 
@@ -461,7 +455,6 @@ const Horoscope: React.FC = () => {
 
     if (responses && responses.length > 0) {
       const latestResponse = responses[responses.length - 1];
-      console.log("Logging the Latest Response", latestResponse);
       setMessageCounter((prevCount) => prevCount + 1);
 
       // Ensure there is a latestResponse.response before proceeding

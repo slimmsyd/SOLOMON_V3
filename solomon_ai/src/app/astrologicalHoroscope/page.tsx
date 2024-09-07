@@ -216,7 +216,7 @@ const Horoscope: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Logging the CUrrent Div", currentDiv);
+    // console.log("Logging the CUrrent Div", currentDiv);
   }, [lineStyle, currentDiv]);
 
   const days = ["Today", "Yesterday", "Weekly", "Monthly", "Annually"];

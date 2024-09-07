@@ -100,7 +100,6 @@ const Profile: React.FC = () => {
       splitUserName,
     });
 
-    console.log("DId you run?");
   }, []);
 
   //This funcitno shifts and shows the mobile Chat ccontainer

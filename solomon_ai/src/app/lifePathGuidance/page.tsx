@@ -160,7 +160,6 @@ const Profile: React.FC = () => {
       const userInfo = await fetchUserInfo(userId);
       setDataLoading(true);
 
-      console.log("Just loggigng the user Info Here", userInfo);
 
       if (userInfo) {
         const { lifePathNumber, zodiacSign, ennealogy, birthday } = userInfo;
@@ -232,7 +231,7 @@ const Profile: React.FC = () => {
       );
       if (conversationArray.length > 0) {
         setConversations?.(conversationArray); // Safe call with optional chaining
-        console.log("Logging the conversations array", conversationArray);
+        // console.log("Logging the conversations array", conversationArray);
       }
     }
   }, [setConversations]);
@@ -283,12 +282,11 @@ const Profile: React.FC = () => {
 
     const month = getMonthContent(personalMonthNumber as number);
     setPersonalMonthTheme(month);
-    console.log("Logging the prsonal month theme", personalMonthNumber);
+    // console.log("Logging the prsonal month theme", personalMonthNumber);
 
     //get all presonal months
     const result = getAllPersonalMonths(personalYearNumber as number);
 
-    console.log("logging the result", result.personalMonths);
   }, [personalYearNumber]);
 
   const months = [
