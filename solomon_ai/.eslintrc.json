@@ -4,6 +4,7 @@
     // Other rules can be added or modified here
     "react/no-unescaped-entities": "off",
     "react/jsx-no-comment-textnodes": "off",
+    "no-console": "warn"
 
     
   }
