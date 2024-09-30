@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { resolve } = require("path");
 
-const APIKEY = "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";
+const APIKEY = process.env.OPENAI_API_KEY;
 
 const openai = new OpenAI({ apiKey: APIKEY });
 
